@@ -11,6 +11,26 @@ task :install do
 	system %Q{ln -sf $PWD/vim ~/.vim}
 	puts ".zshrc"
 	system %Q{ln -sf $PWD/oh-my-zsh/zshrc ~/.zshrc}
+	
+	bundleinstall
+end
+
+task :cleanup do
+	bundleclean
+	bundleinstall
+end
+
+def bundleclean
+	puts "Cleaning up bundle repositories"
+	system %Q{rm -rf $PWD/vim/bundle}
+
+	puts "Getting newest vundle"
+	system %Q{git clone https://github.com/gmarik/vundle.git $PWD/vim/bundle/vundle}
+end
+
+def bundleinstall
+	puts "Cleaning up submodules"
+	system %Q{git rm -r --cached $PWD/vim/bundle}
 
 	puts "Pulling All Bundles"
 	system %Q{git submodule foreach git pull}
