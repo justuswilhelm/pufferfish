@@ -44,7 +44,7 @@ let processing_doc_path="file:///Applications/Processing.app/Contents/Resources/
 map <C-n> :NERDTreeToggle<CR>
 autocmd vimenter * if !argc() | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
+let g:NERDTreeDirArrows=0
 
 " cd into current dir
 set autochdir
