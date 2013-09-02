@@ -64,6 +64,5 @@ set incsearch
 nore ; :
 nore , ;
 
-" Don't need no backups
-set nobackup
-set noswapfile
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
