@@ -66,3 +66,4 @@ nore , ;
 
 " Don't need no backups
 set nobackup
+set noswapfile
