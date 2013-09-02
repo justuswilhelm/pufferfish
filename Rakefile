@@ -3,6 +3,13 @@ task :default => ["install"]
 
 desc "Installs dotfiles"
 task :install do
+	puts "Changing to zsh"
+	system %Q{chsh -s $(which zsh)}
+
+	puts "Creating temp and swap folder for vim"
+	system %Q{mkdir $PWD/vim/backup}
+	system %Q{mkdir $PWD/vim/swap}
+
 	puts "Creating Symbolic Links"
 	puts ".vimrc"
 	system %Q{ln -sf $PWD/vimrc ~/.vimrc}
