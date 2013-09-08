@@ -15,6 +15,7 @@ Bundle 'bling/vim-airline'
 Bundle 'scrooloose/nerdtree'
 Bundle 'jeetsukumaran/vim-buffergator'
 Bundle 'tpope/vim-surround'
+Bundle 'tclem/vim-arduino'
 
 " Color Stuff
 syntax on
@@ -29,6 +30,10 @@ set autoread
 set more
 set hidden
 
+" Change edit behavior
+" Better ESC
+:imap asdf <Esc>
+
 " Change console
 set wildmenu
 
@@ -39,6 +44,10 @@ filetype plugin on
 " Processing
 let g:use_processing_java=1
 let processing_doc_path="file:///Applications/Processing.app/Contents/Resources/Java/modes/java/reference/"
+
+" Arduino
+au BufRead,BufNewFile *.pde set filetype=arduino
+au BufRead,BufNewFile *.ino set filetype=arduino
 
 " Nerdtree
 map <C-n> :NERDTreeToggle<CR>

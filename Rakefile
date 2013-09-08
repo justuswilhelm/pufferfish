@@ -36,9 +36,6 @@ def bundleclean
 end
 
 def bundleinstall
-	puts "Cleaning up submodules"
-	system %Q{git rm -r --cached $PWD/vim/bundle}
-
 	puts "Pulling All Bundles"
 	system %Q{git submodule foreach git pull}
 
