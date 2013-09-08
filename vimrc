@@ -16,6 +16,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'jeetsukumaran/vim-buffergator'
 Bundle 'tpope/vim-surround'
 Bundle 'tclem/vim-arduino'
+Bundle "sudar/vim-arduino-syntax"
 
 " Color Stuff
 syntax on
