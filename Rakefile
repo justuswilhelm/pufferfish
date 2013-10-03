@@ -17,7 +17,7 @@ task :install do
 	puts ".vim/"
 	system %Q{ln -sf $PWD/vim ~/.vim}
 	puts ".zshrc"
-	system %Q{ln -sf $PWD/oh-my-zsh/zshrc ~/.zshrc}
+	system %Q{ln -sf $PWD/zshrc ~/.zshrc}
 	
 	bundleinstall
 end
