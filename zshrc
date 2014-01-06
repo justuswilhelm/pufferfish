@@ -40,7 +40,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx nyan autojump)
+plugins=(git osx nyan virtualenv ruby rails autojump)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -60,3 +60,12 @@ alias gpu='git pull'
 alias gcl='git clone'
 alias gta='git tag -a -m'
 alias gf='git reflog'
+
+export PATH='/Applications/Slic3r.app/Contents/MacOS':$PATH
+export PATH='/Applications/OpenSCAD.app/Contents/MacOS':$PATH
+export PATH='/Applications/Skim.app/Contents/MacOS':$PATH
+
+ssh-add ~/.ssh/ec2.pem &>/dev/null
+
+export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
+alias python='python3'

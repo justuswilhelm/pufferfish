@@ -3,8 +3,10 @@ task :default => ["install"]
 
 desc "Installs dotfiles"
 task :install do
-	puts "Changing to zsh"
-	system %Q{chsh -s $(which zsh)}
+	unless `ps -p $$`.match /zsh/
+		puts "Changing to zsh"
+		system %Q{chsh -s $(which zsh)}
+	end
 
 	puts "Creating temp and swap folder for vim"
 	system %Q{mkdir $PWD/vim/backup}
