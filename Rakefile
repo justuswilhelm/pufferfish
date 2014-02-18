@@ -21,6 +21,7 @@ task :install do
 	puts ".zshrc"
 	system %Q{ln -sf $PWD/zshrc ~/.zshrc}
 	
+	bundleclean
 	bundleinstall
 end
 
