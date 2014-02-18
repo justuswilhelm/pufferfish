@@ -64,8 +64,11 @@ alias gf='git reflog'
 export PATH='/Applications/Slic3r.app/Contents/MacOS':$PATH
 export PATH='/Applications/OpenSCAD.app/Contents/MacOS':$PATH
 export PATH='/Applications/Skim.app/Contents/MacOS':$PATH
+export PATH='/Applications/MacDviX_Folder/MacDviX.app/Contents/MacOS':$PATH
 
 ssh-add ~/.ssh/ec2.pem &>/dev/null
 
 export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
 alias python='python3'
+alias latexmk='latexmk -pdf -pvc'
+alias steve='say'
