@@ -72,3 +72,4 @@ export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
 alias python='python3'
 alias latexmk='latexmk -pdf -pvc'
 alias steve='say'
+source /Users/justusperlwitz/.rvm/scripts/rvm
