@@ -30,3 +30,4 @@ alias gpu='git pull'
 alias gcl='git clone'
 
 source /Users/justusperlwitz/.rvm/scripts/rvm
+[[ -s /usr/local/etc/autojump.sh ]] && . /usr/local/etc/autojump.sh

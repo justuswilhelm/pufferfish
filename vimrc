@@ -26,6 +26,7 @@ let g:syntastic_warning_symbol = '!'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
 let g:syntastic_javascript_checkers = ['jsl', 'jshint']
+let g:syntastic_python_checkers = ['python', 'pep8']
 
 " Color Stuff
 syntax on
@@ -76,10 +77,6 @@ let mapleader = ","
 set wildmenu
 set showcmd
 
-" Plugin specific
-filetype plugin indent on
-filetype plugin on
-
 " Nerdtree
 map <C-n> :NERDTreeToggle<CR>
 " Open Nerdtree on start
@@ -89,16 +86,18 @@ let g:NERDTreeDirArrows=0
 set autochdir
 
 "" Indentation
-  " Python specific
-  au BufRead,BufNewFile *.py set shiftwidth=4 | set tabstop=4 | set softtabstop=4 | set number
-  " The rest
   set shiftwidth=2
   set tabstop=2
-  set autoindent
-  set smartindent
-  set expandtab
+  set softtabstop=2
   set smarttab
+  set smartindent
+  set cindent
+  set autoindent
+  set expandtab
   set copyindent
+  " Python specific
+  " The rest
+  autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4
 
 " Matching
 nnoremap / /\v
@@ -122,3 +121,6 @@ nore , ;
 
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swap//
+
+" MVIM
+set guifont=Monospace:h20
