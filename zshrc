@@ -31,3 +31,7 @@ alias gcl='git clone'
 
 source /Users/justusperlwitz/.rvm/scripts/rvm
 [[ -s /usr/local/etc/autojump.sh ]] && . /usr/local/etc/autojump.sh
+
+# Heroku Toolbelt
+export PATH=/Users/justusperlwitz/Applications/heroku-client/bin/:$PATH
+export GOROOT=/usr/local/Cellar/go/1.2.1

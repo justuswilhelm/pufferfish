@@ -17,6 +17,7 @@ Bundle 'tpope/vim-fugitive'
 
 " Syntax
 Bundle "tikhomirov/vim-glsl.git"
+Bundle "jnwhiteh/vim-golang.git"
 
 " Syntax Magic
 Bundle 'scrooloose/syntastic'
@@ -86,18 +87,20 @@ let g:NERDTreeDirArrows=0
 set autochdir
 
 "" Indentation
-  set shiftwidth=2
-  set tabstop=2
-  set softtabstop=2
+  filetype off
+  filetype plugin indent off
+  set runtimepath+=$GOROOT/misc/vim
+  syntax on
+  filetype plugin indent on
+  filetype plugin on
+  set autoindent
+
   set smarttab
   set smartindent
   set cindent
-  set autoindent
+  set tabstop=2
+  set shiftwidth=2
   set expandtab
-  set copyindent
-  " Python specific
-  " The rest
-  autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4
 
 " Matching
 nnoremap / /\v
@@ -124,3 +127,6 @@ set directory=~/.vim/swap//
 
 " MVIM
 set guifont=Monospace:h20
+
+" GOLANG specific
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
