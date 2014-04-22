@@ -13,7 +13,7 @@ export UPDATE_ZSH_DAYS=3
 COMPLETION_WAITING_DOTS="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git osx nyan autojump)
+plugins=(git vi-mode osx nyan autojump)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -34,4 +34,3 @@ source /Users/justusperlwitz/.rvm/scripts/rvm
 
 # Heroku Toolbelt
 export PATH=/Users/justusperlwitz/Applications/heroku-client/bin/:$PATH
-export GOROOT=/usr/local/Cellar/go/1.2.1
