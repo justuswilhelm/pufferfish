@@ -3,7 +3,7 @@ task :default => ["install"]
 
 desc "Installs dotfiles"
 task :install do
-  unless `$SHELL`.match(/zsh/)
+  unless `echo $SHELL`.match(/zsh/)
     puts "Changing to zsh"
     system %Q{chsh -s $(which zsh)}
   end
