@@ -30,7 +30,7 @@ Bundle 'gmarik/vundle'
   let g:syntastic_enable_signs=1
   let g:syntastic_javascript_checkers = ['jsl', 'jshint']
   let g:syntastic_python_checkers = ['python', 'pep8']
-  let g:syntastic_perl_checkers = ['perl', 'podchecker']
+  let g:syntastic_c_checkers = ['gcc', 'make']
   let g:syntastic_enable_perl_checker = 1
 
 " Color Stuff
@@ -58,7 +58,6 @@ Bundle 'gmarik/vundle'
 " Some keys
   set pastetoggle=<F2>
   set clipboard=unnamed
-  nmap <C-v> gg"*yG
 
 " Text Navigation
   nnoremap j gj

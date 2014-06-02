@@ -13,7 +13,7 @@ export UPDATE_ZSH_DAYS=3
 COMPLETION_WAITING_DOTS="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git vi-mode osx nyan autojump)
+plugins=(git nyan autojump)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -29,8 +29,15 @@ alias gc='git checkout'
 alias gpu='git pull'
 alias gcl='git clone'
 
+alias ssh-x='ssh -c arcfour,blowfish-cbc -XC'
+
+alias mex='chmod +x'
+
+alias latexmk='latexmk -pdf -pvc'
+
 source /Users/justusperlwitz/.rvm/scripts/rvm
 [[ -s /usr/local/etc/autojump.sh ]] && . /usr/local/etc/autojump.sh
+source /usr/local/opt/autoenv/activate.sh
 
-# Heroku Toolbelt
-export PATH=/Users/justusperlwitz/Applications/heroku-client/bin/:$PATH
+export PATH=/usr/local/sbin:$PATH
+
