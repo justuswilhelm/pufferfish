@@ -28,16 +28,32 @@ alias gma='git commit -am'
 alias gc='git checkout'
 alias gpu='git pull'
 alias gcl='git clone'
+alias gi='git init'
 
 alias ssh-x='ssh -c arcfour,blowfish-cbc -XC'
 
-alias mex='chmod +x'
-
 alias latexmk='latexmk -pdf -pvc'
+
+alias ed='ed -p:'
 
 source /Users/justusperlwitz/.rvm/scripts/rvm
 [[ -s /usr/local/etc/autojump.sh ]] && . /usr/local/etc/autojump.sh
 source /usr/local/opt/autoenv/activate.sh
 
 export PATH=/usr/local/sbin:$PATH
+export PATH=/usr/local/bin:$PATH
 
+# Helpful helper
+mex() {
+  if ! [ -e $1 ]
+  then
+    touch $1
+    chmod +x $1
+  else
+    echo "File $1 already exists!"
+  fi
+}
+
+mcd() {
+  mkdir $1 && cd $1
+}
