@@ -1,8 +1,10 @@
 " Bundler
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
+Bundle 'gmarik/Vundle.vim'
 
 " Little Helpers
   Bundle 'tpope/vim-surround'
@@ -25,6 +27,7 @@ Bundle 'gmarik/vundle'
 
 " Syntax Magic
   Bundle 'scrooloose/syntastic'
+call vundle#end()
 
 " Syntastic Config
   let g:syntastic_error_symbol = 'x'

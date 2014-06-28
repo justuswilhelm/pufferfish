@@ -1,0 +1,27 @@
+#!/bin/zsh
+set -e
+
+_vim() {
+  echo "Create temp and swap folder for vim"
+  mkdir -p $PWD/vim/backup
+  mkdir -p $PWD/vim/swap
+  git clone git@github.com:gmarik/Vundle.vim.git vim/bundle/Vundle.vim
+  vim +PluginInstall +qall
+}
+
+_symlinks() {
+  symlinks=(vim vimrc zshrc octaverc latexmkrc)
+  for path in "${rcfiles[@]}"
+  do
+  ln -sf $path ~/.$path
+  done
+}
+
+_chsh() {
+  zsh=`which zsh`
+  echo "Set $zsh as default shell"
+  if echo $SHELL | grep -vq $zsh
+  then
+    chsh -s $zsh
+  fi
+}
