@@ -1,70 +1,91 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.dotfiles/oh-my-zsh
+# Oh-My-Zsh specific code
+# =======================
+  ZSH=$HOME/.dotfiles/oh-my-zsh
+  ZSH_THEME="af-magic"
+  export UPDATE_ZSH_DAYS=3
+  COMPLETION_WAITING_DOTS="true"
+  plugins=(git nyan autojump)
+  source $ZSH/oh-my-zsh.sh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="af-magic"
+# Grab some additional helpful helpers
+# ====================================
+  source /Users/justusperlwitz/.rvm/scripts/rvm
+  [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+  source /usr/local/opt/autoenv/activate.sh
 
-# Uncomment to change how often before auto-updates occur? (in days)
-export UPDATE_ZSH_DAYS=3
+# Aliases
+# =======
+# Git aliases
+# ===========
+  # Adding files
+  # ------------
+  alias ga='git add -A'
+  alias gm='git commit -m'
+  alias gma='git commit -am'
+  alias gc='git checkout'
 
-COMPLETION_WAITING_DOTS="true"
+  # Dealing with remote
+  # -------------------
+  alias gp='git push'
+  alias gpu='git pull'
+  alias gcl='git clone'
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git nyan autojump)
+  # Swiss knives
+  # ------------
+  alias gl='git log'
+  alias gs='git status'
+  alias gd='git diff'
 
-source $ZSH/oh-my-zsh.sh
+  # Genesis
+  # -------
+  alias gi='git init'
 
-# Customize to your needs...
-alias ga='git add -A'
-alias gp='git push'
-alias gl='git log'
-alias gs='git status'
-alias gd='git diff'
-alias gm='git commit -m'
-alias gma='git commit -am'
-alias gc='git checkout'
-alias gpu='git pull'
-alias gcl='git clone'
-alias gi='git init'
+# SSH Aliases
+# ===========
+  alias ssh-x='ssh -c arcfour,blowfish-cbc -XC'
 
-alias ssh-x='ssh -c arcfour,blowfish-cbc -XC'
+# Latex Aliases
+# =============
+  alias latexmk='latexmk -pdf -pvc'
+  alias ed='ed -p:'
+  alias hosts='sudo vim /etc/hosts'
 
-alias latexmk='latexmk -pdf -pvc'
+# PATH adjustments for Homebrew
+# =============================
+  export PATH=/usr/local/sbin:$PATH
+  export PATH=/usr/local/bin:$PATH
 
-alias ed='ed -p:'
+# Helpful helpers
+# ===============
+  # Make file executable, create it if it does not exist
+  # ----------------------------------------------------
+  mex() {
+    if ! [ -e $1 ]
+    then
+      touch $1
+      chmod +x $1
+    else
+      echo "File $1 already exists!"
+      echo "Changing $1 to +x"
+      chmod +x $1
+    fi
+  }
 
-source /Users/justusperlwitz/.rvm/scripts/rvm
-[[ -s `brew --prefix`/etc/autojump.sh ]] \
-  && . `brew --prefix`/etc/autojump.sh
-source /usr/local/opt/autoenv/activate.sh
+  # Make dir and change to it
+  # -------------------------
+  mcd() {
+    mkdir $1 && cd $1
+  }
 
-export PATH=/usr/local/sbin:$PATH
-export PATH=/usr/local/bin:$PATH
+  # OSPI I relevant
+  # ---------------
+  svnupdate() {
+    echo " -- Updating files"
+    j 2014
+    svn update
+    echo " -- Returning!"
+    cd -
+  }
 
-# Helpful helper
-mex() {
-  if ! [ -e $1 ]
-  then
-    touch $1
-    chmod +x $1
-  else
-    echo "File $1 already exists!"
-    echo "Changing $1 to +x"
-    chmod +x $1
-  fi
-}
-
-mcd() {
-  mkdir $1 && cd $1
-}
-
-svnupdate() {
-  echo " -- Updating files"
-  j 2014
-  svn update
-  echo " -- Returning!"
-  cd -
-}
+# What to execute in the beginning
+# ================================
