@@ -15,23 +15,27 @@ _vim() {
 }
 
 _symlinks() {
+  echo "Making symlinks"
   symlinks=(vim vimrc zshrc octaverc latexmkrc)
   for s in $symlinks
   do
     echo "Linking $s"
-    ln -sf $s ~/.$s
+    ln -sf $PWD/$s ~/.$s &
   done
+  wait
 }
 
 _chsh() {
+  echo "Checking default shell"
   zsh=`which zsh`
-  echo "Set $zsh as default shell"
   if echo $SHELL | grep -vq $zsh
   then
+    echo "Set $zsh as default shell"
     chsh -s $zsh
   fi
 }
 
+_chsh &
+_symlinks &
+wait
 _vim
-_symlinks
-_chsh
