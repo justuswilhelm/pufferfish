@@ -28,9 +28,6 @@ task :install do
   puts ".latexmkrc"
   system %Q{ln -sf $PWD/latexmkrc ~/.latexmkrc}
 
-  puts ".gitconfig"
-  system %Q{ln -sf $PWD/gitconfig ~/.gitconfig}
-
   bundleinstall
 end
 
