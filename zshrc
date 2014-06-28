@@ -37,7 +37,8 @@ alias latexmk='latexmk -pdf -pvc'
 alias ed='ed -p:'
 
 source /Users/justusperlwitz/.rvm/scripts/rvm
-[[ -s /usr/local/etc/autojump.sh ]] && . /usr/local/etc/autojump.sh
+[[ -s `brew --prefix`/etc/autojump.sh ]] \
+  && . `brew --prefix`/etc/autojump.sh
 source /usr/local/opt/autoenv/activate.sh
 
 export PATH=/usr/local/sbin:$PATH
@@ -51,9 +52,19 @@ mex() {
     chmod +x $1
   else
     echo "File $1 already exists!"
+    echo "Changing $1 to +x"
+    chmod +x $1
   fi
 }
 
 mcd() {
   mkdir $1 && cd $1
+}
+
+svnupdate() {
+  echo " -- Updating files"
+  j 2014
+  svn update
+  echo " -- Returning!"
+  cd -
 }

@@ -20,6 +20,8 @@ Bundle 'gmarik/vundle'
   Bundle "tikhomirov/vim-glsl.git"
   Bundle "jnwhiteh/vim-golang.git"
   Bundle "hynek/vim-python-pep8-indent"
+  Bundle "kovisoft/slimv"
+  Bundle "elzr/vim-json"
 
 " Syntax Magic
   Bundle 'scrooloose/syntastic'
@@ -30,9 +32,13 @@ Bundle 'gmarik/vundle'
   let g:syntastic_check_on_open=1
   let g:syntastic_enable_signs=1
   let g:syntastic_javascript_checkers = ['jsl', 'jshint']
+  let g:syntastic_tex_checkers = ['chktex']
   let g:syntastic_python_checkers = ['python', 'pep8']
   let g:syntastic_c_checkers = ['gcc']
   let g:syntastic_enable_perl_checker = 1
+
+" SLIMV
+  let g:paredit_mode = 0
 
 " Color Stuff
   syntax on
@@ -59,6 +65,8 @@ Bundle 'gmarik/vundle'
 " Some keys
   set pastetoggle=<F2>
   set clipboard=unnamed
+" Backspace Shizz
+  set backspace=indent,eol,start
 
 " Text Navigation
   nnoremap j gj
