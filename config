@@ -5,15 +5,21 @@ _vim() {
   echo "Create temp and swap folder for vim"
   mkdir -p $PWD/vim/backup
   mkdir -p $PWD/vim/swap
-  git clone git@github.com:gmarik/Vundle.vim.git vim/bundle/Vundle.vim
+  echo "Checking if Vundle exists"
+  if [[ ! -e vim/bundle/Vundle.vim ]]
+  then
+    git clone git@github.com:gmarik/Vundle.vim.git vim/bundle/Vundle.vim
+  fi
+  echo "Installing Plugings with Vundle"
   vim +PluginInstall +qall
 }
 
 _symlinks() {
   symlinks=(vim vimrc zshrc octaverc latexmkrc)
-  for path in "${rcfiles[@]}"
+  for s in $symlinks
   do
-  ln -sf $path ~/.$path
+    echo "Linking $s"
+    ln -sf $s ~/.$s
   done
 }
 
@@ -25,3 +31,7 @@ _chsh() {
     chsh -s $zsh
   fi
 }
+
+_vim
+_symlinks
+_chsh
