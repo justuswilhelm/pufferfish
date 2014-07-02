@@ -4,7 +4,7 @@
   ZSH_THEME="af-magic"
   export UPDATE_ZSH_DAYS=3
   COMPLETION_WAITING_DOTS="true"
-  plugins=(git nyan autojump)
+  plugins=(git brew autojump)
   source $ZSH/oh-my-zsh.sh
 
 # Grab some additional helpful helpers
@@ -47,13 +47,22 @@
 # Latex Aliases
 # =============
   alias latexmk='latexmk -pdf -pvc'
+
+# Other Aliases
+# =============
   alias ed='ed -p:'
   alias hosts='sudo vim /etc/hosts'
+  alias flushcache='sudo dscacheutil -flushcache'
+  alias gruenau='ssh perlwitj@gruenau.informatik.hu-berlin.de'
 
 # PATH adjustments for Homebrew
 # =============================
   export PATH=/usr/local/sbin:$PATH
   export PATH=/usr/local/bin:$PATH
+
+# Other environ paths
+# =========================
+  export GOPATH=$HOME/code
 
 # Helpful helpers
 # ===============
