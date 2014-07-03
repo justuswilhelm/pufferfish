@@ -35,7 +35,12 @@ _chsh() {
   fi
 }
 
+_git() {
+  git config --global push.default simple
+}
+
 _chsh &
 _symlinks &
+_git &
 wait
 _vim
