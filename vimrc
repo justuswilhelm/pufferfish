@@ -13,20 +13,23 @@ Bundle 'gmarik/Vundle.vim'
 " UI Addons
   Bundle 'flazz/vim-colorschemes'
   Bundle 'bling/vim-airline'
+" Bundle 'Lokaltog/powerline'
   Bundle 'scrooloose/nerdtree'
   Bundle 'kien/ctrlp.vim'
   Bundle 'tpope/vim-fugitive'
-  Bundle "myusuf3/numbers.vim"
+  Bundle 'myusuf3/numbers.vim'
+  Bundle 'jmcantrell/vim-virtualenv'
 
 " Syntax
-  Bundle "tikhomirov/vim-glsl.git"
-  Bundle "jnwhiteh/vim-golang.git"
-  Bundle "hynek/vim-python-pep8-indent"
-  Bundle "kovisoft/slimv"
-  Bundle "elzr/vim-json"
+  Bundle 'tikhomirov/vim-glsl.git'
+  Bundle 'jnwhiteh/vim-golang.git'
+  Bundle 'hynek/vim-python-pep8-indent'
+  Bundle 'kovisoft/slimv'
+  Bundle 'elzr/vim-json'
 
 " Syntax Magic
   Bundle 'scrooloose/syntastic'
+
 call vundle#end()
 
 " Syntastic Config
@@ -43,10 +46,17 @@ call vundle#end()
 " SLIMV
   let g:paredit_mode = 0
 
+" VIM-JSON
+  let g:vim_json_syntax_conceal = 0
+
+" VIM-AIRLINE
+  let g:airline_powerline_fonts = 1
+
 " Color Stuff
   syntax on
-  set background=light
+  set background=dark
   colorscheme solarized
+  hi Normal ctermbg=NONE
 
 " Change edit appearance
   set encoding=utf-8
@@ -94,8 +104,6 @@ call vundle#end()
 
 " Nerdtree
   map <C-n> :NERDTreeToggle<CR>
-  " Open Nerdtree on start
-  let g:NERDTreeDirArrows=0
 
 " cd into current dir
   set autochdir

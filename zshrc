@@ -1,11 +1,18 @@
 # Oh-My-Zsh specific code
 # =======================
   ZSH=$HOME/.dotfiles/oh-my-zsh
-  ZSH_THEME="af-magic"
+  ZSH_THEME="agnoster"
   export UPDATE_ZSH_DAYS=3
   COMPLETION_WAITING_DOTS="true"
-  plugins=(git brew autojump)
+  plugins=(git brew autojump zsh-syntax-highlighting)
   source $ZSH/oh-my-zsh.sh
+
+
+# Config VI mode
+# ==============
+  #  bindkey -v
+  #  export KEYTIMEOUT=1
+
 
 # Grab some additional helpful helpers
 # ====================================
@@ -13,56 +20,67 @@
   [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
   source /usr/local/opt/autoenv/activate.sh
 
+
 # Aliases
 # =======
 # Git aliases
 # ===========
   # Adding files
   # ------------
-  alias ga='git add -A'
-  alias gm='git commit -m'
-  alias gma='git commit -am'
-  alias gc='git checkout'
+    alias ga='git add -A'
+    alias gm='git commit -m'
+    alias gma='git commit -am'
+    alias gc='git checkout'
 
   # Dealing with remote
   # -------------------
-  alias gp='git push'
-  alias gpu='git pull'
-  alias gcl='git clone'
+    alias gp='git push'
+    alias gpu='git pull'
+    alias gcl='git clone'
 
   # Swiss knives
   # ------------
-  alias gl='git log'
-  alias gs='git status'
-  alias gd='git diff'
+    alias gl='git log'
+    alias gs='git status'
+    alias gd='git diff'
 
   # Genesis
   # -------
-  alias gi='git init'
+    alias gi='git init'
+
 
 # SSH Aliases
 # ===========
   alias ssh-x='ssh -c arcfour,blowfish-cbc -XC'
+  alias gruenau='ssh-x perlwitj@gruenau.informatik.hu-berlin.de'
+
 
 # Latex Aliases
 # =============
   alias latexmk='latexmk -pdf -pvc'
+
 
 # Other Aliases
 # =============
   alias ed='ed -p:'
   alias hosts='sudo vim /etc/hosts'
   alias flushcache='sudo dscacheutil -flushcache'
-  alias gruenau='ssh perlwitj@gruenau.informatik.hu-berlin.de'
+  alias evim='vim ~/.vimrc'
+  alias ezsh='vim ~/.zshrc'
+  alias dotfiles='cd ~/.dotfiles'
+  alias clock='watch -t -n1 "date | figlet -k"'
+
 
 # PATH adjustments for Homebrew
 # =============================
   export PATH=/usr/local/sbin:$PATH
   export PATH=/usr/local/bin:$PATH
 
+
 # Other environ paths
 # =========================
   export GOPATH=$HOME/code
+
 
 # Helpful helpers
 # ===============
@@ -95,6 +113,16 @@
     echo " -- Returning!"
     cd -
   }
+
+  config() {
+    dotfiles=~/.dotfiles
+    echo " -- Going to $dotfiles"
+    cd $dotfiles
+    ./config
+    cd -
+    echo " -- Done!"
+  }
+
 
 # What to execute in the beginning
 # ================================
