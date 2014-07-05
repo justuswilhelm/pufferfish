@@ -16,7 +16,7 @@ _vim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks=(vim vimrc zshrc octaverc latexmkrc irssi)
+  symlinks=(screenrc bash_login vim vimrc zshrc octaverc latexmkrc irssi)
   for s in $symlinks
   do
     echo "Linking $s"
@@ -39,7 +39,10 @@ _git() {
   git config --global push.default simple
 }
 
-_chsh &
+if [[ `uname` == 'Darwin' ]]
+then
+  _chsh &
+fi
 _symlinks &
 _git &
 wait
