@@ -131,6 +131,12 @@
     echo " -- Done!"
   }
 
+  rm() {
+    echo "Safe(r) delete"
+    mkdir -p ~/.trash
+    mv $* ~/.trash
+  }
+
 
 # What to execute in the beginning
 # ================================
