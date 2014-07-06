@@ -1,8 +1,8 @@
 " Bundler
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+  set nocompatible
+  filetype off
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
 
 Bundle 'gmarik/Vundle.vim'
 
@@ -30,7 +30,7 @@ Bundle 'gmarik/Vundle.vim'
 " Syntax Magic
   Bundle 'scrooloose/syntastic'
 
-call vundle#end()
+  call vundle#end()
 
 " Syntastic Config
   let g:syntastic_error_symbol = 'x'
