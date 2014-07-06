@@ -137,6 +137,13 @@
     mv $* ~/.trash
   }
 
+  makeenv() {
+    echo "Making a virtual environment with python $1"
+    virtualenv -p $1 env
+    echo "source env/bin/activate" > .env
+    cd .
+  }
+
 
 # What to execute in the beginning
 # ================================
