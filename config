@@ -16,7 +16,7 @@ _vim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks=(screenrc bash_login vim vimrc zshrc octaverc latexmkrc irssi)
+  symlinks=(gitconfig screenrc bash_login vim vimrc zshrc octaverc latexmkrc irssi)
   for s in $symlinks
   do
     echo "Linking $s"
