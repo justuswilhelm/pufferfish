@@ -79,6 +79,11 @@
   export PATH=/usr/local/sbin:$PATH
   export PATH=/usr/local/bin:$PATH
 
+  if [[ -e local_root ]]
+  then
+    export PATH=$HOME/local_root/usr/local/bin/:$PATH
+  fi
+
 
 # Other environ paths
 # =========================
