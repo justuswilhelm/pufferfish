@@ -72,6 +72,7 @@
   alias ezsh='vim ~/.zshrc'
   alias dotfiles='cd ~/.dotfiles'
   alias clock='watch -t -n1 "date | figlet -k"'
+  alias rm='rm -i'
 
 
 # PATH adjustments for Homebrew
@@ -129,12 +130,6 @@
     ./config
     cd -
     echo " -- Done!"
-  }
-
-  rm() {
-    echo "Safe(r) delete"
-    mkdir -p ~/.trash
-    mv $* ~/.trash
   }
 
   makeenv() {
