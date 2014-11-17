@@ -13,7 +13,6 @@ Bundle 'gmarik/Vundle.vim'
 " UI Addons
   Bundle 'flazz/vim-colorschemes'
   Bundle 'bling/vim-airline'
-" Bundle 'Lokaltog/powerline'
   Bundle 'scrooloose/nerdtree'
   Bundle 'kien/ctrlp.vim'
   Bundle 'tpope/vim-fugitive'
@@ -55,8 +54,8 @@ Bundle 'gmarik/Vundle.vim'
 " Color Stuff
   syntax on
   set background=dark
+  let g:solarized_termcolors=256
   colorscheme solarized
-  hi Normal ctermbg=NONE
 
 " Change edit appearance
   set encoding=utf-8

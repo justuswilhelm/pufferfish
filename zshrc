@@ -89,7 +89,7 @@
 # Other environ paths
 # =========================
   export GOPATH=$HOME/code
-
+  export TERM='xterm-256color'
 
 # Helpful helpers
 # ===============
