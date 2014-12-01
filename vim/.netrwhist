@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/usr/local'
+let g:netrw_dirhist_2='/Users/justusperlwitz/code/ecolinks'
+let g:netrw_dirhist_3='/vol/fob-vol3/mi12/perlwitj/.dotfiles/irssi/irssi'

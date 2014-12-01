@@ -1,0 +1,49 @@
+#!/bin/zsh
+set -e
+
+_vim() {
+  echo "Create temp and swap folder for vim"
+  mkdir -p $PWD/vim/backup
+  mkdir -p $PWD/vim/swap
+  echo "Checking if Vundle exists"
+  if [[ ! -e vim/bundle/Vundle.vim ]]
+  then
+    git clone git@github.com:gmarik/Vundle.vim.git vim/bundle/Vundle.vim
+  fi
+  echo "Installing Plugings with Vundle"
+  vim +PluginInstall +qall
+}
+
+_symlinks() {
+  echo "Making symlinks"
+  symlinks=(gitconfig screenrc bash_login vim vimrc zshrc octaverc latexmkrc irssi)
+  for s in $symlinks
+  do
+    echo "Linking $s"
+    ln -sf $PWD/$s ~/.$s &
+  done
+  wait
+}
+
+_chsh() {
+  echo "Checking default shell"
+  zsh=`which zsh`
+  if echo $SHELL | grep -vq $zsh
+  then
+    echo "Set $zsh as default shell"
+    chsh -s $zsh
+  fi
+}
+
+_git() {
+  git config --global push.default simple
+}
+
+if [[ `uname` == 'Darwin' ]]
+then
+  _chsh &
+fi
+_symlinks &
+_git &
+wait
+_vim
