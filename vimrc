@@ -13,7 +13,6 @@ Bundle 'gmarik/Vundle.vim'
 " UI Addons
   Bundle 'flazz/vim-colorschemes'
   Bundle 'bling/vim-airline'
-" Bundle 'Lokaltog/powerline'
   Bundle 'scrooloose/nerdtree'
   Bundle 'kien/ctrlp.vim'
   Bundle 'tpope/vim-fugitive'
@@ -26,8 +25,9 @@ Bundle 'gmarik/Vundle.vim'
   Bundle 'hynek/vim-python-pep8-indent'
   Bundle 'kovisoft/slimv'
   Bundle 'elzr/vim-json'
+  Bundle 'editorconfig/editorconfig-vim'
   Bundle 'tpope/vim-markdown'
-  Bundle 'digitaltoad/vim-jade'
+  Bundle 'kchmck/vim-coffee-script'
 
 " Syntax Magic
   Bundle 'scrooloose/syntastic'
@@ -96,7 +96,7 @@ Bundle 'gmarik/Vundle.vim'
   set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
 " Change edit behavior
-  let mapleader = ","
+  let mapleader = ','
   " Better ESC
   :imap jk <Esc>
 

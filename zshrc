@@ -36,6 +36,14 @@ if [[ $(uname) == 'Darwin' ]]
   # Dealing with remote
   # -------------------
     alias gcl='git clone'
+    alias gp='git push'
+    alias gpu='git push --set-upstream origin `git rev-parse --abbrev-ref HEAD`'
+    alias gpl='git pull'
+    alias gcl='git clone'
+    {
+    # shellcheck disable=SC2016
+      alias gtrack='for remote in $(git branch -r | grep -v master); do git checkout --track $remote ; done'
+    }
 
   # Swiss knives
   # ------------
@@ -50,13 +58,13 @@ if [[ $(uname) == 'Darwin' ]]
 
   # Genesis
   # -------
-    alias gi='git init'
+    alias gi='git init && touch .gitignore && git add . && git commit -a -m "Initial commit"'
 
 
 # SSH Aliases
 # ===========
   alias ssh-x='ssh -c arcfour,blowfish-cbc -XC'
-  alias gruenau='ssh-x perlwitj@gruenau.informatik.hu-berlin.de'
+  alias gruenau='ssh-x -t perlwitj@gruenau.informatik.hu-berlin.de zsh'
 
 
 # Python Aliases
@@ -77,13 +85,11 @@ if [[ $(uname) == 'Darwin' ]]
   alias ed='ed -p:'
   alias hosts='sudo vim /etc/hosts'
   alias flushcache='sudo dscacheutil -flushcache'
-
   alias evim='vim ~/.vimrc'
   alias ezsh='vim ~/.zshrc'
-
   alias dotfiles='cd ~/.dotfiles'
   alias clock='watch -t -n1 "date | figlet -k"'
-  alias rm='rm -i'
+  alias rm='rm'
 
 
 # PATH adjustments for Homebrew
@@ -96,6 +102,14 @@ if [[ $(uname) == 'Darwin' ]]
     export PATH=$HOME/local_root/usr/local/bin/:$PATH
   fi
 
+# PATH adjustment for Heroku toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+
+# Other environ paths
+# =========================
+  export GOPATH=$HOME/code
+  export TERM='xterm-256color'
 
 # Helpful helpers
 # ===============
@@ -116,7 +130,7 @@ if [[ $(uname) == 'Darwin' ]]
   # Make dir and change to it
   # -------------------------
   mcd() {
-    mkdir "$1" && cd "$1"
+    mkdir -p "$1" && cd "$1"
   }
 
   config() {
@@ -144,10 +158,3 @@ if [[ $(uname) == 'Darwin' ]]
       source .env
     fi
   }
-
-
-# What to execute in the beginning
-# ================================
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
