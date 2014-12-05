@@ -1,15 +1,25 @@
 #!/bin/zsh
 # Oh-My-Zsh specific code
 # =======================
-  ZSH=$HOME/.dotfiles/oh-my-zsh
-  export ZSH_THEME="agnoster"
-  export UPDATE_ZSH_DAYS=3
-  export COMPLETION_WAITING_DOTS="true"
+  # shellcheck disable=SC2034
   {
-    # shellcheck disable=SC2034
+    ZSH=$HOME/.dotfiles/oh-my-zsh
+    ZSH_THEME="agnoster"
+    export UPDATE_ZSH_DAYS=3
+    COMPLETION_WAITING_DOTS="true"
     plugins=(git brew autojump zsh-syntax-highlighting)
+    source "$ZSH/oh-my-zsh.sh"
   }
-  source "$ZSH/oh-my-zsh.sh"
+
+
+# Grab some additional helpful helpers
+# ====================================
+if [[ $(uname) == 'Darwin' ]]
+  then
+    source /Users/justusperlwitz/.rvm/scripts/rvm
+    [[ -s "$(brew --prefix)/etc/autojump.sh" ]] && . "$(brew --prefix)/etc/autojump.sh"
+    source /usr/local/opt/autoenv/activate.sh
+  fi
 
 
 # Aliases
@@ -18,12 +28,14 @@
 # ===========
   # Adding files
   # ------------
-    alias ga='git add -A'
-    alias gm='git commit'
+    alias ga='git add'
+    alias gm='git commit -m'
+    alias gma='git commit -am'
     alias gc='git checkout'
 
   # Dealing with remote
   # -------------------
+    alias gcl='git clone'
     alias gp='git push'
     alias gpu='git push --set-upstream origin `git rev-parse --abbrev-ref HEAD`'
     alias gpl='git pull'
@@ -38,6 +50,11 @@
     alias gl='git log'
     alias gs='git status'
     alias gd='git diff'
+    alias gp='git push || git push --set-upstream origin `git rev-parse --abbrev-ref HEAD`'
+    # http://stackoverflow.com/a/379842
+    alias gtrack='for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master`; do  git branch --track ${branch##*/} $branch; done'
+    # shellcheck disable=SC2142
+    alias git_prune='git branch -vv | grep gone | awk "{print $1}" | xargs git branch -d'
 
   # Genesis
   # -------
@@ -48,6 +65,14 @@
 # ===========
   alias ssh-x='ssh -c arcfour,blowfish-cbc -XC'
   alias gruenau='ssh-x -t perlwitj@gruenau.informatik.hu-berlin.de zsh'
+
+
+# Python Aliases
+# =============
+  alias pip_freeze='pip freeze -r requirements.txt > requirements.txt'
+  alias pip_install='pip install -r requirements.txt'
+  alias create_env='virtualenv -p=python3.4.1 env'
+  alias s_env='source env/bin/activate'
 
 
 # Latex Aliases
@@ -66,8 +91,6 @@
   alias clock='watch -t -n1 "date | figlet -k"'
   alias rm='rm'
 
-  alias pip_freeze='pip freeze > requirements.txt'
-
 
 # PATH adjustments for Homebrew
 # =============================
@@ -78,6 +101,9 @@
   then
     export PATH=$HOME/local_root/usr/local/bin/:$PATH
   fi
+
+# PATH adjustment for Heroku toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
 
 
 # Other environ paths
@@ -107,16 +133,6 @@
     mkdir -p "$1" && cd "$1"
   }
 
-  # OSPI I relevant
-  # ---------------
-  svnupdate() {
-    echo " -- Updating files"
-    j 2014
-    svn update
-    echo " -- Returning!"
-    cd -
-  }
-
   config() {
     dotfiles=~/.dotfiles
     echo " -- Going to $dotfiles"
@@ -132,14 +148,19 @@
     echo "source env/bin/activate" > .env
     cd .
   }
+  # Overwrite cd
+  # ------------
+  cd() {
+    builtin cd "$1"
+    if [ -e ".env" ]
+    then
+      source .env
+    fi
+  }
 
 
 # What to execute in the beginning
 # ================================
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
 # =======================
 # Set Apple Terminal.app resume directory
 if [[ $TERM_PROGRAM == "Apple_Terminal" ]] && [[ -z "$INSIDE_EMACS" ]]
@@ -155,3 +176,4 @@ then
   chpwd
 }
 fi
+

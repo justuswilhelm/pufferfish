@@ -18,7 +18,6 @@ Bundle 'gmarik/Vundle.vim'
   Bundle 'tpope/vim-fugitive'
   Bundle 'myusuf3/numbers.vim'
   Bundle 'jmcantrell/vim-virtualenv'
-  Bundle 'christoomey/vim-titlecase'
 
 " Syntax
   Bundle 'tikhomirov/vim-glsl.git'
@@ -28,7 +27,6 @@ Bundle 'gmarik/Vundle.vim'
   Bundle 'elzr/vim-json'
   Bundle 'editorconfig/editorconfig-vim'
   Bundle 'tpope/vim-markdown'
-  Bundle 'digitaltoad/vim-jade'
   Bundle 'kchmck/vim-coffee-script'
 
 " Syntax Magic
@@ -42,12 +40,9 @@ Bundle 'gmarik/Vundle.vim'
   let g:syntastic_check_on_open=1
   let g:syntastic_enable_signs=1
   let g:syntastic_javascript_checkers = ['jsl', 'jshint']
+  let g:syntastic_python_checkers = ['python', 'pep8', 'pep257']
   let g:syntastic_tex_checkers = ['chktex']
-  let g:syntastic_python_checkers = ['python', 'pep8']
-  let g:syntastic_cpp_compiler = 'clang++'
-  let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
-  let g:syntastic_c_check_header = 1
-  let g:syntastic_c_compiler = 'clang'
+  let g:syntastic_c_checkers = ['gcc']
   let g:syntastic_enable_perl_checker = 1
 
 " SLIMV
@@ -63,6 +58,7 @@ Bundle 'gmarik/Vundle.vim'
   syntax on
   set background=dark
   colorscheme solarized
+  hi Normal ctermbg=NONE
 
 " Change edit appearance
   set encoding=utf-8
