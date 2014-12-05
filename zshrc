@@ -16,9 +16,7 @@
 # ====================================
 if [[ $(uname) == 'Darwin' ]]
   then
-    source /Users/justusperlwitz/.rvm/scripts/rvm
     [[ -s "$(brew --prefix)/etc/autojump.sh" ]] && . "$(brew --prefix)/etc/autojump.sh"
-    source /usr/local/opt/autoenv/activate.sh
   fi
 
 
