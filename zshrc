@@ -1,3 +1,4 @@
+#!/bin/zsh
 # Oh-My-Zsh specific code
 # =======================
   ZSH=$HOME/.dotfiles/oh-my-zsh
