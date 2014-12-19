@@ -40,7 +40,7 @@ _chsh() {
 
 _git() {
   git config --global push.default simple
-  git config commit.template $PWD/gitmessage
+  git config --global commit.template $PWD/gitmessage
   git config --global core.editor /usr/bin/vim
 }
 
