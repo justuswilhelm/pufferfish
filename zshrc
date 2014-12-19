@@ -27,7 +27,7 @@ if [[ $(uname) == 'Darwin' ]]
   # Adding files
   # ------------
     alias ga='git add'
-    alias gm='git commit -m'
+    alias gm='git commit'
     alias gma='git commit -am'
     alias gc='git checkout'
 
