@@ -28,6 +28,7 @@ Bundle 'gmarik/Vundle.vim'
   Bundle 'editorconfig/editorconfig-vim'
   Bundle 'tpope/vim-markdown'
   Bundle 'kchmck/vim-coffee-script'
+  Bundle 'lepture/vim-jinja'
 
 " Syntax Magic
   Bundle 'scrooloose/syntastic'
