@@ -174,4 +174,4 @@ then
   chpwd
 }
 fi
-
+cd .
