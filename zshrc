@@ -5,7 +5,7 @@
   {
     ZSH=$HOME/.dotfiles/oh-my-zsh
     ZSH_THEME="agnoster"
-    export UPDATE_ZSH_DAYS=3
+    export UPDATE_ZSH_DAYS=30
     COMPLETION_WAITING_DOTS="true"
     plugins=(git brew autojump zsh-syntax-highlighting)
     source "$ZSH/oh-my-zsh.sh"
