@@ -42,6 +42,7 @@ Bundle 'gmarik/Vundle.vim'
   let g:syntastic_enable_signs=1
   let g:syntastic_javascript_checkers = ['jsl', 'jshint']
   let g:syntastic_python_checkers = ['python', 'pep8', 'pep257']
+  let g:syntastic_python_python_exec = 'python3'
   let g:syntastic_tex_checkers = ['chktex']
   let g:syntastic_c_checkers = ['gcc']
   let g:syntastic_enable_perl_checker = 1
