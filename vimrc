@@ -11,7 +11,6 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'sjl/vitality.vim'
 
 " UI Addons
-  Plugin 'flazz/vim-colorschemes'
   Plugin 'bling/vim-airline'
   Plugin 'scrooloose/nerdtree'
   Plugin 'kien/ctrlp.vim'
@@ -59,9 +58,7 @@ Plugin 'gmarik/Vundle.vim'
 
 " Color Stuff
   syntax on
-  set background=dark
-  colorscheme solarized
-  hi Normal ctermbg=NONE
+  colorscheme dracula
 
 " Change edit appearance
   set encoding=utf-8
