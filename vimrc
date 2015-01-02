@@ -11,13 +11,13 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'sjl/vitality.vim'
 
 " UI Addons
+  Plugin 'flazz/vim-colorschemes'
   Plugin 'bling/vim-airline'
   Plugin 'scrooloose/nerdtree'
   Plugin 'kien/ctrlp.vim'
   Plugin 'tpope/vim-fugitive'
   Plugin 'myusuf3/numbers.vim'
   Plugin 'Lokaltog/vim-easymotion'
-  Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 
 " Syntax
   Plugin 'tikhomirov/vim-glsl.git'
@@ -58,7 +58,9 @@ Plugin 'gmarik/Vundle.vim'
 
 " Color Stuff
   syntax on
-  colorscheme dracula
+  set background=light
+  let g:solarized_termcolors=256
+  colorscheme solarized
 
 " Change edit appearance
   set encoding=utf-8
