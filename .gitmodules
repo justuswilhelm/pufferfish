@@ -10,6 +10,3 @@
 [submodule "powerline-fonts"]
 	path = powerline-fonts
 	url = git@github.com:Lokaltog/powerline-fonts.git
-[submodule "dracula-theme"]
-	path = dracula-theme
-	url = https://github.com/zenorocha/dracula-theme.git
