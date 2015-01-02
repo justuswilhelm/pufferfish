@@ -4,7 +4,7 @@
   # shellcheck disable=SC2034
   {
     ZSH=$HOME/.dotfiles/oh-my-zsh
-    ZSH_THEME="agnoster"
+    ZSH_THEME="dracula"
     export UPDATE_ZSH_DAYS=3
     COMPLETION_WAITING_DOTS="true"
     plugins=(git brew autojump zsh-syntax-highlighting)
