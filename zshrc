@@ -143,7 +143,10 @@ export PATH="/usr/local/heroku/bin:$PATH"
   makeenv() {
     echo "Making a virtual environment with python $1"
     virtualenv -p "$1" env
-    echo "source env/bin/activate" > .env
+    if ! [ -e .env ]
+    then
+      echo "source env/bin/activate" > .env
+    fi
     cd .
   }
   # Overwrite cd
