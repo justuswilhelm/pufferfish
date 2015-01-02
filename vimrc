@@ -54,7 +54,7 @@ Plugin 'gmarik/Vundle.vim'
   let g:vim_json_syntax_conceal = 0
 
 " VIM-AIRLINE
-  let g:airline_powerline_fonts = 1
+  let g:airline_powerline_fonts = 0
 
 " Color Stuff
   syntax on
