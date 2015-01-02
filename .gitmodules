@@ -4,3 +4,6 @@
 [submodule "osx-terminal.app-colors-solarized"]
 	path = osx-terminal.app-colors-solarized
 	url = git@github.com:tomislav/osx-terminal.app-colors-solarized.git
+[submodule "xresources"]
+	path = xresources
+	url = git@github.com:solarized/xresources.git
