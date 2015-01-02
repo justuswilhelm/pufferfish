@@ -1,36 +1,37 @@
-" Bundler
+" Pluginr
   set nocompatible
   filetype off
   set rtp+=~/.vim/bundle/Vundle.vim
   call vundle#begin()
 
-Bundle 'gmarik/Vundle.vim'
+Plugin 'gmarik/Vundle.vim'
 
 " Little Helpers
-  Bundle 'tpope/vim-surround'
-  Bundle 'sjl/vitality.vim'
+  Plugin 'tpope/vim-surround'
+  Plugin 'sjl/vitality.vim'
 
 " UI Addons
-  Bundle 'flazz/vim-colorschemes'
-  Bundle 'bling/vim-airline'
-  Bundle 'scrooloose/nerdtree'
-  Bundle 'kien/ctrlp.vim'
-  Bundle 'tpope/vim-fugitive'
-  Bundle 'myusuf3/numbers.vim'
-  Bundle 'jmcantrell/vim-virtualenv'
+  Plugin 'flazz/vim-colorschemes'
+  Plugin 'bling/vim-airline'
+  Plugin 'scrooloose/nerdtree'
+  Plugin 'kien/ctrlp.vim'
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'myusuf3/numbers.vim'
+  Plugin 'Lokaltog/vim-easymotion'
+  Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 
 " Syntax
-  Bundle 'tikhomirov/vim-glsl.git'
-  Bundle 'jnwhiteh/vim-golang.git'
-  Bundle 'hynek/vim-python-pep8-indent'
-  Bundle 'kovisoft/slimv'
-  Bundle 'elzr/vim-json'
-  Bundle 'editorconfig/editorconfig-vim'
-  Bundle 'tpope/vim-markdown'
-  Bundle 'kchmck/vim-coffee-script'
+  Plugin 'tikhomirov/vim-glsl.git'
+  Plugin 'jnwhiteh/vim-golang.git'
+  Plugin 'hynek/vim-python-pep8-indent'
+  Plugin 'kovisoft/slimv'
+  Plugin 'elzr/vim-json'
+  Plugin 'editorconfig/editorconfig-vim'
+  Plugin 'tpope/vim-markdown'
+  Plugin 'kchmck/vim-coffee-script'
 
 " Syntax Magic
-  Bundle 'scrooloose/syntastic'
+  Plugin 'scrooloose/syntastic'
 
   call vundle#end()
 
@@ -73,9 +74,6 @@ Bundle 'gmarik/Vundle.vim'
 " Airline
   set laststatus=2
   set ttimeoutlen=50
-
-" Change command line behavior
-  set cmdheight=2
 
 " Some keys
   set pastetoggle=<F2>
