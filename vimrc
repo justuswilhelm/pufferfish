@@ -102,8 +102,11 @@ Bundle 'gmarik/Vundle.vim'
   " Better ESC
   :imap jk <Esc>
 
-" Change console
+" Set up wildcards
   set wildmenu
+  set wildignore+=*/env/*,*.DS_Store
+
+" Change console
   set showcmd
 
 " Nerdtree
