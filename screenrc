@@ -1,5 +1,0 @@
-shell "/usr/bin/zsh"
-
-termcapinfo xterm*|rxvt*|kterm*|Eterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
-defhstatus "^Et"
-hardstatus off
