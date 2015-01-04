@@ -43,6 +43,8 @@ _git() {
   git config --global push.default simple
   git config --global commit.template "$PWD/gitmessage"
   git config --global core.editor /usr/bin/vim
+  git submodule init
+  git submodule update
 }
 
 if [ "$(uname)" != "Darwin" ]
