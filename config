@@ -3,7 +3,7 @@ set -e
 
 _vim() {
   echo "Create temp and swap folder for vim"
-  VIM_DIRS=vim vim/backup vim/swap vim/bundle
+  VIM_DIRS="vim vim/backup vim/swap vim/bundle"
   for vim_dir in $VIM_DIRS
   do
     mkdir -p "$PWD/$vim_dir"
