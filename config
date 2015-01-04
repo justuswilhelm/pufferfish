@@ -49,8 +49,13 @@ _git() {
 
 if [ "$(uname)" != "Darwin" ]
 then
-  _chsh &
+  if ! zsh
+  then
+    echo "Please install zsh"
+    exit 1
+  fi
 fi
+_chsh &
 _symlinks &
 _git &
 wait
