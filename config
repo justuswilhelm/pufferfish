@@ -23,29 +23,29 @@ _symlinks() {
   for s in $symlinks
   do
     echo "Linking $s"
-    ln -sf $PWD/$s ~/.$s
+    ln -sf "$PWD/$s" "$HOME/.$s"
   done
   wait
 }
 
 _chsh() {
   echo "Checking default shell"
-  ZSH_PATH=`which zsh`
-  if [ $SHELL != $ZSH_PATH ]
+  ZSH_PATH=$(which zsh)
+  if [ "$SHELL" != "$ZSH_PATH" ]
   then
     echo "Set $ZSH_PATH as default shell"
-    chsh -s $ZSH_PATH
+    chsh -s "$ZSH_PATH"
   fi
   echo "Done"
 }
 
 _git() {
   git config --global push.default simple
-  git config --global commit.template $PWD/gitmessage
+  git config --global commit.template "$PWD/gitmessage"
   git config --global core.editor /usr/bin/vim
 }
 
-if [ `uname` = 'Darwin' ]
+if [ "$(uname)" != "Darwin" ]
 then
   _chsh &
 fi
