@@ -19,7 +19,7 @@ _vim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks="tmux.conf vim vimrc latexmkrc screenrc zshrc"
+  symlinks="gitignore tmux.conf vim vimrc latexmkrc screenrc zshrc"
   for s in $symlinks
   do
     echo "Linking $s"
@@ -45,6 +45,7 @@ _git() {
   git config --global core.editor /usr/bin/vim
   git submodule init
   git submodule update
+  git config --global core.excludesfile $HOME/.gitignore
 }
 
 if [ "$(uname)" != "Darwin" ]
