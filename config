@@ -46,6 +46,8 @@ _git() {
   git submodule init
   git submodule update
   git config --global core.excludesfile $HOME/.gitignore
+  git submodule sync
+  git submodule update --init
 }
 
 if [ "$(uname)" != "Darwin" ]
