@@ -34,7 +34,7 @@ _chsh() {
   if [ "$SHELL" != "$ZSH_PATH" ]
   then
     echo "Set $ZSH_PATH as default shell"
-    chsh -s "$ZSH_PATH"
+    sudo chsh -s "$ZSH_PATH"
   fi
   echo "Done"
 }
@@ -47,16 +47,8 @@ _git() {
   git submodule update
 }
 
-if [ "$(uname)" != "Darwin" ]
-then
-  if ! zsh
-  then
-    echo "Please install zsh"
-    exit 1
-  fi
-fi
-_chsh &
-_symlinks &
-_git &
+_chsh
+_symlinks
+_git
 wait
 _vim
