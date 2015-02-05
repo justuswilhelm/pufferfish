@@ -19,7 +19,7 @@ _vim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks="tmux.conf vim vimrc latexmkrc screenrc zshrc"
+  symlinks="byobu vim vimrc latexmkrc screenrc zshrc"
   for s in $symlinks
   do
     echo "Linking $s"
