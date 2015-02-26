@@ -69,8 +69,8 @@ Plugin 'gmarik/Vundle.vim'
   set nu
   set autoread
   set more
-  set colorcolumn=85
-  set tw=80
+  set colorcolumn=70
+  set tw=79
 
 " Airline
   set laststatus=2
