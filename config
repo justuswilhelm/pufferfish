@@ -14,12 +14,12 @@ _vim() {
     git clone git@github.com:gmarik/Vundle.vim.git vim/bundle/Vundle.vim
   fi
   echo "Installing Plugings with Vundle"
-  vim +PluginInstall +qall
+  vim +PluginInstall +qall &
 }
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks="gitignore tmux.conf vim vimrc latexmkrc screenrc zshrc"
+  symlinks="gitignore byobu vim vimrc latexmkrc screenrc zshrc"
   for s in $symlinks
   do
     echo "Linking $s"
@@ -34,7 +34,7 @@ _chsh() {
   if [ "$SHELL" != "$ZSH_PATH" ]
   then
     echo "Set $ZSH_PATH as default shell"
-    chsh -s "$ZSH_PATH"
+    sudo chsh -s "$ZSH_PATH"
   fi
   echo "Done"
 }
@@ -50,16 +50,7 @@ _git() {
   git submodule update --init
 }
 
-if [ "$(uname)" != "Darwin" ]
-then
-  if ! zsh
-  then
-    echo "Please install zsh"
-    exit 1
-  fi
-fi
-_chsh &
-_symlinks &
-_git &
+_chsh
+_symlinks
+_git
 wait
-_vim
