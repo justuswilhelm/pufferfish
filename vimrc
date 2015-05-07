@@ -33,6 +33,12 @@ Plugin 'gmarik/Vundle.vim'
 " Syntax Magic
   Plugin 'scrooloose/syntastic'
 
+" Snippets
+  Plugin 'MarcWeber/vim-addon-mw-utils'
+  Plugin 'tomtom/tlib_vim'
+  Plugin 'garbas/vim-snipmate'
+  Plugin 'honza/vim-snippets'
+
   call vundle#end()
 
 " Syntastic Config
