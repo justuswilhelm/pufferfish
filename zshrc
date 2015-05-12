@@ -53,6 +53,7 @@ if [[ $(uname) == 'Darwin' ]]
     alias gtrack='for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master`; do  git branch --track ${branch##*/} $branch; done'
     # shellcheck disable=SC2142
     alias git_prune='git branch -vv | grep gone | awk "{print $1}" | xargs git branch -d'
+    git tag "$(awk '$1 == "##" {print $2;exit}' < CHANGELOG.md)"
 
   # Genesis
   # -------
