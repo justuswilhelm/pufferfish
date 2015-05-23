@@ -67,6 +67,7 @@ Plugin 'gmarik/Vundle.vim'
   set background=light
   let g:solarized_termcolors=256
   colorscheme solarized
+  hi Normal ctermbg=none
 
 " Change edit appearance
   set encoding=utf-8
