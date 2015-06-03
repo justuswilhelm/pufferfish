@@ -29,6 +29,7 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'tpope/vim-markdown'
   Plugin 'kchmck/vim-coffee-script'
   Plugin 'lepture/vim-jinja'
+  Plugin 'dleonard0/pony-vim-syntax'
 
 " Syntax Magic
   Plugin 'scrooloose/syntastic'
