@@ -19,7 +19,7 @@ _vim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks="gitignore byobu vim vimrc latexmkrc screenrc zshrc"
+  symlinks="gitignore byobu vim vimrc latexmkrc screenrc zshrc zshenv zprofile"
   for s in $symlinks
   do
     echo "Linking $s"
