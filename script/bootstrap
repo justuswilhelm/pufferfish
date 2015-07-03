@@ -14,7 +14,7 @@ _vim() {
     git clone git@github.com:gmarik/Vundle.vim.git vim/bundle/Vundle.vim
   fi
   echo "Installing Plugings with Vundle"
-  vim +PluginInstall +qall &
+  vim +PluginInstall +qall
 }
 
 _symlinks() {
@@ -45,7 +45,7 @@ _git() {
   git config --global core.editor /usr/bin/vim
   git submodule init
   git submodule update
-  git config --global core.excludesfile $HOME/.gitignore
+  git config --global core.excludesfile "$HOME/.gitignore"
   git submodule sync
   git submodule update --init
 }

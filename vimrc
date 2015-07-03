@@ -1,44 +1,31 @@
-" Pluginr
+" Vim Config
   set nocompatible
   filetype off
+
+" Let's set up Vundle
   set rtp+=~/.vim/bundle/Vundle.vim
   call vundle#begin()
+  Plugin 'gmarik/Vundle.vim'
+  " UI Addons
+    Plugin 'flazz/vim-colorschemes'
+    Plugin 'bling/vim-airline'
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'kien/ctrlp.vim'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'Lokaltog/vim-easymotion'
 
-Plugin 'gmarik/Vundle.vim'
+  " Syntax
+    Plugin 'hynek/vim-python-pep8-indent'
+    Plugin 'elzr/vim-json'
+    Plugin 'editorconfig/editorconfig-vim'
+    Plugin 'tpope/vim-markdown'
+    Plugin 'kchmck/vim-coffee-script'
+    Plugin 'lepture/vim-jinja'
+    Plugin 'elixir-lang/vim-elixir'
 
-" Little Helpers
-  Plugin 'tpope/vim-surround'
-  Plugin 'sjl/vitality.vim'
-
-" UI Addons
-  Plugin 'flazz/vim-colorschemes'
-  Plugin 'bling/vim-airline'
-  Plugin 'scrooloose/nerdtree'
-  Plugin 'kien/ctrlp.vim'
-  Plugin 'tpope/vim-fugitive'
-  Plugin 'myusuf3/numbers.vim'
-  Plugin 'Lokaltog/vim-easymotion'
-
-" Syntax
-  Plugin 'tikhomirov/vim-glsl.git'
-  Plugin 'jnwhiteh/vim-golang.git'
-  Plugin 'hynek/vim-python-pep8-indent'
-  Plugin 'kovisoft/slimv'
-  Plugin 'elzr/vim-json'
-  Plugin 'editorconfig/editorconfig-vim'
-  Plugin 'tpope/vim-markdown'
-  Plugin 'kchmck/vim-coffee-script'
-  Plugin 'lepture/vim-jinja'
-  Plugin 'elixir-lang/vim-elixir'
-
-" Syntax Magic
-  Plugin 'scrooloose/syntastic'
-
-" Snippets
-  Plugin 'MarcWeber/vim-addon-mw-utils'
-  Plugin 'tomtom/tlib_vim'
-  Plugin 'garbas/vim-snipmate'
-  Plugin 'honza/vim-snippets'
+  " Syntax Magic
+    Plugin 'scrooloose/syntastic'
+    Plugin 'tpope/vim-surround'
 
   call vundle#end()
 
@@ -54,9 +41,6 @@ Plugin 'gmarik/Vundle.vim'
   let g:syntastic_c_checkers = ['gcc']
   let g:syntastic_elixir_checkers = ['elixir']
   let g:syntastic_enable_perl_checker = 1
-
-" SLIMV
-  let g:paredit_mode = 0
 
 " VIM-JSON
   let g:vim_json_syntax_conceal = 0
