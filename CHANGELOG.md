@@ -1,6 +1,12 @@
 # Change Log
 See here: http://keepachangelog.com
 
+## [Unreleased][unreleased]
+
+### Removed
+
+- Empty screenrc
+
 ## [1.0.0] 2015-07-03
 
 ### Added
