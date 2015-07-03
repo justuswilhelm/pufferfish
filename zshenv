@@ -1,11 +1,11 @@
 #!/bin/bash
 # PATH adjustments for Homebrew
 # =============================
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+PATH+=:/usr/local/bin:/usr/local/sbin
 
 # PATH adjustment for Heroku toolbelt
 # ===================================
-export PATH=/usr/local/heroku/bin:$PATH
+PATH+=:/usr/local/heroku/bin
 
 export TERM='xterm-256color'
 
