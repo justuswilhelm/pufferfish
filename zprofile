@@ -2,7 +2,7 @@
 # What to execute in the beginning
 # ================================
 # Set Apple Terminal.app resume directory
-if [[ $TERM_PROGRAM == "Apple_Terminal" ]] && [[ -z "$INSIDE_EMACS" ]]
+if [[ $TERM_PROGRAM == "Apple_Terminal" ]]
 then
 {
   function chpwd {
@@ -15,4 +15,3 @@ then
   chpwd
 }
 fi
-cd .
