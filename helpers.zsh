@@ -1,8 +1,8 @@
 #!/bin/bash
 # Helpful helpers
 # ===============
-# Make file executable, create it if it does not exist
-# ----------------------------------------------------
+# Make executable files, make files executable
+# --------------------------------------------
 mex() {
   if ! [ -e "$1" ]
   then
@@ -33,24 +33,28 @@ config() {
 makeenv() {
   echo "Making a virtual environment with python $1"
   virtualenv -p "$1" env
-  if ! [ -e .env ]
-  then
-    echo "source env/bin/activate" > .env
-  fi
-  cd .
+  source env/bin/activate
 }
 # Overwrite cd
 # ------------
 cd() {
   builtin cd "$1"
-  if [ -e ".env" ]
+  if [ -e "env/bin/activate" ]
   then
-    source .env
+    source env/bin/activate
   fi
+}
+
+# Better git init
+# ---------------
+gi() {
+  files="README.md CHANGELOG.md LICENSE CONTRIBUTING.md"
+  touch -c $files
+  git add $files
 }
 
 # Tag with newest changelog release no.
 # -------------------------------------
 git_tag() {
-  git tag "$(awk '$1 == "##" {print $2;exit}' < CHANGELOG.md)"
+  git tag "$(awk '$1 == "##" {print $2;exit}' < CHANGELOG.md | egrep -e '(\d+\.\d+\.\d+)' -o)"
 }
