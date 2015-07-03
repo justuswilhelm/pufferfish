@@ -29,7 +29,7 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'tpope/vim-markdown'
   Plugin 'kchmck/vim-coffee-script'
   Plugin 'lepture/vim-jinja'
-  Plugin 'dleonard0/pony-vim-syntax'
+  Plugin 'elixir-lang/vim-elixir'
 
 " Syntax Magic
   Plugin 'scrooloose/syntastic'
@@ -52,6 +52,7 @@ Plugin 'gmarik/Vundle.vim'
   let g:syntastic_python_python_exec = 'python3'
   let g:syntastic_tex_checkers = ['chktex']
   let g:syntastic_c_checkers = ['gcc']
+  let g:syntastic_elixir_checkers = ['elixir']
   let g:syntastic_enable_perl_checker = 1
 
 " SLIMV
@@ -77,8 +78,8 @@ Plugin 'gmarik/Vundle.vim'
   set nu
   set autoread
   set more
-  set colorcolumn=70
-  set tw=79
+  set colorcolumn=80
+  set tw=80
 
 " Airline
   set laststatus=2
@@ -151,14 +152,7 @@ Plugin 'gmarik/Vundle.vim'
 
 " Save pinky pain for command
   nore ; :
-  nore , ;
 
 " Customize Backup Dir location
   set backupdir=~/.vim/backup//
   set directory=~/.vim/swap//
-
-" MVIM
-  set guifont=Monospace:h20
-
-" GOLANG specific
-  autocmd FileType go autocmd BufWritePre <buffer> Fmt
