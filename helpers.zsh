@@ -28,6 +28,7 @@ config() {
   cd -
   echo " -- Done!"
 }
+alias config='pushd && cd ~/.dotfiles && script/bootstrap && popd'
 
 makeenv() {
   echo "Making a virtual environment with python $1"
