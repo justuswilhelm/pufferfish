@@ -1,6 +1,11 @@
 # Change Log
+See here: http://keepachangelog.com
 
 ## [1.0.0] 2015-07-03
+
+### Added
+
+- Added cool custom prompt
 
 ### Removed
 
