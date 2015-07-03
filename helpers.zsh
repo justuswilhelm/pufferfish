@@ -7,12 +7,11 @@ mex() {
   if ! [ -e "$1" ]
   then
     touch "$1"
-    chmod +x "$1"
   else
     echo "File $1 already exists!"
-    echo "Changing $1 to +x"
-    chmod +x "$1"
   fi
+  echo "Changing $1 to +x"
+  chmod +x "$1"
 }
 
 # Make dir and change to it
@@ -47,9 +46,10 @@ cd() {
 
 # Better git init
 # ---------------
+# shellcheck disable=SC2128,2086
 gi() {
-  files="README.md CHANGELOG.md LICENSE CONTRIBUTING.md"
-  touch -c $files
+  files=("README.md" "CHANGELOG.md" "LICENSE" "CONTRIBUTING.md")
+  touch $files
   git add $files
 }
 
