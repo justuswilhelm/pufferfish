@@ -1,12 +1,13 @@
 #!/bin/sh
 set -e
+DOTFILES="$HOME/.dotfiles"
 
 _vim() {
   echo "Create temp and swap folder for vim"
   VIM_DIRS="vim vim/backup vim/swap vim/bundle"
   for vim_dir in $VIM_DIRS
   do
-    mkdir -p "$PWD/$vim_dir"
+    mkdir -p "$DOTFILES/$vim_dir"
   done
   echo "Checking if Vundle exists"
   if [ ! -e vim/bundle/Vundle.vim ]
@@ -19,13 +20,18 @@ _vim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks="gitignore byobu vim vimrc latexmkrc screenrc zshrc zshenv zprofile"
+  symlinks="git/gitignore vim/vimrc \
+    vim misc/latexmkrc zsh/zshrc zsh/zshenv zsh/zprofile"
   for s in $symlinks
   do
-    echo "Linking $s"
-    ln -sf "$PWD/$s" "$HOME/.$s"
+    file=$DOTFILES/$s
+    target=$HOME/.$(basename "$s")
+    echo "Linking $file -> $target"
+    ln -sFf "$file" "$target" &
   done
   wait
+  # XXX Fix symbolic link weirdness
+  rm "$DOTFILES/vim/vim"
 }
 
 _chsh() {
@@ -41,7 +47,7 @@ _chsh() {
 
 _git() {
   git config --global push.default simple
-  git config --global commit.template "$PWD/gitmessage"
+  git config --global commit.template "$DOTFILES/gitmessage"
   git config --global core.editor /usr/bin/vim
   git submodule init
   git submodule update

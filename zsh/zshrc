@@ -20,7 +20,7 @@ function source_files() {
   # shellcheck disable=SC2128
   for source_file in $SOURCE_FILES
   do
-    source "$DOTFILES/$source_file"
+    source "$DOTFILES/zsh/$source_file"
   done
 }
 

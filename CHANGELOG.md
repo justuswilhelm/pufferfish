@@ -3,6 +3,10 @@ See here: http://keepachangelog.com
 
 ## [Unreleased][unreleased]
 
+### Added
+
+- Better folder layout
+
 ### Removed
 
 - Empty screenrc
