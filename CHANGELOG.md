@@ -1,5 +1,6 @@
 # Change Log
-See here: http://keepachangelog.com
+Written according to [http://keepachangelog.com](Keep a Changelog). Uses
+semantic versioning.
 
 ## [Unreleased][unreleased]
 
