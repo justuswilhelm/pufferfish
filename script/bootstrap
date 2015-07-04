@@ -8,8 +8,7 @@ _nvim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks="git/gitignore misc/latexmkrc zsh/zshrc zsh/zshenv \
-    zsh/zprofile neovim/nvim neovim/nvimrc"
+  symlinks="misc/latexmkrc zsh/zshrc zsh/zshenv zsh/zprofile neovim/nvim neovim/nvimrc"
   for s in $symlinks
   do
     file=$DOTFILES/$s
@@ -17,9 +16,6 @@ _symlinks() {
     echo "Linking $file -> $target"
     ln -sFf "$file" "$target" &
   done
-  wait
-  # XXX Fix symbolic link weirdness
-  rm "$DOTFILES/vim/vim"
 }
 
 _chsh() {
@@ -39,7 +35,7 @@ _git() {
   git config --global core.editor /usr/bin/vim
   git submodule init
   git submodule update
-  git config --global core.excludesfile "$HOME/.gitignore"
+  git config --global core.excludesfile "$DOTFILES/.gitignore"
   git submodule sync
   git submodule update --init
 }
