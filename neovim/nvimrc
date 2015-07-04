@@ -4,5 +4,67 @@
     Plug 'scrooloose/nerdtree'
   call plug#end()
 
-" Nerdtree
+" Keyboard shortcuts
   map <C-n> :NERDTreeToggle<CR>
+  let mapleader = ','
+  nnoremap j gj
+  nnoremap k gk
+  nore ; :
+  nnoremap <Space> @q
+
+" Show unprintable characters
+  set list
+  set listchars=tab:>.,trail:.,extends:#,nbsp:.
+
+" Column length
+  set colorcolumn=80
+  set tw=80
+
+" Line numbers
+  set nu
+
+" Use system clipboard
+  set clipboard=unnamed
+
+" Undo Levels
+  set history=1000
+  set undolevels=1000
+
+" XXX consider delting this or at least reducing it
+  " Indentation
+    filetype on
+    filetype plugin on
+    filetype indent on
+    set autoindent
+
+    set smarttab
+    set smartindent
+    set expandtab
+    set cindent
+    set tabstop=2
+    set shiftwidth=2
+
+  " Matching
+    nnoremap / /\v
+    vnoremap / /\v
+    set ignorecase
+    set smartcase
+    set gdefault
+    set incsearch
+    set showmatch
+    set hlsearch
+    nnoremap <leader><space> :noh<cr>
+    nnoremap <tab> %
+    vnoremap <tab> %
+  " XXX Add color schemes 
+  " Color Stuff
+    syntax on
+    set background=light
+    " let g:solarized_termcolors=256
+    " colorscheme solarized
+    hi Normal ctermbg=none
+
+
+" Customize Backup Dir location
+  set backupdir=~/.nvim/backup/
+  set directory=~/.nvim/swap/
