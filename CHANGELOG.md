@@ -5,6 +5,7 @@ See here: http://keepachangelog.com
 
 ### Added
 
+- Nvim config
 - Better folder layout
 
 ### Removed

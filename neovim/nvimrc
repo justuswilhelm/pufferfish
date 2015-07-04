@@ -1,0 +1,8 @@
+" Vim-Plug
+  call plug#begin('~/.nvim/plugged')
+    Plug 'hynek/vim-python-pep8-indent'
+    Plug 'scrooloose/nerdtree'
+  call plug#end()
+
+" Nerdtree
+  map <C-n> :NERDTreeToggle<CR>

@@ -2,6 +2,10 @@
 set -e
 DOTFILES="$HOME/.dotfiles"
 
+_nvim() {
+  nvim +PlugInstall +qall
+}
+
 _vim() {
   echo "Create temp and swap folder for vim"
   VIM_DIRS="vim vim/backup vim/swap vim/bundle"
@@ -20,8 +24,8 @@ _vim() {
 
 _symlinks() {
   echo "Making symlinks"
-  symlinks="git/gitignore vim/vimrc \
-    vim misc/latexmkrc zsh/zshrc zsh/zshenv zsh/zprofile"
+  symlinks="git/gitignore vim/vimrc vim misc/latexmkrc zsh/zshrc zsh/zshenv \
+    zsh/zprofile neovim/nvim neovim/nvimrc"
   for s in $symlinks
   do
     file=$DOTFILES/$s
@@ -60,4 +64,5 @@ _chsh
 _symlinks
 _git
 _vim
+_nvim
 wait
