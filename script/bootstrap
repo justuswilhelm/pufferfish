@@ -6,25 +6,9 @@ _nvim() {
   nvim +PlugInstall +qall
 }
 
-_vim() {
-  echo "Create temp and swap folder for vim"
-  VIM_DIRS="vim vim/backup vim/swap vim/bundle"
-  for vim_dir in $VIM_DIRS
-  do
-    mkdir -p "$DOTFILES/$vim_dir"
-  done
-  echo "Checking if Vundle exists"
-  if [ ! -e vim/bundle/Vundle.vim ]
-  then
-    git clone git@github.com:gmarik/Vundle.vim.git vim/bundle/Vundle.vim
-  fi
-  echo "Installing Plugings with Vundle"
-  vim +PluginInstall +qall
-}
-
 _symlinks() {
   echo "Making symlinks"
-  symlinks="git/gitignore vim/vimrc vim misc/latexmkrc zsh/zshrc zsh/zshenv \
+  symlinks="git/gitignore misc/latexmkrc zsh/zshrc zsh/zshenv \
     zsh/zprofile neovim/nvim neovim/nvimrc"
   for s in $symlinks
   do
