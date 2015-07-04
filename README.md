@@ -1,15 +1,17 @@
-This is where I put my config files for zsh and vim
+# Dotfiles
 
-# Configuration
+## Quickstart
 
-## Gnome Terminal
+Run
 
-+ Foreground, Background, Bold and Underline:
-  + [ ] Use colors from system theme
-  + Built-in schemes: "Black on light yellow"
-+ Palette
-  Built-in schemes "Tango"
+```
+script/bootstrap
+```
 
-## OS X Terminal
+and follow the instructions.
 
-Choose Solarized Light theme from ~/.dotfiles
+## Requirements
+
++ NeoVim
++ `fish` shell
++ git
