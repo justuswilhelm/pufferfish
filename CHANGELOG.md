@@ -7,10 +7,13 @@ See here: http://keepachangelog.com
 
 - Nvim config
 - Better folder layout
+- Fish Config
 
 ### Removed
 
 - Empty screenrc
+- Vim Config
+- Zsh Config
 
 ## [1.0.0] 2015-07-03
 
