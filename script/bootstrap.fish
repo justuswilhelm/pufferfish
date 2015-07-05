@@ -25,9 +25,9 @@ end
 
 function git_config
   git config --global push.default simple
-  git config --global commit.template $DOTFILES/gitmessage
+  git config --global commit.template $DOTFILES/git/gitmessage
   git config --global core.editor (which nvim)
-  git config --global core.excludesfile $DOTFILES/.gitignore
+  git config --global core.excludesfile $DOTFILES/git/gitignore
   git submodule init
   git submodule update --init
 end
