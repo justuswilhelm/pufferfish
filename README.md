@@ -15,3 +15,7 @@ and follow the instructions.
 + NeoVim
 + `fish` shell
 + git
+
+## Fish configuration
+
+See `fish/README.md` for more information.
