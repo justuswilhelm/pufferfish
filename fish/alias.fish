@@ -26,4 +26,3 @@
 # Dotfiles
 # =======
   alias dotfiles "cd ~/.dotfiles"
-  alias config='pushd; cd ~/.dotfiles; script/bootstrap; popd'
