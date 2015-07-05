@@ -1,62 +1,6 @@
 #!/bin/sh
 set -e
-DOTFILES="$HOME/.dotfiles"
 
-_nvim() {
-  nvim +PlugInstall +qall
-}
+grep -e 'fish' /etc/shells > /dev/null || echo "Please install fish and add it to /etc/shells" && exit 1
 
-_symlinks() {
-  echo "Making symlinks"
-  symlinks="misc/latexmkrc neovim/nvim neovim/nvimrc"
-  for s in $symlinks
-  do
-    file=$DOTFILES/$s
-    target=$HOME/.$(basename "$s")
-    echo "Linking $file -> $target"
-    ln -sFf "$file" "$target" &
-  done
-
-  mkdir -p "$HOME/.config/"
-  ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
-
-  # XXX fix this bug
-  rm -f $DOTFILES/fish/fish $DOTFILES/neovim/nvim/nvim
-}
-
-_chsh() {
-  echo "Checking default shell"
-  FISH_PATH=$(which fish)
-  if [ "$SHELL" != "$FISH_PATH" ]
-  then
-    echo "Set $FISH_PATH as default shell"
-    chsh -s "$FISH_PATH"
-  fi
-  echo "Done"
-}
-
-_git() {
-  git config --global push.default simple
-  git config --global commit.template "$DOTFILES/gitmessage"
-  git config --global core.editor $(which nvim)
-  git config --global core.excludesfile "$DOTFILES/.gitignore"
-  git submodule init
-  git submodule update --init
-}
-
-if ! grep -e 'fish' /etc/shells
-then
-  echo "Please install fish and add it to /etc/shells"
-  exit 1
-fi
-
-if ! type nvim > /dev/null
-then
-  echo "Please install nvim"
-  exit 1
-fi
-
-_chsh
-_symlinks
-_git
-_nvim
+script/bootstrap.fish
