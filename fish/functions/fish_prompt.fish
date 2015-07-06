@@ -9,7 +9,7 @@ function git_status
       set_color yellow
       echo -n "✷ "
       set_color normal
-      end
+    end
     set_color blue
     echo -n ""(git name-rev --name-only --no-undefined --always HEAD) ""
     set_color normal
