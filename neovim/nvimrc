@@ -12,6 +12,8 @@
   nnoremap k gk
   nore ; :
   nnoremap <Space> @q
+  " Reload vim config
+  nnoremap <leader>rl :source $MYVIMRC<CR>
 
 " Show unprintable characters
   set list
