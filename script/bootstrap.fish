@@ -2,7 +2,7 @@
 set DOTFILES $HOME/.dotfiles
 
 function nvim_config
-  nvim +PlugInstall +qall
+  nvim -c 'PlugInstall' -c 'qall'
 end
 
 function symlinks
