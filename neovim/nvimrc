@@ -4,6 +4,7 @@
     Plug 'scrooloose/nerdtree'
     Plug 'scrooloose/syntastic'
     Plug 'dag/vim-fish'
+    Plug 'hdima/python-syntax'
   call plug#end()
 
 " Keyboard shortcuts
