@@ -8,6 +8,11 @@ semantic versioning.
 
 - Solarized colorscheme
 - Vim-Surround
+- Netrw configuration
+
+### Removed
+
+- NerdTree
 
 ### Caveat
 
