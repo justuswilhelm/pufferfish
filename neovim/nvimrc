@@ -8,9 +8,6 @@
     " Syntax checking
     Plug 'scrooloose/syntastic'
 
-    " File browsing
-    Plug 'scrooloose/nerdtree'
-
     " Color scheme
     Plug 'altercation/vim-colors-solarized'
 
@@ -19,14 +16,30 @@
   call plug#end()
 
 " Keyboard shortcuts
-  map <C-n> :NERDTreeToggle<CR>
   let mapleader = ','
-  nnoremap j gj
-  nnoremap k gk
-  nore ; :
-  nnoremap <Space> @q
-  " Reload vim config
-  nnoremap <leader>rl :source $MYVIMRC<CR>
+  " Normal Mode
+    " Netrw splits
+    nnoremap <C-n> :vs.<CR>
+    nnoremap <C-s> :sp.<CR>
+    nnoremap <C-l> :e.<CR>
+    " Smarter text navigation
+    nnoremap j gj
+    nnoremap k gk
+    " Pinky pain
+    nore ; :
+    " Run default macro
+    nnoremap <Space> @q
+    " Reload vim config
+    nnoremap <leader>rl :source $MYVIMRC<CR>
+    " Disable highlighting
+    nnoremap <leader><space> :noh<cr>
+    nnoremap / /\v
+  " Visual Mode
+    vnoremap / /\v
+
+" Netrw
+  let g:netrw_altv=1
+  let g:netrw_liststyle=3
 
 " Show unprintable characters
   set list
@@ -51,38 +64,36 @@
   set history=1000
   set undolevels=1000
 
-" XXX consider delting this or at least reducing it
-  " Indentation
-    filetype on
-    filetype plugin on
-    filetype indent on
-    set autoindent
+" Indentation
+  " When on, a <Tab> in front of a line inserts blanks according to
+  " 'shiftwidth'.
+  set smarttab
+  " Copy indent from current line when starting a new line
+  set autoindent
+  " Do smart autoindenting when starting a new line.
+  set smartindent
+  " In Insert mode: Use the appropriate number of spaces to insert a <Tab>
+  set expandtab
+  " Number of spaces that a <Tab> in the file counts for.
+  set tabstop=2
+  " Returns the effective value of 'shiftwidth'. This is the
+  " 'shiftwidth' value unless it is zero, in which case it is the
+  " 'tabstop' value.
+  set shiftwidth=0
 
-    set smarttab
-    set smartindent
-    set expandtab
-    set cindent
-    set tabstop=2
-    set shiftwidth=2
+" Matching
+  set ignorecase
+  set smartcase
+  set gdefault
+  set incsearch
+  set showmatch
+  set hlsearch
 
-  " Matching
-    nnoremap / /\v
-    vnoremap / /\v
-    set ignorecase
-    set smartcase
-    set gdefault
-    set incsearch
-    set showmatch
-    set hlsearch
-    nnoremap <leader><space> :noh<cr>
-    nnoremap <tab> %
-    vnoremap <tab> %
-  " XXX Add color schemes 
-  " Color Stuff
-    set background=light
-    colorscheme solarized
-    let g:solarized_termcolors=256
-    hi Normal ctermbg=none
+" Color Stuff
+  set background=light
+  colorscheme solarized
+  let g:solarized_termcolors=256
+  hi Normal ctermbg=none
 
 
 " Customize Backup Dir location
