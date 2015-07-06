@@ -2,6 +2,17 @@
 Written according to [http://keepachangelog.com](Keep a Changelog). Uses
 semantic versioning.
 
+## [Unreleased][unreleased]
+
+### Added
+
+- Solarized colorscheme
+
+### Caveat
+
+- Synchronous bug in plugged has been fixed with a workaround, but is not yet resolved. See https://github.com/junegunn/vim-plug/issues/104 .
+
+
 ## [2.0.0] - 2015-07-06
 
 ### Added
