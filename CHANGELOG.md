@@ -7,6 +7,7 @@ semantic versioning.
 ### Added
 
 - Solarized colorscheme
+- Vim-Surround
 
 ### Caveat
 
