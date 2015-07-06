@@ -1,14 +1,22 @@
 " Vim-Plug
   call plug#begin('~/.nvim/plugged')
-    Plug 'hynek/vim-python-pep8-indent'
-    Plug 'scrooloose/nerdtree'
-    Plug 'scrooloose/syntastic'
+    " Syntax plugings
     Plug 'dag/vim-fish'
+    Plug 'hynek/vim-python-pep8-indent'
     Plug 'hdima/python-syntax'
-    Plug 'altercation/vim-colors-solarized'
-  call plug#end()
 
-  set shell=/bin/sh
+    " Syntax checking
+    Plug 'scrooloose/syntastic'
+
+    " File browsing
+    Plug 'scrooloose/nerdtree'
+
+    " Color scheme
+    Plug 'altercation/vim-colors-solarized'
+
+    " Surround text objects
+    Plug 'tpope/vim-surround'
+  call plug#end()
 
 " Keyboard shortcuts
   map <C-n> :NERDTreeToggle<CR>
