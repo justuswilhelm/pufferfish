@@ -28,6 +28,11 @@
 " Line numbers
   set nu
 
+" Folds
+  set foldmethod=indent
+  set foldlevelstart=2
+  set foldminlines=2
+
 " Use system clipboard
   set clipboard=unnamed
 
