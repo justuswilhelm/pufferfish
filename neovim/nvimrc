@@ -5,7 +5,10 @@
     Plug 'scrooloose/syntastic'
     Plug 'dag/vim-fish'
     Plug 'hdima/python-syntax'
+    Plug 'altercation/vim-colors-solarized'
   call plug#end()
+
+  set shell=/bin/sh
 
 " Keyboard shortcuts
   map <C-n> :NERDTreeToggle<CR>
@@ -68,10 +71,9 @@
     vnoremap <tab> %
   " XXX Add color schemes 
   " Color Stuff
-    syntax on
     set background=light
-    " let g:solarized_termcolors=256
-    " colorscheme solarized
+    colorscheme solarized
+    let g:solarized_termcolors=256
     hi Normal ctermbg=none
 
 
