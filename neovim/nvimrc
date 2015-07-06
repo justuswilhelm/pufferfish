@@ -2,6 +2,7 @@
   call plug#begin('~/.nvim/plugged')
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'scrooloose/nerdtree'
+    Plug 'scrooloose/syntastic'
   call plug#end()
 
 " Keyboard shortcuts
