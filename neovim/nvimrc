@@ -3,6 +3,7 @@
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'scrooloose/nerdtree'
     Plug 'scrooloose/syntastic'
+    Plug 'dag/vim-fish'
   call plug#end()
 
 " Keyboard shortcuts
