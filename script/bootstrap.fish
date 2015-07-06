@@ -2,7 +2,9 @@
 set DOTFILES $HOME/.dotfiles
 
 function nvim_config
-  nvim -c 'PlugInstall' -c 'qall'
+  # Fix wait for plugged to allow synchronous installation.
+  # See https://github.com/junegunn/vim-plug/issues/104
+  nvim -c 'PlugInstall'
 end
 
 function symlinks
