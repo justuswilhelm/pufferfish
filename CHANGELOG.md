@@ -14,6 +14,10 @@ semantic versioning.
 
 - NerdTree
 
+### Fixed
+
+- gi was badly written
+
 ### Caveat
 
 - Synchronous bug in plugged has been fixed with a workaround, but is not yet resolved. See https://github.com/junegunn/vim-plug/issues/104 .
