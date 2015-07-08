@@ -9,6 +9,7 @@ semantic versioning.
 - Solarized colorscheme
 - Vim-Surround
 - Netrw configuration
+- Autojump config for fish
 
 ### Removed
 
