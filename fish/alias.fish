@@ -25,4 +25,4 @@
 
 # Dotfiles
 # =======
-  alias dotfiles "cd ~/.dotfiles"
+  alias dotfiles "pushd; cd ~/.dotfiles"
