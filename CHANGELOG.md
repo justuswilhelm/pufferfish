@@ -6,6 +6,7 @@ semantic versioning.
 
 ### Added
 
+- Fish right prompt looks cooler
 - Solarized colorscheme
 - Vim-Surround
 - Netrw configuration
