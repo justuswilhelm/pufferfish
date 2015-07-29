@@ -4,6 +4,7 @@
     Plug 'dag/vim-fish'
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'hdima/python-syntax'
+    Plug 'wting/rust.vim'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
