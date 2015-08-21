@@ -2,6 +2,12 @@
 Written according to [http://keepachangelog.com](Keep a Changelog). Uses
 semantic versioning.
 
+## [Unreleased] - Unreleased
+
+### Added
+
+- New helper methods for fish.
+
 ## [3.0.0] - 2015-07-29
 
 ### Added
