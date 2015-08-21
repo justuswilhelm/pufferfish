@@ -5,6 +5,7 @@
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'hdima/python-syntax'
     Plug 'wting/rust.vim'
+    Plug 'raymond-w-ko/vim-lua-indent'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
@@ -14,6 +15,10 @@
 
     " Surround text objects
     Plug 'tpope/vim-surround'
+
+    " Better text navigation
+    Plug 'jeffkreeftmeijer/vim-numbertoggle'
+    Plug 'easymotion/vim-easymotion'
   call plug#end()
 
 " Keyboard shortcuts
