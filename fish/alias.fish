@@ -22,6 +22,7 @@
   alias hosts "sudo vim /etc/hosts"
   alias latexmk "latexmk -pdf -pvc"
   alias ssh-x "ssh -c arcfour,blowfish-cbc -XC"
+  alias vim "nvim"
 
 # Dotfiles
 # =======
