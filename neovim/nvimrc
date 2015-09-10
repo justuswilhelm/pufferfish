@@ -1,5 +1,8 @@
 " Vim-Plug
   call plug#begin('~/.nvim/plugged')
+    " File handling
+    Plug 'kien/ctrlp.vim'
+
     " Syntax plugings
     Plug 'dag/vim-fish'
     Plug 'hynek/vim-python-pep8-indent'
