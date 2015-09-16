@@ -1,4 +1,4 @@
 function makeenv
-  virtualenv -p "$1" env
+  virtualenv env -ppython3
   s_env
 end

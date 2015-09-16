@@ -8,3 +8,5 @@ set PATH $PATH /usr/local/heroku/bin
 if [ -f /usr/local/share/autojump/autojump.fish ]
   source /usr/local/share/autojump/autojump.fish
 end
+
+cd .
