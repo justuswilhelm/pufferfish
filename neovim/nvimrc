@@ -5,9 +5,8 @@
 
     " Syntax plugings
     Plug 'dag/vim-fish'
-    Plug 'hynek/vim-python-pep8-indent'
-    Plug 'hdima/python-syntax'
     Plug 'wting/rust.vim'
+    Plug 'elixir-lang/vim-elixir'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
@@ -50,6 +49,7 @@
 
 " Syntastic
   let g:syntastic_html_checkers=[]
+  let g:syntastic_python_checkers=['pyflakes']
 
 " Show unprintable characters
   set list
@@ -58,6 +58,9 @@
 " Column length
   set colorcolumn=80
   set tw=80
+
+" Show commands while they're being typed
+  set showcmd
 
 " Line numbers
   set nu
