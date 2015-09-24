@@ -7,6 +7,7 @@
     Plug 'dag/vim-fish'
     Plug 'wting/rust.vim'
     Plug 'elixir-lang/vim-elixir'
+    Plug 'hylang/vim-hy'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
