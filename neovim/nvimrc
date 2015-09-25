@@ -15,8 +15,10 @@
     " Color scheme
     Plug 'altercation/vim-colors-solarized'
 
-    " Surround text objects
+    " Text mangling
     Plug 'tpope/vim-surround'
+    Plug 'kovisoft/paredit'
+    Plug 'easymotion/vim-easymotion'
 
     " Better text navigation
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
