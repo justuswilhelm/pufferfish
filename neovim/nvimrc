@@ -21,7 +21,7 @@
     Plug 'easymotion/vim-easymotion'
 
     " Better text navigation
-    Plug 'jeffkreeftmeijer/vim-numbertoggle'
+    " Plug 'jeffkreeftmeijer/vim-numbertoggle'
   call plug#end()
 
 " Keyboard shortcuts
