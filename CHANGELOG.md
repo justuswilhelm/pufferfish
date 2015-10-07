@@ -6,7 +6,7 @@ semantic versioning.
 
 ### Added
 
-- NeoVim Plugins: EasyMotion, Numbertoggle, Lua Indent
+- NeoVim Plugins: EasyMotion, Numbertoggle, Elixir Syntax
 - New helper methods for fish.
 
 ## [3.0.0] - 2015-07-29
