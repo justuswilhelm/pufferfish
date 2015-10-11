@@ -8,6 +8,8 @@
     Plug 'wting/rust.vim'
     Plug 'elixir-lang/vim-elixir'
     Plug 'hylang/vim-hy'
+    Plug 'vim-scripts/django.vim'
+    Plug 'jaxbot/semantic-highlight.vim'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
