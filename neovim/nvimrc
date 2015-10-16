@@ -10,6 +10,7 @@
     Plug 'hylang/vim-hy'
     Plug 'vim-scripts/django.vim'
     Plug 'jaxbot/semantic-highlight.vim'
+    Plug 'hynek/vim-python-pep8-indent'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
