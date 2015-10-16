@@ -11,6 +11,7 @@
     Plug 'vim-scripts/django.vim'
     Plug 'jaxbot/semantic-highlight.vim'
     Plug 'hynek/vim-python-pep8-indent'
+    Plug 'rizzatti/dash.vim'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
@@ -49,12 +50,15 @@
     nnoremap / /\v
     vnoremap / /\v
   " Young Padawan Mode
-  inoremap jk <esc>
-  inoremap <esc> <NOP>
-  noremap <Up> <NOP>
-  noremap <Down> <NOP>
-  noremap <Left> <NOP>
-  noremap <Right> <NOP>
+    inoremap jk <esc>
+    inoremap <esc> <NOP>
+    noremap <Up> <NOP>
+    noremap <Down> <NOP>
+    noremap <Left> <NOP>
+    noremap <Right> <NOP>
+
+  " DashSearch (OS X only with Dash)
+    nmap <silent> <leader>d <Plug>DashSearch
 
 " Netrw
   let g:netrw_altv=1
