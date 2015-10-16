@@ -46,9 +46,11 @@
     nnoremap <Space> @q
     " Disable highlighting
     nnoremap <leader><space> :noh<cr>
-    " Matching
+
+  " Matching
     nnoremap / /\v
     vnoremap / /\v
+
   " Young Padawan Mode
     inoremap jk <esc>
     inoremap <esc> <NOP>
