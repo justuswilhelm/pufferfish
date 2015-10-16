@@ -43,15 +43,13 @@
     nore ; :
     " Run default macro
     nnoremap <Space> @q
-    " Reload vim config
-    nnoremap <leader>rl :source $MYVIMRC<CR>
     " Disable highlighting
     nnoremap <leader><space> :noh<cr>
+    " Matching
     nnoremap / /\v
-  " Visual Mode
     vnoremap / /\v
   " Young Padawan Mode
-  :inoremap jk <esc>
+  inoremap jk <esc>
   inoremap <esc> <NOP>
   noremap <Up> <NOP>
   noremap <Down> <NOP>
