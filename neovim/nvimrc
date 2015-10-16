@@ -34,6 +34,8 @@
     nnoremap <C-n> :vs.<CR>
     nnoremap <C-s> :sp.<CR>
     nnoremap <C-l> :e.<CR>
+    " Semantic Highlight
+    nnoremap <Leader>s :SemanticHighlightToggle<cr>
     " Smarter text navigation
     nnoremap j gj
     nnoremap k gk
