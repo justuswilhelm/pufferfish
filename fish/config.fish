@@ -5,6 +5,9 @@ set PATH $PATH /usr/local/bin:/usr/local/sbin
 # Heroku toolbelt
 set PATH $PATH /usr/local/heroku/bin
 
+# MacTex
+set PATH $PATH /usr/local/texlive/2014basic/bin/x86_64-darwin/
+
 if [ -f /usr/local/share/autojump/autojump.fish ]
   source /usr/local/share/autojump/autojump.fish
 end
