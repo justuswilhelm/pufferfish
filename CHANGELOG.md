@@ -2,7 +2,7 @@
 Written according to [http://keepachangelog.com](Keep a Changelog). Uses
 semantic versioning.
 
-## [Unreleased] - Unreleased
+## [4.0.0] - 2015-11-09
 
 ### Added
 
