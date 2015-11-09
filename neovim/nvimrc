@@ -16,6 +16,9 @@
     " Syntax checking
     Plug 'scrooloose/syntastic'
 
+    " Show indentations
+    Plug 'Yggdroot/indentLine'
+
     " Color scheme
     Plug 'altercation/vim-colors-solarized'
 
