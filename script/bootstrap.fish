@@ -34,12 +34,24 @@ function git_config
   git submodule update --init
 end
 
-if not type nvim > /dev/null ^&1
-  echo "Please install nvim"
-  exit 1
+function python_config
+  pip3 install -r $DOTFILES/python/requirements.txt
+end
+
+function check_dependencies
+  if not type nvim > /dev/null ^&1
+    echo "Please install nvim"
+    exit 1
+  end
+
+  if not type pip3 > /dev/null ^&1
+    echo "Install a global python3-pip"
+    exit 1
+  end
 end
 
 chsh
 symlinks
 git_config
 nvim_config
+python_config

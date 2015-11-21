@@ -2,6 +2,13 @@
 Written according to [http://keepachangelog.com](Keep a Changelog). Uses
 semantic versioning.
 
+## [Unreleased]
+
+### Added
+
+- Local bin folder
+- Bootstrap script handles pip3 config
+
 ## [4.0.0] - 2015-11-09
 
 ### Added
