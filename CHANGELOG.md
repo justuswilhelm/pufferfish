@@ -9,6 +9,10 @@ semantic versioning.
 - Local bin folder
 - Bootstrap script handles pip3 config
 
+### Fixed
+
+- Ignore fish read history in git
+
 ## [4.0.0] - 2015-11-09
 
 ### Added
