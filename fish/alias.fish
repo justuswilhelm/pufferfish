@@ -9,7 +9,6 @@
   alias gl "git log"
   alias gm "git commit"
   alias gma "git commit --amend"
-  alias gp "git push; or git push --set-upstream origin `git rev-parse --abbrev-ref HEAD`"
   alias gs "git status"
 
 # Python
