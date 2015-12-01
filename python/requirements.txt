@@ -1,1 +1,3 @@
-flake8==2.5.0
+beemodoro==1.2.0
+pyflakes==1.0.0
+virtualenv==13.1.2
