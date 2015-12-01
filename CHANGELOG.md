@@ -6,12 +6,19 @@ semantic versioning.
 
 ### Added
 
+- RVM script to fish shell
 - Local bin folder
 - Bootstrap script handles pip3 config
 
 ### Fixed
 
 - Ignore fish read history in git
+- Broken backticks in `gp`
+
+### Modified
+
+- Use expect to install nvim plugins
+- Use Skim app in `~/.latexmkrc`
 
 ## [4.0.0] - 2015-11-09
 
