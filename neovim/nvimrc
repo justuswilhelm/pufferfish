@@ -12,7 +12,6 @@
     Plug 'jaxbot/semantic-highlight.vim'
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'rizzatti/dash.vim'
-    Plug 'lervag/vimtex'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
@@ -92,7 +91,7 @@
   set foldmethod=indent
   set foldlevelstart=2
   set foldminlines=2
-  set conceallevel=0 " srsly? tex? why?
+  let g:tex_conceal = "" "Has to be one of the most annoying things ever
 
 " Use system clipboard
   set clipboard=unnamed
@@ -117,6 +116,7 @@
   " 'shiftwidth' value unless it is zero, in which case it is the
   " 'tabstop' value.
   set shiftwidth=0
+  let g:tex_indent_brace=0
 
 " Matching
   set ignorecase
