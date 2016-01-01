@@ -7,5 +7,6 @@ function webcheck
   for path in $PATHS
     echo -ne "http://$argv[1]/$path "
   end | \
-  xargs -P16 -n1 curl -IL -so /dev/null -w "%{url_effective}: %{http_code}\n"
+  xargs -P16 -n1 curl -fIL -so /dev/null -w "%{url_effective}: %{http_code}\n"
+  return $status
 end
