@@ -5,10 +5,7 @@
 
     " Syntax plugings
     Plug 'dag/vim-fish'
-    Plug 'wting/rust.vim'
-    Plug 'elixir-lang/vim-elixir'
     Plug 'hylang/vim-hy'
-    Plug 'vim-scripts/django.vim'
     Plug 'jaxbot/semantic-highlight.vim'
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'rizzatti/dash.vim'
