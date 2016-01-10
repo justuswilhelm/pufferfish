@@ -22,7 +22,7 @@ alias hosts "sudo vim /etc/hosts"
 alias latexmk "latexmk -pdf -pvc"
 alias ssh-x "ssh -c arcfour,blowfish-cbc -XC"
 alias vim "nvim"
-alias dotfiles "pushd; cd ~/.dotfiles"
+alias dotfiles "cd ~/.dotfiles"
 
 # Homebrew
 set PATH $PATH /usr/local/bin:/usr/local/sbin
