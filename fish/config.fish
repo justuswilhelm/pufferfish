@@ -8,7 +8,6 @@ alias gd "git diff"
 alias gdc "git diff --cached"
 alias gl "git log"
 alias gm "git commit"
-alias gma "git commit --amend"
 alias gs "git status"
 
 # Python
@@ -18,7 +17,6 @@ alias s_env "source env/bin/activate.fish"
 
 # Other
 # =====
-alias hosts "sudo vim /etc/hosts"
 alias latexmk "latexmk -pdf -pvc"
 alias ssh-x "ssh -c arcfour,blowfish-cbc -XC"
 alias vim "nvim"
