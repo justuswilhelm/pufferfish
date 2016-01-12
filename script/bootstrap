@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
-grep -e 'fish' /etc/shells > /dev/null || (echo "Please install fish and add it to /etc/shells"; exit 1)
-
-script/bootstrap.fish
+if grep -e 'fish' /etc/shells > /dev/null
+then
+  script/bootstrap.fish
+else
+  echo "Please install fish and add it to /etc/shells"; exit 1
+fi
