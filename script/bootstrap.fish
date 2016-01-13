@@ -14,6 +14,7 @@ function symlinks
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
   ln -sf "$DOTFILES/neovim/nvim" "$HOME/.nvim"
   ln -sf "$DOTFILES/neovim/nvimrc" "$HOME/.nvimrc"
+  ln -sf "$DOTFILES/brewfile" "$HOME/.brewfile"
   # XXX fix this bug
   rm $DOTFILES/fish/fish
   rm $DOTFILES/neovim/nvim/nvim

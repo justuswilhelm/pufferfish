@@ -1,0 +1,176 @@
+# tap repositories and their packages
+
+tap caskroom/cask
+brew brew-cask
+cask appcleaner
+cask balsamiq-mockups
+cask coconutbattery
+cask cool-retro-term
+cask google-chrome
+cask java
+cask osxfuse
+cask skim
+cask skype
+cask torbrowser
+cask uninstallpkg
+cask vagrant
+cask virtualbox
+
+tap caskroom/versions
+cask iterm2-nightly
+
+tap homebrew/science
+brew kmc
+
+tap homebrew/tex
+
+tap homebrew/x11
+brew zenity
+
+tap jlhonora/lsusb
+
+tap neovim/neovim
+brew neovim
+
+tap rcmdnk/file
+brew brew-file
+
+# Other Homebrew packages
+brew afl-fuzz
+brew ansible
+brew aspell
+brew atk
+brew autoconf
+brew autojump
+brew automake
+brew awscli
+brew bchunk
+brew bdw-gc
+brew cabextract
+brew cairo
+brew cctools
+brew cmake
+brew cowsay
+brew d-bus
+brew dbus-glib
+brew dhex
+brew docbook
+brew elixir
+brew erlang
+brew espeak
+brew fish
+brew flac
+brew fontconfig --universal
+brew freetype --universal --universal
+brew gcc
+brew gd --universal
+brew gdbm
+brew gdk-pixbuf
+brew gettext
+brew git
+brew glew
+brew glib
+brew gmp
+brew gnome-doc-utils
+brew gnu-indent
+brew gnupg
+brew gnuplot
+brew gnutls
+brew gobject-introspection
+brew graphviz
+brew gsettings-desktop-schemas
+brew gtk+3
+brew harfbuzz
+brew heroku-toolbelt
+brew hicolor-icon-theme
+brew httrack
+brew icu4c
+brew imagemagick --with-x11 --with-x11
+brew irssi
+brew isl
+brew jasper --universal
+brew jpeg --universal
+brew jq
+brew lame
+brew libepoxy
+brew libevent
+brew libffi
+brew libgit2
+brew libgpg-error
+brew libgphoto2 --universal --universal --universal
+brew libicns --universal
+brew libksba
+brew libmpc
+brew libogg
+brew libpng --universal --universal
+brew libssh2
+brew libtasn1
+brew libtiff --universal --universal --universal
+brew libtool --universal
+brew libunistring
+brew libusb --universal --universal
+brew libusb-compat --universal
+brew libvo-aacenc
+brew libvorbis
+brew libxml2 --with-python --with-python
+brew libyaml
+brew little-cms2 --universal
+brew lua
+brew lynx
+brew mad
+brew makedepend
+brew maven
+brew mercurial
+brew mpfr
+brew msmtp
+brew mysql
+brew nmap
+brew node
+brew oniguruma
+brew openssl --universal --universal --universal --universal
+brew p0f
+brew p7zip
+brew pandoc
+brew pango
+brew pcre
+brew pixman
+brew pkg-config
+brew portaudio
+brew postgresql
+brew pv
+brew py3cairo
+brew pypy
+brew python3
+brew racket
+brew readline
+brew redis
+brew rust
+brew sane-backends --universal
+brew sbcl
+brew scrollkeeper
+brew sdl2
+brew sfml
+brew shellcheck
+brew sip
+brew sox
+brew sqlite
+brew ssh-copy-id
+brew tmux
+brew tree
+brew unixodbc
+brew unrar
+brew w3m
+brew watch
+brew webp
+brew wget
+brew wrk
+brew wxmac
+brew x264
+brew xvid
+brew xz
+brew youtube-dl
+
+# App Store applications
+appstore BetterSnapTool
+appstore Dash
+appstore Numbers
