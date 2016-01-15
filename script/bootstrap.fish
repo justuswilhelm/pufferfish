@@ -14,7 +14,7 @@ function symlinks
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
   ln -sf "$DOTFILES/neovim/nvim" "$HOME/.nvim"
   ln -sf "$DOTFILES/neovim/nvimrc" "$HOME/.nvimrc"
-  ln -sf "$DOTFILES/brewfile" "$HOME/.brewfile"
+  ln -sf "$DOTFILES/brewfile_dir" "$HOME/.brewfile"
   # XXX fix this bug
   rm $DOTFILES/fish/fish
   rm $DOTFILES/neovim/nvim/nvim
@@ -52,8 +52,17 @@ function check_dependencies
   end
 end
 
+function brew_config
+  if not type brew > /dev/null ^&1
+    echo "No brew installed"
+    return 0
+  end
+  brew file install
+end
+
+nvim_config
 chsh
 symlinks
 git_config
-nvim_config
 python_config
+brew_config
