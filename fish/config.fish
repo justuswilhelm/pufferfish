@@ -12,13 +12,11 @@ alias gs "git status"
 
 # Python
 # ======
-alias pip_install "pip install -r requirements.txt"
-alias s_env "source env/bin/activate.fish"
+alias pi "pip install -r requirements.txt"
+alias se "source env/bin/activate.fish"
 
 # Other
 # =====
-alias latexmk "latexmk -pdf -pvc"
-alias ssh-x "ssh -c arcfour,blowfish-cbc -XC"
 alias vim "nvim"
 alias dotfiles "cd ~/.dotfiles"
 
