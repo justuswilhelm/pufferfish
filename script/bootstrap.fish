@@ -56,7 +56,11 @@ function brew_config
     echo "No brew installed"
     return 0
   end
+  brew update
+  brew upgrade
   brew file install
+  brew cleanup
+  brew cask cleanup
 end
 
 nvim_config

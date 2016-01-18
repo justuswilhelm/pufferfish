@@ -16,9 +16,6 @@ cask uninstallpkg
 cask vagrant
 cask virtualbox
 
-tap caskroom/versions
-cask iterm2-nightly
-
 tap homebrew/science
 brew kmc
 
