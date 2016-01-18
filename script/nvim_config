@@ -1,4 +1,0 @@
-#!/usr/bin/env expect
-set timeout 20
-spawn nvim -c PlugInstall
-expect "Done!"
