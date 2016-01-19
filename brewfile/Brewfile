@@ -19,7 +19,9 @@ brew brew-file
 # Other Homebrew packages
 brew ansible
 brew aspell
+brew fish
 brew imagemagick --with-x11 --with-x11
+brew neovim
 brew youtube-dl
 
 # App Store applications
