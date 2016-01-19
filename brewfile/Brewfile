@@ -6,10 +6,8 @@ cask appcleaner
 cask balsamiq-mockups
 cask coconutbattery
 cask google-chrome
-cask java
 cask osxfuse
 cask skype
-cask vagrant
 cask virtualbox
 
 tap neovim/neovim
@@ -21,110 +19,7 @@ brew brew-file
 # Other Homebrew packages
 brew ansible
 brew aspell
-brew autoconf
-brew autojump
-brew automake
-brew awscli
-brew cmake
-brew d-bus
-brew dbus-glib
-brew dhex
-brew elixir
-brew erlang
-brew fish
-brew gcc
-brew gettext
-brew git
-brew glib
-brew gmp
-brew gnome-doc-utils
-brew gnu-indent
-brew gnupg
-brew gnuplot
-brew gnutls
-brew gobject-introspection
-brew graphviz
-brew gsettings-desktop-schemas
-brew gtk+3
-brew harfbuzz
-brew heroku-toolbelt
-brew hicolor-icon-theme
-brew httrack
-brew icu4c
 brew imagemagick --with-x11 --with-x11
-brew irssi
-brew isl
-brew jasper --universal
-brew jpeg --universal
-brew lame
-brew libepoxy
-brew libevent
-brew libffi
-brew libgit2
-brew libgpg-error
-brew libgphoto2 --universal --universal --universal
-brew libicns --universal
-brew libksba
-brew libmpc
-brew libogg
-brew libpng --universal --universal
-brew libssh2
-brew libtasn1
-brew libtiff --universal --universal --universal
-brew libtool --universal
-brew libunistring
-brew libusb --universal --universal
-brew libusb-compat --universal
-brew libvo-aacenc
-brew libvorbis
-brew libxml2 --with-python --with-python
-brew libyaml
-brew mad
-brew makedepend
-brew maven
-brew mercurial
-brew mpfr
-brew msmtp
-brew mysql
-brew nmap
-brew node
-brew oniguruma
-brew openssl --universal --universal --universal --universal
-brew p0f
-brew p7zip
-brew pandoc
-brew pango
-brew pcre
-brew pixman
-brew pkg-config
-brew portaudio
-brew postgresql
-brew pv
-brew py3cairo
-brew python3
-brew redis
-brew rust
-brew sane-backends --universal
-brew sbcl
-brew scrollkeeper
-brew sdl2
-brew sfml
-brew shellcheck
-brew sip
-brew sox
-brew sqlite
-brew ssh-copy-id
-brew tmux
-brew tree
-brew unixodbc
-brew unrar
-brew webp
-brew wget
-brew wrk
-brew wxmac
-brew x264
-brew xvid
-brew xz
 brew youtube-dl
 
 # App Store applications
