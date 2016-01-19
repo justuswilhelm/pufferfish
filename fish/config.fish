@@ -19,6 +19,7 @@ alias se "source env/bin/activate.fish"
 # =====
 alias vim "nvim"
 alias dotfiles "cd ~/.dotfiles"
+alias bf "nvim ~/.brewfile"
 
 # Homebrew
 set PATH $PATH /usr/local/bin:/usr/local/sbin
