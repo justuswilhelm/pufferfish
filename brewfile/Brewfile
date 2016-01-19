@@ -5,26 +5,12 @@ brew brew-cask
 cask appcleaner
 cask balsamiq-mockups
 cask coconutbattery
-cask cool-retro-term
 cask google-chrome
 cask java
 cask osxfuse
-cask skim
 cask skype
-cask torbrowser
-cask uninstallpkg
 cask vagrant
 cask virtualbox
-
-tap homebrew/science
-brew kmc
-
-tap homebrew/tex
-
-tap homebrew/x11
-brew zenity
-
-tap jlhonora/lsusb
 
 tap neovim/neovim
 brew neovim
@@ -33,39 +19,22 @@ tap rcmdnk/file
 brew brew-file
 
 # Other Homebrew packages
-brew afl-fuzz
 brew ansible
 brew aspell
-brew atk
 brew autoconf
 brew autojump
 brew automake
 brew awscli
-brew bchunk
-brew bdw-gc
-brew cabextract
-brew cairo
-brew cctools
 brew cmake
-brew cowsay
 brew d-bus
 brew dbus-glib
 brew dhex
-brew docbook
 brew elixir
 brew erlang
-brew espeak
 brew fish
-brew flac
-brew fontconfig --universal
-brew freetype --universal --universal
 brew gcc
-brew gd --universal
-brew gdbm
-brew gdk-pixbuf
 brew gettext
 brew git
-brew glew
 brew glib
 brew gmp
 brew gnome-doc-utils
@@ -87,7 +56,6 @@ brew irssi
 brew isl
 brew jasper --universal
 brew jpeg --universal
-brew jq
 brew lame
 brew libepoxy
 brew libevent
@@ -111,9 +79,6 @@ brew libvo-aacenc
 brew libvorbis
 brew libxml2 --with-python --with-python
 brew libyaml
-brew little-cms2 --universal
-brew lua
-brew lynx
 brew mad
 brew makedepend
 brew maven
@@ -136,10 +101,7 @@ brew portaudio
 brew postgresql
 brew pv
 brew py3cairo
-brew pypy
 brew python3
-brew racket
-brew readline
 brew redis
 brew rust
 brew sane-backends --universal
@@ -156,8 +118,6 @@ brew tmux
 brew tree
 brew unixodbc
 brew unrar
-brew w3m
-brew watch
 brew webp
 brew wget
 brew wrk

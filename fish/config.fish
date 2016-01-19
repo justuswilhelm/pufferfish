@@ -22,6 +22,7 @@ alias dotfiles "cd ~/.dotfiles"
 
 # Homebrew
 set PATH $PATH /usr/local/bin:/usr/local/sbin
+set -x HOMEBREW_BREWFILE $HOME/.brewfile
 
 # Heroku toolbelt
 set PATH $PATH /usr/local/heroku/bin
