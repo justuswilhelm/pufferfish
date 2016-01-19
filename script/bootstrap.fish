@@ -13,7 +13,7 @@ function symlinks
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
   ln -sf "$DOTFILES/neovim/nvim" "$HOME/.nvim"
   ln -sf "$DOTFILES/neovim/nvimrc" "$HOME/.nvimrc"
-  ln -sf "$DOTFILES/brewfile_dir" "$HOME/.brewfile"
+  ln -sf "$DOTFILES/brewfile/Brewfile" "$HOME/.brewfile"
   # XXX fix this bug
   rm $DOTFILES/fish/fish
   rm $DOTFILES/neovim/nvim/nvim
@@ -56,9 +56,9 @@ function brew_config
     echo "No brew installed"
     return 0
   end
-  brew update
+  brew file install --preupdate
+  brew file clean -C
   brew upgrade
-  brew file install
   brew cleanup
   brew cask cleanup
 end
