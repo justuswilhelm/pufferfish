@@ -1,5 +1,5 @@
 " Vim-Plug
-  call plug#begin('~/.nvim/plugged')
+  call plug#begin('~/.config/nvim/plugged')
     " File handling
     Plug 'kien/ctrlp.vim'
 
@@ -131,5 +131,5 @@
 
 
 " Customize Backup Dir location
-  set backupdir=~/.nvim/backup/
-  set directory=~/.nvim/swap/
+  set backupdir=~/.config/nvim/backup/
+  set directory=~/.config/nvim/swap/

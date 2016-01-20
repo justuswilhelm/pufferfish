@@ -20,9 +20,20 @@ brew brew-file
 brew ansible
 brew aspell
 brew fish
+brew gettext
 brew imagemagick --with-x11 --with-x11
 brew neovim
+brew python
+brew python3
 brew youtube-dl
+
+#
+brew gdbm
+brew openssl
+brew readline
+brew sqlite
+brew xz
+
 
 # App Store applications
 appstore BetterSnapTool
