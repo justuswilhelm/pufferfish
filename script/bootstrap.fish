@@ -9,14 +9,12 @@ end
 
 function symlinks
   mkdir -p "$HOME/.config/"
+  ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
   ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
-  ln -sf "$DOTFILES/neovim/nvim" "$HOME/.nvim"
-  ln -sf "$DOTFILES/neovim/nvimrc" "$HOME/.nvimrc"
   ln -sf "$DOTFILES/brewfile/Brewfile" "$HOME/.brewfile"
   # XXX fix this bug
   rm $DOTFILES/fish/fish
-  rm $DOTFILES/neovim/nvim/nvim
 end
 
 function chsh
