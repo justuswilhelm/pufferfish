@@ -55,7 +55,6 @@ function brew_config
     return 0
   end
   brew file install --preupdate
-  brew file clean -C
   brew upgrade
   brew cleanup
   brew cask cleanup
