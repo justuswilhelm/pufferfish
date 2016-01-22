@@ -21,8 +21,10 @@ brew ansible
 brew aspell
 brew fish
 brew gettext
+brew heroku-toolbelt
 brew imagemagick --with-x11 --with-x11
 brew neovim
+brew postgresql
 brew python
 brew python3
 brew youtube-dl
