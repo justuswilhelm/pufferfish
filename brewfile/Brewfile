@@ -27,6 +27,7 @@ brew neovim
 brew postgresql
 brew python
 brew python3
+brew tree
 brew youtube-dl
 
 #
