@@ -68,7 +68,7 @@
 
 " Syntastic
   let g:syntastic_html_checkers=[]
-  let g:syntastic_python_checkers=['flake8']
+  let g:syntastic_python_checkers=['flake8', 'pep257']
 
 " Show unprintable characters
   set list
