@@ -1,3 +1,3 @@
 function rmenv
-	rm -rf env/
+    rm -rf env/
 end

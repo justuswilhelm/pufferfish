@@ -1,3 +1,3 @@
 function e
-  nvim $argv
+    nvim $argv
 end
