@@ -1,3 +1,3 @@
 function available
-	whois $argv | grep "No match"
+    whois $argv | grep "No match"
 end
