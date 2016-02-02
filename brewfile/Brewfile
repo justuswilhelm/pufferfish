@@ -1,43 +1,34 @@
 # tap repositories and their packages
 
-tap caskroom/cask
-brew brew-cask
-cask appcleaner
-cask balsamiq-mockups
-cask coconutbattery
-cask google-chrome
-cask osxfuse
-cask skype
-cask virtualbox
+tap 'caskroom/cask'
+brew 'brew-cask'
+cask 'appcleaner'
+cask 'grandperspective'
+cask 'google-chrome'
+cask 'osxfuse'
+cask 'skype'
+cask 'virtualbox'
 
-tap neovim/neovim
-brew neovim
-
-tap rcmdnk/file
-brew brew-file
+tap 'neovim/neovim'
+brew 'neovim'
 
 # Other Homebrew packages
-brew ansible
-brew aspell
-brew fish
-brew gettext
-brew heroku-toolbelt
-brew imagemagick --with-x11 --with-x11
-brew neovim
-brew postgresql
-brew python
-brew python3
-brew tree
-brew youtube-dl
+brew 'ansible'
+brew 'aspell'
+brew 'fish'
+brew 'gettext'
+brew 'heroku-toolbelt'
+brew 'imagemagick'
+brew 'neovim'
+brew 'postgresql'
+brew 'python'
+brew 'python3'
+brew 'tree'
+brew 'youtube-dl'
 
 #
-brew gdbm
-brew openssl
-brew readline
-brew sqlite
-brew xz
-
-
-# App Store applications
-appstore Dash
-appstore Numbers
+brew 'gdbm'
+brew 'openssl'
+brew 'readline'
+brew 'sqlite'
+brew 'xz'
