@@ -13,14 +13,12 @@ function symlinks
   ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
   ln -sf "$DOTFILES/brewfile/Brewfile" "$HOME/.brewfile"
-  # XXX fix this bug
-  rm $DOTFILES/fish/fish
 end
 
 function chsh
   set FISH_PATH (which fish)
   if [ $SHELL != $FISH_PATH ]
-    chsh -s $FISH_PATH
+    sudo chsh -s $FISH_PATH
   end
 end
 
@@ -43,23 +41,27 @@ function check_dependencies
     exit 1
   end
 
+  if not type brew > /dev/null ^&1
+    echo "No brew installed, run"
+    echo "/usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
+    exit 1
+  end
+
   if not type pip3 > /dev/null ^&1
     echo "Install a global python3-pip"
+    echo "brew install python3"
     exit 1
   end
 end
 
 function brew_config
-  if not type brew > /dev/null ^&1
-    echo "No brew installed"
-    return 0
-  end
-  brew file install --preupdate
-  brew upgrade
+  brew tap "Homebrew\bundle"
+  brew bundle --global
   brew cleanup
   brew cask cleanup
 end
 
+check_dependencies
 nvim_config
 chsh
 symlinks
