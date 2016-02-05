@@ -23,12 +23,6 @@ brew 'neovim'
 brew 'postgresql'
 brew 'python'
 brew 'python3'
+brew 'tmux'
 brew 'tree'
 brew 'youtube-dl'
-
-#
-brew 'gdbm'
-brew 'openssl'
-brew 'readline'
-brew 'sqlite'
-brew 'xz'
