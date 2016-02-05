@@ -8,6 +8,7 @@ cask 'google-chrome'
 cask 'osxfuse'
 cask 'skype'
 cask 'virtualbox'
+cask 'wireshark'
 
 tap 'neovim/neovim'
 brew 'neovim'
