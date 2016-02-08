@@ -40,10 +40,6 @@ set PATH $PATH /usr/local/texlive/2014basic/bin/x86_64-darwin/
 # Local Bin
 set PATH $PATH $HOME/bin
 
-if [ -f /usr/local/share/autojump/autojump.fish ]
-    source /usr/local/share/autojump/autojump.fish
-end
-
 if isatty
     cd .
 end
