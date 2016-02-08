@@ -8,19 +8,24 @@ alias gd "git diff"
 alias gdc "git diff --cached"
 alias gl "git log"
 alias gm "git commit"
+alias gmm "git commit -m"
 alias gs "git status"
 
 # Python
 # ======
 alias pi "pip install -r requirements.txt"
 alias se "source env/bin/activate.fish"
+alias doctest "python -m doctest"
 
 # Other
 # =====
 alias vim "nvim"
 alias dotfiles "cd ~/.dotfiles"
 alias bf "nvim ~/.brewfile"
+alias o "open"
 
+# Paths
+# =====
 # Homebrew
 set PATH $PATH /usr/local/bin:/usr/local/sbin
 set -x HOMEBREW_BREWFILE $HOME/.brewfile
