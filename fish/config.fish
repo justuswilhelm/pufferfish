@@ -23,6 +23,7 @@ alias vim "nvim"
 alias dotfiles "cd ~/.dotfiles"
 alias bf "nvim ~/.brewfile"
 alias o "open"
+alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
 
 # Paths
 # =====
