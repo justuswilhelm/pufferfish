@@ -12,7 +12,7 @@ function symlinks
   ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
   ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
-  ln -sf "$DOTFILES/brewfile/Brewfile" "$HOME/.brewfile"
+  ln -sf "$DOTFILES/misc/brewfile" "$HOME/.brewfile"
 end
 
 function chsh
