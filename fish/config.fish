@@ -8,13 +8,16 @@ alias gd "git diff"
 alias gdc "git diff --cached"
 alias gl "git log"
 alias gm "git commit"
+alias gme "git merge"
 alias gmm "git commit -m"
+alias gr "git remote"
 alias gs "git status"
 
 # Python
 # ======
 alias pi "pip install -r requirements.txt"
 alias se "source env/bin/activate.fish"
+alias pm "python -m"
 alias doctest "python -m doctest"
 
 # Other
