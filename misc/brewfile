@@ -1,21 +1,9 @@
-# tap repositories and their packages
-
 tap 'caskroom/cask'
-brew 'brew-cask'
-cask 'appcleaner'
-cask 'grandperspective'
-cask 'google-chrome'
-cask 'osxfuse'
-cask 'skype'
-cask 'virtualbox'
-cask 'wireshark'
-
 tap 'neovim/neovim'
-brew 'neovim'
 
-# Other Homebrew packages
 brew 'ansible'
 brew 'aspell'
+brew 'brew-cask'
 brew 'fish'
 brew 'gettext'
 brew 'heroku-toolbelt'
@@ -27,3 +15,12 @@ brew 'python3'
 brew 'tmux'
 brew 'tree'
 brew 'youtube-dl'
+
+cask 'appcleaner'
+cask 'google-chrome'
+cask 'grandperspective'
+cask 'osxfuse'
+cask 'skype'
+cask 'torbrowser'
+cask 'virtualbox'
+cask 'wireshark'
