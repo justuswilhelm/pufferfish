@@ -55,7 +55,7 @@ function check_dependencies
 end
 
 function brew_config
-  brew tap "Homebrew\bundle"
+  brew tap "homebrew/bundle"
   brew bundle --global
   brew cleanup
   brew cask cleanup
