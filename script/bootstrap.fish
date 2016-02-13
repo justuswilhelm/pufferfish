@@ -61,6 +61,13 @@ function brew_config
   brew cask cleanup
 end
 
+function darwin_config
+  if uname | grep Darwin > /dev/null
+    # disable mouse scaling
+    defaults write .GlobalPreferences com.apple.mouse.scaling -1
+  end
+end
+
 check_dependencies
 nvim_config
 chsh
@@ -68,3 +75,4 @@ symlinks
 git_config
 python_config
 brew_config
+darwin_config
