@@ -11,6 +11,7 @@ function symlinks
   mkdir -p "$HOME/.config/"
   ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
   ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
+  rm "$DOTFILES/fish/fish"
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
   ln -sf "$DOTFILES/misc/brewfile" "$HOME/.brewfile"
 end
