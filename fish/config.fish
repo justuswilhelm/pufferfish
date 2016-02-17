@@ -2,6 +2,7 @@
 # ===
 alias changelog "git commit CHANGELOG.md -m 'DOC: Update Changelog'"
 alias ga "git add"
+alias gaa "git add -A"
 alias gap "git add -p"
 alias gc "git checkout"
 alias gd "git diff"
