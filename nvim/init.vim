@@ -9,6 +9,7 @@
     Plug 'jaxbot/semantic-highlight.vim'
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'rizzatti/dash.vim'
+    Plug 'niklasl/vim-rdf'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'

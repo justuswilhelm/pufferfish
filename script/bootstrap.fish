@@ -11,16 +11,15 @@ function symlinks
   mkdir -p "$HOME/.config/"
   ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
   ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
+  rm "$DOTFILES/fish/fish"
   ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
-  ln -sf "$DOTFILES/brewfile/Brewfile" "$HOME/.brewfile"
-  # XXX fix this bug
-  rm $DOTFILES/fish/fish
+  ln -sf "$DOTFILES/misc/brewfile" "$HOME/.brewfile"
 end
 
 function chsh
   set FISH_PATH (which fish)
   if [ $SHELL != $FISH_PATH ]
-    chsh -s $FISH_PATH
+    sudo chsh -s $FISH_PATH
   end
 end
 
@@ -43,26 +42,38 @@ function check_dependencies
     exit 1
   end
 
+  if not type brew > /dev/null ^&1
+    echo "No brew installed, run"
+    echo "/usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
+    exit 1
+  end
+
   if not type pip3 > /dev/null ^&1
     echo "Install a global python3-pip"
+    echo "brew install python3"
     exit 1
   end
 end
 
 function brew_config
-  if not type brew > /dev/null ^&1
-    echo "No brew installed"
-    return 0
-  end
-  brew file install --preupdate
-  brew upgrade
+  brew tap "homebrew/bundle"
+  brew bundle --global
   brew cleanup
   brew cask cleanup
 end
 
+function darwin_config
+  if uname | grep Darwin > /dev/null
+    # disable mouse scaling
+    defaults write .GlobalPreferences com.apple.mouse.scaling -1
+  end
+end
+
+check_dependencies
 nvim_config
 chsh
 symlinks
 git_config
 python_config
 brew_config
+darwin_config
