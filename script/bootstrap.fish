@@ -1,5 +1,6 @@
 #!/usr/bin/env fish
 set DOTFILES $HOME/.dotfiles
+set XDG_CONFIG_HOME $HOME/.config
 
 function nvim_config
   # Fix wait for plugged to allow synchronous installation.
@@ -8,14 +9,14 @@ function nvim_config
 end
 
 function symlinks
-  mkdir -p "$HOME/.config/"
-  for path in "nvim" "fish"
-    ln -sfv "$DOTFILES/$path" "$HOME/.config/"
+  echo $XDG_CONFIG_HOME
+  mkdir -pv $XDG_CONFIG_HOME
+  for path in "fish" "nvim"
+    ln -sfv "$DOTFILES/$path" $XDG_CONFIG_HOME
   end
   for path in "latexmkrc" "brewfile"
-    ln -sfv "$DOTFILES/$path" "$HOME/.config/"
+    ln -fv "$DOTFILES/misc/$path" $HOME/.$path
   end
-  ln -sf "$DOTFILES/misc/$path" "$HOME/.$path"
 end
 
 function chsh
