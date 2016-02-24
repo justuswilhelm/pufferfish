@@ -9,11 +9,13 @@ end
 
 function symlinks
   mkdir -p "$HOME/.config/"
-  ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
-  ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
-  rm "$DOTFILES/fish/fish"
-  ln -sf "$DOTFILES/misc/latexmkrc" "$HOME/.latexmkrc"
-  ln -sf "$DOTFILES/misc/brewfile" "$HOME/.brewfile"
+  for path in "nvim" "fish"
+    ln -sfv "$DOTFILES/$path" "$HOME/.config/"
+  end
+  for path in "latexmkrc" "brewfile"
+    ln -sfv "$DOTFILES/$path" "$HOME/.config/"
+  end
+  ln -sf "$DOTFILES/misc/$path" "$HOME/.$path"
 end
 
 function chsh
