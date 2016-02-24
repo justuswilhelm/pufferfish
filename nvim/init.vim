@@ -127,6 +127,9 @@
 " Color Stuff
   set background=dark
   colorscheme solarized
+  let g:solarized_termcolors=256
+  hi Normal ctermbg=none
+
 
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
