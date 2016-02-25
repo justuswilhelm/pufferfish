@@ -22,7 +22,7 @@ end
 
 function chsh
   set FISH_PATH (which fish)
-  if [ $SHELL != $FISH_PATH ]
+  if [ (finger $USER | grep Shell: | tr ' ' '\n' | tail -n1) != $FISH_PATH ]
     sudo chsh -s $FISH_PATH
   end
 end
@@ -46,10 +46,12 @@ function check_dependencies
     exit 1
   end
 
-  if uname | grep Darwin > /dev/null; and not type brew > /dev/null ^&1
-    echo "No brew installed, run"
-    echo "/usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
-    exit 1
+  if uname | grep Darwin > /dev/null
+    if not type brew > /dev/null ^&1
+      echo "No brew installed, run"
+      echo "/usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
+      exit 1
+    end
   end
 
   if not type pip3 > /dev/null ^&1
