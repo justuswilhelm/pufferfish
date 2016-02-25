@@ -11,6 +11,7 @@ end
 function symlinks
   echo $XDG_CONFIG_HOME
   mkdir -pv $XDG_CONFIG_HOME
+  rm -rf "$XDG_CONFIG_HOME/fish"
   for path in "fish" "nvim"
     ln -sfv "$DOTFILES/$path" $XDG_CONFIG_HOME
   end
@@ -45,7 +46,7 @@ function check_dependencies
     exit 1
   end
 
-  if not type brew > /dev/null ^&1
+  if uname | grep Darwin > /dev/null; and not type brew > /dev/null ^&1
     echo "No brew installed, run"
     echo "/usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
     exit 1
@@ -67,6 +68,7 @@ end
 
 function darwin_config
   if uname | grep Darwin > /dev/null
+    brew_config
     # disable mouse scaling
     defaults write .GlobalPreferences com.apple.mouse.scaling -1
   end
@@ -78,5 +80,4 @@ chsh
 symlinks
 git_config
 python_config
-brew_config
 darwin_config
