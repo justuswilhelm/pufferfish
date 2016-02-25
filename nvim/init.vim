@@ -125,7 +125,7 @@
   set hlsearch
 
 " Color Stuff
-  set background=dark
+  set background=light
   colorscheme solarized
   let g:solarized_termcolors=256
   hi Normal ctermbg=none
