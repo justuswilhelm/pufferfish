@@ -15,7 +15,7 @@ function symlinks
   for path in "fish" "nvim"
     ln -sfv "$DOTFILES/$path" $XDG_CONFIG_HOME
   end
-  for path in "latexmkrc" "brewfile"
+  for path in "latexmkrc" "brewfile" "tmux.conf"
     ln -fv "$DOTFILES/misc/$path" $HOME/.$path
   end
 end
