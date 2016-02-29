@@ -36,8 +36,16 @@ function git_config
   git submodule update --init
 end
 
+
 function python_config
+  if set -q VIRTUAL_ENV
+    set -l _VIRTUAL_ENV $VIRTUAL_ENV
+    set -e VIRTUAL_ENV
+  end
   pip3 install -r $DOTFILES/python/requirements.txt
+  if set -q _VIRTUAL_ENV
+    set -l VIRTUAL_ENV $_VIRTUAL_ENV
+  end
 end
 
 function npm_packages
@@ -73,11 +81,13 @@ function brew_config
 end
 
 function darwin_config
-  if uname | grep Darwin > /dev/null
-    brew_config
-    # disable mouse scaling
-    defaults write .GlobalPreferences com.apple.mouse.scaling -1
+  if not uname | grep Darwin > /dev/null
+    return
   end
+  brew_config
+
+  # disable mouse scaling
+  defaults write .GlobalPreferences com.apple.mouse.scaling -1
 end
 
 check_dependencies
@@ -86,5 +96,5 @@ nvim_config
 chsh
 symlinks
 git_config
-python_config
 darwin_config
+python_config
