@@ -45,6 +45,6 @@ set PATH $PATH /usr/local/texlive/2014basic/bin/x86_64-darwin/
 set PATH $PATH $HOME/bin
 
 if status --is-interactive --is-login
-  cd .
+    cd .
 end
 export TERM="xterm-256color"
