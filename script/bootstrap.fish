@@ -40,6 +40,10 @@ function python_config
   pip3 install -r $DOTFILES/python/requirements.txt
 end
 
+function npm_packages
+  npm -g install how2 jshint
+end
+
 function check_dependencies
   if not type nvim > /dev/null ^&1
     echo "Please install nvim"
@@ -77,6 +81,7 @@ function darwin_config
 end
 
 check_dependencies
+npm_packages
 nvim_config
 chsh
 symlinks
