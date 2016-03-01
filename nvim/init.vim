@@ -23,6 +23,7 @@
     " Text mangling
     Plug 'tpope/vim-surround'
     Plug 'kovisoft/paredit'
+    Plug 'fisadev/vim-isort'
     Plug 'easymotion/vim-easymotion'
 
     " Better text navigation
