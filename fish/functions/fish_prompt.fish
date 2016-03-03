@@ -18,7 +18,7 @@ function git_status
           end
         end
         set_color blue
-        echo -n ""(git name-rev --name-only --no-undefined --always HEAD)""
+        echo -n ""(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')""
         set_color normal
     end
 end
