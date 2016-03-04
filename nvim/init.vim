@@ -50,6 +50,8 @@
     nnoremap <Space> @q
     " Disable highlighting
     nnoremap <leader><space> :noh<cr>
+    " Syntastic
+    nnoremap <silent> <C-e> :<C-u>call ToggleErrors()<CR>
 
   " Matching
     nnoremap / /\v
