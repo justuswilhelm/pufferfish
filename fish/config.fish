@@ -44,4 +44,5 @@ set PATH $PATH $HOME/bin
 if status --is-interactive --is-login
     cd .
 end
-export TERM="xterm-256color"
+set -x TERM "xterm-256color"
+set -x EDITOR nvim
