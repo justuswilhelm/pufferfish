@@ -32,17 +32,14 @@ alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
 # Paths
 # =====
 # Homebrew
-set PATH $PATH /usr/local/bin:/usr/local/sbin
+for extra_path in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin"
+  set PATH $PATH $extra_path
+end
+
 set -x HOMEBREW_BREWFILE $HOME/.brewfile
+set -x TERM "xterm-256color"
+set -x EDITOR "nvim"
 
-# Heroku toolbelt
-set PATH $PATH /usr/local/heroku/bin
-
-# Local Bin
-set PATH $PATH $HOME/bin
-
-if status --is-interactive --is-login
+if status --is-interactive --is-login; or not set -q "TMUX"
     cd .
 end
-set -x TERM "xterm-256color"
-set -x EDITOR nvim
