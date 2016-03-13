@@ -40,6 +40,4 @@ set -x HOMEBREW_BREWFILE $HOME/.brewfile
 set -x TERM "xterm-256color"
 set -x EDITOR "nvim"
 
-if status --is-interactive --is-login; or not set -q "TMUX"
-    cd .
-end
+trap cols SIGWINCH
