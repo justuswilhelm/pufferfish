@@ -33,7 +33,7 @@ alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
 # =====
 # Homebrew
 for extra_path in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin"
-  set PATH $PATH $extra_path
+    set PATH $PATH $extra_path
 end
 
 set -x HOMEBREW_BREWFILE $HOME/.brewfile

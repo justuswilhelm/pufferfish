@@ -1,3 +1,3 @@
 function s
-	source env/bin/activate.fish
+    source env/bin/activate.fish
 end
