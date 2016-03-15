@@ -11,11 +11,11 @@ function git_status
             set_color normal
         end
         begin
-          set -l IFS ""
-          if test -n ""(git ls-files --others --exclude-standard)""
-            set_color green
-            echo -n "☆"
-          end
+            set -l IFS ""
+            if test -n ""(git ls-files --others --exclude-standard)""
+                set_color green
+                echo -n "☆"
+            end
         end
         set_color blue
         echo -n ""(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')""
