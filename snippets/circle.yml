@@ -1,0 +1,11 @@
+machine:
+  environment:
+    SECRET_KEY: CI
+  python:
+    version: 3.5.1
+
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: $APP_NAME

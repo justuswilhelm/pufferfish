@@ -1,6 +1,5 @@
 # Git
 # ===
-alias changelog "git commit CHANGELOG.md -m 'DOC: Update Changelog'"
 alias ga "git add"
 alias gaa "git add -A"
 alias gap "git add -p"
@@ -12,6 +11,7 @@ alias gm "git commit"
 alias gme "git merge"
 alias gmm "git commit -m"
 alias gr "git remote"
+alias grs "git reset --soft HEAD~1"
 alias gs "git status"
 
 # Python
@@ -23,6 +23,8 @@ alias doctest "python -m doctest"
 
 # Other
 # =====
+alias bi "brew install"
+alias binf "brew info"
 alias vim "nvim"
 alias dotfiles "cd ~/.dotfiles"
 alias bf "nvim ~/.brewfile"
@@ -32,12 +34,15 @@ alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
 # Paths
 # =====
 # Homebrew
-for extra_path in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin"
-    set PATH $PATH $extra_path
+set paths "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin"
+for p in paths
+    set PATH $PATH $p
 end
 
 set -x HOMEBREW_BREWFILE $HOME/.brewfile
 set -x TERM "xterm-256color"
 set -x EDITOR "nvim"
+set -x DOTFILES $HOME/.dotfiles
+set -x XDG_CONFIG_HOME $HOME/.config
 
 trap cols SIGWINCH
