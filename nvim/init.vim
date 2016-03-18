@@ -25,6 +25,7 @@
     Plug 'kovisoft/paredit'
     Plug 'fisadev/vim-isort'
     Plug 'easymotion/vim-easymotion'
+    Plug 'elentok/plaintasks.vim'
 
     " Better text navigation
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
