@@ -60,6 +60,7 @@
 
   " Young Padawan Mode
     inoremap jk <esc>
+    vnoremap jk <esc>
     inoremap <esc> <NOP>
     noremap <Up> <NOP>
     noremap <Down> <NOP>
