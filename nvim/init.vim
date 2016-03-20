@@ -37,22 +37,27 @@
   let mapleader = ','
   " Normal Mode
     " Netrw splits
-    nnoremap <C-n> :vs.<CR>
-    nnoremap <C-s> :sp.<CR>
-    nnoremap <C-l> :e.<CR>
+      nnoremap <C-n> :vs.<CR>
+      nnoremap <C-s> :sp.<CR>
+      nnoremap <C-l> :e.<CR>
+    " Append to end
+      nnoremap L $p
+      nnoremap K $pkJ
+    " Yank till end
+      nnoremap Y y$
     " Semantic Highlight
-    nnoremap <Leader>s :SemanticHighlightToggle<cr>
+      nnoremap <Leader>s :SemanticHighlightToggle<cr>
     " Smarter text navigation
-    nnoremap j gj
-    nnoremap k gk
+      nnoremap j gj
+      nnoremap k gk
     " Pinky pain
-    nore ; :
+      nore ; :
     " Run default macro
-    nnoremap <Space> @q
+      nnoremap <Space> @q
     " Disable highlighting
-    nnoremap <leader><space> :noh<cr>
+      nnoremap <leader><space> :noh<cr>
     " Syntastic
-    nnoremap <silent> <C-e> :<C-u>call ToggleErrors()<CR>
+      nnoremap <silent> <C-e> :<C-u>call ToggleErrors()<CR>
 
   " Matching
     nnoremap / /\v
