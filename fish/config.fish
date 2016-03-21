@@ -34,8 +34,7 @@ alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
 # Paths
 # =====
 # Homebrew
-set paths "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin"
-for p in paths
+for p in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin"
     set PATH $PATH $p
 end
 
