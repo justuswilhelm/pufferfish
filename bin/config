@@ -1,57 +1,4 @@
 #!/usr/bin/env fish
-set DOTFILES $HOME/.dotfiles
-set XDG_CONFIG_HOME $HOME/.config
-
-function nvim_config
-  # Fix wait for plugged to allow synchronous installation.
-  # See https://github.com/junegunn/vim-plug/issues/104
-  nvim +PlugInstall +qall
-end
-
-function symlinks
-  echo $XDG_CONFIG_HOME
-  mkdir -pv $XDG_CONFIG_HOME
-  rm -rf "$XDG_CONFIG_HOME/fish"
-  for path in "fish" "nvim"
-    ln -sfv "$DOTFILES/$path" $XDG_CONFIG_HOME
-  end
-  for path in "latexmkrc" "brewfile" "tmux.conf" "isort.cfg"
-    ln -fv "$DOTFILES/misc/$path" $HOME/.$path
-  end
-end
-
-function chsh
-  set FISH_PATH (which fish)
-  if [ (finger $USER | grep Shell: | tr ' ' '\n' | tail -n1) != $FISH_PATH ]
-    sudo chsh -s $FISH_PATH
-  end
-end
-
-function git_config
-  git config --global push.default simple
-  git config --global commit.template $DOTFILES/git/gitmessage
-  git config --global core.editor (which nvim)
-  git config --global core.excludesfile $DOTFILES/git/gitignore
-  git submodule init
-  git submodule update --init
-end
-
-
-function python_config
-  if set -q VIRTUAL_ENV
-    set -l _VIRTUAL_ENV $VIRTUAL_ENV
-    set -e VIRTUAL_ENV
-  end
-  pip3 install -r $DOTFILES/python/requirements.txt
-  if set -q _VIRTUAL_ENV
-    set -l VIRTUAL_ENV $_VIRTUAL_ENV
-  end
-end
-
-function npm_packages
-  npm -g install how2 jshint
-end
-
 function check_dependencies
   if not type nvim > /dev/null ^&1
     echo "Please install nvim"
@@ -73,28 +20,12 @@ function check_dependencies
   end
 end
 
-function brew_config
-  brew tap "homebrew/bundle"
-  brew bundle --global
-  brew cleanup
-  brew cask cleanup
-end
-
-function darwin_config
-  if not uname | grep Darwin > /dev/null
-    return
-  end
-  brew_config
-
-  # disable mouse scaling
-  defaults write .GlobalPreferences com.apple.mouse.scaling -1
-end
-
 check_dependencies
-npm_packages
-nvim_config
-chsh
-symlinks
-git_config
-darwin_config
-python_config
+config_npm
+config_symlinks
+config_brew
+config_darwin
+config_git
+config_nvim
+config_python
+config_shell
