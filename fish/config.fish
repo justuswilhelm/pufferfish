@@ -46,5 +46,5 @@ set -x XDG_CONFIG_HOME $HOME/.config
 
 trap cols SIGWINCH
 if not set -q TMUX
-  exec tmux
+    exec tmux
 end

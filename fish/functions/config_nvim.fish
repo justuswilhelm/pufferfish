@@ -1,3 +1,3 @@
 function config_nvim
-  nvim +PlugInstall +qall
+    nvim +PlugInstall +qall
 end
