@@ -8,5 +8,5 @@ function config_symlinks
     for path in "latexmkrc" "brewfile" "tmux.conf" "isort.cfg"
         ln -fv "$DOTFILES/misc/$path" $HOME/.$path
     end
+    ln -sfv "$DOTFILES/bin" "$HOME"
 end
-
