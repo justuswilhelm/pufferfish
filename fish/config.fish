@@ -23,13 +23,14 @@ alias doctest "python -m doctest"
 
 # Other
 # =====
+alias bf "nvim ~/.brewfile"
 alias bi "brew install"
 alias binf "brew info"
-alias vim "nvim"
 alias dotfiles "cd ~/.dotfiles"
-alias bf "nvim ~/.brewfile"
 alias o "open"
 alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
+alias t "tmux"
+alias vim "nvim"
 
 # Paths
 # =====
@@ -43,7 +44,3 @@ set -x TERM "xterm-256color"
 set -x EDITOR "nvim"
 set -x DOTFILES $HOME/.dotfiles
 set -x XDG_CONFIG_HOME $HOME/.config
-
-if not set -q TMUX
-    exec tmux
-end
