@@ -5,11 +5,7 @@
 
     " Syntax plugings
     Plug 'dag/vim-fish'
-    Plug 'hylang/vim-hy'
-    Plug 'jaxbot/semantic-highlight.vim'
-    Plug 'hynek/vim-python-pep8-indent'
     Plug 'rizzatti/dash.vim'
-    Plug 'niklasl/vim-rdf'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
@@ -22,10 +18,8 @@
 
     " Text mangling
     Plug 'tpope/vim-surround'
-    Plug 'kovisoft/paredit'
     Plug 'fisadev/vim-isort'
     Plug 'easymotion/vim-easymotion'
-    Plug 'elentok/plaintasks.vim'
 
     " Better text navigation
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
@@ -45,8 +39,6 @@
       nnoremap K $pkJ
     " Yank till end
       nnoremap Y y$
-    " Semantic Highlight
-      nnoremap <Leader>s :SemanticHighlightToggle<cr>
     " Smarter text navigation
       nnoremap j gj
       nnoremap k gk
