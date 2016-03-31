@@ -115,7 +115,6 @@
   " 'shiftwidth' value unless it is zero, in which case it is the
   " 'tabstop' value.
   set shiftwidth=0
-  let g:tex_indent_brace=0
 
 " Matching
   set ignorecase
