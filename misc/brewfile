@@ -1,5 +1,6 @@
 cask_args appdir: '/Applications'
 
+tap 'homebrew/core'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
 tap 'neovim/neovim'
@@ -13,19 +14,24 @@ brew 'docker'
 brew 'boot2docker'
 brew 'mosh'
 brew 'neovim', args: ['HEAD']
+# neovim dependency
+brew 'gettext'
+
 brew 'node'
 brew 'python'
 brew 'python3'
 brew 'sbcl'
-brew 'the_silver_surfer'
+brew 'the_silver_searcher'
 brew 'tmux'
 brew 'tree'
 brew 'youtube-dl'
 
+cask 'ableton-live-suite'
 cask 'appcleaner'
 cask 'grandperspective'
 cask 'google-chrome'
 cask 'flux'
+cask 'racket'
 cask 'skype'
 cask 'virtualbox'
 cask 'wireshark'
