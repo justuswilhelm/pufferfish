@@ -1,3 +1,5 @@
+cask_args appdir: '/Applications'
+
 tap 'caskroom/cask'
 tap 'caskroom/versions'
 tap 'neovim/neovim'
@@ -10,10 +12,11 @@ brew 'imagemagick'
 brew 'docker'
 brew 'boot2docker'
 brew 'mosh'
-brew 'neovim'
+brew 'neovim', args: ['HEAD']
 brew 'node'
 brew 'python'
 brew 'python3'
+brew 'sbcl'
 brew 'the_silver_surfer'
 brew 'tmux'
 brew 'tree'
