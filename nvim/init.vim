@@ -69,6 +69,9 @@
 " Ignore folders
   set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/
 
+" Use a different shell
+  set shell=/bin/bash\ -i
+
 " Netrw
   let g:netrw_altv=1
   let g:netrw_liststyle=3
