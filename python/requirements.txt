@@ -1,7 +1,7 @@
 hy
 isort==4.2.2
 pip
-neovim==0.1.2
+neovim==0.1.6
 pyflakes==1.0.0
 pydocstyle
 virtualenv==13.1.2
