@@ -1,6 +1,6 @@
 hy
 isort==4.2.2
-neovim==0.1.2
+neovim==0.1.6
 pip
 pydocstyle
 pyflakes==1.0.0

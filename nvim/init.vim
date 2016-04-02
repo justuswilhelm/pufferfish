@@ -77,7 +77,9 @@ set tabstop=4
   set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/
 
 " Use a different shell
-  set shell=/bin/bash
+if &shell =~# 'fish$'
+    set shell=sh
+endif
 
 " Netrw
   let g:netrw_altv=1
