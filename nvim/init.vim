@@ -24,6 +24,13 @@
 
   call plug#end()
 
+" Indentation
+syntax enable
+filetype plugin indent on
+set expandtab
+set shiftwidth=4
+set tabstop=4
+
 " Keyboard shortcuts
   let mapleader = ','
   let maplocalleader = ','
@@ -107,11 +114,6 @@
   set history=1000
   set undolevels=1000
 
-" Indentation
-  " When on, a <Tab> in front of a line inserts blanks according to
-  " 'shiftwidth'.
-  filetype indent on
-
 " Matching
   set ignorecase
   set smartcase
@@ -125,7 +127,6 @@
   colorscheme solarized
   let g:solarized_termcolors=256
   hi Normal ctermbg=none
-
 
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
