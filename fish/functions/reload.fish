@@ -1,3 +1,3 @@
 function reload
-  exec fish
+    exec fish
 end
