@@ -26,10 +26,13 @@
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'rking/ag.vim'
 
+    " LISP goodness
+    Plug 'guns/vim-sexp'
   call plug#end()
 
 " Keyboard shortcuts
   let mapleader = ','
+  let maplocalleader = ','
   " Normal Mode
     " Netrw splits
     nnoremap <C-n> :vs.<CR>
