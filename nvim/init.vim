@@ -6,6 +6,7 @@
     " Syntax plugings
     Plug 'dag/vim-fish'
     Plug 'rizzatti/dash.vim'
+    Plug 'hynek/vim-python-pep8-indent'
 
     " Syntax checking
     Plug 'scrooloose/syntastic'
@@ -103,19 +104,7 @@
 " Indentation
   " When on, a <Tab> in front of a line inserts blanks according to
   " 'shiftwidth'.
-  set smarttab
-  " Copy indent from current line when starting a new line
-  set autoindent
-  " Do smart autoindenting when starting a new line.
-  set smartindent
-  " In Insert mode: Use the appropriate number of spaces to insert a <Tab>
-  set expandtab
-  " Number of spaces that a <Tab> in the file counts for.
-  set tabstop=2
-  " Returns the effective value of 'shiftwidth'. This is the
-  " 'shiftwidth' value unless it is zero, in which case it is the
-  " 'tabstop' value.
-  set shiftwidth=0
+  filetype indent on
 
 " Matching
   set ignorecase

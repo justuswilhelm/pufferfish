@@ -24,6 +24,8 @@ alias doctest "python -m doctest"
 # Other
 # =====
 alias bf "nvim ~/.brewfile"
+alias pf "nvim $DOTFILES/python/requirements.txt"
+alias p2f "nvim $DOTFILES/python/requirements2.txt"
 alias bi "brew install"
 alias binf "brew info"
 alias o "open"

@@ -1,6 +1,6 @@
-beemodoro==1.2.0
+hy
 isort==4.2.2
-neovim==0.1.2
-pep257==0.7.0
+pip
+pydocstyle
 pyflakes==1.0.0
 virtualenv==13.1.2
