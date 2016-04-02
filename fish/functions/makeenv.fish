@@ -5,7 +5,7 @@ function makeenv
         echo "Path $ENV_DIR already exists, aborting."
         return 1
     else
-        virtualenv "$ENV_DIR" -ppython3 --system-site-packages
+        pyvenv $ENV_DIR
         source "$ENV_DIR/bin/activate.fish"
         if [ -e "$REQUIREMENTS" ]
             pip install -r "$REQUIREMENTS"
