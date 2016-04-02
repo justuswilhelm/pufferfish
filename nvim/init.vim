@@ -13,6 +13,10 @@
 
     " Show indentations
     Plug 'Yggdroot/indentLine'
+    Plug 'airblade/vim-gitgutter'
+
+    " Better background jobs
+    Plug 'benekastah/neomake'
 
     " Color scheme
     Plug 'altercation/vim-colors-solarized'
@@ -23,19 +27,22 @@
     Plug 'easymotion/vim-easymotion'
 
     " Better text navigation
-    Plug 'jeffkreeftmeijer/vim-numbertoggle'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'rking/ag.vim'
 
+    " LISP goodness
+    Plug 'guns/vim-sexp'
   call plug#end()
 
 " Keyboard shortcuts
   let mapleader = ','
+  let maplocalleader = ','
   " Normal Mode
     " Netrw splits
-    nnoremap <C-n> :vs.<CR>
-    nnoremap <C-s> :sp.<CR>
-    nnoremap <C-l> :e.<CR>
+    nnoremap <c-j> <c-w>j
+    nnoremap <c-k> <c-w>k
+    nnoremap <c-h> <c-w>h
+    nnoremap <c-l> <c-w>l
     " Append to end
     nnoremap L $p
     nnoremap K $pkJ
@@ -66,13 +73,22 @@
   " DashSearch (OS X only with Dash)
     nmap <silent> <leader>d <Plug>DashSearch
 
+" Neomake
+  autocmd! BufWritePost * Neomake
+
+" Ignore folders
+  set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/
+
+" Use a different shell
+  set shell=/bin/bash
+
 " Netrw
   let g:netrw_altv=1
   let g:netrw_liststyle=3
 
 " Syntastic
   let g:syntastic_html_checkers=[]
-  let g:syntastic_python_checkers=['flake8', 'pep257']
+  let g:syntastic_python_checkers=['pydocstyle']
 
 " Show unprintable characters
   set list
