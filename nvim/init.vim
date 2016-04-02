@@ -15,6 +15,9 @@
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
 
+    " Better background jobs
+    Plug 'benekastah/neomake'
+
     " Color scheme
     Plug 'altercation/vim-colors-solarized'
 
