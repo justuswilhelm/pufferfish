@@ -1,4 +1,7 @@
 function config_brew
+    if contains $argv "clean"
+        brew bundle cleanup
+    end
     if not type brew > /dev/null ^& 1
         echo "Install brew"
         return 1

@@ -1,7 +1,6 @@
 hy
 isort==4.2.2
 pip
-pydocstyle
 neovim==0.1.2
 pyflakes==1.0.0
 pydocstyle
