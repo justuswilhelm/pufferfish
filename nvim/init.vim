@@ -73,6 +73,9 @@
   " DashSearch (OS X only with Dash)
     nmap <silent> <leader>d <Plug>DashSearch
 
+" Neomake
+  autocmd! BufWritePost * Neomake
+
 " Ignore folders
   set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/
 
@@ -85,7 +88,7 @@
 
 " Syntastic
   let g:syntastic_html_checkers=[]
-  let g:syntastic_python_checkers=['flake8', 'pep257']
+  let g:syntastic_python_checkers=['pydocstyle']
 
 " Show unprintable characters
   set list
