@@ -12,6 +12,7 @@
 
     " Show indentations
     Plug 'Yggdroot/indentLine'
+    Plug 'airblade/vim-gitgutter'
 
     " Color scheme
     Plug 'altercation/vim-colors-solarized'
@@ -71,7 +72,7 @@
   set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/
 
 " Use a different shell
-  set shell=/bin/bash\ -i
+  set shell=/bin/bash
 
 " Netrw
   let g:netrw_altv=1
