@@ -66,6 +66,9 @@
   " DashSearch (OS X only with Dash)
     nmap <silent> <leader>d <Plug>DashSearch
 
+" Ignore folders
+  set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/
+
 " Netrw
   let g:netrw_altv=1
   let g:netrw_liststyle=3
