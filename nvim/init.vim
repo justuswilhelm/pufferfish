@@ -35,9 +35,10 @@
   let maplocalleader = ','
   " Normal Mode
     " Netrw splits
-    nnoremap <C-n> :vs.<CR>
-    nnoremap <C-s> :sp.<CR>
-    nnoremap <C-l> :e.<CR>
+    nnoremap <c-j> <c-w>j
+    nnoremap <c-k> <c-w>k
+    nnoremap <c-h> <c-w>h
+    nnoremap <c-l> <c-w>l
     " Append to end
     nnoremap L $p
     nnoremap K $pkJ
