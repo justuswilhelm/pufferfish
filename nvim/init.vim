@@ -23,7 +23,6 @@
     Plug 'easymotion/vim-easymotion'
 
     " Better text navigation
-    Plug 'jeffkreeftmeijer/vim-numbertoggle'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'rking/ag.vim'
 
