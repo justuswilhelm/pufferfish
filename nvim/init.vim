@@ -1,37 +1,27 @@
 " Vim-Plug
   call plug#begin('~/.config/nvim/plugged')
-    " File handling
-    Plug 'kien/ctrlp.vim'
+    " Language specific
+    Plug 'dag/vim-fish', {'for': 'fish'}
+    Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+    Plug 'fisadev/vim-isort', {'for': 'python'}
+    Plug 'guns/vim-sexp', {'for': 'lisp'}
 
-    " Syntax plugings
-    Plug 'dag/vim-fish'
-    Plug 'rizzatti/dash.vim'
-    Plug 'hynek/vim-python-pep8-indent'
-
-    " Syntax checking
-    Plug 'scrooloose/syntastic'
-
-    " Show indentations
+    " Improve editor appearance
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
-
-    " Better background jobs
-    Plug 'benekastah/neomake'
-
-    " Color scheme
     Plug 'altercation/vim-colors-solarized'
+    Plug 'scrooloose/syntastic'
 
-    " Text mangling
-    Plug 'tpope/vim-surround'
-    Plug 'fisadev/vim-isort'
-    Plug 'easymotion/vim-easymotion'
-
-    " Better text navigation
+    " Improve general editor behavior
+    Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
+    Plug 'easymotion/vim-easymotion'
+    Plug 'kien/ctrlp.vim'
+    Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
+    Plug 'SirVer/ultisnips'
+    Plug 'tpope/vim-surround'
 
-    " LISP goodness
-    Plug 'guns/vim-sexp'
   call plug#end()
 
 " Keyboard shortcuts
