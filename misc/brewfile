@@ -6,16 +6,15 @@ tap 'caskroom/versions'
 tap 'neovim/neovim'
 
 brew 'ansible'
+brew 'boot2docker'
 brew 'brew-cask'
+brew 'docker'
 brew 'fish'
 brew 'heroku-toolbelt'
 brew 'imagemagick'
-brew 'docker'
-brew 'boot2docker'
 brew 'mosh'
 brew 'neovim', args: ['HEAD']
-# neovim dependency
-brew 'gettext'
+    brew 'gettext'
 
 brew 'node'
 brew 'python'
@@ -24,6 +23,7 @@ brew 'sbcl'
 brew 'homebrew/x11/swi-prolog'
 brew 'the_silver_searcher'
 brew 'tmux'
+    brew 'libevent'
 brew 'tree'
 brew 'youtube-dl'
 
