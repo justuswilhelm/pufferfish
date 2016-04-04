@@ -1,3 +1,3 @@
 function config_ruby
-    sudo gem install tmuxinator
+    gem install tmuxinator foreman --user-install
 end

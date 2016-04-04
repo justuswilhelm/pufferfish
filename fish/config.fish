@@ -36,7 +36,7 @@ alias vim "nvim"
 # Paths
 # =====
 # Homebrew
-for p in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin"
+for p in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin" "$HOME/.gem/ruby/2.0.0/bin"
     set PATH $PATH $p
 end
 
