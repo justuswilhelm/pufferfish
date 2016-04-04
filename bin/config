@@ -28,4 +28,5 @@ config_darwin
 config_git
 config_nvim
 config_python
+config_ruby
 config_shell
