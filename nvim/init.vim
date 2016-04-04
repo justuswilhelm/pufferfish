@@ -74,7 +74,7 @@ set tabstop=4
   autocmd! BufWritePost * Neomake
 
 " Ignore folders
-  set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/
+  set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/*
 
 " Use a different shell
 if &shell =~# 'fish$'
