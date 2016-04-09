@@ -88,8 +88,8 @@ set tabstop=4
           \ '** %s %f:%l: %m,' .
           \ '%f:%l: warning: %m'
         \ }
-
   let g:neomake_elixir_enabled_makers = ['mix']
+  let g:neomake_html_enabled_makers = []
 
 " Ignore folders
   set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/*,*.pyc,*/__pycache__/*
