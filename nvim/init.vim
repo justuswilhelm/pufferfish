@@ -19,6 +19,7 @@
     Plug 'kien/ctrlp.vim'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
+    Plug 'epeli/slimux'
     Plug 'SirVer/ultisnips'
     Plug 'tpope/vim-surround'
 
@@ -100,6 +101,12 @@ endif
 
 " Show commands while they're being typed
   set showcmd
+
+" Slimux
+map <Leader>s :SlimuxREPLSendLine<CR>
+vmap <Leader>s :SlimuxREPLSendSelection<CR>
+map <Leader>a :SlimuxShellLast<CR>
+map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Line numbers
   set nu
