@@ -72,6 +72,7 @@ set tabstop=4
 
 " Neomake
   autocmd! BufWritePost * Neomake
+  let g:neomake_python_enabled_makers=['pep8']
 
 " Ignore folders
   set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/*
