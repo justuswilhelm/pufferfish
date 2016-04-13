@@ -16,6 +16,7 @@
     Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'easymotion/vim-easymotion'
+    Plug 'editorconfig/editorconfig-vim'
     Plug 'kien/ctrlp.vim'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
