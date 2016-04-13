@@ -9,6 +9,7 @@
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
+    Plug 'vim-scripts/CSApprox'
     Plug 'altercation/vim-colors-solarized'
     Plug 'scrooloose/syntastic'
 
@@ -71,6 +72,10 @@ set tabstop=4
 
   " DashSearch (OS X only with Dash)
     nmap <silent> <leader>d <Plug>DashSearch
+
+    map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+    \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+    \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Neomake
   autocmd! BufWritePost * Neomake
@@ -135,9 +140,8 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Color Stuff
   set background=dark
-  colorscheme solarized
-  let g:solarized_termcolors=256
-  hi Normal ctermbg=none
+  colorscheme chlordane
+  set t_Co=256
 
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
