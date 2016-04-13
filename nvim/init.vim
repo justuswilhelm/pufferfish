@@ -77,7 +77,7 @@ set tabstop=4
   let g:neomake_python_enabled_makers=['pep8']
 
 " Ignore folders
-  set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/*
+  set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/*,*.pyc,*/__pycache__/*
 
 " Use a different shell
 if &shell =~# 'fish$'
