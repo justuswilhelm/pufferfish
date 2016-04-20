@@ -1,3 +1,3 @@
 function gpf
-	git push --force
+    git push --force
 end
