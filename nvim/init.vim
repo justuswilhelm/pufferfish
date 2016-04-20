@@ -9,7 +9,6 @@
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
-    Plug 'vim-scripts/CSApprox'
     Plug 'altercation/vim-colors-solarized'
     Plug 'scrooloose/syntastic'
 
@@ -140,8 +139,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Color Stuff
   set background=dark
-  colorscheme chlordane
-  set t_Co=256
+  colorscheme solarized
 
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
