@@ -13,6 +13,7 @@ alias gmm "git commit -m"
 alias gr "git remote"
 alias grs "git reset --soft HEAD~1"
 alias gs "git status"
+alias gfa "git fetch --all"
 
 # Python
 # ======
