@@ -140,6 +140,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 " Color Stuff
   set background=dark
   colorscheme solarized
+  hi Normal ctermbg=none
 
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
