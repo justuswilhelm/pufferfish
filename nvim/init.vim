@@ -162,7 +162,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Color Stuff
   set background=light
-  colorscheme dracula
+  colorscheme solarized
   hi Normal ctermbg=none
 
 " Customize Backup Dir location
