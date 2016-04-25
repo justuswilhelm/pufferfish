@@ -138,7 +138,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
   set hlsearch
 
 " Color Stuff
-  set background=dark
+  set background=light
   colorscheme solarized
   hi Normal ctermbg=none
 
