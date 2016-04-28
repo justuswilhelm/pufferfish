@@ -5,6 +5,7 @@
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'guns/vim-sexp', {'for': 'lisp'}
+    Plug 'guersam/vim-j'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
