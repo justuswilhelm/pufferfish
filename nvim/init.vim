@@ -100,9 +100,7 @@ endif
   set list
   set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
-" Column length
-  set colorcolumn=79
-  set textwidth=79
+  set colorcolumn=80
 
 " Show commands while they're being typed
   set showcmd
