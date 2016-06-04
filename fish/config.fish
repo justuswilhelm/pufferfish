@@ -1,3 +1,16 @@
+# Paths
+# =====
+# Homebrew
+for p in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin" "$HOME/.gem/ruby/2.0.0/bin"
+    set PATH $PATH $p
+end
+
+set -x HOMEBREW_BREWFILE $HOME/.brewfile
+set -x TERM "xterm-256color"
+set -x EDITOR "nvim"
+set -x DOTFILES $HOME/.dotfiles
+set -x XDG_CONFIG_HOME $HOME/.config
+
 # Git
 # ===
 alias ga "git add"
@@ -34,16 +47,3 @@ alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
 alias t "tmux"
 alias m "tmuxinator"
 alias vim "nvim"
-
-# Paths
-# =====
-# Homebrew
-for p in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin" "$HOME/.gem/ruby/2.0.0/bin"
-    set PATH $PATH $p
-end
-
-set -x HOMEBREW_BREWFILE $HOME/.brewfile
-set -x TERM "xterm-256color"
-set -x EDITOR "nvim"
-set -x DOTFILES $HOME/.dotfiles
-set -x XDG_CONFIG_HOME $HOME/.config
