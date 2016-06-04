@@ -32,6 +32,7 @@ alias binf "brew info"
 alias o "open"
 alias suggest "history | cut -f1,2 -d' ' | uniq -c | sort -r | head -n10"
 alias t "tmux"
+alias m "tmuxinator"
 alias vim "nvim"
 
 # Paths
