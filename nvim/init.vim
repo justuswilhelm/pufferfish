@@ -6,6 +6,7 @@
     Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'guersam/vim-j'
+    Plug 'amperser/proselint'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'

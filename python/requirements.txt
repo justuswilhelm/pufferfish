@@ -1,7 +1,9 @@
+beemodoro
 hy
 isort==4.2.2
 neovim==0.1.6
 pip
+proselint
 pydocstyle
 pyflakes==1.0.0
 virtualenv==13.1.2
