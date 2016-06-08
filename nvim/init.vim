@@ -23,6 +23,7 @@
     Plug 'kien/ctrlp.vim'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
+    Plug 'Chun-Yang/vim-action-ag'
     Plug 'epeli/slimux'
     Plug 'SirVer/ultisnips'
     Plug 'tpope/vim-surround'
