@@ -2,16 +2,18 @@
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
+    Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
     Plug 'amperser/proselint'
     Plug 'dag/vim-fish', {'for': 'fish'}
+    Plug 'digitaltoad/vim-pug', {'for': 'pug'}
+    Plug 'elixir-lang/vim-elixir'
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'fatih/vim-go', {'for': 'go'}
     Plug 'fisadev/vim-isort', {'for': 'python'}
+    Plug 'godlygeek/tabular'
+    Plug 'guersam/vim-j'
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
-    Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
-    Plug 'digitaltoad/vim-pug', {'for': 'pug'}
-    Plug 'godlygeek/tabular'
     Plug 'plasticboy/vim-markdown'
 
     " Improve editor appearance
