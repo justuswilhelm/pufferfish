@@ -5,6 +5,7 @@
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'guns/vim-sexp', {'for': 'lisp'}
+    Plug 'elixir-lang/vim-elixir'
     Plug 'guersam/vim-j'
     Plug 'amperser/proselint'
 
