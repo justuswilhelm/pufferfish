@@ -39,11 +39,8 @@ set tabstop=4
   let mapleader = ','
   let maplocalleader = ','
   " Normal Mode
-    " Netrw splits
-    nnoremap <c-j> <c-w>j
-    nnoremap <c-k> <c-w>k
-    nnoremap <c-h> <c-w>h
-    nnoremap <c-l> <c-w>l
+    " Fix TmuxNavigateLeft
+    nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
     " Append to end
     nnoremap L $p
     nnoremap K $pkJ
