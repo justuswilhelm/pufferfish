@@ -1,5 +1,6 @@
 beemodoro
 hy
+httpie
 isort==4.2.2
 neovim==0.1.6
 pip
