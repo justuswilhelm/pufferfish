@@ -1,7 +1,7 @@
 # Paths
 # =====
 # Homebrew
-for p in "/usr/local/bin" "/usr/local/sbin" "/usr/local/heroku/bin" "$HOME/bin" "$HOME/.gem/ruby/2.0.0/bin"
+for p in "/usr/local/bin" "/usr/local/heroku/bin" "$HOME/bin"
     set PATH $PATH $p
 end
 
