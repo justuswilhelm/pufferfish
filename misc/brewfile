@@ -16,6 +16,7 @@ brew 'mosh'
 brew 'neovim', args: ['HEAD']
     brew 'gettext'
 
+brew 'nmap'
 brew 'node'
 brew 'python'
 brew 'python3'
