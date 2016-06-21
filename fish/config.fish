@@ -1,15 +1,16 @@
 # Paths
 # =====
-# Homebrew
-for p in "/usr/local/bin" "/usr/local/heroku/bin" "$HOME/bin"
-    set PATH $PATH $p
-end
 
 set -x HOMEBREW_BREWFILE $HOME/.brewfile
 set -x TERM "xterm-256color"
 set -x EDITOR "nvim"
 set -x DOTFILES $HOME/.dotfiles
 set -x XDG_CONFIG_HOME $HOME/.config
+set -x GOPATH $HOME/go
+
+for p in "/usr/local/bin" "/usr/local/heroku/bin" "$HOME/bin" "$GOPATH/bin"
+    set PATH $PATH $p
+end
 
 # Git
 # ===
