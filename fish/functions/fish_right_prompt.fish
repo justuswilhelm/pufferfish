@@ -1,5 +1,5 @@
 function fish_right_prompt
-    set last_status "$status"
+	set last_status "$status"
     if math "$last_status > 0" > /dev/null
         set_color red
     else
@@ -7,8 +7,8 @@ function fish_right_prompt
     end
     echo -n "$last_status"
     set_color blue
-    date "+%H%M"
+    date "+%H%M" | tr -d '\n'
     set_color magenta
-    date "+%h%d"
+    date "+%h%d" | tr -d '\n'
     set_color normal
 end
