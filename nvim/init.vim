@@ -93,7 +93,15 @@ set tabstop=4
   let g:neomake_html_enabled_makers = []
 
 " Ignore folders
-  set wildignore+=*/.git/*,*/.DS_Store,*/vendor,*/env/*,*.pyc,*/__pycache__/*
+  set wildignore+=*/.git/*
+  set wildignore+=*/.DS_Store
+  set wildignore+=*/vendor
+  set wildignore+=*/env/*
+  set wildignore+=*.pyc
+  set wildignore+=*/__pycache__/
+  set wildignore+=*/node_modules/*
+  set wildignore+=*/bower_components/*
+  set wildignore+=*/staticfiles/*
 
 " Use a different shell
 if &shell =~# 'fish$'
