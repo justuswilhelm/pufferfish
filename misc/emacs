@@ -1,0 +1,46 @@
+(require 'package) ;; You might already have this line
+
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+(defvar myPackages
+  '(solarized-theme
+    key-chord
+    helm
+    evil))
+
+(mapc #'(lambda (package)
+    (unless (package-installed-p package)
+      (package-install package)))
+      myPackages)
+
+(require 'virtualenvwrapper)
+(venv-initialize-eshell) ;; if you want eshell support
+(setq venv-location "~/venv/")
+
+(require 'evil)
+(evil-mode 1)
+(define-key evil-motion-state-map ";" 'evil-ex-read-command)
+
+(add-hook 'eshell-mode-hook
+	  '(lambda nil
+	     (addpath "/usr/local/bin")))
+
+(require 'key-chord)
+(key-chord-mode 1)
+(setq key-chord-two-keys-delay 0.2)
+(key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+
+(require 'helm-config)
+
+(global-linum-mode t) 
+
+(custom-set-variables
+ '(custom-safe-themes
+   (quote
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
+ '(package-selected-packages (quote (org))))
+(custom-set-faces)
