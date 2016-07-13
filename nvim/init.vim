@@ -6,6 +6,7 @@
     Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
+    Plug 'fatih/vim-go', {'for': 'go'}
     Plug 'elixir-lang/vim-elixir'
     Plug 'guersam/vim-j'
     Plug 'amperser/proselint'
