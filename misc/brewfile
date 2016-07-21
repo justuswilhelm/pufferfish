@@ -17,6 +17,9 @@ brew 'emacs', args: ['with-cocoa', 'with-gnutls', 'with-librsvg', 'with-imagemag
 
 brew 'fish'
     brew 'pcre2'
+
+brew 'go'
+
 brew 'heroku-toolbelt'
 brew 'imagemagick'
 brew 'mosh'
