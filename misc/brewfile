@@ -10,6 +10,11 @@ brew 'ansible'
 brew 'boot2docker'
 brew 'brew-cask'
 brew 'docker'
+
+brew 'emacs', args: ['with-cocoa', 'with-gnutls', 'with-librsvg', 'with-imagemagick']
+    brew 'autoconf'
+    brew 'pkg-config'
+
 brew 'fish'
     brew 'pcre2'
 brew 'heroku-toolbelt'

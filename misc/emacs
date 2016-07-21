@@ -1,21 +1,23 @@
 (require 'package) ;; You might already have this line
 
+(setq package-list '(solarized-theme
+		     key-chord
+		     helm
+		     virtualenvwrapper
+		     evil))
+
+
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+             '("melpa" . "https://melpa.org/packages/") t)
+
 (package-initialize)
-(when (not package-archive-contents)
+
+(unless package-archive-contents
   (package-refresh-contents))
 
-(defvar myPackages
-  '(solarized-theme
-    key-chord
-    helm
-    evil))
-
-(mapc #'(lambda (package)
-    (unless (package-installed-p package)
-      (package-install package)))
-      myPackages)
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
 
 (require 'virtualenvwrapper)
 (venv-initialize-eshell) ;; if you want eshell support
@@ -23,7 +25,16 @@
 
 (require 'evil)
 (evil-mode 1)
-(define-key evil-motion-state-map ";" 'evil-ex-read-command)
+; ex
+(define-key evil-motion-state-map ";" 'evil-ex)
+; Window switchting
+(define-key evil-normal-state-map "\C-h" 'evil-window-left)
+(define-key evil-normal-state-map "\C-j" 'evil-window-down)
+(define-key evil-normal-state-map "\C-k" 'evil-window-up)
+(define-key evil-normal-state-map "\C-l" 'evil-window-right)
+; Scrolling
+(define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-page-up)
+(define-key evil-motion-state-map (kbd "C-d") 'evil-scroll-page-down)
 
 (add-hook 'eshell-mode-hook
 	  '(lambda nil
@@ -44,3 +55,5 @@
     ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
  '(package-selected-packages (quote (org))))
 (custom-set-faces)
+
+(load-theme 'solarized-light)
