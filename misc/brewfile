@@ -1,8 +1,9 @@
 cask_args appdir: '/Applications'
 
-tap 'homebrew/core'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
+tap 'homebrew/core'
+tap 'homebrew/x11'
 tap 'neovim/neovim'
 
 brew 'ansible'
