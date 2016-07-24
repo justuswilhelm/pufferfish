@@ -3,12 +3,15 @@
 (setq package-list '(solarized-theme
 		     key-chord
 		     helm
+		     org-plus-contrib
 		     virtualenvwrapper
 		     evil))
 
 
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives
+	     '("org" . "http://orgmode.org/elpa/") t)
 
 (package-initialize)
 
@@ -27,11 +30,11 @@
 (evil-mode 1)
 ; ex
 (define-key evil-motion-state-map ";" 'evil-ex)
-; Window switchting
-(define-key evil-normal-state-map "\C-h" 'evil-window-left)
-(define-key evil-normal-state-map "\C-j" 'evil-window-down)
-(define-key evil-normal-state-map "\C-k" 'evil-window-up)
-(define-key evil-normal-state-map "\C-l" 'evil-window-right)
+; Window switching
+(define-key evil-window-map "\C-h" 'evil-window-left)
+(define-key evil-window-map "\C-j" 'evil-window-down)
+(define-key evil-window-map "\C-k" 'evil-window-up)
+(define-key evil-window-map "\C-l" 'evil-window-right)
 ; Scrolling
 (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-page-up)
 (define-key evil-motion-state-map (kbd "C-d") 'evil-scroll-page-down)
