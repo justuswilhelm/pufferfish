@@ -26,6 +26,7 @@ abbr -a gmm git commit -m
 abbr -a gr git remote
 abbr -a gs git status
 abbr -a gfa git fetch --all
+abbr -a gpr git pull --rebase
 
 # Python
 # ======
@@ -45,4 +46,4 @@ abbr -a binf brew info
 abbr -a t tmux
 abbr -a m tmuxinator
 abbr -a vim nvim
-abrr -a mt make test
+abbr -a mt make test
