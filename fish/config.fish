@@ -45,3 +45,4 @@ abbr -a binf brew info
 abbr -a t tmux
 abbr -a m tmuxinator
 abbr -a vim nvim
+abrr -a mt make test
