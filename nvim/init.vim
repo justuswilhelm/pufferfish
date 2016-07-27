@@ -1,15 +1,15 @@
 " Vim-Plug
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
-    Plug 'dag/vim-fish', {'for': 'fish'}
-    Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
-    Plug 'fisadev/vim-isort', {'for': 'python'}
-    Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
-    Plug 'fatih/vim-go', {'for': 'go'}
-    Plug 'elixir-lang/vim-elixir'
-    Plug 'guersam/vim-j'
     Plug 'amperser/proselint'
+    Plug 'dag/vim-fish', {'for': 'fish'}
+    Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
+    Plug 'fatih/vim-go', {'for': 'go'}
+    Plug 'fisadev/vim-isort', {'for': 'python'}
+    Plug 'guersam/vim-j', {'for': 'j'}
+    Plug 'guns/vim-sexp', {'for': 'lisp'}
+    Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
