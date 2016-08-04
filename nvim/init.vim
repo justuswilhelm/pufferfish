@@ -136,9 +136,6 @@ map <Leader>k :SlimuxSendKeysLast<CR>
   set nu
 
 " Folds
-  set foldmethod=indent
-  set foldlevelstart=2
-  set foldminlines=2
   let g:tex_conceal = "" "Has to be one of the most annoying things ever
 
 " Use system clipboard
