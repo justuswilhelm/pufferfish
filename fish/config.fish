@@ -27,6 +27,7 @@ abbr -a gr git remote
 abbr -a gs git status
 abbr -a gfa git fetch --all
 abbr -a gpr git pull --rebase
+abbr -a gpf git push --force
 
 # Python
 # ======
