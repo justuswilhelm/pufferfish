@@ -60,6 +60,9 @@ set tabstop=4
     " Disable highlighting
     nnoremap <leader><space> :noh<cr>
 
+    " Reload configuration
+    nnoremap <leader>l :source ~/.config/nvim/init.vim<cr>
+
   " Matching
     nnoremap / /\v
     vnoremap / /\v
