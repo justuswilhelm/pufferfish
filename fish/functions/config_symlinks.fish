@@ -8,5 +8,8 @@ function config_symlinks
     for path in "latexmkrc" "brewfile" "tmux.conf" "isort.cfg" "emacs"
         ln -sfv "$DOTFILES/misc/$path" "$HOME/.$path"
     end
+    for path in "httpie" "mitmproxy"
+        ln -sfv "$DOTFILES/$path" "$HOME/.$path"
+    end
     ln -sfv "$DOTFILES/bin" "$HOME"
 end
