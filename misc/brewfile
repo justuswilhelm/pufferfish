@@ -3,41 +3,30 @@ cask_args appdir: '/Applications'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
 tap 'homebrew/core'
+tap 'homebrew/devel-only'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 
-brew 'ansible'
-brew 'boot2docker'
-brew 'brew-cask'
-brew 'docker'
-
-brew 'emacs', args: ['with-cocoa', 'with-gnutls', 'with-librsvg', 'with-imagemagick']
-    brew 'autoconf'
-    brew 'pkg-config'
-
+brew 'elm-format', args: ['devel']
 brew 'fish'
     brew 'pcre2'
-
-brew 'go'
-
-brew 'heroku-toolbelt'
-brew 'imagemagick'
-brew 'mosh'
+brew 'heroku'
 brew 'neovim', args: ['HEAD']
     brew 'gettext'
-
 brew 'nmap'
 brew 'node'
 brew 'postgresql'
+    brew 'readline'
 brew 'python'
+    brew 'openssl'
 brew 'python3'
-brew 'sbcl'
 brew 'sqlite'
 brew 'swi-prolog'
 brew 'the_silver_searcher'
+    brew 'pcre'
+    brew 'xz'
 brew 'tmux'
     brew 'libevent'
-
 brew 'tree'
 brew 'watch'
 brew 'youtube-dl'
