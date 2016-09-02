@@ -80,6 +80,9 @@ set tabstop=4
   " DashSearch (OS X only with Dash)
     nmap <silent> <leader>d <Plug>DashSearch
 
+  " TODO timestamp
+    nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
+
     map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
