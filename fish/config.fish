@@ -18,6 +18,7 @@ abbr -a ga git add
 abbr -a ga git add
 abbr -a gap git add -p
 abbr -a gc git checkout
+abbr -a gcb git checkout -b
 abbr -a gd git diff
 abbr -a gdc git diff --cached
 abbr -a gfa git fetch --all
