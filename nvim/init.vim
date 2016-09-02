@@ -1,6 +1,7 @@
 " Vim-Plug
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
+    Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
     Plug 'amperser/proselint'
     Plug 'dag/vim-fish', {'for': 'fish'}
@@ -165,3 +166,6 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
   set directory=~/.config/nvim/swap/
+
+" JSON concealing
+let g:vim_json_syntax_conceal = 0
