@@ -6,7 +6,7 @@ function config_symlinks
         ln -sfv "$DOTFILES/$path" $XDG_CONFIG_HOME
     end
     for path in "latexmkrc" "brewfile" "tmux.conf" "isort.cfg" "emacs"
-        ln -fv "$DOTFILES/misc/$path" $HOME/.$path
+        ln -sfv "$DOTFILES/misc/$path" "$HOME/.$path"
     end
     ln -sfv "$DOTFILES/bin" "$HOME"
 end
