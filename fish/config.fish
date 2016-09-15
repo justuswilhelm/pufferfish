@@ -29,6 +29,7 @@ abbr -a gpf git push --force
 abbr -a gpr git pull --rebase
 abbr -a gr git remote
 abbr -a gs git status
+abbr -a gds git diff --shortstat --cached
 
 # Python
 # ======
