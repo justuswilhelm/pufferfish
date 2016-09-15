@@ -6,6 +6,7 @@ function makeenv
         return 1
     else
         pyvenv $ENV_DIR
+        sed -i.bak '45,74d' "$ENV_DIR/bin/activate.fish"
         source "$ENV_DIR/bin/activate.fish"
         if [ -e "$REQUIREMENTS" ]
             pip install -r "$REQUIREMENTS"
