@@ -8,7 +8,7 @@ set -x DOTFILES $HOME/.dotfiles
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x GOPATH $HOME/go
 
-for p in "/usr/local/bin" "/usr/local/heroku/bin" "$HOME/bin" "$GOPATH/bin"
+for p in "/usr/local/bin" "/usr/local/heroku/bin" "$HOME/bin"
     set PATH $PATH $p
 end
 
