@@ -1,4 +1,4 @@
 function dotfiles
-	pushd $DOTFILES
+    pushd $DOTFILES
     git pull --rebase
 end

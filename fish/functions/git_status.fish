@@ -1,5 +1,5 @@
 function git_status
-    if git rev-parse --is-inside-work-tree 1> /dev/null 2>& 1
+    if git rev-parse --is-inside-work-tree 1>/dev/null 2>&1
         if not git diff --quiet
             set_color red
             echo -n "!"

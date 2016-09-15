@@ -4,6 +4,6 @@ function pip_save
     set freeze (pip freeze | grep $argv[1])
     set tfile (mktemp)
     cp $reqs $tfile
-    echo $freeze >> $tfile
+    echo $freeze >>$tfile
     uniq $tfile | sort -o $reqs
 end

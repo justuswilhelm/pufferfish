@@ -20,13 +20,13 @@ function __handle_rvmrc_stuff --on-variable PWD
         while true
             if contains $cwd "" $HOME "/"
                 if test "$rvm_project_rvmrc_default" = 1
-                    rvm default 1> /dev/null 2>& 1
+                    rvm default 1>/dev/null 2>&1
                 end
                 break
             else
                 if test -e .rvmrc -o -e .ruby-version -o -e .ruby-gemset
-                    eval "rvm reload" > /dev/null
-                    eval "rvm rvmrc load" > /dev/null
+                    eval "rvm reload" >/dev/null
+                    eval "rvm rvmrc load" >/dev/null
                     break
                 else
                     set cwd (dirname "$cwd")

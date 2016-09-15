@@ -1,5 +1,5 @@
 function snippet
-	set -l snippet_name $argv[1]
+    set -l snippet_name $argv[1]
     if test (count $argv) -eq 3
         set -l target $argv[2]
     else

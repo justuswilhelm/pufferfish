@@ -1,6 +1,6 @@
 function fish_right_prompt
-	set last_status "$status"
-    if math "$last_status > 0" > /dev/null
+    set last_status "$status"
+    if math "$last_status > 0" >/dev/null
         set_color red
     else
         set_color green

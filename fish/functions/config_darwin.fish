@@ -1,5 +1,5 @@
 function config_darwin
-    if not uname | grep Darwin > /dev/null
+    if not uname | grep Darwin >/dev/null
         return
     end
     # disable mouse scaling

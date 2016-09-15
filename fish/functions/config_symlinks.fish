@@ -1,5 +1,5 @@
 function config_symlinks
-	echo $XDG_CONFIG_HOME
+    echo $XDG_CONFIG_HOME
     mkdir -pv $XDG_CONFIG_HOME
     rm -rf "$XDG_CONFIG_HOME/fish"
     for path in "fish" "nvim"
