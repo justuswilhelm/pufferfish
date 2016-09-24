@@ -26,9 +26,12 @@ abbr -a gfa git fetch --all
 abbr -a gl git log
 abbr -a gm git commit
 abbr -a gmm git commit -m
+abbr -a gma git commit --amend
 abbr -a gpf git push --force
 abbr -a gpr git pull --rebase
 abbr -a gr git remote
+abbr -a gra git rebase --abort
+abbr -a grc git rebase --continue
 abbr -a gs git status
 
 # Python
