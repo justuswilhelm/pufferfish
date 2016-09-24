@@ -21,6 +21,7 @@ abbr -a gc git checkout
 abbr -a gcb git checkout -b
 abbr -a gd git diff
 abbr -a gdc git diff --cached
+abbr -a gds git diff --shortstat --cached
 abbr -a gfa git fetch --all
 abbr -a gl git log
 abbr -a gm git commit
@@ -29,7 +30,6 @@ abbr -a gpf git push --force
 abbr -a gpr git pull --rebase
 abbr -a gr git remote
 abbr -a gs git status
-abbr -a gds git diff --shortstat --cached
 
 # Python
 # ======
