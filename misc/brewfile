@@ -33,6 +33,7 @@ brew 'tree'
 brew 'watch'
 brew 'youtube-dl'
 
+cask 'ableton-live-suite'
 cask 'anki'
 cask 'appcleaner'
 cask 'flux'
