@@ -18,7 +18,6 @@
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
     Plug 'altercation/vim-colors-solarized'
-    Plug 'scrooloose/syntastic'
 
     " Improve general editor behavior
     Plug 'benekastah/neomake'
@@ -90,7 +89,7 @@ set tabstop=4
 
 " Neomake
   autocmd! BufWritePost * Neomake
-  let g:neomake_python_enabled_makers=['pep8']
+  let g:neomake_python_enabled_makers=['flake8', 'pep257', 'python']
   let g:neomake_elixir_mix_maker = {
         \ 'exe' : 'mix',
         \ 'args': ['compile', '--warnings-as-errors'],
@@ -101,6 +100,9 @@ set tabstop=4
         \ }
   let g:neomake_elixir_enabled_makers = ['mix']
   let g:neomake_html_enabled_makers = []
+  " https://github.com/neomake/neomake/issues/228
+  let g:neomake_cpp_enable_markers=['clang']
+  let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined","-g"]
 
 " Ignore folders
   set wildignore+=*/.git/*
@@ -121,10 +123,6 @@ endif
 " Netrw
   let g:netrw_altv=1
   let g:netrw_liststyle=3
-
-" Syntastic
-  let g:syntastic_html_checkers=[]
-  let g:syntastic_python_checkers=['pydocstyle']
 
 " Show unprintable characters
   set list
