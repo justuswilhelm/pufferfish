@@ -8,7 +8,6 @@ tap 'homebrew/services'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 
-brew 'chicken'
 brew 'elm-format', args: ['devel']
 brew 'fish'
     brew 'pcre2'
