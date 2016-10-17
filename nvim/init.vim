@@ -83,10 +83,6 @@ set tabstop=4
   " TODO timestamp
     nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
 
-    map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-    \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-    \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
 " Neomake
   autocmd! BufWritePost * Neomake
   let g:neomake_python_enabled_makers=['flake8', 'pep257', 'python']
