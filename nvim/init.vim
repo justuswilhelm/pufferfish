@@ -4,7 +4,7 @@
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
     Plug 'amperser/proselint'
-    Plug 'wlangstroth/vim-racket'
+    Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
     Plug 'dag/vim-fish', {'for': 'fish'}
     Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
     Plug 'fatih/vim-go', {'for': 'go'}
