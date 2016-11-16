@@ -18,6 +18,7 @@
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
     Plug 'altercation/vim-colors-solarized'
+    Plug 'dracula/vim'
 
     " Improve general editor behavior
     Plug 'benekastah/neomake'
@@ -158,7 +159,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Color Stuff
   set background=light
-  colorscheme solarized
+  colorscheme dracula
   hi Normal ctermbg=none
 
 " Customize Backup Dir location
