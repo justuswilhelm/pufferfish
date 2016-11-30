@@ -99,8 +99,8 @@ set tabstop=4
   let g:neomake_elixir_enabled_makers = ['mix']
   let g:neomake_html_enabled_makers = []
   " https://github.com/neomake/neomake/issues/228
-  let g:neomake_cpp_enable_markers=['clang']
-  let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined","-g"]
+  let g:neomake_cpp_enable_markers = ['clang']
+  let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined", "-g"]
 
 " Ignore folders
   set wildignore=*/.git/*
@@ -139,7 +139,7 @@ map <Leader>a :SlimuxShellLast<CR>
 map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Line numbers
-  set nu
+  set number
 
 " Folds
   let g:tex_conceal = "" "Has to be one of the most annoying things ever
