@@ -1,0 +1,17 @@
+#!/usr/bin/env python3 -m dg
+# vi: ft=dg
+import '/os/path'
+
+brewfile_path = path.expandvars "$HOME/.brewfile" 
+
+with fd = open brewfile_path =>
+    brewfile = fd.read!
+    [cask_args, tap, brew, cask] = (
+        where for x in brewfile.split "\n\n" => yield $ x.split "\n")
+
+join = lst ->
+    "\n".join lst
+
+with fd = open brewfile_path 'w' =>
+    outp =  join (sorted cask_args), join (sorted tap), join brew, join (sorted cask)
+    "\n\n".join outp |>.replace "\n\n\n" "\n\n" |> fd.write
