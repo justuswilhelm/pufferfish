@@ -1,10 +1,12 @@
 beemodoro
-hy
+cookiecutter
+flake8
 httpie
-isort==4.2.2
-neovim==0.1.6
+isort
+neovim
 pip
 proselint
 pydocstyle
-pyflakes==1.0.0
-virtualenv==13.1.2
+requests[security]
+soundscrape
+virtualenv
