@@ -39,6 +39,11 @@ abbr -a gra git rebase --abort
 abbr -a grc git rebase --continue
 abbr -a gs git status
 
+# Heroku
+# ======
+abbr -a hmon heroku maintenance:on
+abbr -a hmo heroku maintenance:off
+
 # Python
 # ======
 abbr -a doctest python -m doctest
