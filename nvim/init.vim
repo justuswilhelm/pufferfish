@@ -31,7 +31,6 @@
     Plug 'kien/ctrlp.vim'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
-    Plug 'SirVer/ultisnips'
     Plug 'tpope/vim-surround'
 
   call plug#end()
