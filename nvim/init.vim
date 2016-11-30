@@ -103,7 +103,7 @@ set tabstop=4
   let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined","-g"]
 
 " Ignore folders
-  set wildignore+=*/.git/*
+  set wildignore=*/.git/*
   set wildignore+=*/.DS_Store
   set wildignore+=*/vendor
   set wildignore+=*/env/*
@@ -112,6 +112,7 @@ set tabstop=4
   set wildignore+=*/node_modules/*
   set wildignore+=*/bower_components/*
   set wildignore+=*/staticfiles/*
+  let g:ctrlp_show_hidden=1
 
 " Use a different shell
 if &shell =~# 'fish$'
