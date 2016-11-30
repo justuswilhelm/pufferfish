@@ -80,7 +80,7 @@ set tabstop=4
     noremap <Right> <NOP>
 
   " DashSearch (OS X only with Dash)
-    nmap <silent> <leader>d <Plug>DashSearch
+    nmap <silent> <leader>d <Plug>DashGlobalSearch
 
   " TODO timestamp
     nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
