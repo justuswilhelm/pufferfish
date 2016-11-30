@@ -9,7 +9,6 @@ tap 'homebrew/x11'
 tap 'neovim/neovim'
 
 brew 'clang-format'
-brew 'docker'
 brew 'elm-format', args: ['devel']
 brew 'fish'
     brew 'pcre2'
@@ -54,8 +53,6 @@ brew 'youtube-dl'
 
 cask 'anki'
 cask 'appcleaner'
-cask 'docker'
-cask 'flux'
 cask 'google-chrome'
 cask 'google-cloud-sdk'
 cask 'grandperspective'
