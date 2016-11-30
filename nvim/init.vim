@@ -31,6 +31,7 @@
     Plug 'kien/ctrlp.vim'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
+    Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
 
   call plug#end()
