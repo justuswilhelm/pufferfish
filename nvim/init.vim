@@ -1,17 +1,17 @@
 " Vim-Plug
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
-    Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
     Plug 'amperser/proselint'
-    Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
     Plug 'dag/vim-fish', {'for': 'fish'}
     Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
+    Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'fatih/vim-go', {'for': 'go'}
     Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+    Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
     Plug 'tpope/vim-fireplace'
     Plug 'rubik/vim-dg', {'for': 'dg'}
 
@@ -22,15 +22,15 @@
     Plug 'dracula/vim'
 
     " Improve general editor behavior
+    Plug 'Chun-Yang/vim-action-ag'
     Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
+    Plug 'epeli/slimux'
     Plug 'kien/ctrlp.vim'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
-    Plug 'Chun-Yang/vim-action-ag'
-    Plug 'epeli/slimux'
     Plug 'SirVer/ultisnips'
     Plug 'tpope/vim-surround'
 
