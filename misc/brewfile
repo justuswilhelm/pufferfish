@@ -53,6 +53,7 @@ brew 'youtube-dl'
 
 cask 'anki'
 cask 'appcleaner'
+cask 'dash'
 cask 'google-chrome'
 cask 'google-cloud-sdk'
 cask 'grandperspective'
