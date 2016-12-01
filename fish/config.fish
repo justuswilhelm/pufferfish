@@ -30,8 +30,8 @@ abbr -a gds git diff --shortstat --cached
 abbr -a gfa git fetch --all
 abbr -a gl git log
 abbr -a gm git commit
-abbr -a gmm git commit -m
 abbr -a gma git commit --amend
+abbr -a gmm git commit -m
 abbr -a gpf git push --force
 abbr -a gpr git pull --rebase
 abbr -a gr git remote
