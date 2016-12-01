@@ -37,6 +37,7 @@ abbr -a gpr git pull --rebase
 abbr -a gr git remote
 abbr -a gra git rebase --abort
 abbr -a grc git rebase --continue
+abbr -a gro git fetch --all; and git rebase origin/master
 abbr -a gs git status
 
 # Heroku
