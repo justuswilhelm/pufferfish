@@ -12,8 +12,8 @@
     Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
-    Plug 'tpope/vim-fireplace'
     Plug 'rubik/vim-dg', {'for': 'dg'}
+    Plug 'tpope/vim-fireplace'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
