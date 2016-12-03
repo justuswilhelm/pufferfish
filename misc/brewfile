@@ -51,6 +51,7 @@ brew 'youtube-dl'
     brew 'lame'
     brew 'xvid'
 
+cask 'ableton-live-suite'
 cask 'anki'
 cask 'appcleaner'
 cask 'dash'
