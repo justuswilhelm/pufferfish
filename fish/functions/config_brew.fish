@@ -8,6 +8,7 @@ function config_brew
     end
     brew tap "homebrew/bundle"
     brew update
+    brew upgrade
     brew bundle --global
     brew cleanup -s
     brew cask cleanup
