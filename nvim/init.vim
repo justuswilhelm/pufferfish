@@ -29,7 +29,7 @@
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
-    Plug 'kien/ctrlp.vim'
+    Plug 'ctrlpvim/ctrlp.vim'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
     Plug 'tpope/vim-fugitive'
@@ -113,7 +113,10 @@ set tabstop=4
   set wildignore+=*/node_modules/*
   set wildignore+=*/bower_components/*
   set wildignore+=*/staticfiles/*
+
+" ctrlp.vim
   let g:ctrlp_show_hidden=1
+  " let g:ctrlp_working_path_mode = 'w'
 
 " Use a different shell
 if &shell =~# 'fish$'
