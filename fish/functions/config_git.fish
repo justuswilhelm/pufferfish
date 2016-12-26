@@ -3,6 +3,7 @@ function config_git
     git config --global commit.template $DOTFILES/git/gitmessage
     git config --global core.editor (which nvim)
     git config --global core.excludesfile $DOTFILES/git/gitignore
+    git config --global merge.conflictstyle diff3
 
     if not grep $HOME/.gitconfig -e 'email'
         echo "Enter your Git email address"
