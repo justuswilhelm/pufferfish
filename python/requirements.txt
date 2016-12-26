@@ -10,4 +10,5 @@ proselint
 pydocstyle
 requests[security]
 soundscrape
+tmuxp
 virtualenv

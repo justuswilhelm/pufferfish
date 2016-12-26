@@ -28,5 +28,4 @@ config_darwin $argv
 config_git $argv
 config_nvim $argv
 config_python $argv
-config_ruby $argv
 config_shell $argv
