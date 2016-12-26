@@ -48,6 +48,8 @@ brew 'python3'
 brew 'reattach-to-user-namespace'
 brew 'sqlite'
 brew 'redis'
+brew 'swi-prolog', args: ['HEAD']
+    brew 'gmp'
 brew 'the_silver_searcher'
     brew 'autoconf'
     brew 'pcre'
