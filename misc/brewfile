@@ -8,6 +8,7 @@ tap 'homebrew/services'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 
+brew 'cabal-install'
 brew 'clang-format'
 brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'fish'
@@ -23,6 +24,9 @@ brew 'gpg'
     brew 'libusb'
     brew 'libusb-compat'
     brew 'libgcrypt'
+brew 'ghc'
+    brew 'sphinx-doc'
+brew 'haskell-stack'
 brew 'heroku'
 brew 'leiningen'
 brew 'neovim', args: ['HEAD']
