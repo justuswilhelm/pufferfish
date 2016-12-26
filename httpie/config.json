@@ -2,8 +2,10 @@
     "__meta__": {
         "about": "HTTPie configuration file",
         "help": "https://github.com/jkbrzt/httpie#config",
-        "httpie": "0.9.3"
+        "httpie": "0.9.6"
     },
-    "default_options": ["--style", "emacs"],
-    "implicit_content_type": "json"
+    "default_options": [
+        "--style",
+        "emacs"
+    ]
 }
