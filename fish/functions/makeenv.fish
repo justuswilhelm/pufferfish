@@ -5,8 +5,7 @@ function makeenv
         echo "Path $ENV_DIR already exists, aborting."
         return 1
     else
-        pyvenv $ENV_DIR
-        sed -i.bak '45,74d' "$ENV_DIR/bin/activate.fish"
+        python3 -m venv $ENV_DIR
         source "$ENV_DIR/bin/activate.fish"
         if [ -e "$REQUIREMENTS" ]
             pip install -r "$REQUIREMENTS"
