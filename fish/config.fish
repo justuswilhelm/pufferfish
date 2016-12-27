@@ -8,11 +8,6 @@ set -x DOTFILES $HOME/.dotfiles
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x GOPATH $HOME/go
 
-# google cloud
-# ------------
-set fish_user_paths #{staged_path}/#{token}/bin
-set -x MANPATH #{staged_path}/#{token}/help/man /usr/local/share/man /usr/share/man /opt/x11/share/man
-
 for p in "/usr/local/bin" "/usr/local/heroku/bin" "$HOME/bin" "$HOME/.cabal/bin"
     set PATH $PATH $p
 end
