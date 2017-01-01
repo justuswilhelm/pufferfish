@@ -100,6 +100,7 @@ set tabstop=4
   let g:neomake_elixir_enabled_makers = ['mix']
   let g:neomake_html_enabled_makers = []
   " https://github.com/neomake/neomake/issues/228
+  let g:neomake_javascript_enabled_makers = ['eslint']
   let g:neomake_cpp_enable_markers = ['clang']
   let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined", "-g"]
 
