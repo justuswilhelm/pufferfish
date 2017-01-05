@@ -58,5 +58,6 @@ abbr -a mt make test
 abbr -a p2f nvim $DOTFILES/python/requirements2.txt
 abbr -a pf nvim $DOTFILES/python/requirements.txt
 abbr -a t tmux
+abbr -a ta tmux a
 abbr -a vim nvim
 abbr -a e nvim
