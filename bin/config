@@ -21,11 +21,12 @@ function check_dependencies
 end
 
 check_dependencies
-config_npm $argv
-config_symlinks $argv
 config_brew $argv
 config_darwin $argv
 config_git $argv
+config_go $argv
+config_npm $argv
 config_nvim $argv
 config_python $argv
 config_shell $argv
+config_symlinks $argv
