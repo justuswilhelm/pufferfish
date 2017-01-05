@@ -13,6 +13,8 @@ brew 'elm-format', args: ['devel']
 brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'fish'
     brew 'pcre2'
+brew 'glide'
+brew 'go'
 brew 'gpg'
     brew 'libgpg-error'
     brew 'libksba'
