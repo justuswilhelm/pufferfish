@@ -113,6 +113,7 @@ set tabstop=4
   set wildignore+=*/__pycache__/
   set wildignore+=*/node_modules/*
   set wildignore+=*/bower_components/*
+  set wildignore+=*/elm-stuff/*
   set wildignore+=*/staticfiles/*
 
 " ctrlp.vim
