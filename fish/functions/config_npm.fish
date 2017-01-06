@@ -1,3 +1,3 @@
 function config_npm
-    npm -g install jshint less elm elm-oracle bower gh elm-test eslint lesshint
+    npm -g install jshint less elm elm-oracle bower gh elm-test eslint lesshint yuglify
 end
