@@ -26,6 +26,7 @@ brew 'gpg'
     brew 'libusb-compat'
     brew 'libgcrypt'
 brew 'heroku'
+brew 'lynis'
 brew 'neovim', args: ['HEAD']
     brew 'gettext'
     brew 'libtermkey'
