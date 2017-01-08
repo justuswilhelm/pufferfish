@@ -3,8 +3,10 @@ set -e
 
 if grep -e 'fish' /etc/shells > /dev/null
 then
-  bin/config
+    bin/config
 else
-  echo "Please install fish and add it to /etc/shells"
-  exit 1
+    echo "###"
+    echo "Please install fish and add it to /etc/shells"
+    echo "###"
+    exit 1
 fi
