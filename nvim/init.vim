@@ -103,7 +103,7 @@ set tabstop=4
   let g:neomake_cpp_enable_markers = ['clang']
   let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined", "-g"]
 
-" Ignore folders
+" Files and folders to ignore
   set wildignore=*/.git/*
   set wildignore+=*/.DS_Store
   set wildignore+=*/vendor
@@ -114,6 +114,8 @@ set tabstop=4
   set wildignore+=*/bower_components/*
   set wildignore+=*/elm-stuff/*
   set wildignore+=*/staticfiles/*
+  set wildignore+=*.gch
+  set wildignore+=*.o
 
 " ctrlp.vim
   let g:ctrlp_show_hidden=1
