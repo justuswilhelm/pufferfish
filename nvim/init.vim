@@ -14,7 +14,6 @@
     Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
     Plug 'rubik/vim-dg', {'for': 'dg'}
     Plug 'tpope/vim-fireplace'
-    Plug 'vim-pandoc/vim-pandoc'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
