@@ -5,7 +5,7 @@ function config_symlinks
     for path in "fish" "nvim"
         ln -sfv "$DOTFILES/$path" $XDG_CONFIG_HOME
     end
-    for path in "latexmkrc" "brewfile" "tmux.conf" "isort.cfg" "emacs"
+    for path in "latexmkrc" "Brewfile" "tmux.conf" "isort.cfg" "emacs"
         ln -sfv "$DOTFILES/misc/$path" "$HOME/.$path"
     end
     for path in "httpie" "mitmproxy"

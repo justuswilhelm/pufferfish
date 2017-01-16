@@ -8,8 +8,12 @@ set -x DOTFILES $HOME/.dotfiles
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x GOPATH $HOME/go
 
-for p in "/usr/local/bin" "/usr/local/heroku/bin" "$HOME/bin" "$HOME/go/bin"
-    set PATH $PATH $p
+set PATH $PATH "$HOME/bin" "$HOME/go/bin"
+
+if is_linux
+    set PATH $PATH $HOME/.linuxbrew/bin
+else
+    set PATH $PATH "/usr/local/bin" "/usr/local/heroku/bin"
 end
 
 # Git

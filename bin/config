@@ -1,39 +1,27 @@
 #!/usr/bin/env fish
-
 function check_dependencies
-    if uname | grep Darwin > /dev/null
-        if not type brew > /dev/null ^&1
-            echo "No brew installed, on macOS run"
-            echo "/usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
+    if not type brew > /dev/null ^&1
+        if is_linux
             echo "on Linux run"
             echo 'ruby -e $(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)'
-            exit 1
+        else
+            echo "No brew installed, on macOS run"
+            echo '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
         end
-    end
-    if not type pip3 > /dev/null ^&1
-        echo "Install a global python3-pip"
-        echo "brew install python3"
         exit 1
     end
 end
 
 check_dependencies
 
-set -l cmds \
-    "config_symlinks" \
-    "config_brew" \
-    "config_darwin" \
-    "config_git" \
-    "config_go" \
-    "config_npm" \
-    "config_nvim" \
-    "config_python" \
-    "config_shell"
+config_symlinks
 
-for cmd in $cmds
-    set -l cmd_file "fish/functions/$cmd.fish"
-    echo "Loading $cmd_file"
-    source $cmd_file
-    echo "Running $cmd"
-    eval $cmd $argv
-end
+config_brew
+
+config_darwin
+config_git
+config_go
+config_npm
+config_nvim
+config_python
+config_shell

@@ -10,7 +10,7 @@ tap 'neovim/neovim'
 
 brew 'clang-format'
 brew 'cloc'
-brew 'elm-format', args: ['devel']
+brew 'elm-format'
 brew 'fish'
     brew 'pcre2'
 brew 'glide'
@@ -43,7 +43,7 @@ brew 'python'
     brew 'openssl'
 brew 'python3'
     brew 'gdbm'
-brew 'reattach-to-user-namespace'
+brew 'reattach-to-user-namespace'  # macos
 brew 'sqlite'
 brew 'redis'
 brew 'swi-prolog', args: ['HEAD']
@@ -56,7 +56,7 @@ brew 'tmux'
     brew 'utf8proc'
     brew 'libevent'
 brew 'tree'
-brew 'watch'
+brew 'watch'  # macos
 brew 'youtube-dl'
     brew 'ffmpeg'
     brew 'lame'
