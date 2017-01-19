@@ -4,18 +4,24 @@ function config_brew
     if contains $argv "clean"
         brew bundle cleanup --global --force
     end
+
     if not type brew >/dev/null ^&1
         echo "Install brew"
         return 1
     end
+
     brew tap "homebrew/bundle"
     brew update
     brew upgrade
-    if is_linux
+
+    if set -q CI
+        echo "CircleCI: Skipping brew bundle"
+    else if is_linux
         brew bundle --file=(grep $LINUX_GREP_FLAGS $HOME/.Brewfile | psub) --verbose
     else
         brew bundle --global
     end
+
     brew cleanup -s
     if not is_linux
         brew cask cleanup

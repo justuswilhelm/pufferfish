@@ -11,7 +11,7 @@ set -x GOPATH $HOME/go
 set PATH $PATH "$HOME/bin" "$HOME/go/bin"
 
 if is_linux
-    set PATH $PATH $HOME/.linuxbrew/bin
+    set PATH $HOME/.linuxbrew/bin $PATH
 else
     set PATH $PATH "/usr/local/bin" "/usr/local/heroku/bin"
 end
