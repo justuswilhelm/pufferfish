@@ -3,7 +3,6 @@ function config_npm
  jshint\
  less\
  elm\
- elm-oracle\
  bower\
  gh\
  elm-test\
