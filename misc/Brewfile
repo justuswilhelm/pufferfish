@@ -29,6 +29,7 @@ brew 'gpg'
     brew 'libgcrypt'
 brew 'heroku'
 brew 'lynis'
+brew 'mosh'
 brew 'neovim', args: ['HEAD']
     brew 'gettext'
     brew 'libtermkey'
