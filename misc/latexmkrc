@@ -1,5 +1,0 @@
-$latex = 'latex --shell-escape';
-$pdflatex = 'pdflatex --shell-escape';
-
-# This is a dream come true
-$pdf_previewer = "open -a Skim";
