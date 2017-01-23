@@ -14,6 +14,7 @@
     Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
     Plug 'rubik/vim-dg', {'for': 'dg'}
     Plug 'tpope/vim-fireplace'
+    Plug 'rhysd/vim-clang-format'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
@@ -82,6 +83,11 @@ set tabstop=4
   " DashSearch (OS X only with Dash)
     nmap <silent> <leader>d <Plug>DashGlobalSearch
 
+  " Clang-Format
+    nmap <silent> <leader>c :ClangFormat<cr>
+    vmap <silent> <leader>c :ClangFormat<cr>
+
+
   " TODO timestamp
     nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
 
@@ -100,8 +106,7 @@ set tabstop=4
   let g:neomake_html_enabled_makers = []
   " https://github.com/neomake/neomake/issues/228
   let g:neomake_javascript_enabled_makers = ['jshint', 'eslint']
-  let g:neomake_cpp_enable_markers = ['clang']
-  let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined", "-g"]
+  let g:neomake_cpp_enabled_makers = []
 
 " Files and folders to ignore
   set wildignore=*/.git/*
