@@ -8,7 +8,7 @@ tap 'homebrew/services'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 
-brew 'bc'
+brew 'bc'  # linux
 brew 'clang-format'
 brew 'cloc'
 brew 'elm-format'
