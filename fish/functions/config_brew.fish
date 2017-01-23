@@ -1,5 +1,6 @@
 function config_brew
     set -l LINUX_GREP_FLAGS -v -e 'cask' -e 'clang-format' -e 'elm-format' -e 'macos'
+    set -l MACOS_GREP_FLAGS -v -e 'linux'
 
     if contains $argv "clean"
         brew bundle cleanup --global --force
@@ -19,7 +20,7 @@ function config_brew
     else if is_linux
         brew bundle --file=(grep $LINUX_GREP_FLAGS $HOME/.Brewfile | psub) --verbose
     else
-        brew bundle --global
+        brew bundle --file=(grep $MACOS_GREP_FLAGS $HOME/.Brewfile | psub) --verbose
     end
 
     brew cleanup -s
