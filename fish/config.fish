@@ -1,5 +1,11 @@
 # Paths
 # =====
+#
+function add_to_path
+    if not contains $argv[1] $PATH
+        set PATH $PATH $argv[1]
+    end
+end
 
 set -x HOMEBREW_BREWFILE $HOME/.brewfile
 set -x TERM "xterm-256color"
@@ -8,12 +14,11 @@ set -x DOTFILES $HOME/.dotfiles
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x GOPATH $HOME/go
 
-set PATH $PATH "$HOME/bin" "$HOME/go/bin"
+add_to_path "$HOME/bin"
+add_to_path "$HOME/go/bin"
 
 if is_linux
-    set PATH $HOME/.linuxbrew/bin $PATH
-else
-    set PATH $PATH "/usr/local/bin" "/usr/local/heroku/bin"
+    add_to_path "$HOME/.linuxbrew/bin"
 end
 
 # Git
