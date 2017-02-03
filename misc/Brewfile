@@ -12,6 +12,8 @@ brew 'bc'  # linux
 brew 'clang-format'
 brew 'cloc'
 brew 'elm-format'
+brew 'elixir'
+    brew 'erlang'
 brew 'fish'
     brew 'pcre2'
 brew 'glide'
