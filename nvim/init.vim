@@ -182,3 +182,6 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 
 " JSON concealing
 let g:vim_json_syntax_conceal = 0
+
+" Clang-Format
+let g:clang_format#code_style = "llvm"
