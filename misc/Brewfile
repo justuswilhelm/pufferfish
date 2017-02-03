@@ -55,7 +55,7 @@ brew 'swi-prolog', args: ['HEAD']
 brew 'the_silver_searcher'
     brew 'autoconf'
     brew 'pcre'
-    brew 'xz'
+    brew 'xz'  # linux
 brew 'tmux'
     brew 'utf8proc'
     brew 'libevent'
