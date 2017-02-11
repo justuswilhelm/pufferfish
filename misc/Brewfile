@@ -41,6 +41,7 @@ brew 'neovim', args: ['HEAD']
     brew 'unibilium'
 brew 'nmap'
 brew 'node'
+brew 'pkgconfig'
 brew 'postgresql'
     brew 'readline'
 brew 'python'
