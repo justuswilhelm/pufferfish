@@ -9,5 +9,6 @@ function config_npm
  eslint\
  lesshint\
  yuglify\
- browserify
+ browserify\
+ react-native-cli
 end
