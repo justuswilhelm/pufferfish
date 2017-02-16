@@ -14,6 +14,8 @@ brew 'cloc'
 brew 'elm-format'
 brew 'elixir'
     brew 'erlang'
+brew 'elm-format', args: ['devel']
+brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'fish'
     brew 'pcre2'
 brew 'glide'

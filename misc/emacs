@@ -1,0 +1,71 @@
+(require 'package) ;; You might already have this line
+
+(setq package-list '(dracula-theme
+		     key-chord
+		     helm
+		     org-plus-contrib
+		     virtualenvwrapper
+		     evil))
+
+
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives
+	     '("org" . "http://orgmode.org/elpa/") t)
+
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(require 'virtualenvwrapper)
+(venv-initialize-eshell) ;; if you want eshell support
+(setq venv-location "~/venv/")
+
+(require 'evil)
+(evil-mode 1)
+; ex
+(define-key evil-motion-state-map ";" 'evil-ex)
+; Window switching
+(define-key evil-window-map "\C-h" 'evil-window-left)
+(define-key evil-window-map "\C-j" 'evil-window-down)
+(define-key evil-window-map "\C-k" 'evil-window-up)
+(define-key evil-window-map "\C-l" 'evil-window-right)
+; Scrolling
+(define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-page-up)
+(define-key evil-motion-state-map (kbd "C-d") 'evil-scroll-page-down)
+
+(add-hook 'eshell-mode-hook
+	  '(lambda nil
+	     (addpath "/usr/local/bin")))
+
+(require 'key-chord)
+(key-chord-mode 1)
+(setq key-chord-two-keys-delay 0.2)
+(key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+
+(require 'helm-config)
+
+(global-linum-mode t) 
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
+ '(package-selected-packages (quote (dracula-theme org))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(load-theme 'dracula-theme)
