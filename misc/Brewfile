@@ -65,10 +65,6 @@ brew 'tmux'
     brew 'libevent'
 brew 'tree'
 brew 'watch'  # macos
-brew 'youtube-dl'
-    brew 'ffmpeg'
-    brew 'lame'
-    brew 'xvid'
 
 cask 'appcleaner'
 cask 'dash'
