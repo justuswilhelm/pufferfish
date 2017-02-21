@@ -57,6 +57,11 @@ abbr -a pir pip install -r requirements.txt
 abbr -a pm python -m
 abbr -a se source env/bin/activate.fish
 
+# CocoaPods
+# =========
+abbr -a pon pod init
+abbr -a poi pod install
+
 # Other
 # =====
 abbr -a bf nvim ~/.brewfile
