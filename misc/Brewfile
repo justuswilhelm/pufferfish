@@ -11,6 +11,7 @@ tap 'neovim/neovim'
 brew 'bc'  # linux
 brew 'clang-format'
 brew 'cloc'
+brew 'cocoapods'
 brew 'elm-format'
 brew 'elixir'
     brew 'erlang'
