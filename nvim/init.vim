@@ -12,10 +12,10 @@
     Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
+    Plug 'keith/swift.vim'
+    Plug 'rhysd/vim-clang-format'
     Plug 'rubik/vim-dg', {'for': 'dg'}
     Plug 'tpope/vim-fireplace'
-    Plug 'rhysd/vim-clang-format'
-    Plug 'keith/swift.vim'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
