@@ -46,8 +46,8 @@ abbr -a gs git status
 
 # Heroku
 # ======
-abbr -a hmon heroku maintenance:on
 abbr -a hmo heroku maintenance:off
+abbr -a hmon heroku maintenance:on
 
 # Python
 # ======
@@ -59,14 +59,15 @@ abbr -a se source env/bin/activate.fish
 
 # CocoaPods
 # =========
-abbr -a pon pod init
 abbr -a poi pod install
+abbr -a pon pod init
 
 # Other
 # =====
 abbr -a bf nvim ~/.brewfile
 abbr -a bi brew install
 abbr -a binf brew info
+abbr -a e nvim
 abbr -a m tmuxinator
 abbr -a mt make test
 abbr -a p2f nvim $DOTFILES/python/requirements2.txt
@@ -74,4 +75,3 @@ abbr -a pf nvim $DOTFILES/python/requirements.txt
 abbr -a t tmux
 abbr -a ta tmux a
 abbr -a vim nvim
-abbr -a e nvim
