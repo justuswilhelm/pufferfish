@@ -39,6 +39,7 @@ brew 'heroku'
 brew 'kubernetes-cli'
 brew 'kubernetes-helm'
 brew 'lynis'
+brew 'mplayer'
 brew 'mosh'
 brew 'neovim', args: ['HEAD']
     brew 'gettext'
