@@ -23,6 +23,9 @@ brew 'elm-format', args: ['devel']
 brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'erlang'
 brew 'fish'
+brew 'fontconfig'  # graphviz
+brew 'freetype'  # graphviz
+brew 'gd'  # graphviz
 brew 'gdbm'  # python3
 brew 'gettext'  # neovim
 brew 'glide'
@@ -31,10 +34,14 @@ brew 'go'
 brew 'graphviz'
 brew 'heroku'
 brew 'icu4c'  # node
+brew 'jpeg'  # graphviz
 brew 'kubernetes-cli'
 brew 'kubernetes-helm'
 brew 'libevent'  # tmux
+brew 'libpng'  # graphviz
 brew 'libtermkey'  # neovim
+brew 'libtiff'  # graphviz
+brew 'libtool'  # graphviz
 brew 'libuv'  # neovim
 brew 'libvterm'  # neovim
 brew 'lynis'
@@ -63,6 +70,7 @@ brew 'tree'
 brew 'unibilium'  # neovim
 brew 'utf8proc'  # tmux
 brew 'watch'  # macos
+brew 'webp'  # graphviz
 brew 'xz'  # linux # the_silver_searcher
 
 cask 'amethyst'
