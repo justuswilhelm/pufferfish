@@ -8,15 +8,17 @@ tap 'homebrew/services'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 
+brew 'aria2'
 brew 'autoconf'  # the_silver_searcher
 brew 'bc'  # linux
 brew 'clang-format'
 brew 'cloc'
 brew 'cocoapods'
 brew 'docker'
+brew 'docker-compose'
+brew 'docker-machine'
 brew 'docker-machine-driver-xhyve'
 brew 'elixir'
-brew 'elm-format'
 brew 'elm-format', args: ['devel']
 brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'erlang'
