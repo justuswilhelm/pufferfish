@@ -8,11 +8,12 @@
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'fatih/vim-go', {'for': 'go'}
     Plug 'fisadev/vim-isort', {'for': 'python'}
+    Plug 'gfontenot/vim-xcode'
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
-    Plug 'keith/swift.vim'
+    Plug 'keith/swift.vim', {'for': 'swift'}
     Plug 'rhysd/vim-clang-format'
     Plug 'rubik/vim-dg', {'for': 'dg'}
     Plug 'tpope/vim-fireplace'
