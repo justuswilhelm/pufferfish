@@ -13,5 +13,5 @@ join = lst ->
     "\n".join lst
 
 with fd = open brewfile_path 'w' =>
-    outp =  join (sorted cask_args), join (sorted tap), join brew, join (sorted cask)
+    outp =  join (sorted cask_args), join (sorted tap), join (sorted brew), join (sorted cask) + '\n'
     "\n\n".join outp |>.replace "\n\n\n" "\n\n" |> fd.write
