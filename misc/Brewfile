@@ -8,71 +8,60 @@ tap 'homebrew/services'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 
+brew 'autoconf'  # the_silver_searcher
 brew 'bc'  # linux
 brew 'clang-format'
 brew 'cloc'
 brew 'cocoapods'
 brew 'docker'
 brew 'docker-machine-driver-xhyve'
-brew 'elm-format'
 brew 'elixir'
-    brew 'erlang'
+brew 'elm-format'
 brew 'elm-format', args: ['devel']
 brew 'emacs', args: ['HEAD', 'with-cocoa']
+brew 'erlang'
 brew 'fish'
-    brew 'pcre2'
+brew 'gdbm'  # python3
+brew 'gettext'  # neovim
 brew 'glide'
+brew 'gmp'  # swi-prolog
 brew 'go'
-brew 'gpg'
-    brew 'libgpg-error'
-    brew 'libksba'
-    brew 'libassuan'
-    brew 'pinentry'
-    brew 'pth'
-    brew 'gpg-agent'
-    brew 'dirmngr'
-    brew 'libusb'
-    brew 'libusb-compat'
-    brew 'libgcrypt'
 brew 'graphviz'
 brew 'heroku'
+brew 'icu4c'  # node
 brew 'kubernetes-cli'
 brew 'kubernetes-helm'
+brew 'libevent'  # tmux
+brew 'libtermkey'  # neovim
+brew 'libuv'  # neovim
+brew 'libvterm'  # neovim
 brew 'lynis'
-brew 'mplayer'
 brew 'mosh'
+brew 'mplayer'
+brew 'msgpack'  # neovim
 brew 'neovim', args: ['HEAD']
-    brew 'gettext'
-    brew 'libtermkey'
-    brew 'libuv'
-    brew 'libvterm'
-    brew 'msgpack'
-    brew 'unibilium'
 brew 'nmap'
 brew 'node'
-    brew 'icu4c'
+brew 'openssl'  # python
+brew 'pcre'  # the_silver_searcher
+brew 'pcre2' # fish
 brew 'pkgconfig'
 brew 'postgresql'
-    brew 'readline'
 brew 'python'
-    brew 'openssl'
 brew 'python3'
-    brew 'gdbm'
+brew 'readline'  # postgresql
 brew 'reattach-to-user-namespace'  # macos
-brew 'sqlite'
 brew 'redis'
+brew 'sqlite'
 brew 'swi-prolog', args: ['HEAD']
-    brew 'gmp'
 brew 'swiftformat'
 brew 'the_silver_searcher'
-    brew 'autoconf'
-    brew 'pcre'
-    brew 'xz'  # linux
 brew 'tmux'
-    brew 'utf8proc'
-    brew 'libevent'
 brew 'tree'
+brew 'unibilium'  # neovim
+brew 'utf8proc'  # tmux
 brew 'watch'  # macos
+brew 'xz'  # linux # the_silver_searcher
 
 cask 'amethyst'
 cask 'appcleaner'
