@@ -74,6 +74,7 @@ brew 'tmux'
 brew 'tree'
 brew 'watch'  # macos
 
+cask 'amethyst'
 cask 'appcleaner'
 cask 'dash'
 cask 'google-chrome'
