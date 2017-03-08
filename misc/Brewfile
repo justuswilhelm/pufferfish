@@ -63,6 +63,7 @@ brew 'sqlite'
 brew 'redis'
 brew 'swi-prolog', args: ['HEAD']
     brew 'gmp'
+brew 'swiftformat'
 brew 'the_silver_searcher'
     brew 'autoconf'
     brew 'pcre'
