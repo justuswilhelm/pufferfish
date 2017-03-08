@@ -75,3 +75,4 @@ abbr -a pf nvim $DOTFILES/python/requirements.txt
 abbr -a t tmux
 abbr -a ta tmux a
 abbr -a vim nvim
+abbr -a xcode 'open *.xcworkspace'
