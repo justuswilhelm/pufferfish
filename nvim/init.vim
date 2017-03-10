@@ -119,6 +119,7 @@ set tabstop=4
   set wildignore+=*/__pycache__/
   set wildignore+=*/deps/* " Elixir deps
   set wildignore+=*/_build/* " Elixir builds
+  set wildignore+=*/Pods/* " CocoaPods
   set wildignore+=*/node_modules/*
   set wildignore+=*/bower_components/*
   set wildignore+=*/elm-stuff/*
