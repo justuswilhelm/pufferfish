@@ -32,6 +32,7 @@
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
+    Plug 'qpkorr/vim-renamer'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
     Plug 'tpope/vim-fugitive'
