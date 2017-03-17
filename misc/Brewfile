@@ -16,8 +16,6 @@ brew 'cloc'
 brew 'cocoapods'
 brew 'docker'
 brew 'docker-compose'
-brew 'docker-machine'
-brew 'docker-machine-driver-xhyve'
 brew 'elixir'
 brew 'elm-format', args: ['devel']
 brew 'emacs', args: ['HEAD', 'with-cocoa']
