@@ -69,6 +69,7 @@ brew 'unibilium'  # neovim
 brew 'utf8proc'  # tmux
 brew 'watch'  # macos
 brew 'webp'  # graphviz
+brew 'wxmac' # erlang
 brew 'xz'  # linux # the_silver_searcher
 
 cask 'amethyst'
