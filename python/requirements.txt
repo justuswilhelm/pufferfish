@@ -11,3 +11,4 @@ pydocstyle
 requests[security]
 soundscrape
 virtualenv
+xattr
