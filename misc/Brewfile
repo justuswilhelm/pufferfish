@@ -15,7 +15,6 @@ brew 'clang-format'
 brew 'cloc'
 brew 'cocoapods'
 brew 'docker'
-brew 'docker-compose'
 brew 'elixir'
 brew 'elm-format', args: ['devel']
 brew 'emacs', args: ['HEAD', 'with-cocoa']
