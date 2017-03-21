@@ -30,6 +30,7 @@ brew 'gmp'  # swi-prolog
 brew 'go'
 brew 'graphviz'
 brew 'heroku'
+brew 'hub'
 brew 'icu4c'  # node
 brew 'jpeg'  # graphviz
 brew 'kubernetes-cli'
