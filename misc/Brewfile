@@ -64,6 +64,7 @@ brew 'swi-prolog', args: ['HEAD']
 brew 'swiftformat'
 brew 'the_silver_searcher'
 brew 'tmux'
+brew 'tmux-mem-cpu-load'
 brew 'tree'
 brew 'unibilium'  # neovim
 brew 'utf8proc'  # tmux
