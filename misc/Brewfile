@@ -1,12 +1,12 @@
 cask_args appdir: '/Applications'
 
-tap 'koekeishiya/formulae'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
 tap 'homebrew/core'
 tap 'homebrew/devel-only'
 tap 'homebrew/services'
 tap 'homebrew/x11'
+tap 'koekeishiya/formulae'
 tap 'neovim/neovim'
 
 brew 'aria2'
