@@ -57,6 +57,7 @@ brew 'openssl'  # python
 brew 'pcre'  # the_silver_searcher
 brew 'pcre2' # fish
 brew 'pkgconfig'
+brew 'postgis'
 brew 'postgresql'
 brew 'python'
 brew 'python3'
