@@ -111,7 +111,7 @@ set tabstop=4
   let g:neomake_elixir_enabled_makers = ['mix']
   let g:neomake_html_enabled_makers = []
   " https://github.com/neomake/neomake/issues/228
-  let g:neomake_javascript_enabled_makers = ['jshint', 'eslint']
+  let g:neomake_javascript_enabled_makers = ['eslint']
   let g:neomake_cpp_enabled_makers = []
 
 " Files and folders to ignore
