@@ -2,6 +2,9 @@
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
+    Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
+    Plug 'Quramy/tsuquyomi', {'for': 'typescript'}
+    Plug 'Shougo/vimproc.vim', {'do' : 'make', 'for': 'typescript'}
     Plug 'amperser/proselint'
     Plug 'dag/vim-fish', {'for': 'fish'}
     Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
