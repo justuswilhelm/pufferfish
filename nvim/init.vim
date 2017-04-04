@@ -194,3 +194,8 @@ let g:vim_json_syntax_conceal = 0
 
 " Clang-Format
 let g:clang_format#code_style = "llvm"
+
+" Mouse mode
+set mouse=a
+
+" Why not zoidberg?
