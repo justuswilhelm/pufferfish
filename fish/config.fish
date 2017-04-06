@@ -55,7 +55,7 @@ abbr -a doctest python -m doctest
 abbr -a pi pip install
 abbr -a pir pip install -r requirements.txt
 abbr -a pm python -m
-abbr -a se source env/bin/activate.fish
+abbr -a s source env/bin/activate.fish
 
 # CocoaPods
 # =========
