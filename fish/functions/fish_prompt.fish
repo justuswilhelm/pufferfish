@@ -3,4 +3,5 @@ function fish_prompt
     prompt_pwd | tr -d '\n'
     set_color normal
     git_status
+    printf "\$ "
 end
