@@ -2,12 +2,8 @@
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
-    Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
-    Plug 'Quramy/tsuquyomi', {'for': 'typescript'}
-    Plug 'Shougo/vimproc.vim', {'do' : 'make', 'for': 'typescript'}
     Plug 'amperser/proselint'
     Plug 'dag/vim-fish', {'for': 'fish'}
-    Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'fatih/vim-go', {'for': 'go'}
     Plug 'fisadev/vim-isort', {'for': 'python'}
@@ -16,8 +12,6 @@
     Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
-    Plug 'keith/swift.vim', {'for': 'swift'}
-    Plug 'rhysd/vim-clang-format'
     Plug 'rubik/vim-dg', {'for': 'dg'}
 
     " Improve editor appearance
