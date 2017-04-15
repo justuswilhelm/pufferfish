@@ -19,7 +19,6 @@
     Plug 'keith/swift.vim', {'for': 'swift'}
     Plug 'rhysd/vim-clang-format'
     Plug 'rubik/vim-dg', {'for': 'dg'}
-    Plug 'tpope/vim-fireplace'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
