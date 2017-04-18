@@ -3,11 +3,9 @@ function config_npm
  less\
  elm\
  bower\
- gh\
  elm-test\
  eslint\
  lesshint\
  yuglify\
- browserify\
- react-native-cli
+ browserify
 end
