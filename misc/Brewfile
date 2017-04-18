@@ -19,10 +19,8 @@ brew 'cloc'
 brew 'cmus'
 brew 'cocoapods'
 brew 'docker'
-brew 'elixir'
 brew 'elm-format', args: ['devel']
 brew 'emacs', args: ['HEAD', 'with-cocoa']
-brew 'erlang'
 brew 'fish'
 brew 'fontconfig'  # graphviz
 brew 'freetype'  # graphviz
@@ -91,7 +89,6 @@ brew 'unibilium'  # neovim
 brew 'utf8proc'  # tmux
 brew 'watch'  # macos
 brew 'webp'  # graphviz
-brew 'wxmac' # erlang
 brew 'xz'  # linux # the_silver_searcher
 
 cask 'appcleaner'
