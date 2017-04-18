@@ -41,8 +41,6 @@ brew 'icu4c'  # node
 brew 'jpeg'  # graphviz
 brew 'json-c'  # postgis
 brew 'khd'
-brew 'kubernetes-cli'
-brew 'kubernetes-helm'
 brew 'kwm'
 brew 'libevent'  # tmux
 brew 'libgeotiff'  # postgis
