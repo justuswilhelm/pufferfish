@@ -1,12 +1,9 @@
-beemodoro
-cookiecutter
 flake8
 git+https://github.com/pyos/dg#egg=dg
 httpie
 isort
 neovim
 pip
-proselint
 pydocstyle
 requests[security]
 soundscrape
