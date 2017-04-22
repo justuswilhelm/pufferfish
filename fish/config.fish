@@ -16,6 +16,7 @@ set -x GOPATH $HOME/go
 
 add_to_path "$HOME/bin"
 add_to_path "$HOME/go/bin"
+add_to_path "/usr/local/texlive/2016/bin/x86_64-darwin"
 
 if is_linux
     add_to_path "$HOME/.linuxbrew/bin"
