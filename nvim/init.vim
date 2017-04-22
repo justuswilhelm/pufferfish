@@ -29,6 +29,8 @@
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
     Plug 'jceb/vim-orgmode'
+
+    Plug 'mtth/scratch.vim'
     Plug 'qpkorr/vim-renamer'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
