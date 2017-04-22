@@ -5,7 +5,7 @@ function config_python
         set -l _VIRTUAL_ENV $VIRTUAL_ENV
         set -e VIRTUAL_ENV
     end
-    set -l IGNORE 'pip|setuptools|pkg_resources'
+    set -l IGNORE 'pip|setuptools|pkg_resources|six'
     if contains $argv "clean"
         pip2 list | cut -f1 -d' ' | grep -v -E $IGNORE | xargs pip2 uninstall -y
         pip3 list | cut -f1 -d' ' | grep -v -E $IGNORE | xargs pip3 uninstall -y
