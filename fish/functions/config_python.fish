@@ -7,8 +7,8 @@ function config_python
     end
     set -l IGNORE 'pip|setuptools|pkg_resources|six'
     if contains $argv "clean"
-        pip2 list | cut -f1 -d' ' | grep -v -E $IGNORE | xargs pip2 uninstall -y
-        pip3 list | cut -f1 -d' ' | grep -v -E $IGNORE | xargs pip3 uninstall -y
+        pip2 list | cut -f1 -d' ' | grep -v -E "$IGNORE" | xargs pip2 uninstall -y
+        pip3 list | cut -f1 -d' ' | grep -v -E "$IGNORE" | xargs pip3 uninstall -y
     end
     pip2 install -r $DOTFILES/python/requirements2.txt --upgrade
     pip3 install -r $DOTFILES/python/requirements.txt --upgrade
