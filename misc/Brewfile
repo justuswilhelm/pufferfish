@@ -39,8 +39,6 @@ brew 'hub'
 brew 'icu4c'  # node
 brew 'jpeg'  # graphviz
 brew 'json-c'  # postgis
-brew 'khd'
-brew 'kwm'
 brew 'libevent'  # tmux
 brew 'libgeotiff'  # postgis
 brew 'liblwgeom'  # postgis
