@@ -20,7 +20,6 @@ brew 'cmus'
 brew 'cocoapods'
 brew 'docker'
 brew 'elm-format', args: ['devel']
-brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'fish'
 brew 'fontconfig'  # graphviz
 brew 'freetype'  # graphviz
