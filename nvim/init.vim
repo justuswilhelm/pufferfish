@@ -96,7 +96,12 @@ set tabstop=4
 
 " Neomake
   autocmd! BufWritePost * Neomake
-  let g:neomake_python_enabled_makers=['flake8', 'pydocstyle', 'python']
+  let g:neomake_python_enabled_makers = [
+  \ 'flake8',
+  \ 'pydocstyle',
+  \ 'python',
+  \ 'mypy',
+  \ ]
   let g:neomake_elixir_mix_maker = {
         \ 'exe' : 'mix',
         \ 'args': ['compile', '--warnings-as-errors'],
