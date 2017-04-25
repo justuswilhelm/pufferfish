@@ -90,7 +90,6 @@ brew 'xz'  # linux # the_silver_searcher
 cask 'appcleaner'
 cask 'dash'
 cask 'firefox'
-cask 'google-cloud-sdk'
 cask 'grandperspective'
 cask 'kindle'
 cask 'minikube'
