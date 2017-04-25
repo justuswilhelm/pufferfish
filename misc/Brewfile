@@ -60,6 +60,7 @@ brew 'neovim', args: ['HEAD']
 brew 'nmap'
 brew 'node'
 brew 'openssl'  # python
+brew 'pandoc'
 brew 'pcre'  # the_silver_searcher
 brew 'pcre2' # fish
 brew 'pkgconfig'
