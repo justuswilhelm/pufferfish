@@ -3,9 +3,12 @@ git+https://github.com/pyos/dg#egg=dg
 httpie
 isort
 neovim
+packaging
 pip
 pydocstyle
 requests[security]
+setuptools
 soundscrape
 virtualenv
+wheel
 xattr
