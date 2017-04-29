@@ -1,5 +1,4 @@
 flake8
-git+https://github.com/pyos/dg#egg=dg
 httpie
 isort
 neovim
