@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""Compute average run time of external command."""
+import argparse
+import subprocess
+import timeit
+
+
+def print_status(number, time_taken):
+    print("... at number {}, time taken: {} seconds".format(
+        number, time_taken))
+
+
+def main(args):
+    """Main method."""
+    check_output = subprocess.check_output
+    command = args.command
+    timer = timeit.Timer('check_output(command)', globals=locals())
+    print("Beginning timeit run of '{}' ...".format(" ".join(command)))
+    try:
+        number, time_taken = timer.autorange(callback=print_status)
+    except Exception:
+        timer.print_exc()
+    print("---")
+    print("Total number of runs: {}, time_taken: {} seconds".format(
+        number, time_taken))
+    print("Average time is {} seconds".format(time_taken / number))
+
+
+if __name__ == "__main__":
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('command', nargs=argparse.REMAINDER)
+    argparser.add_argument('--times', type=int, default=100)
+    args = argparser.parse_args()
+    main(args)
