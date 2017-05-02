@@ -12,24 +12,16 @@ tap 'neovim/neovim'
 brew 'aria2'
 brew 'autoconf'  # the_silver_searcher
 brew 'bc'  # linux
-brew 'boost'  # postgis
-brew 'cgal'  # postgis
 brew 'clang-format'
 brew 'cloc'
 brew 'cmus'
-brew 'cocoapods'
-brew 'docker'
 brew 'elm-format', args: ['devel']
 brew 'fish'
 brew 'fontconfig'  # graphviz
 brew 'freetype'  # graphviz
-brew 'freexl'  # postgis
 brew 'gd'  # graphviz
-brew 'gdal'  # postgis
 brew 'gdbm'  # python3
-brew 'geos'  # postgis
 brew 'gettext'  # neovim
-brew 'giflib'  # postgis
 brew 'glide'
 brew 'gmp'  # swi-prolog
 brew 'go'
@@ -38,22 +30,15 @@ brew 'heroku'
 brew 'hub'
 brew 'icu4c'  # node
 brew 'jpeg'  # graphviz
-brew 'json-c'  # postgis
 brew 'libevent'  # tmux
-brew 'libgeotiff'  # postgis
-brew 'liblwgeom'  # postgis
 brew 'libpng'  # graphviz
-brew 'libspatialite'  # postgis
 brew 'libtermkey'  # neovim
 brew 'libtiff'  # graphviz
 brew 'libtool'  # graphviz
 brew 'libuv'  # neovim
 brew 'libvterm'  # neovim
-brew 'libxml2'  # postgis
 brew 'lynis'
-brew 'lzlib'  # postgis
 brew 'mobile-shell'
-brew 'mpfr'  # postgis
 brew 'mplayer'
 brew 'msgpack'  # neovim
 brew 'neovim', args: ['HEAD']
@@ -64,19 +49,15 @@ brew 'pandoc'
 brew 'pcre'  # the_silver_searcher
 brew 'pcre2' # fish
 brew 'pkgconfig'
-brew 'postgis'
 brew 'postgresql'
-brew 'proj'  # postgis
 brew 'protobuf'  # mobile-shell
 brew 'python'
 brew 'python3'
 brew 'readline'  # postgresql
 brew 'reattach-to-user-namespace'  # macos
 brew 'redis'
-brew 'sfcgal'  # postgis
 brew 'sqlite'
 brew 'swi-prolog', args: ['HEAD']
-brew 'swiftformat'
 brew 'the_silver_searcher'
 brew 'tmux'
 brew 'tmux-mem-cpu-load'
