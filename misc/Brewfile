@@ -38,22 +38,22 @@ brew 'libtool'  # graphviz
 brew 'libuv'  # neovim
 brew 'libvterm'  # neovim
 brew 'lynis'
-brew 'mobile-shell'
+brew 'mobile-shell' # macos
 brew 'mplayer'
 brew 'msgpack'  # neovim
 brew 'neovim', args: ['HEAD']
 brew 'nmap'
-brew 'node'
+brew 'node'  # macos
 brew 'openssl'  # python
 brew 'pandoc'
 brew 'pcre'  # the_silver_searcher
 brew 'pcre2' # fish
 brew 'pkgconfig'
-brew 'postgresql'
+brew 'postgresql'  # macos
 brew 'protobuf'  # mobile-shell
 brew 'python'
 brew 'python3'
-brew 'readline'  # postgresql
+brew 'readline'  # postgresql  # macos
 brew 'reattach-to-user-namespace'  # macos
 brew 'redis'
 brew 'sqlite'
