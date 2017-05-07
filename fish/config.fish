@@ -65,7 +65,7 @@ abbr -a pon pod init
 
 # Other
 # =====
-abbr -a bf nvim ~/.brewfile
+abbr -a bf nvim ~/.Brewfile
 abbr -a bi brew install
 abbr -a binf brew info
 abbr -a e nvim
