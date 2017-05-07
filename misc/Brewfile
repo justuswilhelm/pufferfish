@@ -49,6 +49,7 @@ brew 'openssl'  # python
 brew 'pandoc'
 brew 'pcre'  # the_silver_searcher
 brew 'pcre2' # fish
+brew 'pipeviewer'
 brew 'pkgconfig'
 brew 'postgresql'  # macos
 brew 'protobuf'  # mobile-shell
