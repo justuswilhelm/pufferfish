@@ -38,7 +38,8 @@ brew 'libtool'  # graphviz
 brew 'libuv'  # neovim
 brew 'libvterm'  # neovim
 brew 'lynis'
-brew 'mobile-shell' # macos
+brew 'mitmproxy'
+brew 'mobile-shell'
 brew 'mplayer'
 brew 'msgpack'  # neovim
 brew 'neovim', args: ['HEAD']
