@@ -1,31 +1,44 @@
+- name: Remove standard jessie repos
+  apt_repository:
+    repo: "{{ item }}"
+    state: absent
+  become: true
+  with_items:
+    - deb http://httpredir.debian.org/debian jessie main
+    - deb-src http://httpredir.debian.org/debian jessie main
+    - deb http://security.debian.org/ jessie/updates main
+    - deb-src http://security.debian.org/ jessie/updates main
+
+- name: Add debian testing
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  become: true
+  with_items:
+    - deb http://httpredir.debian.org/debian testing main non-free contrib
+    - deb-src http://httpredir.debian.org/debian testing main non-free contrib
+    - deb http://security.debian.org/ testing/updates main contrib non-free
+    - deb-src http://security.debian.org/ testing/updates main contrib non-free
+
 - name:  Add fish shell debian repository
   become: true
   apt_repository:
     repo: deb http://download.opensuse.org/repositories/shells:/fish:/release:/2/Debian_8.0/ /
-    state: "present"
+    state: present
+
 - name: Add fish shell apt key
   apt_key:
     url: https://download.opensuse.org/repositories/shells:fish:release:2/Debian_8.0/Release.key
   become: true
+
+- name: Debian dist upgrade d
+  command: apt-get --download-only dist-upgrade && apt-get dist-upgrade
+  become: true
+
 - name: Install apt packages
   apt:
     pkg: "{{ item }}"
     state: installed
     update_cache: true
   become: true
-  with_items:
-    - cloc
-    - cmus
-    - fish
-    - git
-    - golang
-    - graphviz
-    - lynis
-    - mitmproxy
-    - mosh
-    - mplayer
-    - pandoc
-    - python3
-    - redis-server
-    - vagrant
-    - virtualbox
+  with_items: "{{ apt_packages }}"

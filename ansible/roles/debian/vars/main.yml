@@ -1,0 +1,17 @@
+apt_packages:
+  - cloc
+  - cmus
+  - fish
+  - git
+  - golang
+  - graphviz
+  - lynis
+  - mitmproxy
+  - mosh
+  - mplayer
+  - neovim
+  - pandoc
+  - python3
+  - redis-server
+  - vagrant
+  - virtualbox

@@ -1,12 +1,10 @@
 ---
-- hosts: all
-  roles:
-    - common
-
 - hosts: darwin
   roles:
+    - common
     - darwin
 
 - hosts: debian
   roles:
     - debian
+    - common
