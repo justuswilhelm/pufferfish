@@ -1,0 +1,55 @@
+homebrew_taps:
+  - caskroom/cask
+  - homebrew/core
+  - homebrew/services
+  - neovim/neovim
+
+homebrew_formulas:
+  - aria2
+  - clang-format
+  - cloc
+  - cmus
+  - elm-format
+  - fish
+  - glide
+  - go
+  - graphviz
+  - heroku
+  - hub
+  - lynis
+  - mitmproxy
+  - mobile-shell
+  - mplayer
+  - neovim
+  - nmap
+  - pandoc
+  - pipeviewer
+  - pkgconfig
+  - python
+  - python3
+  - redis
+  - sqlite
+  - swi-prolog
+  - the_silver_searcher
+  - tmux
+  - tmux-mem-cpu-load
+  - tree
+
+homebrew_casks:
+  - appcleaner
+  - dash
+  - firefox
+  - grandperspective
+  - kindle
+  - skim
+  - slack
+  - steam
+  - teensy
+  - thunderbird
+  - torbrowser
+  - vagrant
+  - virtualbox
+  - vlc
+  - yubico-authenticator
+  - yubikey-personalization-gui
+  - yubikey-piv-manager

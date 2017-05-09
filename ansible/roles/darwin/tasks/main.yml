@@ -1,9 +1,32 @@
 ---
-- name: Tap Homebrew casks
+- name: Ensure Brew
+  command: brew && "Brew is installed"
+  register: brew_installed
+  ignore_errors: True
+
+- name: Install Homebrew
+  shell: 'yes "" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+  when: brew_installed|succeeded
+
+- name: Homebrew taps
   homebrew_tap:
     name: "{{ item }}"
-  with_items:
-    - tap 'caskroom/cask'
-    - tap 'homebrew/core'
-    - tap 'homebrew/services'
-    - tap 'neovim/neovim'
+  with_items: "{{ homebrew_taps }}"
+
+- name: Install Homebrew formulas
+  homebrew:
+    name: "{{ item }}"
+    update_homebrew: yes
+    upgrade_all: yes
+  with_items: "{{ homebrew_formulas }}"
+
+- name: Install Homebrew casks
+  homebrew_cask:
+    name: "{{ item }}"
+  with_items: "{{ homebrew_casks }}"
+
+- name: Clean up Homebrew
+  command: brew cleanup -s
+
+- name: Disable mouse scaling
+  command: defaults write .GlobalPreferences com.apple.mouse.scaling -1
