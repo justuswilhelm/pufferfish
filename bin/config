@@ -1,13 +1,11 @@
 #!/usr/bin/env fish
 function check_dependencies
-    if not type brew > /dev/null ^&1
-        if is_linux
-            echo "on Linux run"
-            echo 'ruby -e $(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)'
-        else
-            echo "No brew installed, on macOS run"
-            echo '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
-        end
+    if type brew > /dev/null ^&1
+        return
+    end
+    if is_darwin
+        echo "No brew installed, on macOS run"
+        echo '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
         exit 1
     end
 end

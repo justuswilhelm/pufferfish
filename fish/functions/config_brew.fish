@@ -1,6 +1,8 @@
 function config_brew
-    set -l LINUX_GREP_FLAGS -v -e 'cask' -e 'clang-format' -e 'elm-format' -e 'macos'
-    set -l MACOS_GREP_FLAGS -v -e 'linux'
+    if is_linux
+        echo "Only macOS is supported."
+        exit 1
+    end
 
     if contains $argv "clean"
         brew bundle cleanup --global --force
@@ -17,14 +19,10 @@ function config_brew
 
     if set -q CI
         echo "CircleCI: Skipping brew bundle"
-    else if is_linux
-        brew bundle --file=(grep $LINUX_GREP_FLAGS $HOME/.Brewfile | psub) --verbose
     else
         brew bundle --file=(grep $MACOS_GREP_FLAGS $HOME/.Brewfile | psub) --verbose
     end
 
     brew cleanup -s
-    if not is_linux
-        brew cask cleanup
-    end
+    brew cask cleanup
 end
