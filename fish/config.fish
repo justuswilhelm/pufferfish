@@ -17,7 +17,6 @@ add_to_path "$HOME/bin"
 add_to_path "$HOME/go/bin"
 
 if is_darwin
-    set -x HOMEBREW_BREWFILE $HOME/.brewfile
     add_to_path "/usr/local/texlive/2016/bin/x86_64-darwin"
 end
 
@@ -58,14 +57,6 @@ abbr -a pm python -m
 abbr -a s source env/bin/activate.fish
 abbr -a p2f nvim $DOTFILES/python/requirements2.txt
 abbr -a pf nvim $DOTFILES/python/requirements.txt
-
-# Homebrew
-# ========
-if is_darwin
-    abbr -a bf nvim ~/.Brewfile
-    abbr -a bi brew install
-    abbr -a binf brew info
-end
 
 # tmux
 # ====
