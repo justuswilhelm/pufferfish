@@ -1,0 +1,48 @@
+---
+- name: Clone dotfiles
+  git:
+    repo: "{{ dotfiles_repository }}"
+    dest: "{{ dotfiles }}"
+    accept_hostkey: true
+    version: master
+- name: Create XDG_CONFIG_HOME
+  file:
+    dest: "{{ xdg_config_home }}"
+    state: directory
+- name: Create golang bin folder
+  file:
+    dest: "{{ home }}/go/bin"
+    recurse: true
+    state: directory
+- name: Symlink bin folder
+  file:
+    src: "{{ dotfiles }}/bin"
+    dest: "{{ home }}/bin"
+    state: link
+- name: Symlink folders to XDG_CONFIG_HOME
+  file:
+    src: "{{ dotfiles }}/{{ item }}"
+    dest: "{{ xdg_config_home }}/{{ item }}"
+    state: link
+  with_items:
+    - fish
+    - i3
+    - nvim
+- name: Symlink miscellaneous files
+  file:
+    src: "{{ dotfiles }}/misc/{{ item }}"
+    dest: "{{ home }}/.{{ item }}"
+    state: link
+  with_items:
+    - tmux.conf
+- name: Symlink config folders
+  file:
+    src: "{{ dotfiles}}/{{ item }}"
+    dest: "{{ home }}/.{{ item }}"
+    state: link
+  with_items:
+    - httpie
+    - mitmproxy
+- name: Change shell to fish
+  shell: chsh -s $(which fish) justusperlwitz
+  become: true

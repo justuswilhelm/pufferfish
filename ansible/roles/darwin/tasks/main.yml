@@ -1,0 +1,9 @@
+---
+- name: Tap Homebrew casks
+  homebrew_tap:
+    name: "{{ item }}"
+  with_items:
+    - tap 'caskroom/cask'
+    - tap 'homebrew/core'
+    - tap 'homebrew/services'
+    - tap 'neovim/neovim'

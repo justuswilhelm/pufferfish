@@ -1,0 +1,31 @@
+- name:  Add fish shell debian repository
+  become: true
+  apt_repository:
+    repo: deb http://download.opensuse.org/repositories/shells:/fish:/release:/2/Debian_8.0/ /
+    state: "present"
+- name: Add fish shell apt key
+  apt_key:
+    url: https://download.opensuse.org/repositories/shells:fish:release:2/Debian_8.0/Release.key
+  become: true
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: installed
+    update_cache: true
+  become: true
+  with_items:
+    - cloc
+    - cmus
+    - fish
+    - git
+    - golang
+    - graphviz
+    - lynis
+    - mitmproxy
+    - mosh
+    - mplayer
+    - pandoc
+    - python3
+    - redis-server
+    - vagrant
+    - virtualbox
