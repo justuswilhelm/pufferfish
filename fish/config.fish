@@ -7,7 +7,6 @@ function add_to_path
     end
 end
 
-set -x HOMEBREW_BREWFILE $HOME/.brewfile
 set -x TERM "xterm-256color"
 set -x EDITOR "nvim"
 set -x DOTFILES $HOME/.dotfiles
@@ -16,10 +15,10 @@ set -x GOPATH $HOME/go
 
 add_to_path "$HOME/bin"
 add_to_path "$HOME/go/bin"
-add_to_path "/usr/local/texlive/2016/bin/x86_64-darwin"
 
-if is_linux
-    add_to_path "$HOME/.linuxbrew/bin"
+if is_darwin
+    set -x HOMEBREW_BREWFILE $HOME/.brewfile
+    add_to_path "/usr/local/texlive/2016/bin/x86_64-darwin"
 end
 
 # Git
@@ -57,23 +56,22 @@ abbr -a pi pip install
 abbr -a pir pip install -r requirements.txt
 abbr -a pm python -m
 abbr -a s source env/bin/activate.fish
-
-# CocoaPods
-# =========
-abbr -a poi pod install
-abbr -a pon pod init
-
-# Other
-# =====
-abbr -a bf nvim ~/.Brewfile
-abbr -a bi brew install
-abbr -a binf brew info
-abbr -a e nvim
-abbr -a m tmuxinator
-abbr -a mt make test
 abbr -a p2f nvim $DOTFILES/python/requirements2.txt
 abbr -a pf nvim $DOTFILES/python/requirements.txt
+
+# Homebrew
+# ========
+if is_darwin
+    abbr -a bf nvim ~/.Brewfile
+    abbr -a bi brew install
+    abbr -a binf brew info
+end
+
+# tmux
+# ====
 abbr -a t tmux
 abbr -a ta tmux a
-abbr -a vim nvim
-abbr -a xcode 'open *.xcworkspace'
+
+# Neovim
+# =====
+abbr -a e nvim
