@@ -14,7 +14,6 @@
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
     Plug 'altercation/vim-colors-solarized'
-    Plug 'dracula/vim'
 
     " Improve general editor behavior
     Plug 'Chun-Yang/vim-action-ag'
