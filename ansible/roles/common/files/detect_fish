@@ -1,0 +1,9 @@
+#!/bin/bash
+# Detect whether user has already configured fish to be the login shell
+# Works on Debian and macOS
+#
+# First greps for fish in /etc/passwd (for Debian),
+# then process to finger the user and find out the login shell (for macOS)
+set -e
+
+grep /etc/passwd -e "$USER.*/usr/bin/fish" || finger $USER | grep fish

@@ -1,16 +1,14 @@
 ---
-- name: Find out if we are dotfiles repo is clean
-  shell: git diff --quiet --cached && git diff --quiet
-  register: is_clean
-  ignore_errors: True
-
 - name: Clone dotfiles
   git:
     repo: "{{ dotfiles_repository }}"
     dest: "{{ dotfiles }}"
     accept_hostkey: true
     version: master
-  when: is_clean|succeeded
+  ignore_errors: True
+
+- name: Ensure dotfiles exist
+  shell: "test -d {{ dotfiles }}"
 
 - name: Create XDG_CONFIG_HOME
   file:
@@ -61,13 +59,13 @@
   register: which_fish
 
 - name: Find out if shell is already set to fish
-  shell: finger justusperlwitz | grep fish
+  script: detect_fish
   register: shell_is_fish
   ignore_errors: True
 
 - name: Change shell to fish
   user:
-    name: justusperlwitz
+    name: "{{ user }}"
     shell: "{{ which_fish }}"
   become: true
   when: shell_is_fish|failed
@@ -97,12 +95,15 @@
 
 - name: Go Lint
   command: go get -u github.com/golang/lint/golint
+  environment:
+    GOPATH: "{{ home }}/go"
 
 - name: NPM configuration
   npm:
     name: "{{ item }}"
     global: true
   with_items: "{{ npm_packages }}"
+  ignore_errors: true
 
 - name: Neovim configuration
   command: nvim +PlugInstall +qall

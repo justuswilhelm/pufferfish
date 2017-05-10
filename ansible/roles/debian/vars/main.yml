@@ -20,11 +20,16 @@ apt_packages:
   - git
   - golang
   - graphviz
+  - libssl-dev
   - lynis
   - mitmproxy
   - mosh
   - mplayer
   - neovim
   - pandoc
+  - python-cffi
+  - python-pip
   - python3
+  - python3-cffi
+  - python3-pip
   - redis-server

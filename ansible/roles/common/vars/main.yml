@@ -1,6 +1,7 @@
 dotfiles: "{{ ansible_env.HOME }}/.dotfiles"
 xdg_config_home: "{{ ansible_env.HOME }}/.config"
 home: "{{ ansible_env.HOME }}"
+user: "{{ ansible_env.USER }}"
 dotfiles_repository: https://github.com/justuswilhelm/dotfiles.git
 git_config:
   push.default: simple
