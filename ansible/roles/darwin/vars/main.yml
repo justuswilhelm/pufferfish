@@ -22,6 +22,7 @@ homebrew_formulas:
   - mplayer
   - neovim
   - nmap
+  - node
   - pandoc
   - pipeviewer
   - pkgconfig

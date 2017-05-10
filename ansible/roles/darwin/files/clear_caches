@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+rm -rf "$HOME"/Library/Caches/*
+rm -rf "$HOME"/.glide/cache/*
+rm -rf "$HOME/Library/Application Support/Slack"/Cache/*
+rm -rf "$HOME/Application Support"/Dash/Temp/*
