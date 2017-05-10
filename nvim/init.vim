@@ -16,7 +16,6 @@
     Plug 'altercation/vim-colors-solarized'
 
     " Improve general editor behavior
-    Plug 'Chun-Yang/vim-action-ag'
     Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'ctrlpvim/ctrlp.vim'
