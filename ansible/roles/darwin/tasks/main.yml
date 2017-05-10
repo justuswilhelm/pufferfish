@@ -1,6 +1,6 @@
 ---
 - name: Ensure Brew
-  command: brew && "Brew is installed"
+  command: brew
   register: brew_installed
   ignore_errors: True
 
