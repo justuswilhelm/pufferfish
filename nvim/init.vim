@@ -121,8 +121,7 @@ endif
 
 " Show unprintable characters
   set list
-  set listchars=tab:>.,trail:.,extends:#,nbsp:.
-
+  set listchars=tab:»\ ,nbsp:෴,trail:※
   set colorcolumn=80
 
 " Show commands while they're being typed
