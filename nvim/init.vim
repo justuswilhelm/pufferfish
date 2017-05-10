@@ -9,9 +9,7 @@
     Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'gfontenot/vim-xcode'
     Plug 'guersam/vim-j', {'for': 'j'}
-    Plug 'guns/vim-sexp', {'for': 'lisp'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
-    Plug 'justuswilhelm/vim-racket', {'for': 'racket'}
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
