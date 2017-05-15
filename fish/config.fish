@@ -42,6 +42,7 @@ abbr -a gra git rebase --abort
 abbr -a grc git rebase --continue
 abbr -a gro "git fetch --all; and git rebase origin/master"
 abbr -a gs git status
+abbr -a gi 'git init; and git commit --allow-empty -m "Initial commit"'
 
 # Heroku
 # ======
