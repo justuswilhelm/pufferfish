@@ -23,7 +23,6 @@ end
 # Git
 # ===
 abbr -a ga git add
-abbr -a ga git add
 abbr -a gap git add -p
 abbr -a gc git checkout
 abbr -a gcb git checkout -b
@@ -41,6 +40,7 @@ abbr -a gr git remote
 abbr -a gra git rebase --abort
 abbr -a grc git rebase --continue
 abbr -a gro "git fetch --all; and git rebase origin/master"
+abbr -a groh 'git reset origin/master --hard'
 abbr -a gs git status
 abbr -a gi 'git init; and git commit --allow-empty -m "Initial commit"'
 
