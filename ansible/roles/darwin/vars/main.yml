@@ -6,6 +6,7 @@ homebrew_taps:
 
 homebrew_formulas:
   - aria2
+  - arp-scan
   - clang-format
   - cloc
   - cmus
@@ -28,6 +29,7 @@ homebrew_formulas:
   - pkgconfig
   - python
   - python3
+  - radare2
   - redis
   - sqlite
   - swi-prolog
@@ -51,6 +53,7 @@ homebrew_casks:
   - vagrant
   - virtualbox
   - vlc
+  - wireshark
   - yubico-authenticator
   - yubikey-personalization-gui
   - yubikey-piv-manager
