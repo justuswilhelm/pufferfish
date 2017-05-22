@@ -9,6 +9,7 @@
     Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+    Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
