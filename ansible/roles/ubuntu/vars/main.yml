@@ -1,5 +1,3 @@
-apt_sources:
-  - deb http://download.opensuse.org/repositories/shells:/fish:/release:/2/Debian_8.0/ /
 apt_packages:
   - cloc
   - cmus

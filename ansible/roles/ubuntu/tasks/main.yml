@@ -1,11 +1,3 @@
-- name: Add apt sources
-  apt_repository:
-    repo: "{{ item }}"
-    state: present
-    update_cache: true
-  become: true
-  with_items: "{{ apt_sources }}"
-
 - name: Add fish shell apt key
   apt_key:
     repo: ppa:fish-shell/release-2
