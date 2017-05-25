@@ -11,15 +11,6 @@
     repo: ppa:fish-shell/release-2
   become: true
 
-- name: Download dist upgrade
-  shell: apt-get --download-only dist-upgrade -y
-  become: true
-
-- name: Perform dist upgrade
-  apt:
-    upgrade: dist
-  become: true
-
 - name: Install apt packages
   apt:
     pkg: "{{ item }}"
