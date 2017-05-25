@@ -27,11 +27,13 @@ homebrew_formulas:
   - pandoc
   - pipeviewer
   - pkgconfig
+  - postgresql
   - python
   - python3
   - radare2
   - redis
   - sqlite
+  - stack
   - swi-prolog
   - the_silver_searcher
   - tmux
@@ -46,7 +48,6 @@ homebrew_casks:
   - kindle
   - skim
   - slack
-  - steam
   - teensy
   - thunderbird
   - torbrowser

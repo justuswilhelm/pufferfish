@@ -1,0 +1,22 @@
+apt_sources:
+  - deb http://download.opensuse.org/repositories/shells:/fish:/release:/2/Debian_8.0/ /
+apt_packages:
+  - cloc
+  - cmus
+  - fish
+  - git
+  - golang
+  - graphviz
+  - libssl-dev
+  - lynis
+  - mitmproxy
+  - mosh
+  - mplayer
+  - neovim
+  - pandoc
+  - python-cffi
+  - python-pip
+  - python3
+  - python3-cffi
+  - python3-pip
+  - redis-server
