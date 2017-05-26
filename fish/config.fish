@@ -34,12 +34,14 @@ abbr -a gl git log
 abbr -a gm git commit
 abbr -a gma git commit --amend
 abbr -a gmm git commit -m
+abbr -a gp git push
 abbr -a gpf git push --force
-abbr -a gpr git pull --rebase
+abbr -a gpr 'git pull --rebase'
+abbr -a gpu 'git push --set-upstream origin (git rev-parse --abbrev-ref HEAD)'
 abbr -a gr git remote
 abbr -a gra git rebase --abort
 abbr -a grc git rebase --continue
-abbr -a gro "git fetch --all; and git rebase origin/master"
+abbr -a gro 'git fetch --all; and git rebase origin/master'
 abbr -a groh 'git reset origin/master --hard'
 abbr -a gs git status
 abbr -a gi 'git init; and git commit --allow-empty -m "Initial commit"'
