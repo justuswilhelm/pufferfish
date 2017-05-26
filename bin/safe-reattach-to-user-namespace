@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
-if type reattach-to-user-namespace > /dev/null
+if type reattach-to-user-namespace ^ /dev/null
   reattach-to-user-namespace $argv
 else
-  eval $argv
+  eval $argv[2..-1]
 end
