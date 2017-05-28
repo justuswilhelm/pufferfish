@@ -89,6 +89,7 @@ set tabstop=4
 
 " Neomake
   autocmd! BufWritePost * Neomake
+  let g:neomake_python_enabled_makers = ["flake8"]
 
 " Files and folders to ignore
   set wildignore=*/.git/*
