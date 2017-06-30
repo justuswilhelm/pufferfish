@@ -13,7 +13,9 @@ set -x DOTFILES $HOME/.dotfiles
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x GOPATH $HOME/go
 
+add_to_path "/usr/local/sbin"
 add_to_path "$HOME/bin"
+add_to_path "$HOME/.local/bin"
 add_to_path "$HOME/go/bin"
 
 if is_darwin
