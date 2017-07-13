@@ -143,6 +143,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Folds
   let g:tex_conceal = "" "Has to be one of the most annoying things ever
+  set conceallevel=0
 
 " Use system clipboard
   set clipboard=unnamed
@@ -175,5 +176,8 @@ let g:clang_format#code_style = "llvm"
 
 " Mouse mode
 set mouse=a
+
+" Markdown
+let g:vim_markdown_conceal = 0
 
 " Why not zoidberg?
