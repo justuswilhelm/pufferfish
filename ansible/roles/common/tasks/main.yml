@@ -64,10 +64,7 @@
   ignore_errors: True
 
 - name: Change shell to fish
-  user:
-    name: "{{ user }}"
-    shell: "{{ which_fish }}"
-  become: true
+  command: "chsh -s {{ which fish }} justusperlwitz"
   when: shell_is_fish|failed
 
 - name: Python 2 packages

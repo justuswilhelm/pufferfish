@@ -1,0 +1,16 @@
+- name: Copy apt sources.list
+  copy:
+    src: sources.list
+    dest: /etc/apt/sources.list
+  become: true
+- name: Perform dist upgrade
+  apt:
+    upgrade: dist
+    update_cache: yes
+  become: true
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: installed
+  become: true
+  with_items: "{{ apt_packages }}"

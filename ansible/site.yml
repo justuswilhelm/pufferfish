@@ -4,7 +4,7 @@
     - darwin
     - common
 
-- hosts: ubuntu
+- hosts: debian
   roles:
-    - ubuntu
+    - debian
     - common
