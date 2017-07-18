@@ -18,4 +18,5 @@ apt_packages:
   - python3-cffi
   - python3-pip
   - redis-server
+  - sysbench
   - yubioath-desktop
