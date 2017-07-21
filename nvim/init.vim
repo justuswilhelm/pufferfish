@@ -181,4 +181,11 @@ set mouse=a
 " Markdown
 let g:vim_markdown_conceal = 0
 
+" https://superuser.com/questions/385553/making-the-active-window-in-vim-more-obvious
+augroup BgHighlight
+  autocmd!
+  autocmd WinEnter * set cul
+  autocmd WinLeave * set nocul
+augroup END
+
 " Why not zoidberg?
