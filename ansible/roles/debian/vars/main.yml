@@ -19,4 +19,5 @@ apt_packages:
   - python3-pip
   - redis-server
   - sysbench
+  - tmux
   - yubioath-desktop
