@@ -6,4 +6,17 @@
 # then process to finger the user and find out the login shell (for macOS)
 set -e
 
-grep /etc/passwd -e "$USER.*/usr/bin/fish" || finger $USER | grep fish
+if grep /etc/passwd -e "$USER.*/usr/bin/fish"
+then
+    exit 0
+else
+    if type foo >/dev/null 2>&1
+    then
+        if finger $USER | grep fish
+        then
+            exit 0
+        fi
+    fi
+fi
+echo "Fish not shell"
+exit 1

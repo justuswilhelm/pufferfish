@@ -64,8 +64,9 @@
   ignore_errors: True
 
 - name: Change shell to fish
-  command: "chsh -s {{ which fish }} justusperlwitz"
+  command: "chsh -s {{ which_fish.stdout }} justusperlwitz"
   when: shell_is_fish|failed
+  become: true
 
 - name: Python 2 packages
   pip:
