@@ -144,6 +144,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 " Folds
   let g:tex_conceal = "" "Has to be one of the most annoying things ever
   set conceallevel=0
+  set nofoldenable
 
 " Use system clipboard
   set clipboard=unnamed
