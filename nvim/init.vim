@@ -114,6 +114,7 @@ set tabstop=4
 " ctrlp.vim
   let g:ctrlp_show_hidden=1
   let g:ctrlp_working_path_mode = ''
+  let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Use a different shell
 if &shell =~# 'fish$'
