@@ -1,8 +1,9 @@
 apt_packages:
   - cloc
-  - cmus
+  - cmake
   - fish
   - git
+  - gnome
   - golang
   - graphviz
   - libssl-dev
