@@ -26,6 +26,7 @@
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
+    Plug 'AndrewRadev/linediff.vim'
 
     Plug 'mtth/scratch.vim'
     Plug 'qpkorr/vim-renamer'
