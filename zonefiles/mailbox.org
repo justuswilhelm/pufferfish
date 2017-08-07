@@ -1,0 +1,3 @@
+@	300	IN	MX	10	mxext1.mailbox.org.
+@	300	IN	MX	10	mxext2.mailbox.org.
+@	300	IN	MX	20	mxext3.mailbox.org.
