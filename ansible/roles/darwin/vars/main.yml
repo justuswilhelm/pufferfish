@@ -59,4 +59,3 @@ homebrew_casks:
   - wireshark
   - yubico-authenticator
   - yubikey-personalization-gui
-  - yubikey-piv-manager
