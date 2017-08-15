@@ -3,14 +3,11 @@ apt_packages:
   - cmake
   - fish
   - git
-  - gnome
   - golang
   - graphviz
   - libssl-dev
   - lynis
-  - mitmproxy
   - mosh
-  - mplayer
   - neovim
   - pandoc
   - python-cffi
@@ -21,4 +18,8 @@ apt_packages:
   - redis-server
   - sysbench
   - tmux
+apt_desktop:
+  - gnome
+  - mitmproxy
+  - mplayer
   - yubioath-desktop
