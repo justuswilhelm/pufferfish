@@ -17,8 +17,10 @@ apt_packages:
   - python3-pip
   - python3-venv
   - redis-server
+  - silversearcher-ag
   - sysbench
   - tmux
+
 apt_desktop:
   - gnome
   - mitmproxy
