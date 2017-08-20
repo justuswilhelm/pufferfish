@@ -6,6 +6,7 @@ apt_packages:
   - gnome
   - golang
   - graphviz
+  - htop
   - libssl-dev
   - lynis
   - mosh
