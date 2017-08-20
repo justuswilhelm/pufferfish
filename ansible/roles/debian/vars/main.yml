@@ -19,6 +19,7 @@ apt_packages:
   - python3-cffi
   - python3-pip
   - python3-venv
+  - qemu
   - redis-server
   - silversearcher-ag
   - sysbench
