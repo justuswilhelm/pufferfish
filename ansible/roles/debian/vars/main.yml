@@ -3,6 +3,7 @@ apt_packages:
   - cmake
   - fish
   - git
+  - gnome
   - golang
   - graphviz
   - libssl-dev
@@ -20,9 +21,9 @@ apt_packages:
   - silversearcher-ag
   - sysbench
   - tmux
+  - xorg
 
 apt_desktop:
-  - gnome
   - mitmproxy
   - mplayer
   - yubioath-desktop
