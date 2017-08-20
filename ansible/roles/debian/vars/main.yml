@@ -11,6 +11,7 @@ apt_packages:
   - lynis
   - mosh
   - neovim
+  - ovmf
   - pandoc
   - python-cffi
   - python-pip
