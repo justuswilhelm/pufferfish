@@ -96,10 +96,20 @@
   command: git config --global user.email {{ git_email }}
   when: git_email_configured|failed
 
-- name: Go Lint
-  command: go get -u github.com/golang/lint/golint
+- name: Go Packages
+  command: go get -u {{ item }}
   environment:
     GOPATH: "{{ home }}/go"
+  with_items: "{{ go_packages }}"
+
+- name: Symlink autojump helpers
+  file:
+    src: "{{ home }}/go/github.com/justuswilhelm/autojump/fish/{{ item }}"
+    dest: "{{ dotfiles }}/fish/functions/{{ item }}"
+    state: symlink
+  with_items:
+    - "j.fish"
+    - "cd.fish"
 
 - name: NPM configuration
   npm:
