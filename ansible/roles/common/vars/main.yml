@@ -17,3 +17,6 @@ npm_packages:
   - less
   - lesshint
   - yuglify
+go_packages:
+  - github.com/golang/lint/golint
+  - github.com/justuswilhelm/autojump
