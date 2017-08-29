@@ -1,3 +1,24 @@
-test:
-  override:
-    - echo "No Tests"
+version: 2
+jobs:
+  build:
+    working_directory: ~/.dotfiles
+    docker:
+      - image: debian:stable
+    steps:
+      - checkout
+      - run:
+          name: "Install ansible"
+          command: apt update && apt install -y ansible
+      - run:
+          name: "Go to dotfiles"
+          command: cd ~/.dotfiles
+      - run:
+          name: "Add hosts file"
+          command: printf "[debian]\nlocalhost ansible_connection=local" > ansible/hosts
+      - run:
+          command: ansible-playbook ansible/site.yml -i ansible/hosts -l debian -e git_email=email@email.email
+      - store_artifacts:
+          path: test-artifacts/
+          destination: test-artifacts
+      - store_test_results:
+          path: test-results/
