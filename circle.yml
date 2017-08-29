@@ -17,8 +17,3 @@ jobs:
           command: printf "[debian]\nlocalhost ansible_connection=local" > ansible/hosts
       - run:
           command: ansible-playbook ansible/site.yml -i ansible/hosts -l debian -e git_email=email@email.email
-      - store_artifacts:
-          path: test-artifacts/
-          destination: test-artifacts
-      - store_test_results:
-          path: test-results/
