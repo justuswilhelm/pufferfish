@@ -104,9 +104,9 @@
 
 - name: Symlink autojump helpers
   file:
-    src: "{{ home }}/go/github.com/justuswilhelm/autojump/fish/{{ item }}"
+    src: "{{ home }}/go/src/github.com/justuswilhelm/autojump/fish/{{ item }}"
     dest: "{{ dotfiles }}/fish/functions/{{ item }}"
-    state: symlink
+    state: link
   with_items:
     - "j.fish"
     - "cd.fish"
