@@ -201,4 +201,10 @@ augroup BgHighlight
   autocmd WinLeave * set nocul
 augroup END
 
+" Crontab stuff
+if $VIM_CRONTAB == "true"
+    set nobackup
+    set nowritebackup
+endif
+
 " Why not zoidberg?

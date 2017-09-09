@@ -71,3 +71,6 @@ abbr -a ta tmux a
 # Neovim
 # =====
 abbr -a e nvim
+
+# Crontab
+abbr -a cr env VIM_CRONTAB=true /usr/bin/env crontab
