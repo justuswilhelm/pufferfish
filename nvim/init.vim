@@ -14,6 +14,7 @@
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'plasticboy/vim-markdown'
+    Plug 'tpope/vim-haml'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
