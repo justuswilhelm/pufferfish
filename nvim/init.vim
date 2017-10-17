@@ -22,14 +22,13 @@
     Plug 'dracula/vim'
 
     " Improve general editor behavior
+    Plug 'AndrewRadev/linediff.vim'
     Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
-    Plug 'AndrewRadev/linediff.vim'
-
     Plug 'mtth/scratch.vim'
     Plug 'qpkorr/vim-renamer'
     Plug 'rizzatti/dash.vim'
