@@ -39,7 +39,6 @@
     state: link
   with_items:
     - fish
-    - i3
     - nvim
 
 - name: Symlink tmux config
@@ -55,7 +54,6 @@
     state: link
   with_items:
     - httpie
-    - mitmproxy
 
 - name: Find out path to fish
   command: which fish
