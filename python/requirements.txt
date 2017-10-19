@@ -1,13 +1,6 @@
-flake8
-httpie
 isort
 neovim
-packaging
 pip
-pydocstyle
-requests[security]
 setuptools
-soundscrape
-virtualenv
 wheel
 xattr
