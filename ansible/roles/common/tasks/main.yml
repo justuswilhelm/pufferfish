@@ -90,9 +90,18 @@
   register: git_email_configured
   ignore_errors: true
 
+- name: Git name configured?
+  command: grep {{ home }}/.gitconfig -e 'name = '
+  register: git_name_configured
+  ignore_errors: true
+
 - name: Configure git email
   command: git config --global user.email {{ git_email }}
   when: git_email_configured|failed
+
+- name: Configure git name
+  command: git config --global user.name {{ git_name }}
+  when: git_name_configured|failed
 
 - name: Go Packages
   command: go get -u {{ item }}
