@@ -17,8 +17,8 @@ ansible-playbook ansible/site.yml -i ansible/hosts -l debian -e git_email=$YOUR_
 ## Install on macOS
 
 Make sure to install
-- Homebrew: (https://brew.sh/)[https://brew.sh/], and
-- Ansible: (https://www.ansible.com/)[https://www.ansible.com/] by running
+- Homebrew: [https://brew.sh/](https://brew.sh/), and
+- Ansible: [https://www.ansible.com/](https://www.ansible.com/) by running
 
 ```
 brew install ansible
