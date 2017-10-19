@@ -20,10 +20,11 @@
     upgrade_all: yes
   with_items: "{{ homebrew_formulas }}"
 
-- name: Install Homebrew casks
+- name: Install Homebrew casks, ignore failures
   homebrew_cask:
     name: "{{ item }}"
   with_items: "{{ homebrew_casks }}"
+  ignore_errors: True
 
 - name: Clean up Homebrew
   command: brew cleanup -s
