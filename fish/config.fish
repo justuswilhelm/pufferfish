@@ -44,11 +44,6 @@ abbr -a groh 'git reset origin/master --hard'
 abbr -a gs git status
 abbr -a gi 'git init; and git commit --allow-empty -m "Initial commit"'
 
-# Heroku
-# ======
-abbr -a hmo heroku maintenance:off
-abbr -a hmon heroku maintenance:on
-
 # Python
 # ======
 abbr -a doctest python -m doctest
