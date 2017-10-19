@@ -11,7 +11,7 @@
 git clone git@github.com:justuswilhelm/dotfiles "$HOME/.dotfiles"
 cd "$HOME/.dotfiles"
 printf "[debian]\nlocalhost ansible_connection=local" > ansible/hosts
-ansible-playbook ansible/site.yml -i ansible/hosts -l debian -e git_email=$YOUR_EMAIL
+ansible-playbook ansible/site.yml -i ansible/hosts -l debian -e git_email=$YOUR_EMAIL -K
 ```
 
 ## Install on macOS
@@ -30,5 +30,5 @@ Then, run the following in your terminal
 git clone git@github.com:justuswilhelm/dotfiles "$HOME/.dotfiles"
 cd "$HOME/.dotfiles"
 printf "[darwin]\nlocalhost ansible_connection=local" > ansible/hosts
-ansible-playbook ansible/site.yml -i ansible/hosts -l darwin -e git_email=$YOUR_EMAIL
+ansible-playbook ansible/site.yml -i ansible/hosts -l darwin -e git_email=$YOUR_EMAIL -K
 ```
