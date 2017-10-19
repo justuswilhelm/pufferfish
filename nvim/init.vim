@@ -22,6 +22,7 @@
     Plug 'dracula/vim'
 
     " Improve general editor behavior
+    Plug 'rhysd/vim-clang-format'
     Plug 'AndrewRadev/linediff.vim'
     Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
