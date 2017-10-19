@@ -42,13 +42,11 @@
     - i3
     - nvim
 
-- name: Symlink miscellaneous files
+- name: Symlink tmux config
   file:
-    src: "{{ dotfiles }}/misc/{{ item }}"
-    dest: "{{ home }}/.{{ item }}"
-    state: link
-  with_items:
-    - tmux.conf
+    src: "{{ dotfiles }}/tmux/tmux.conf"
+    dest: "{{ home }}/.tmux.conf"
+    state: hard
 
 - name: Symlink config folders
   file:
