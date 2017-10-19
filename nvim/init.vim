@@ -76,11 +76,6 @@ set tabstop=4
 
   " Young Padawan Mode
     inoremap jk <esc>
-    inoremap <esc> <NOP>
-    noremap <Up> <NOP>
-    noremap <Down> <NOP>
-    noremap <Left> <NOP>
-    noremap <Right> <NOP>
 
   " DashSearch (OS X only with Dash)
     nmap <silent> <leader>d <Plug>DashGlobalSearch
