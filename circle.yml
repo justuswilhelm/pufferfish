@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/.dotfiles
+    docker:
+      - image: debian:stable
+    steps:
+      - checkout
+      - run:
+          name: "Install apt packages"
+          command: apt update && apt install -y neovim fish git
+      - run:
+          name: "Run installer"
+          command: bin/install_dotfiles
