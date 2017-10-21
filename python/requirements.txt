@@ -1,6 +1,0 @@
-isort
-neovim
-pip
-setuptools
-wheel
-xattr
