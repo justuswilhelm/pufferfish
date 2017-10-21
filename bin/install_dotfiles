@@ -1,0 +1,29 @@
+#!/bin/bash
+set -ue
+echo "This will install and update all dotfiles"
+
+DOTFILES="$HOME/.dotfiles"
+XDG_CONFIG_HOME="$HOME/.config"
+
+echo "---"
+echo "Ensuring XDG_CONFIG_HOME at $XDG_CONFIG_HOME exists"
+mkdir -p "$XDG_CONFIG_HOME"
+echo "---"
+echo
+
+echo "---"
+echo "Symlinking config files"
+ln -sfv $DOTFILES/bin $HOME
+ln -sfv $DOTFILES/fish $HOME/.config
+ln -sfv $DOTFILES/nvim $HOME/.config
+ln -fv $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
+echo "---"
+echo
+
+echo "---"
+echo "Updating nvim"
+nvim +PlugInstall +qall
+echo "---"
+
+echo "Done!"
+echo "Please ensure that fish is set as your login shell"
