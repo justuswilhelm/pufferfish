@@ -22,7 +22,7 @@ echo
 
 echo "---"
 echo "Updating nvim"
-nvim +PlugInstall +qall
+nvim +PlugInstall +qall || echo "Not sure if this worked"
 echo "---"
 
 echo "Done!"
