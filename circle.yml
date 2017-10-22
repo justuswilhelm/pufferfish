@@ -5,10 +5,10 @@ jobs:
     docker:
       - image: debian:stable
     steps:
-      - checkout
       - run:
           name: "Install apt packages"
           command: apt update && apt install -y neovim fish git
+      - checkout
       - run:
           name: "Run installer"
           command: bin/install_dotfiles
