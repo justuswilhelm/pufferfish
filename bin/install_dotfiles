@@ -79,6 +79,7 @@ if not eval $nvim_update > /dev/null ^ /dev/null
         set_color red
         echo "That failed terribly"
         set_color normal
+        exit 1
     end
 end
 set_color green
