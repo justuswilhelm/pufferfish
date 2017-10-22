@@ -1,16 +1,19 @@
 # Paths
 # =====
 function add_to_path
+    if not test -d $argv[1]
+        return
+    end
     if not contains $argv[1] $PATH
         set PATH $PATH $argv[1]
     end
 end
 
-set -x TERM "xterm-256color"
+set -x DOTFILES "$HOME/.dotfiles"
 set -x EDITOR "nvim"
-set -x DOTFILES $HOME/.dotfiles
-set -x XDG_CONFIG_HOME $HOME/.config
-set -x GOPATH $HOME/go
+set -x GOPATH "$HOME/go"
+set -x TERM "xterm-256color"
+set -x XDG_CONFIG_HOME "$HOME/.config"
 
 add_to_path "/usr/local/sbin"
 add_to_path "$HOME/bin"
