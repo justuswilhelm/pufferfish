@@ -44,11 +44,19 @@ set_color normal
 echo
 
 echo "Linking Config Files"
-echo "-----------------------"
-ln -sfv $DOTFILES/bin $HOME
-and ln -sfv $DOTFILES/fish $HOME/.config
-and ln -sfv $DOTFILES/nvim $HOME/.config
-and ln -fv $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
+echo "--------------------"
+if not ln -sfv "$DOTFILES/fish" "$XDG_CONFIG_HOME"
+    set -l backup_path "$XDG_CONFIG_HOME/fish.backup"-(random)
+    echo "Moving existing fish to backup folder at $backup_path"
+    mv -v "$XDG_CONFIG_HOME/fish" "$backup_path"
+    echo "Trying to link again"
+    ln -sfv "$DOTFILES/fish" "$XDG_CONFIG_HOME"
+    or exit 1
+end
+
+ln -sfv "$DOTFILES/bin" "$HOME"
+and ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
+and ln -fv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 or exit 1
 set_color green
 echo "All good!"
