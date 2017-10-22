@@ -1,29 +1,82 @@
-#!/bin/bash
-set -ue
-echo "This will install and update all dotfiles"
+#!/usr/bin/env fish
+set_color blue
+echo
+echo "               =============="
+echo "               = pufferfish ="
+echo "               =============="
+echo
+set_color yellow
+printf "\
+                    /-  :h:  -/
+               :+` `NN..oMo..NN` `+:
+               :Mm+yNMmddhddmMNy+mM:
+           /Mh:oNmy+:.........:+yNNo:hM/
+         `  :MMh/.:m:.:N:.:N:.:m/./hMM:  `
+        -NNyNm:..-...-...-...-....../mNyNN:
+   os++:``sMh.../m:.:m:.:m:.:m:.......hMs`
+   MmsydNdMd.......-/+/-........+/.-o-.dM:.
+   dN+::/mM/......oNhsyNh:......sNydm:./MMm
+   `dNy/:dN-...../Ms...-sd:......-/:..oNm+
+   `dNy/:dN-.....sM:..................oNm+
+   dN+::/mM/...../Ms....+d:............/MMd
+   MmsydNdMd......oNhshh--.............dM-
+   oso+:``sMh......-/+/-..............hMs`
+        -NNyNm:...................../mNyNN:
+         `  :MMh/................./hMM:  `
+           /Mh:oNNy+:.........:+yNNo:hM/
+               :Mm+yNMmddhddmMNy+mM:
+               :+` `NN..oMo..NN` `+:
+                    /-  :h:  -/
 
-DOTFILES="$HOME/.dotfiles"
-XDG_CONFIG_HOME="$HOME/.config"
+" | cat
+set_color normal
 
-echo "---"
-echo "Ensuring XDG_CONFIG_HOME at $XDG_CONFIG_HOME exists"
+set -l DOTFILES "$HOME/.dotfiles"
+set -l XDG_CONFIG_HOME "$HOME/.config"
+
+echo "Ensure XDG_CONFIG_HOME"
+echo "----------------------"
 mkdir -p "$XDG_CONFIG_HOME"
-echo "---"
+or exit 1
+set_color green
+echo "All good!"
+set_color normal
 echo
 
-echo "---"
-echo "Symlinking config files"
+echo "Linking Config Files"
+echo "-----------------------"
 ln -sfv $DOTFILES/bin $HOME
-ln -sfv $DOTFILES/fish $HOME/.config
-ln -sfv $DOTFILES/nvim $HOME/.config
-ln -fv $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
-echo "---"
+and ln -sfv $DOTFILES/fish $HOME/.config
+and ln -sfv $DOTFILES/nvim $HOME/.config
+and ln -fv $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
+or exit 1
+set_color green
+echo "All good!"
+set_color normal
 echo
 
-echo "---"
-echo "Updating nvim"
-nvim +PlugInstall +qall || echo "Not sure if this worked"
-echo "---"
+echo "Updating neovim"
+nvim +PlugInstall +qall
+or exit 1
+set_color green
+echo "All good!"
+set_color normal
+echo
 
-echo "Done!"
-echo "Please ensure that fish is set as your login shell"
+if string match -ev fish $SHELL > /dev/null
+    set_color red
+    echo "Warning"
+    echo "-------"
+    echo "This command was not executed from fish"
+    echo "Please ensure that fish is set as your login shell"
+    echo "For more info, please refer to"
+    echo
+    set_color blue
+    echo "https://github.com/justuswilhelm/pufferfish#installing-fish"
+    set_color normal
+    echo
+end
+
+set_color green
+echo "All Done!"
+set_color normal
