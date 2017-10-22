@@ -11,4 +11,4 @@ jobs:
       - checkout
       - run:
           name: "Run installer"
-          command: bin/install_dotfiles
+          command: env TERM=xterm bin/install_dotfiles
