@@ -65,16 +65,17 @@ echo
 
 echo "Updating neovim"
 echo "---------------"
-if not nvim +PlugInstall +qall
-    echo "Trying again with expect"
-
-    set -l expect_script '\
-    spawn nvim +PlugInstall +qall
-    expect "Press ENTER or type command to continue"
-    send "\n"
+set -l nvim_update nvim +PlugInstall +qall
+if not eval $nvim_update > /dev/null ^ /dev/null
+    echo "Trying with expect"
+    set -l expect_script "\
+    log_user 0
+    spawn $nvim_update
+    expect 'Press ENTER or type command to continue'
+    send '\n'
     interact
-    '
-    if not expect -c "$expect_script"
+    "
+    if not expect -c "$expect_script" > /dev/null ^ /dev/null
         set_color red
         echo "That failed terribly"
         set_color normal
