@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/.dotfiles
+    docker:
+      - image: debian:stable
+    steps:
+      - run:
+          command: echo "No tests"
