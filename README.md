@@ -18,6 +18,8 @@ After installing fish, ensure that fish is your login shell, meaning that if
 you open a new terminal session fish will be launched. Find out how to do this
 [here](https://fishshell.com/docs/current/faq.html#faq-default)
 
+![Installer](docs/installer.png)
+
 ## Quickstart on macOS
 
 ```
