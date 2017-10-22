@@ -85,7 +85,7 @@ echo "All good!"
 set_color normal
 echo
 
-if string match -ev fish $SHELL > /dev/null
+if test (which fish) != "$SHELL"
     set_color red
     echo "Warning"
     echo "-------"
