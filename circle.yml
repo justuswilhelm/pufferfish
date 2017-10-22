@@ -12,17 +12,3 @@ jobs:
       - run:
           name: "Run installer"
           command: env TERM=xterm bin/install_dotfiles
-    filters:
-      branches:
-        ignore:
-          - gh-pages
-  gh-pages:
-    docker:
-      - image: debian:stable
-    steps:
-      - run:
-          command: echo "No tests"
-    filters:
-      branches:
-        only:
-          - gh-pages
