@@ -64,8 +64,22 @@ set_color normal
 echo
 
 echo "Updating neovim"
-nvim +PlugInstall +qall
-or exit 1
+echo "---------------"
+if not nvim +PlugInstall +qall
+    echo "Trying again with expect"
+
+    set -l expect_script '\
+    spawn nvim +PlugInstall +qall
+    expect "Press ENTER or type command to continue"
+    send "\n"
+    interact
+    '
+    if not expect -c "$expect_script"
+        set_color red
+        echo "That failed terribly"
+        set_color normal
+    end
+end
 set_color green
 echo "All good!"
 set_color normal
