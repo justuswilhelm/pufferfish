@@ -22,7 +22,7 @@ you open a new terminal session fish will be launched. Find out how to do this
 
 ## Quickstart on macOS
 
-```
+```bash
 brew update
 brew install neovim fish git
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
@@ -32,7 +32,7 @@ bin/install_dotfiles
 
 ## Quickstart on Debian and Ubuntu
 
-```
+```bash
 apt update
 apt install -y install neovim fish git
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
