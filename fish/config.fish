@@ -30,7 +30,7 @@ abbr -a l ls
 
 # Crypto
 # ------
-pbcopy <~/.ssh/id_rsa.pub
+abbr pbcopy <~/.ssh/id_rsa.pub
 
 # Network
 # -------
