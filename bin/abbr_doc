@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Extract documentation from abbreviations."""
+from os import path
+from os import environ
+import re
+
+
+GROUP_RE = re.compile(
+    r"# (?P<name>.+) abbreviations\n# -+\n(?P<abbreviations>(?:.+\n)+)",
+)
+ABBR_RE = re.compile(
+    r'# (?P<doc>.+)\nabbr -a (?P<name>\w+) (?P<abbreviation>.+)\n'
+)
+
+
+def read_abbreviations():
+    """Yield abbreviation groups."""
+    config_path = path.join(environ['DOTFILES'], 'fish', 'config.fish')
+    with open(config_path) as fd:
+        config = fd.read()
+    for group in GROUP_RE.finditer(config):
+        name, abbreviations = group.groups()
+        yield name, ABBR_RE.finditer(abbreviations)
+
+
+def print_doc(abbreviations):
+    """Print documentation."""
+    yield '# Useful abbreviations'
+    yield ''
+    for group, abbreviations in read_abbreviations():
+        yield '## {}'.format(group)
+        for abbr in abbreviations:
+            yield " - `{}`: {}".format(abbr.group('name'), abbr.group('doc'))
+        yield ''
+
+
+def main():
+    """Main method."""
+    docs = print_doc(read_abbreviations())
+    out = "\n".join(docs).strip()
+    print(out)
+
+
+if __name__ == "__main__":
+    main()
