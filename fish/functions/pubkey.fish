@@ -1,6 +1,9 @@
 function pubkey
     set -l pubkey_location "$HOME/.ssh/id_rsa.pub"
-    echo "Copying ssh public key from $pubkey_location"
-    pbcopy <$pubkey_location
-    or xclip <$pubkey_location
+    if which pbcopy > /dev/null
+        pbcopy < $pubkey_location
+    else
+        xclip -selection clipboard < $pubkey_location
+    end
+    echo "Copied SSH public key from $pubkey_location"
 end
