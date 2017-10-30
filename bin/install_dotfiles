@@ -57,6 +57,7 @@ end
 ln -sfv "$DOTFILES/bin" "$HOME"
 and ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
 and ln -fv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+and ln -fv "$DOTFILES/git/gitignore" "$HOME/.gitignore"
 or exit 1
 set_color green
 echo "All good!"
