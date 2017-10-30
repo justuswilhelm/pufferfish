@@ -23,14 +23,22 @@ def read_abbreviations():
         yield name, ABBR_RE.finditer(abbreviations)
 
 
+def header():
+    """Yield table header."""
+    yield "Abbreviation | Description"
+    yield ":----------- |:----------"
+
+
 def print_doc(abbreviations):
     """Print documentation."""
     yield '# Useful abbreviations'
     yield ''
     for group, abbreviations in read_abbreviations():
         yield '## {}'.format(group)
+        yield ''
+        yield "\n".join(header())
         for abbr in abbreviations:
-            yield " - `{}`: {}".format(abbr.group('name'), abbr.group('doc'))
+            yield "`{}` | {}".format(abbr.group('name'), abbr.group('doc'))
         yield ''
 
 
