@@ -1,4 +1,4 @@
-function webcheck
+function webcheck -d "Check whether certain standard web files exist"
     set -l PATHS apple-touch-icon.png browserconfig.xml crossdomain.xml favicon.ico robots.txt sitemap.xml tile-wide.png tile.png humans.txt
     if [ -z $argv[1] ]
         echo "Specify a host name to check"

@@ -1,4 +1,4 @@
-function fish_right_prompt
+function fish_right_prompt -d "Show right prompt"
     set last_status "$status"
     if math "$last_status > 0" >/dev/null
         set_color red

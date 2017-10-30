@@ -1,4 +1,4 @@
-function pvdd
+function pvdd -d "Pipe file into dd using pipeviewer"
     if is_darwin
         set -l DD_FLAG bs=4m
     else
