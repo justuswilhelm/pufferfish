@@ -1,4 +1,4 @@
-function git_status
+function git_status -d "Show git status"
     if git rev-parse --is-inside-work-tree 1>/dev/null 2>&1
         if not git diff --quiet
             set_color red

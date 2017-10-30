@@ -1,4 +1,4 @@
-function moon
+function moon -d "Show moon"
     while true
         clear
         curl http://wttr.in/moon

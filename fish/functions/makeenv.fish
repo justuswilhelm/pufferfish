@@ -1,4 +1,4 @@
-function makeenv
+function makeenv -d "Create python 3 environment and install requirements"
     set ENV_DIR "env"
     set REQUIREMENTS "requirements.txt"
     if [ -d "$ENV_DIR" ]

@@ -1,4 +1,4 @@
-function pubkey
+function pubkey -d "Copy id_rsa.pub into clipboard"
     set -l pubkey_location "$HOME/.ssh/id_rsa.pub"
     if which pbcopy > /dev/null
         pbcopy < $pubkey_location
