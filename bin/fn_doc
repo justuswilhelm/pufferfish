@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+"""asd"""
+from os import path
+from os import environ
+import re
+import glob
+
+FN_GLOB = glob.iglob(
+    path.join(
+        environ['DOTFILES'],
+        'fish', 'functions',
+        '*.fish',
+    )
+)
+
+DOC_RE = re.compile(
+    r'function (?P<name>.+) -d "(?P<description>.+)"$'
+)
+
+
+def read_doc(path):
+    """Return doc string."""
+    with open(path) as fd:
+        for line in fd:
+            return DOC_RE.search(line)
+
+
+def header():
+    """Yield table header."""
+    yield "Function Name | Description"
+    yield ":------------ |:----------"
+
+
+def describe(name, description):
+    """Print function description."""
+    yield "`{}` | {}".format(name, description)
+
+
+def main():
+    """Run main method."""
+    def _iter():
+        yield "\n".join(header())
+        for match in map(read_doc, sorted(FN_GLOB)):
+            yield "\n".join(describe(
+                match.group('name'),
+                match.group('description'),
+            ))
+    print(
+        "\n".join(_iter())
+    )
+
+
+if __name__ == "__main__":
+    main()
