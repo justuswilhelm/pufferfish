@@ -42,6 +42,11 @@ abbr -a cdp 'cd $PWD'
 # Perform a full update/upgrade cycle
 abbr -a bbbbb 'brew update; and brew upgrade; and brew cask upgrade; and brew cleanup -s; and brew cask cleanup'
 
+# Homebrew abbreviations
+# ----------------------
+# Perform a full update/upgrade cycle
+abbr -a bbbb 'brew update; and brew upgrade; and brew cleanup -s; and brew cask cleanup'
+
 # Git abbreviations
 # -----------------
 # Stage changed files in git index
