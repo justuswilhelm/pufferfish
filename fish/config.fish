@@ -34,6 +34,8 @@ abbr -a reload exec fish
 # ------------------
 # Make it easier to ls a folder by saving one character.
 abbr -a l ls
+# Re-cd to the current directory. Useful if inode was changed.
+abbr -a cdp 'cd $PWD'
 
 # Homebrew abbreviations
 # ----------------------
