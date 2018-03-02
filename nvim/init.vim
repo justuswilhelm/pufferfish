@@ -22,7 +22,6 @@
     Plug 'dracula/vim'
 
     " Improve general editor behavior
-    Plug 'rhysd/vim-clang-format'
     Plug 'AndrewRadev/linediff.vim'
     Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
@@ -32,6 +31,7 @@
     Plug 'epeli/slimux'
     Plug 'mtth/scratch.vim'
     Plug 'qpkorr/vim-renamer'
+    Plug 'rhysd/vim-clang-format'
     Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
     Plug 'tpope/vim-fugitive'
