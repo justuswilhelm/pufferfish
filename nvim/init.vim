@@ -90,6 +90,7 @@ set tabstop=4
 
 " Neomake
   autocmd! BufWritePost * Neomake
+  let g:neomake_java_enabled_makers = []
   let g:neomake_python_enabled_makers = ["flake8"]
   let g:neomake_elixir_mix_maker = {
         \ 'exe' : 'mix',
