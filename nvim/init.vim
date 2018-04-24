@@ -13,8 +13,8 @@
     Plug 'godlygeek/tabular'
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
-    Plug 'plasticboy/vim-markdown'
     Plug 'tpope/vim-haml'
+    Plug 'tpope/vim-markdown'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
@@ -188,7 +188,7 @@ let g:clang_format#code_style = "llvm"
 set mouse=a
 
 " Markdown
-let g:vim_markdown_conceal = 0
+let g:markdown_syntax_conceal = 0
 
 " https://superuser.com/questions/385553/making-the-active-window-in-vim-more-obvious
 augroup BgHighlight
