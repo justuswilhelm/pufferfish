@@ -1,6 +1,6 @@
 function pvdd -d "Pipe file into dd using pipeviewer"
     if is_darwin
-        set -l DD_FLAG bs=4m
+        set -l DD_FLAG bs=16m
     else
         set -l DD_FLAG bs=4M
     end
