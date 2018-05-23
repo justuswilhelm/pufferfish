@@ -15,6 +15,7 @@
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'pangloss/vim-javascript'
     Plug 'posva/vim-vue'
+    Plug 'tomlion/vim-solidity'
     Plug 'tpope/vim-haml'
     Plug 'tpope/vim-markdown'
 
