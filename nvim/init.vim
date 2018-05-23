@@ -14,6 +14,7 @@
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'pangloss/vim-javascript'
+    Plug 'posva/vim-vue'
     Plug 'tpope/vim-haml'
     Plug 'tpope/vim-markdown'
 
