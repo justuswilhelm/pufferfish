@@ -5,25 +5,22 @@ import subprocess
 import timeit
 
 
-def print_status(number, time_taken):
-    print("... at number {}, time taken: {} seconds".format(
-        number, time_taken))
-
-
 def main(args):
     """Main method."""
     check_output = subprocess.check_output
     command = args.command
     timer = timeit.Timer('check_output(command)', globals=locals())
+    times = args.times
     print("Beginning timeit run of '{}' ...".format(" ".join(command)))
     try:
-        number, time_taken = timer.autorange(callback=print_status)
+        time_taken = timer.timeit(times)
     except Exception:
         timer.print_exc()
+        return
     print("---")
     print("Total number of runs: {}, time_taken: {} seconds".format(
-        number, time_taken))
-    print("Average time is {} seconds".format(time_taken / number))
+        times, time_taken))
+    print("Average time is {} seconds".format(time_taken / times))
 
 
 if __name__ == "__main__":
