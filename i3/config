@@ -140,3 +140,4 @@ bar {
 
 exec setxkbmap gb mac
 exec nm-applet
+exec xmodmap ~/.Xmodmap
