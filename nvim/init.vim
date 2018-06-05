@@ -159,7 +159,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
   set nofoldenable
 
 " Use system clipboard
-  set clipboard=unnamed
+  set clipboard+=unnamedplus
 
 " Undo Levels
   set history=1000
