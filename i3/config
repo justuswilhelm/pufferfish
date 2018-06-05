@@ -146,6 +146,7 @@ bar {
     status_command i3status
 }
 
+exec ibus-daemon -dxr
 exec setxkbmap gb mac
 exec nm-applet
 exec xmodmap ~/.Xmodmap
