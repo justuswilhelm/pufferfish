@@ -13,6 +13,7 @@
     Plug 'godlygeek/tabular'
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+    Plug 'leafgarland/typescript-vim'
     Plug 'pangloss/vim-javascript'
     Plug 'posva/vim-vue'
     Plug 'tomlion/vim-solidity'
