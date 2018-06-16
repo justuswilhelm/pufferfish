@@ -151,7 +151,7 @@ bar {
 }
 
 exec ibus-daemon -dxr
-exec setxkbmap gb mac
+exec setxkbmap us mac
 exec nm-applet
 exec xmodmap ~/.Xmodmap
 exec /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
