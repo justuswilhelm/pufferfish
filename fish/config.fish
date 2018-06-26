@@ -59,6 +59,8 @@ abbr -a gc git checkout
 abbr -a gcb git checkout -b
 # Cherry pick
 abbr -a gcp git cherry-pick
+# Abort cherry pick
+abbr -a gcpa git cherry-pick --abort
 # Continue cherry picking
 abbr -a gcpc git cherry-pick --continue
 # Show the current diff for unstaged changes
