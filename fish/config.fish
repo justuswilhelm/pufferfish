@@ -73,6 +73,8 @@ abbr -a gfa git fetch --all
 abbr -a gi 'git init; and git commit --allow-empty -m "Initial commit"'
 # Show the git log
 abbr -a gl git log
+# Show the git log in patch mode
+abbr -a glp git log -p
 # Commit the current staged changes
 abbr -a gm git commit
 # Amend to the previous commit
