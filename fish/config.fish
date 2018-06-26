@@ -57,6 +57,10 @@ abbr -a gap git add -p
 abbr -a gc git checkout
 # Check out a new branch
 abbr -a gcb git checkout -b
+# Cherry pick
+abbr -a gcp git cherry-pick
+# Continue cherry picking
+abbr -a gcpc git cherry-pick --continue
 # Show the current diff for unstaged changes
 abbr -a gd git diff
 # Show the current diff for staged changes
