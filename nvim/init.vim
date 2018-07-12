@@ -44,11 +44,11 @@
   call plug#end()
 
 " Indentation
-syntax enable
-filetype plugin indent on
-set expandtab
-set shiftwidth=4
-set tabstop=4
+  syntax enable
+  filetype plugin indent on
+  set expandtab
+  set shiftwidth=4
+  set tabstop=4
 
 " Keyboard shortcuts
   let mapleader = ','
@@ -129,9 +129,9 @@ set tabstop=4
   let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " Use a different shell
-if &shell =~# 'fish$'
-    set shell=sh
-endif
+  if &shell =~# 'fish$'
+      set shell=sh
+  endif
 
 " Netrw
   let g:netrw_altv=1
@@ -146,10 +146,10 @@ endif
   set showcmd
 
 " Slimux
-map <Leader>s :SlimuxREPLSendLine<CR>
-vmap <Leader>s :SlimuxREPLSendSelection<CR>
-map <Leader>a :SlimuxShellLast<CR>
-map <Leader>k :SlimuxSendKeysLast<CR>
+  map <Leader>s :SlimuxREPLSendLine<CR>
+  vmap <Leader>s :SlimuxREPLSendSelection<CR>
+  map <Leader>a :SlimuxShellLast<CR>
+  map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Line numbers
   set number
@@ -183,28 +183,28 @@ map <Leader>k :SlimuxSendKeysLast<CR>
   set directory=~/.config/nvim/swap/
 
 " JSON concealing
-let g:vim_json_syntax_conceal = 0
+  let g:vim_json_syntax_conceal = 0
 
 " Clang-Format
-let g:clang_format#code_style = "llvm"
+  let g:clang_format#code_style = "llvm"
 
 " Mouse mode
-set mouse=a
+  set mouse=a
 
 " Markdown
-let g:markdown_syntax_conceal = 0
+  let g:markdown_syntax_conceal = 0
 
 " https://superuser.com/questions/385553/making-the-active-window-in-vim-more-obvious
-augroup BgHighlight
-  autocmd!
-  autocmd WinEnter * set cul
-  autocmd WinLeave * set nocul
-augroup END
+  augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set cul
+    autocmd WinLeave * set nocul
+  augroup END
 
 " Crontab stuff
-if $VIM_CRONTAB == "true"
-    set nobackup
-    set nowritebackup
-endif
+  if $VIM_CRONTAB == "true"
+      set nobackup
+      set nowritebackup
+  endif
 
 " Why not zoidberg?
