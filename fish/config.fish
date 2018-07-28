@@ -14,6 +14,8 @@ set -x EDITOR "nvim"
 set -x GOPATH "$HOME/go"
 set -x TERM "xterm-256color"
 set -x XDG_CONFIG_HOME "$HOME/.config"
+set -x LANG "en_US.UTF-8"
+set -x LC_ALL "en_US.UTF-8"
 
 add_to_path "/usr/local/sbin"
 add_to_path "$HOME/bin"
