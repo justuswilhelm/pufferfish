@@ -58,6 +58,7 @@ ln -sfv "$DOTFILES/bin" "$HOME"
 and ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3status" "$XDG_CONFIG_HOME"
+and ln -sfv "$DOTFILES/karabiner" "$XDG_CONFIG_HOME"
 and ln -fv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 and ln -fv "$DOTFILES/git/gitignore" "$HOME/.gitignore"
 or exit 1
