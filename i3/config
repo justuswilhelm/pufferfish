@@ -149,10 +149,15 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 bar {
     status_command i3status
 }
+# Workspaces
+workspace 1 output eDP-1
+workspace 3 output eDP-1
+workspace 2 output HDMI-2
+workspace 4 output HDMI-2
 
 exec ibus-daemon -dxr
 exec nm-applet
 exec /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 
-exec setxkbmap us mac
-exec xmodmap ~/.Xmodmap
+exec_always --no-startup-id "setxkbmap us"
+exec_always --no-startup-id "xmodmap ~/.Xmodmap &> ~/xmodmap.log"
