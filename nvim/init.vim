@@ -74,9 +74,12 @@
     " Reload configuration
     nnoremap <leader>l :source ~/.config/nvim/init.vim<cr>
 
-  " Matching
+  " Make matching a little bit more magical
+  " http://vim.wikia.com/wiki/Simplifying_regular_expressions_using_magic_and_no-magic
     nnoremap / /\v
     vnoremap / /\v
+    cnoremap %s/ %s/\v
+    cnoremap \>s/ \>s/\v
 
   " Young Padawan Mode
     inoremap jk <esc>
