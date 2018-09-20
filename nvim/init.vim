@@ -55,28 +55,31 @@
   let maplocalleader = ','
   " Normal Mode
     " Fix TmuxNavigateLeft
-    nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
+      nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
     " Append to end
-    nnoremap L $p
-    nnoremap K $pkJ
+      nnoremap L $p
+      nnoremap K $pkJ
     " Yank till end
-    nnoremap Y y$
+      nnoremap Y y$
     " Smarter text navigation
-    nnoremap j gj
-    nnoremap k gk
+      nnoremap j gj
+      nnoremap k gk
     " Pinky pain
-    nore ; :
+      nore ; :
     " Run default macro
-    nnoremap <Space> @q
+      nnoremap <Space> @q
     " Disable highlighting
-    nnoremap <leader><space> :noh<cr>
+      nnoremap <leader><space> :noh<cr>
 
     " Reload configuration
     nnoremap <leader>l :source ~/.config/nvim/init.vim<cr>
 
-  " Matching
+  " Make matching a little bit more magical
+  " http://vim.wikia.com/wiki/Simplifying_regular_expressions_using_magic_and_no-magic
     nnoremap / /\v
     vnoremap / /\v
+    cnoremap %s/ %s/\v
+    cnoremap \>s/ \>s/\v
 
   " Young Padawan Mode
     inoremap jk <esc>
