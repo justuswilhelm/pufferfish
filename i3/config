@@ -158,7 +158,7 @@ workspace 3 output eDP-1
 workspace 2 output HDMI-2
 workspace 4 output HDMI-2
 
-exec ibus-daemon -dxr
+exec --no-startup-id fcitx
 exec nm-applet
 exec /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 
