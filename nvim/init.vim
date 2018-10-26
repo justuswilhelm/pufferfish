@@ -33,6 +33,7 @@
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
+    Plug 'jeffkreeftmeijer/vim-numbertoggle'
     Plug 'mtth/scratch.vim'
     Plug 'qpkorr/vim-renamer'
     Plug 'rhysd/vim-clang-format'
@@ -155,7 +156,7 @@
   map <Leader>k :SlimuxSendKeysLast<CR>
 
 " Line numbers
-  set number
+  set number relativenumber
 
 " Folds
   let g:tex_conceal = "" "Has to be one of the most annoying things ever
