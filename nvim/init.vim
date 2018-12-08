@@ -3,7 +3,6 @@
     " Language specific
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
     Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
-    Plug 'amperser/proselint'
     Plug 'dag/vim-fish', {'for': 'fish'}
     Plug 'digitaltoad/vim-pug', {'for': 'pug'}
     Plug 'elixir-lang/vim-elixir'
