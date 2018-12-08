@@ -23,7 +23,7 @@
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'
-    Plug 'altercation/vim-colors-solarized'
+    Plug 'dracula/vim'
 
     " Improve general editor behavior
     Plug 'AndrewRadev/linediff.vim'
@@ -181,8 +181,7 @@
   set hlsearch
 
 " Color Stuff
-  set background=light
-  colorscheme solarized
+  color dracula
   hi Normal ctermbg=none
 
 " Customize Backup Dir location
