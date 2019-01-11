@@ -12,9 +12,11 @@ function git_status -d "Show git status"
         end
         begin
             set -l IFS ""
-            if test -n ""(timelimit -t 0.1 git ls-files --others --exclude-standard)""
+            set -l files (timelimit -t 0.1 git ls-files --others --exclude-standard)
+            set -l count (count $files)
+            if test $count -gt 0
                 set_color green
-                echo -n "+"
+                echo -n "+($count)"
             end
         end
         set_color blue
