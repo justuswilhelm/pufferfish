@@ -8,7 +8,6 @@
     Plug 'elixir-lang/vim-elixir'
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'fatih/vim-go', {'for': 'go'}
-    Plug 'fisadev/vim-isort', {'for': 'python'}
     Plug 'godlygeek/tabular'
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
