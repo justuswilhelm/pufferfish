@@ -22,6 +22,12 @@ add_to_path "$HOME/bin"
 add_to_path "$HOME/.local/bin"
 add_to_path "$HOME/go/bin"
 
+# Pyenv
+# =====
+add_to_path "$HOME/.pyenv/bin"
+status --is-interactive; and . (pyenv init -|psub)
+status --is-interactive; and . (pyenv virtualenv-init -|psub)
+
 # Abbreviations
 # =============
 # Clean abbreviations
