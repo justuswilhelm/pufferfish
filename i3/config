@@ -72,10 +72,10 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+n focus parent
 
 # focus the child container
-# bindsym $mod+d focus child
+bindsym $mod+Shift+n focus child
 
 # switch to workspace
 bindsym $mod+1 workspace 1
