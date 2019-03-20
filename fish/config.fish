@@ -109,8 +109,12 @@ abbr -a grc git rebase --continue
 abbr -a gri git rebase -i
 # Perform interactive rebase on origin/master
 abbr -a grio git rebase -i origin/master
-# Rebase current branch from origin master
+# Perform interactive rebase on origin/development
+abbr -a griod git rebase -i origin/development
+# Rebase current branch from origin/master
 abbr -a gro 'git fetch --all; and git rebase origin/master'
+# Rebase current branch from origin/development
+abbr -a grod 'git fetch --all; and git rebase origin/development'
 # Reset current branch to origin master (dangerous)
 abbr -a groh git reset origin/master --hard
 # Show current status
