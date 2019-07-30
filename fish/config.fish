@@ -142,3 +142,8 @@ abbr -a ta tmux a
 # --------------------
 # Start neovim
 abbr -a e nvim
+
+# Gnome abbreviations
+# -------------------
+# Take screenshot of area, copy to clipboard
+abbr -a scrsh 'gnome-screenshot -ca'
