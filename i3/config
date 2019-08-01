@@ -160,7 +160,7 @@ workspace 2 output HDMI-2
 workspace 4 output HDMI-2
 workspace 6 output HDMI-2
 
-exec --no-startup-id fcitx
+exec ibus-daemon -dxr
 exec nm-applet
 exec /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 
