@@ -92,6 +92,9 @@
     nmap <silent> <leader>c :ClangFormat<cr>
     vmap <silent> <leader>c :ClangFormat<cr>
 
+  " Ctags
+    nnoremap <leader>t :CtrlPTag<cr>
+
 
   " TODO timestamp
     nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
@@ -210,5 +213,8 @@
       set nobackup
       set nowritebackup
   endif
+
+" ctags
+  set tags=./.tags,.tags;
 
 " Why not zoidberg?
