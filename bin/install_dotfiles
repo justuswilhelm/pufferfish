@@ -67,6 +67,15 @@ echo "All good!"
 set_color normal
 echo
 
+echo "Updating git global config"
+echo "--------------------------"
+git config --global --replace-all core.excludesfile ~/.gitignore
+or exit 1
+set_color green
+echo "All good!"
+set_color normal
+echo
+
 echo "Updating neovim"
 echo "---------------"
 set -l nvim_update nvim +PlugInstall +qall
