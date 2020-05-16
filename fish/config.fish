@@ -48,7 +48,7 @@ abbr -a cdp 'cd $PWD'
 # Homebrew abbreviations
 # ----------------------
 # Perform a full update/upgrade cycle
-abbr -a bbbb 'brew update; and brew upgrade; and brew cask upgrade; and brew cleanup -s'
+abbr -a bbbb 'brew update; and brew upgrade; and brew cask upgrade; and brew cleanup --prune -s -v'
 
 # Git abbreviations
 # -----------------
