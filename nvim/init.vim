@@ -39,7 +39,6 @@
     Plug 'rking/ag.vim'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
-
   call plug#end()
 
 " Indentation
@@ -100,6 +99,7 @@
 " Neomake
   autocmd! BufWritePost * Neomake
   let g:neomake_java_enabled_makers = []
+  let g:neomake_python_enabled_makers = []
   let g:neomake_elixir_mix_maker = {
         \ 'exe' : 'mix',
         \ 'args': ['compile', '--warnings-as-errors'],
@@ -179,6 +179,7 @@
   set hlsearch
 
 " Color Stuff
+  let g:dracula_italic = 0
   color dracula
   hi Normal ctermbg=none
 
@@ -215,3 +216,6 @@
   set tags=./.tags,.tags;
 
 " Why not zoidberg?
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
