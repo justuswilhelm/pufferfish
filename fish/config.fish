@@ -98,6 +98,8 @@ abbr -a grc git rebase --continue
 abbr -a gri git rebase -i
 # Perform interactive rebase on origin/master
 abbr -a grio git rebase -i origin/master
+# Perform interactive rebase on origin/main
+abbr -a griom git rebase -i origin/main
 # Perform interactive rebase on origin/development
 abbr -a griod git rebase -i origin/development
 # Rebase current branch from origin/master
