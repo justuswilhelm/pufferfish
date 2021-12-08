@@ -108,6 +108,8 @@ abbr -a gro 'git fetch --all; and git rebase origin/master'
 abbr -a grod 'git fetch --all; and git rebase origin/development'
 # Reset current branch to origin master (dangerous)
 abbr -a groh git reset origin/master --hard
+# Rebase current branch from origin/master
+abbr -a grom 'git fetch --all; and git rebase origin/main'
 # Show current status
 abbr -a gs git status
 
