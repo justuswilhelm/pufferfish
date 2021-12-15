@@ -32,7 +32,6 @@
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
-    Plug 'mtth/scratch.vim'
     Plug 'qpkorr/vim-renamer'
     Plug 'rhysd/vim-clang-format'
     Plug 'rizzatti/dash.vim'
