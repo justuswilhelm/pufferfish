@@ -66,6 +66,8 @@ abbr -a gd git diff
 abbr -a gdc git diff --cached
 # Show commit statistics for staged changes
 abbr -a gds git diff --shortstat --cached
+# Fetch from default remote branch
+abbr -a gf git fetch
 # Fetch from all remote branches
 abbr -a gfa git fetch --all
 # Initialize an empty repository
