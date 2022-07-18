@@ -17,6 +17,9 @@
     Plug 'tomlion/vim-solidity'
     Plug 'tpope/vim-haml'
     Plug 'tpope/vim-markdown'
+    Plug 'othree/html5.vim'
+    Plug 'pangloss/vim-javascript'
+    Plug 'evanleck/vim-svelte', {'branch': 'main'}
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
