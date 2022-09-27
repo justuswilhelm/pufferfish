@@ -224,3 +224,6 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
 
 " vim-vsnip
 let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets/')
+
+" Autoreload
+set autoread
