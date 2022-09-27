@@ -34,6 +34,8 @@
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'epeli/slimux'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
     Plug 'qpkorr/vim-renamer'
     Plug 'rhysd/vim-clang-format'
@@ -97,6 +99,11 @@
 
   " TODO timestamp
     nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
+
+  " vim-vsnip
+    imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
+    nmap <C-y> :VsnipYank<cr>
+    vmap <C-y> :VsnipYank<cr>
 
 " Neomake
   autocmd! BufWritePost * Neomake
@@ -221,3 +228,6 @@
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" vim-vsnip
+let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets/')
