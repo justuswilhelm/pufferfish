@@ -5,23 +5,12 @@ general {
 }
 
 order += "disk /"
+order += "disk /home"
 order += "volume master"
 order += "wireless wlan0"
 order += "ethernet eth0"
-order += "battery 0"
 order += "load"
 order += "tztime local"
-
-battery 0 {
-    format = "%status %percentage %remaining %emptytime"
-    format_down = "No battery"
-    status_chr = "⚡ CHR"
-    status_bat = "🔋 BAT"
-    status_unk = "? UNK"
-    status_full = "☻ FULL"
-    path = "/sys/class/power_supply/BAT%d/uevent"
-    low_threshold = 10
-}
 
 tztime local {
     format = "%Y-%m-%d %H:%M:%S"
@@ -35,10 +24,6 @@ disk "/" {
     format = "%free"
 }
 
-volume master {
-    format = "♪: %volume"
-    format_muted = "♪: muted (%volume)"
-    device = "default"
-    mixer = "Master"
-    mixer_idx = 0
+disk "/home" {
+    format = "%free"
 }
