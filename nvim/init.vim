@@ -86,13 +86,6 @@
   " Young Padawan Mode
     inoremap jk <esc>
 
-  " DashSearch (OS X only with Dash)
-    nmap <silent> <leader>d <Plug>DashGlobalSearch
-
-  " Clang-Format
-    nmap <silent> <leader>c :ClangFormat<cr>
-    vmap <silent> <leader>c :ClangFormat<cr>
-
   " Ctags
     nnoremap <leader>t :CtrlPTag<cr>
 
