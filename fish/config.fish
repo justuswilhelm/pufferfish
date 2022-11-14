@@ -119,13 +119,6 @@ abbr -a s source env/bin/activate.fish
 # Call Jupyter notebook
 abbr -a jn jupyter notebook
 
-# tmux abbreviations
-# ------------------
-# Start tmux
-abbr -a t tmux
-# Attach to existing session
-abbr -a ta tmux a
-
 # Neovim abbreviations
 # --------------------
 # Start neovim
