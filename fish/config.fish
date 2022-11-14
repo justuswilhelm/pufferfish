@@ -19,9 +19,7 @@ source "$DOTFILES/fish/config_local.fish"
 
 # Abbreviations
 # =============
-# Clean abbreviations
-set -e fish_user_abbreviations
-
+#
 # Fish abbreviations
 # ------------------
 # Reload fish session. Useful if config.fish has changed.
