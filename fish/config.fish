@@ -1,26 +1,21 @@
-# Paths
-# =====
-function add_to_path
-    if not test -d $argv[1]
-        return
-    end
-    if not contains $argv[1] $PATH
-        set PATH $PATH $argv[1]
-    end
-end
-
-set -x DOTFILES "$HOME/.dotfiles"
+# Editor
+# ======
 set -x EDITOR "nvim"
-set -x GOPATH "$HOME/go"
-set -x TERM "xterm-256color"
-set -x XDG_CONFIG_HOME "$HOME/.config"
+
+# Language
+# ========
 set -x LANG "en_US.UTF-8"
 set -x LC_ALL "en_US.UTF-8"
 
-add_to_path "/usr/local/sbin"
-add_to_path "$HOME/bin"
-add_to_path "$HOME/.local/bin"
-add_to_path "$HOME/go/bin"
+# Paths
+# =====
+set -x DOTFILES "$HOME/.dotfiles"
+set -x XDG_CONFIG_HOME "$HOME/.config"
+
+fish_add_path "$HOME/bin"
+fish_add_path "$HOME/.local/bin"
+
+source "$DOTFILES/fish/config_local.fish"
 
 # Abbreviations
 # =============
