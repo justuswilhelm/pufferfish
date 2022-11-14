@@ -1,0 +1,2 @@
+#!/usr/bin/env fish
+tmux attach; or tmux
