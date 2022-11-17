@@ -4,26 +4,42 @@ general {
     interval = 5
 }
 
+order += "ethernet enp4s0"
+order += "ethernet tailscale0"
 order += "disk /"
 order += "disk /home"
-order += "volume master"
-order += "wireless wlan0"
-order += "ethernet eth0"
 order += "load"
+order += "memory"
 order += "tztime local"
 
-tztime local {
-    format = "%Y-%m-%d %H:%M:%S"
+ethernet enp4s0 {
+    format_up = "enp4s0: %ip (%speed)"
+    format_down = "enp4s0: down"
 }
 
-load {
-    format = "%5min"
+ethernet tailscale0 {
+    format_up = "tailscale: %ip (%speed)"
+    format_down = "tailscale: down"
 }
 
 disk "/" {
-    format = "%free"
+    format = "/ %free"
 }
 
 disk "/home" {
-    format = "%free"
+    format = "/home %free"
+}
+
+load {
+    format = "load: %1min, %5min, %15min"
+}
+
+memory {
+    format = "f: %free a: %available u: %used t: %total"
+    threshold_degraded = "10%"
+    format_degraded = "MEMORY: %free"
+}
+
+tztime local {
+    format = "%Y-%m-%d %H:%M:%S"
 }
