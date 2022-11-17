@@ -10,6 +10,21 @@ commands:
             - run:
                   name: Install apt packages
                   command: apt update && apt install -y openssh-client git neovim fish git expect
+    install_node:
+        description: Install node
+        steps:
+            - run:
+                  name: Install curl
+                  command: apt update && apt install -y curl
+            - run:
+                  name: Add nodejs nodesource
+                  command: curl -fsSL https://deb.nodesource.com/setup_19.x | bash -
+            - run:
+                  name: Install node
+                  command: apt install -y nodejs
+            - run:
+                  name: Install npm packages
+                  command: npm ci
 jobs:
     test_installation:
         executor: debian
@@ -20,7 +35,21 @@ jobs:
             - run:
                   name: "Run installer"
                   command: env TERM=xterm bin/install_dotfiles
+    lint:
+        executor: debian
+        working_directory: ~/.dotfiles
+        steps:
+            - install_dependencies
+            - checkout
+            - install_node
+            - run:
+                  name: Lint it
+                  command: npm run lint
+            - run:
+                  name: Check fish indendation
+                  command: bin/indent_dotfiles && git diff --exit-code
 workflows:
     test_all:
         jobs:
             - test_installation
+            - lint
