@@ -1,0 +1,26 @@
+version: 2.1
+executors:
+    debian:
+        docker:
+          - image: debian:11.5
+commands:
+    install_dependencies:
+        description: Install dependencies
+        steps:
+            - run:
+                  name: Install apt packages
+                  command: apt update && apt install -y openssh-client git neovim fish git expect
+jobs:
+    test_installation:
+        executor: debian
+        working_directory: ~/.dotfiles
+        steps:
+            - install_dependencies
+            - checkout
+            - run:
+                name: "Run installer"
+                command: env TERM=xterm bin/install_dotfiles
+workflows:
+    test_all:
+        jobs:
+            - test_installation
