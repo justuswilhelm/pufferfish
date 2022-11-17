@@ -54,8 +54,7 @@ if not ln -sfv "$DOTFILES/fish" "$XDG_CONFIG_HOME"
     or exit 1
 end
 
-ln -sfv "$DOTFILES/bin" "$HOME"
-and ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
+ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3status" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/karabiner" "$XDG_CONFIG_HOME"
