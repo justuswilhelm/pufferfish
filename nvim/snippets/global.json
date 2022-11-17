@@ -1,0 +1,8 @@
+{
+    "import type": {
+        "prefix": ["import-type"],
+        "body": [
+            "import type { $0 } from \"\\$lib/types/$1\";"
+        ]
+    }
+}

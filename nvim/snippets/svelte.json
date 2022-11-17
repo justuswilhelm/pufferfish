@@ -1,0 +1,79 @@
+{
+    "Button component": {
+        "prefix": ["bc"],
+        "body": [
+            "<script lang=\"ts\">",
+            "    import { createEventDispatcher } from \"svelte\";",
+            "    const dispatch = createEventDispatcher();",
+            "    function click() {",
+                "        dispatch(\"click\");",
+                "    }",
+                "</script>",
+                "<button on:click={click}>",
+                "    <div>",
+                "    </div>",
+                "</button>"
+        ]
+    },
+    "svelte body": {
+        "prefix": ["s"],
+        "body": [
+            "<script lang=\"ts\">",
+            "</script>",
+            "<div>",
+            "</div>"
+        ]
+    },
+    "Steeze ui hero icon": {
+        "prefix": ["hi"],
+        "body": [
+            "import { Icon } from \"@steeze-ui/svelte-icon\";",
+            "import { DotsHorizontal } from \"@steeze-ui/heroicons\";",
+            "<Icon src={DotsHorizontal} theme=\"outline\" />"
+        ]
+    },
+    "transparent border": {
+        "prefix": ["bt"],
+        "body": [
+            "border border-transparent"
+        ]
+    },
+    "flex-row": {
+        "prefix": ["fr"],
+        "body": [
+            "flex flex-row"
+        ]
+    },
+    "svelte component import": {
+        "prefix": ["sci"],
+        "body": [
+            "import $0 from \"\\$lib/$1/$0.svelte\";"
+        ]
+    },
+    "i18n": {
+        "prefix": ["i18n"],
+        "body": [
+            "import { _ } from \"svelte-i18n\";"
+        ]
+    },
+    "script tag": {
+        "prefix": ["script"],
+        "body": [
+            "<script lang=\"ts\">",
+            "</script>"
+        ]
+    },
+    "div": {
+        "prefix": ["div"],
+        "body": [
+            "<div class=\"\">",
+            "</div>"
+        ]
+    },
+    "message": {
+        "prefix": ["message"],
+        "body": [
+            "\\$_(\"$0\")"
+        ]
+    }
+}
