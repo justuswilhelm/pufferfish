@@ -9,7 +9,7 @@ def main(args):
     """Main method."""
     check_output = subprocess.check_output
     command = args.command
-    timer = timeit.Timer('check_output(command)', globals=locals())
+    timer = timeit.Timer("check_output(command)", globals=locals())
     times = args.times
     print("Beginning timeit run of '{}' ...".format(" ".join(command)))
     try:
@@ -18,14 +18,17 @@ def main(args):
         timer.print_exc()
         return
     print("---")
-    print("Total number of runs: {}, time_taken: {} seconds".format(
-        times, time_taken))
+    print(
+        "Total number of runs: {}, time_taken: {} seconds".format(
+            times, time_taken
+        )
+    )
     print("Average time is {} seconds".format(time_taken / times))
 
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('command', nargs=argparse.REMAINDER)
-    argparser.add_argument('--times', type=int, default=100)
+    argparser.add_argument("command", nargs=argparse.REMAINDER)
+    argparser.add_argument("--times", type=int, default=100)
     args = argparser.parse_args()
     main(args)
