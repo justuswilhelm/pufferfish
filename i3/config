@@ -164,13 +164,6 @@ bindsym $mod+r mode "resize"
 bar {
     status_command i3status
 }
-# Workspaces
-workspace 1 output DP-0
-workspace 3 output DP-0
-workspace 5 output DP-0
-workspace 2 output DP-2
-workspace 4 output DP-2
-workspace 6 output DP-2
 
 exec ibus-daemon -dxr
 exec nm-applet
