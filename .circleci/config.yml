@@ -3,19 +3,30 @@ executors:
     debian:
         docker:
             - image: debian:11.5
+              environment:
+                  LANG: en_US.UTF-8
 commands:
     install_dependencies:
         description: Install dependencies
         steps:
             - run:
+                  name: Update apt
+                  command: apt update
+            - run:
                   name: Install apt packages
-                  command: apt update && apt install -y openssh-client git neovim fish git expect
+                  command: apt install -y openssh-client git
+    install_fish:
+        description: Install fish dependencies
+        steps:
+            - run:
+                  name: Install fish and neovim
+                  command: apt install -y neovim fish
     install_node:
         description: Install node
         steps:
             - run:
                   name: Install curl
-                  command: apt update && apt install -y curl
+                  command: apt install -y curl
             - run:
                   name: Add nodejs nodesource
                   command: curl -fsSL https://deb.nodesource.com/setup_19.x | bash -
@@ -25,6 +36,16 @@ commands:
             - run:
                   name: Install npm packages
                   command: npm ci
+    install_python:
+        description: Install python
+        steps:
+            - run:
+                  name: Install python and pipenv
+                  command: apt install -y python3 pipenv
+            - run:
+                  name: Install pip packages
+                  command: pipenv sync --dev
+
 jobs:
     test_installation:
         executor: debian
@@ -32,10 +53,11 @@ jobs:
         steps:
             - install_dependencies
             - checkout
+            - install_fish
             - run:
                   name: "Run installer"
                   command: env TERM=xterm bin/install_dotfiles
-    lint:
+    lint_node:
         executor: debian
         working_directory: ~/.dotfiles
         steps:
@@ -45,11 +67,30 @@ jobs:
             - run:
                   name: Lint it
                   command: npm run lint
+    lint_fish:
+        executor: debian
+        working_directory: ~/.dotfiles
+        steps:
+            - install_dependencies
+            - checkout
+            - install_fish
             - run:
                   name: Check fish indendation
                   command: bin/indent_dotfiles && git diff --exit-code
+    lint_python:
+        executor: debian
+        working_directory: ~/.dotfiles
+        steps:
+            - install_dependencies
+            - checkout
+            - install_python
+            - run:
+                  name: Check with black
+                  command: pipenv run black --check .
 workflows:
     test_all:
         jobs:
             - test_installation
-            - lint
+            - lint_node
+            - lint_fish
+            - lint_python
