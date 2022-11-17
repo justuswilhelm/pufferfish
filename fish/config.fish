@@ -12,7 +12,7 @@ set -x LC_ALL "en_US.UTF-8"
 set -x DOTFILES "$HOME/.dotfiles"
 set -x XDG_CONFIG_HOME "$HOME/.config"
 
-fish_add_path "$HOME/bin"
+fish_add_path "$HOME/.dotfiles/bin"
 fish_add_path "$HOME/.local/bin"
 
 source "$DOTFILES/fish/config_local.fish"
