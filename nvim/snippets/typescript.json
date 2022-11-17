@@ -1,9 +1,9 @@
 {
-  "union": {
-    "prefix": ["union"],
-    "body": [
-      "export const ${0:name} = [] as const;",
-      "export type ${0/(.*)/${1:/pascalcase}/} = typeof $0[number];"
-    ]
-  }
+    "union": {
+        "prefix": ["union"],
+        "body": [
+            "export const ${0:name} = [] as const;",
+            "export type ${0/(.*)/${1:/pascalcase}/} = typeof $0[number];"
+        ]
+    }
 }

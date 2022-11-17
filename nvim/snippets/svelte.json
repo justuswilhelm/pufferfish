@@ -6,23 +6,18 @@
             "    import { createEventDispatcher } from \"svelte\";",
             "    const dispatch = createEventDispatcher();",
             "    function click() {",
-                "        dispatch(\"click\");",
-                "    }",
-                "</script>",
-                "<button on:click={click}>",
-                "    <div>",
-                "    </div>",
-                "</button>"
+            "        dispatch(\"click\");",
+            "    }",
+            "</script>",
+            "<button on:click={click}>",
+            "    <div>",
+            "    </div>",
+            "</button>"
         ]
     },
     "svelte body": {
         "prefix": ["s"],
-        "body": [
-            "<script lang=\"ts\">",
-            "</script>",
-            "<div>",
-            "</div>"
-        ]
+        "body": ["<script lang=\"ts\">", "</script>", "<div>", "</div>"]
     },
     "Steeze ui hero icon": {
         "prefix": ["hi"],
@@ -34,46 +29,30 @@
     },
     "transparent border": {
         "prefix": ["bt"],
-        "body": [
-            "border border-transparent"
-        ]
+        "body": ["border border-transparent"]
     },
     "flex-row": {
         "prefix": ["fr"],
-        "body": [
-            "flex flex-row"
-        ]
+        "body": ["flex flex-row"]
     },
     "svelte component import": {
         "prefix": ["sci"],
-        "body": [
-            "import $0 from \"\\$lib/$1/$0.svelte\";"
-        ]
+        "body": ["import $0 from \"\\$lib/$1/$0.svelte\";"]
     },
     "i18n": {
         "prefix": ["i18n"],
-        "body": [
-            "import { _ } from \"svelte-i18n\";"
-        ]
+        "body": ["import { _ } from \"svelte-i18n\";"]
     },
     "script tag": {
         "prefix": ["script"],
-        "body": [
-            "<script lang=\"ts\">",
-            "</script>"
-        ]
+        "body": ["<script lang=\"ts\">", "</script>"]
     },
     "div": {
         "prefix": ["div"],
-        "body": [
-            "<div class=\"\">",
-            "</div>"
-        ]
+        "body": ["<div class=\"\">", "</div>"]
     },
     "message": {
         "prefix": ["message"],
-        "body": [
-            "\\$_(\"$0\")"
-        ]
+        "body": ["\\$_(\"$0\")"]
     }
 }

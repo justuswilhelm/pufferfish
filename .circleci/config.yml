@@ -2,7 +2,7 @@ version: 2.1
 executors:
     debian:
         docker:
-          - image: debian:11.5
+            - image: debian:11.5
 commands:
     install_dependencies:
         description: Install dependencies
@@ -18,8 +18,8 @@ jobs:
             - install_dependencies
             - checkout
             - run:
-                name: "Run installer"
-                command: env TERM=xterm bin/install_dotfiles
+                  name: "Run installer"
+                  command: env TERM=xterm bin/install_dotfiles
 workflows:
     test_all:
         jobs:

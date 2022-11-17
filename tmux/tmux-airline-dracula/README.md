@@ -25,4 +25,3 @@ A tmux theme for Dracula color scheme.
     ```tmux
     run-shell '. /path/to/tmux-airline-dracula/airline-dracula.tmux'
     ```
-

@@ -7,7 +7,7 @@ function git_status -d "Show git status"
         end
         if not timelimit -t 0.1 git diff --quiet --cached
             set_color yellow
-            echo -n "¡"
+            echo -n "*"
             set_color normal
         end
         begin
