@@ -9,13 +9,13 @@ GROUP_RE = re.compile(
     r"# (?P<name>.+) abbreviations\n# -+\n(?P<abbreviations>(?:.+\n)+)",
 )
 ABBR_RE = re.compile(
-    r'# (?P<doc>.+)\nabbr -a (?P<name>\w+) (?P<abbreviation>.+)\n'
+    r"# (?P<doc>.+)\nabbr -a (?P<name>\w+) (?P<abbreviation>.+)\n"
 )
 
 
 def read_abbreviations():
     """Yield abbreviation groups."""
-    config_path = path.join(environ['DOTFILES'], 'fish', 'config.fish')
+    config_path = path.join(environ["DOTFILES"], "fish", "config.fish")
     with open(config_path) as fd:
         config = fd.read()
     for group in GROUP_RE.finditer(config):
@@ -31,15 +31,15 @@ def header():
 
 def print_doc(abbreviations):
     """Print documentation."""
-    yield '# Useful abbreviations'
-    yield ''
+    yield "# Useful abbreviations"
+    yield ""
     for group, abbreviations in read_abbreviations():
-        yield '## {}'.format(group)
-        yield ''
+        yield "## {}".format(group)
+        yield ""
         yield "\n".join(header())
         for abbr in abbreviations:
-            yield "`{}` | {}".format(abbr.group('name'), abbr.group('doc'))
-        yield ''
+            yield "`{}` | {}".format(abbr.group("name"), abbr.group("doc"))
+        yield ""
 
 
 def main():

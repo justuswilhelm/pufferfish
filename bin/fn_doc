@@ -7,15 +7,14 @@ import glob
 
 FN_GLOB = glob.iglob(
     path.join(
-        environ['DOTFILES'],
-        'fish', 'functions',
-        '*.fish',
+        environ["DOTFILES"],
+        "fish",
+        "functions",
+        "*.fish",
     )
 )
 
-DOC_RE = re.compile(
-    r'function (?P<name>.+) -d "(?P<description>.+)"$'
-)
+DOC_RE = re.compile(r'function (?P<name>.+) -d "(?P<description>.+)"$')
 
 
 def read_doc(path):
@@ -38,16 +37,18 @@ def describe(name, description):
 
 def main():
     """Run main method."""
+
     def _iter():
         yield "\n".join(header())
         for match in map(read_doc, sorted(FN_GLOB)):
-            yield "\n".join(describe(
-                match.group('name'),
-                match.group('description'),
-            ))
-    print(
-        "\n".join(_iter())
-    )
+            yield "\n".join(
+                describe(
+                    match.group("name"),
+                    match.group("description"),
+                )
+            )
+
+    print("\n".join(_iter()))
 
 
 if __name__ == "__main__":
