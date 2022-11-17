@@ -1,5 +1,4 @@
-Submitting a Pull Request
-=========================
+# Submitting a Pull Request
 
 1. Fork the repository.
 2. Create a topic branch.

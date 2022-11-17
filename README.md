@@ -4,9 +4,9 @@
 
 Add useful defaults and configuration files for
 
-- tmux,
-- neovim, and
-- fish
+-   tmux,
+-   neovim, and
+-   fish
 
 Please also refer to the
 [Wiki](https://github.com/justuswilhelm/pufferfish/wiki)
