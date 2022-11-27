@@ -68,3 +68,17 @@ Undo this change by running
 ```
 sudo patch --reverse --strip=6 --directory=/usr/share/X11/xkb/symbols/ < x/patch-fix_pc-0001.patch
 ```
+
+Previously, the way the key mapping was changed, was using a Xmodmap configuration
+like so:
+
+```
+clear lock
+keycode 66 = Return
+```
+
+And configured with
+
+```
+xmodmap ~/.Xmodmap
+```
