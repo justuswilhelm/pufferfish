@@ -31,6 +31,7 @@ client.background       #F8F8F2
 
 bar {
     status_command i3status
+    position top
 }
 
 # Before i3 v4.8, we used to recommend this one as the default:
