@@ -59,7 +59,9 @@ and ln -sfv "$DOTFILES/i3" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3status" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/karabiner" "$XDG_CONFIG_HOME"
 and ln -fv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
-and ln -fv "$DOTFILES/git/gitignore" "$HOME/.gitignore"
+and ln -sfv "$DOTFILES/git" "$XDG_CONFIG_HOME"
+and ln -sfv "$XDG_CONFIG_HOME/git/gitconfig" "$HOME/.gitconfig"
+and ln -sfv "$XDG_CONFIG_HOME/git/gitignore" "$HOME/.gitignore"
 or exit 1
 set_color green
 echo "All good!"
@@ -68,7 +70,7 @@ echo
 
 echo "Updating git global config"
 echo "--------------------------"
-git config --global --replace-all core.excludesfile ~/.gitignore
+git config --global --replace-all core.excludesfile ~/.config/git/gitignore
 or exit 1
 set_color green
 echo "All good!"
