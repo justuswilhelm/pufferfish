@@ -62,6 +62,9 @@ and ln -fv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 and ln -sfv "$DOTFILES/git" "$XDG_CONFIG_HOME"
 and ln -sfv "$XDG_CONFIG_HOME/git/gitconfig" "$HOME/.gitconfig"
 and ln -sfv "$XDG_CONFIG_HOME/git/gitignore" "$HOME/.gitignore"
+# TODO make this vendor specific
+and ln -sfv "$DOTFILES/x" "$XDG_CONFIG_HOME"
+and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xresources"
 or exit 1
 set_color green
 echo "All good!"
