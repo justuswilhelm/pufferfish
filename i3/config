@@ -169,4 +169,4 @@ exec ibus-daemon -dxr
 exec nm-applet
 exec /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 
-exec_always --no-startup-id "setxkbmap -option caps:caps us && xmodmap ~/.Xmodmap"
+exec_always --no-startup-id "setxkbmap -config ~/.config/x/Xkbmap"

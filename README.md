@@ -54,3 +54,17 @@ a pull request right
 The best way to get started is by forking this repository and developing a new
 feature or bug fix on your own repository. Then, you can create a pull request
 to contribute the code back.
+
+## How to remap Caps Lock to Return
+
+When using X11, try this:
+
+```
+sudo patch --strip=6 --directory=/usr/share/X11/xkb/symbols/ < x/patch-fix_pc-0001.patch
+```
+
+Undo this change by running
+
+```
+sudo patch --reverse --strip=6 --directory=/usr/share/X11/xkb/symbols/ < x/patch-fix_pc-0001.patch
+```
