@@ -1,18 +1,19 @@
 " Vim-Plug
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
-    Plug 'ElmCast/elm-vim', {'for': 'elm'}
-    Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
-    Plug 'dag/vim-fish', {'for': 'fish'}
-    Plug 'elixir-lang/vim-elixir'
-    Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'guersam/vim-j', {'for': 'j'}
-    Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'leafgarland/typescript-vim'
-    Plug 'tpope/vim-markdown'
     Plug 'othree/html5.vim'
     Plug 'pangloss/vim-javascript'
     Plug 'evanleck/vim-svelte', {'branch': 'main'}
+    " TODO Still neeeded?
+    Plug 'elzr/vim-json', {'for': 'json'}
+    Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
+    Plug 'ElmCast/elm-vim', {'for': 'elm'}
+    Plug 'elixir-lang/vim-elixir'
+    Plug 'dag/vim-fish', {'for': 'fish'}
+    Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+    Plug 'tpope/vim-markdown'
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
@@ -20,22 +21,24 @@
     Plug 'dracula/vim'
 
     " Improve general editor behavior
-    Plug 'AndrewRadev/linediff.vim'
     Plug 'benekastah/neomake'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
-    Plug 'epeli/slimux'
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
-    Plug 'qpkorr/vim-renamer'
-    Plug 'rhysd/vim-clang-format'
-    Plug 'rizzatti/dash.vim'
     Plug 'rking/ag.vim'
-    Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
+    " TODO Still needed?
+    Plug 'AndrewRadev/linediff.vim'
+    Plug 'rizzatti/dash.vim'
+    Plug 'rhysd/vim-clang-format'
+    Plug 'epeli/slimux'
+    Plug 'qpkorr/vim-renamer'
+    Plug 'tpope/vim-fugitive'
+
   call plug#end()
 
 " Indentation
