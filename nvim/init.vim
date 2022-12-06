@@ -8,7 +8,6 @@
     Plug 'evanleck/vim-svelte', {'branch': 'main'}
     " TODO Still neeeded?
     Plug 'elzr/vim-json', {'for': 'json'}
-    Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
     Plug 'elixir-lang/vim-elixir'
     Plug 'dag/vim-fish', {'for': 'fish'}
@@ -32,11 +31,6 @@
     Plug 'rking/ag.vim'
     Plug 'tpope/vim-surround'
     " TODO Still needed?
-    Plug 'AndrewRadev/linediff.vim'
-    Plug 'rizzatti/dash.vim'
-    Plug 'rhysd/vim-clang-format'
-    Plug 'epeli/slimux'
-    Plug 'qpkorr/vim-renamer'
     Plug 'tpope/vim-fugitive'
 
   call plug#end()
