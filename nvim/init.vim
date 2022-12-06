@@ -4,18 +4,11 @@
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
     Plug 'Glench/Vim-Jinja2-Syntax', {'for': 'jinja'}
     Plug 'dag/vim-fish', {'for': 'fish'}
-    Plug 'digitaltoad/vim-pug', {'for': 'pug'}
     Plug 'elixir-lang/vim-elixir'
     Plug 'elzr/vim-json', {'for': 'json'}
-    Plug 'fatih/vim-go', {'for': 'go'}
-    Plug 'godlygeek/tabular'
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
     Plug 'leafgarland/typescript-vim'
-    Plug 'pangloss/vim-javascript'
-    Plug 'posva/vim-vue'
-    Plug 'tomlion/vim-solidity'
-    Plug 'tpope/vim-haml'
     Plug 'tpope/vim-markdown'
     Plug 'othree/html5.vim'
     Plug 'pangloss/vim-javascript'
