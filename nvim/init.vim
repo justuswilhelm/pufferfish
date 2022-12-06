@@ -6,7 +6,6 @@
     Plug 'pangloss/vim-javascript', {'for': 'javascript'}
     Plug 'evanleck/vim-svelte', {'branch': 'main'}
     " TODO Still neeeded?
-    Plug 'othree/html5.vim'
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
     Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
