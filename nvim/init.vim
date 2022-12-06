@@ -2,17 +2,17 @@
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
     Plug 'guersam/vim-j', {'for': 'j'}
-    Plug 'leafgarland/typescript-vim'
-    Plug 'othree/html5.vim'
-    Plug 'pangloss/vim-javascript'
+    Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
+    Plug 'pangloss/vim-javascript', {'for': 'javascript'}
     Plug 'evanleck/vim-svelte', {'branch': 'main'}
     " TODO Still neeeded?
+    Plug 'othree/html5.vim'
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
-    Plug 'elixir-lang/vim-elixir'
+    Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
     Plug 'dag/vim-fish', {'for': 'fish'}
     Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
-    Plug 'tpope/vim-markdown'
+    Plug 'tpope/vim-markdown', {'for': 'markdown'}
 
     " Improve editor appearance
     Plug 'Yggdroot/indentLine'
