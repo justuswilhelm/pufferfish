@@ -1,3 +1,5 @@
+[core]
+excludesfile = ~/.config/git/gitignore
 [pull]
 rebase = true
 [rebase]
