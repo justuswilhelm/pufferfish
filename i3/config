@@ -45,7 +45,7 @@ bar {
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec xterm -e t
+bindsym $mod+Return exec xterm
 bindsym $mod+Shift+Return exec firefox
 
 # kill focused window
