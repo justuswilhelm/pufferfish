@@ -1,6 +1,6 @@
 function dotfiles -d "Pull latest dotfiles from pufferfish repository"
     pushd $DOTFILES
-    if not git pull --rebase origin master
+    if not git pull --rebase origin main
         echo
         echo "---"
         echo
