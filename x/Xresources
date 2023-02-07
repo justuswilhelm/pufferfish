@@ -1,5 +1,6 @@
 XTerm.vt100.faceName: DejaVu Sans Mono:size=7:antialias=true
 XTerm.vt100.metaSendsEscape: true
+XTerm*selectToClipboard: true
 
 # The MIT License (MIT)
 #
