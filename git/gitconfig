@@ -1,5 +1,8 @@
 [core]
 excludesfile = ~/.config/git/gitignore
+[user]
+	email = hello@justus.pw
+	name = Justus Perlwitz
 [pull]
 rebase = true
 [rebase]
