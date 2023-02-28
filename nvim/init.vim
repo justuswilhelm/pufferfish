@@ -27,6 +27,7 @@
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
+    Plug 'rgroli/other.nvim'
     Plug 'rking/ag.vim'
     Plug 'tpope/vim-surround'
     " TODO Still needed?
@@ -202,3 +203,5 @@ let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets/')
 
 " Autoreload
 set autoread
+
+luafile $HOME/.config/nvim/new-init.lua
