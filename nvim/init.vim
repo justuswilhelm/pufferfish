@@ -163,7 +163,6 @@
 
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
-  set directory=~/.config/nvim/swap/
 
 " JSON concealing
   let g:vim_json_syntax_conceal = 0
