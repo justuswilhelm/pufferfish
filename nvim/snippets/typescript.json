@@ -5,5 +5,23 @@
             "export const ${0:name} = [] as const;",
             "export type ${0/(.*)/${1:/pascalcase}/} = (typeof $0)[number];"
         ]
+    },
+    "stories": {
+        "prefix": ["stories"],
+        "body": [
+            "import type { Meta, StoryObj } from \"@storybook/svelte\";",
+            "",
+            "import $0 from \"\\$lib/figma/screens/task/$0.svelte\";",
+            "",
+            "const meta: Meta<$0> = {",
+            "    component: $0,",
+            "};",
+            "export default meta;",
+            "",
+            "type Story = StoryObj<$0>;",
+            "",
+            "export const Default: Story = {",
+            "};"
+        ]
     }
 }
