@@ -23,6 +23,7 @@
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'easymotion/vim-easymotion'
     Plug 'editorconfig/editorconfig-vim'
+    Plug 'epeli/slimux'
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
