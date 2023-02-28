@@ -10,7 +10,6 @@ autostash = true
 [commit]
 verbose = true
 [init]
-defaulfBranch = main
 defaultBranch = main
 
 [diff]
