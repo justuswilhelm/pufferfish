@@ -13,6 +13,13 @@ verbose = true
 defaulfBranch = main
 defaultBranch = main
 
+[diff]
+tool = vimdiff
+[merge]
+tool = vimdiff
+[mergetool "vimdiff"]
+path = nvim
+
 # MIT License
 
 # Copyright (c) 2022 Dracula Theme
