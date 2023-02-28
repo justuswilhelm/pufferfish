@@ -154,5 +154,5 @@ exec nm-applet
 exec /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 exec opensnitch-ui
 
-exec_always --no-startup-id "setxkbmap -config ~/.config/x/Xkbmap"
+exec_always --no-startup-id "setxkbmap -config ~/.config/x/Xkbmap && xmodmap ~/.config/x/Xmodmap"
 exec_always "xrdb ~/.Xresources"
