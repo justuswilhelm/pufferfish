@@ -16,3 +16,6 @@ indent_size = 4
 
 [*.fish]
 indent_size = 4
+
+[git/gitconfig]
+indent_style = tab
