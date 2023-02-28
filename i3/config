@@ -156,3 +156,7 @@ exec opensnitch-ui
 
 exec_always --no-startup-id "setxkbmap -config ~/.config/x/Xkbmap && xmodmap ~/.config/x/Xmodmap"
 exec_always "xrdb ~/.Xresources"
+
+# Lock after 2 minutes
+exec_always --no-startup-id "xset dpms 0 0 120 &"
+exec_always --no-startup-id "xss-lock -- i3lock --show-failed-attempts --color ff6e67 &"
