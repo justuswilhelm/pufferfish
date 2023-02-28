@@ -3,7 +3,7 @@
         "prefix": ["union"],
         "body": [
             "export const ${0:name} = [] as const;",
-            "export type ${0/(.*)/${1:/pascalcase}/} = typeof $0[number];"
+            "export type ${0/(.*)/${1:/pascalcase}/} = (typeof $0)[number];"
         ]
     }
 }
