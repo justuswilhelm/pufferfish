@@ -1,6 +1,6 @@
 # Editor
 # ======
-set -x EDITOR "nvim"
+set -x EDITOR nvim
 
 # Language
 # ========

@@ -24,4 +24,3 @@ function git_status -d "Show git status"
         set_color normal
     end
 end
-
