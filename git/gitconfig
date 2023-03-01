@@ -82,6 +82,3 @@ remoteBranch = cyan bold
 unmerged = magenta bold reverse
 untracked = red
 updated = green bold
-[user]
-	name = Justus Perlwitz
-	email = hello@justus.pw
