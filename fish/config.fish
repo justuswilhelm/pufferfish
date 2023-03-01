@@ -110,19 +110,26 @@ abbr -a gs git status
 
 # Python abbreviations
 # --------------------
-# Install a package with pip
-abbr -a pi pip install
-# Install requirements with pip based on requirements.txt
-abbr -a pir pip install -r requirements.txt
-# Activate virtual env in env/bin/activate.fish
-abbr -a s source env/bin/activate.fish
-# Call Jupyter notebook
-abbr -a jn jupyter notebook
+# Run pipenv
+abbr -a pe pipenv
+# Install something in pipenv
+abbr -a pei pipenv install
+# Lock pipenv
+abbr -a pel pipenv lock --dev
+# Sync pipenv
+abbr -a pes pipenv sync --dev
 
 # Neovim abbreviations
 # --------------------
 # Start neovim
 abbr -a e nvim
+
+# Tmux abbreviations
+# --------------------
+# Run tmux
+abbr -a t tmux
+# Attach tmux
+abbr -a ta tmux attach
 
 # Gnome abbreviations
 # -------------------
