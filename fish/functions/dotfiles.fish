@@ -2,7 +2,7 @@ function dotfiles -d "Pull latest dotfiles from pufferfish repository"
     pushd $DOTFILES
     if not git pull --rebase origin main
         echo
-        echo "---"
+        echo ---
         echo
         set_color green
         echo "Howdy dotfiles friend!"
