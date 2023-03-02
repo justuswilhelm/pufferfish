@@ -159,8 +159,8 @@
 
 " Color Stuff
   let g:dracula_italic = 0
-  color dracula
-  hi Normal ctermbg=none
+  set termguicolors
+  colorscheme dracula
 
 " Customize Backup Dir location
   set backupdir=~/.config/nvim/backup/
