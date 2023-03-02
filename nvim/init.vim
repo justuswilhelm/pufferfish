@@ -27,6 +27,7 @@
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
+    Plug 'mattn/emmet-vim'
     Plug 'rgroli/other.nvim'
     Plug 'rking/ag.vim'
     Plug 'tpope/vim-surround'
