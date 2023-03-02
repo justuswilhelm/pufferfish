@@ -37,7 +37,9 @@
     },
     "svelte component import": {
         "prefix": ["sci"],
-        "body": ["import $0 from \"\\$lib/$1/$0.svelte\";"]
+        "body": [
+            "import ${1:ComponentName} from \"\\$lib/${2:path/to/component}/${1:ComponentName}.svelte\";"
+        ]
     },
     "i18n": {
         "prefix": ["i18n"],
@@ -53,6 +55,6 @@
     },
     "message": {
         "prefix": ["message"],
-        "body": ["\\$_(\"$0\")"]
+        "body": ["\\$_(\"$1\")"]
     }
 }
