@@ -88,8 +88,6 @@
 
   " vim-vsnip
     imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
-    nmap <C-y> :VsnipYank<cr>
-    vmap <C-y> :VsnipYank<cr>
 
 " Files and folders to ignore
   set wildignore=*/.git/*
