@@ -43,6 +43,8 @@
   set shiftwidth=4
   set tabstop=4
 
+  set formatoptions-=t
+
 " Keyboard shortcuts
   let mapleader = ','
   let maplocalleader = ','
