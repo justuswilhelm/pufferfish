@@ -2,8 +2,8 @@
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
     Plug 'guersam/vim-j', {'for': 'j'}
-    Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
-    Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+    Plug 'leafgarland/typescript-vim'
+    Plug 'pangloss/vim-javascript'
     Plug 'evanleck/vim-svelte', {'branch': 'main'}
     " TODO Still neeeded?
     Plug 'elzr/vim-json', {'for': 'json'}
