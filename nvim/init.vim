@@ -1,10 +1,11 @@
 " Vim-Plug
   call plug#begin('~/.config/nvim/plugged')
     " Language specific
+    Plug 'evanleck/vim-svelte', {'branch': 'main'}
     Plug 'guersam/vim-j', {'for': 'j'}
     Plug 'leafgarland/typescript-vim'
+    Plug 'othree/html5.vim'
     Plug 'pangloss/vim-javascript'
-    Plug 'evanleck/vim-svelte', {'branch': 'main'}
     " TODO Still neeeded?
     Plug 'elzr/vim-json', {'for': 'json'}
     Plug 'ElmCast/elm-vim', {'for': 'elm'}
@@ -200,6 +201,12 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
 
 " vim-vsnip
 let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets/')
+
+" Svelte
+let g:svelte_preprocessor_tags = [
+  \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
+  \ ]
+let g:svelte_preprocessors = ['ts']
 
 " Autoreload
 set autoread
