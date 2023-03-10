@@ -167,9 +167,21 @@ set number relativenumber
 
 " Folds
 " =====
-let g:tex_conceal = "" "Has to be one of the most annoying things ever
 set conceallevel=0
 set nofoldenable
+
+" Concealing
+" ===============
+" Tex
+" ---
+" Has to be one of the most annoying things ever
+let g:tex_conceal = ""
+" Json
+" ----
+let g:vim_json_syntax_conceal = 0
+" Markdown
+" --------
+let g:markdown_syntax_conceal = 0
 
 " Use system clipboard
 " ====================
@@ -201,10 +213,6 @@ colorscheme dracula
 " =============================
 set backupdir=~/.config/nvim/backup/
 
-" JSON concealing
-" ===============
-let g:vim_json_syntax_conceal = 0
-
 " Clang-Format
 " ============
 let g:clang_format#code_style = "llvm"
@@ -212,10 +220,6 @@ let g:clang_format#code_style = "llvm"
 " Mouse mode
 " ==========
 set mouse=a
-
-" Markdown
-" ========
-let g:markdown_syntax_conceal = 0
 
 " Make active pane visible
 " ========================
