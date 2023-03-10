@@ -44,6 +44,8 @@
   set shiftwidth=4
   set tabstop=4
 
+  " Don't let EditorConfig mess with our configuration
+  let g:EditorConfig_preserve_formatoptions = 1
   set formatoptions-=t
 
 " Keyboard shortcuts
