@@ -2,8 +2,8 @@
     "union": {
         "prefix": ["union"],
         "body": [
-            "export const ${0:name} = [] as const;",
-            "export type ${0/(.*)/${1:/pascalcase}/} = (typeof $0)[number];"
+            "export const ${1:name}s = [\"${2:yourValuesGoHere}\"] as const;",
+            "export type ${1/(.*)/${1:/pascalcase}/} = (typeof $1)[number];"
         ]
     },
     "stories": {
