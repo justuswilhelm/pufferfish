@@ -161,8 +161,10 @@
   set hlsearch
 
 " Color Stuff
-  let g:dracula_italic = 0
-  set termguicolors
+  let g:dracula_colorterm = 0
+  if trim(system("tput colors")) !=# "256"
+    set termguicolors
+  endif
   colorscheme dracula
 
 " Customize Backup Dir location
