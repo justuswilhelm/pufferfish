@@ -23,8 +23,8 @@
         "prefix": ["hi"],
         "body": [
             "import { Icon } from \"@steeze-ui/svelte-icon\";",
-            "import { DotsHorizontal } from \"@steeze-ui/heroicons\";",
-            "<Icon src={DotsHorizontal} theme=\"outline\" />"
+            "import { ${1:IconName} } from \"@steeze-ui/heroicons\";",
+            "<Icon src={ ${1:IconName} } class=\"${2:InsertClassHere}\" theme=\"outline\" />"
         ]
     },
     "transparent border": {
