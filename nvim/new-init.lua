@@ -31,12 +31,47 @@ require("nvim-tree").setup({
 })
 
 require("other-nvim").setup({
+    rememberBuffers = false,
     mappings = {
+        {
+            pattern = "/Pipfile$",
+            target = "/Pipfile.lock",
+        },
+        {
+            pattern = "/Pipfile.lock$",
+            target = "/Pipfile",
+        },
+        {
+            -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+page.ts
+            pattern = "/src/routes/(.*)%+page.*$",
+            target = {
+                {
+                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+page.svelte
+                    target = "/src/routes/%1+page.svelte",
+                    context = "page",
+                },
+                {
+                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+page.ts
+                    target = "/src/routes/%1+page.ts",
+                    context = "page-data",
+                },
+            },
+        },
         {
             pattern = "/src/lib/figma/(.*).svelte$",
             target = "/src/stories/figma/%1.stories.ts",
             context = "story",
-        }
+        },
+        {
+            pattern = "/(.*)/views.py$",
+            target = "/%1/test/test_views.py",
+            context = "view tests",
+        },
+        {
+            pattern = "/(.*)/test/test_views.py$",
+            target = "/%1/views.py",
+            context = "views",
+        },
     },
     style = {
         -- How the plugin paints its window borders
