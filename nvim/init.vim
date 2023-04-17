@@ -46,6 +46,8 @@ Plug 'nvim-tree/nvim-tree.lua'
 Plug 'rgroli/other.nvim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-fugitive'
+" LSP Config
+Plug 'neovim/nvim-lspconfig'
 
 
 call plug#end()
