@@ -3,7 +3,7 @@
         "prefix": ["union"],
         "body": [
             "export const ${1:name}s = [\"${2:yourValuesGoHere}\"] as const;",
-            "export type ${1/(.*)/${1:/pascalcase}/} = (typeof $1)[number];"
+            "export type ${1/(.*)/${1:/pascalcase}/} = (typeof $1s)[number];"
         ]
     },
     "stories": {
