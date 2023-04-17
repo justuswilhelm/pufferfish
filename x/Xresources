@@ -7,10 +7,10 @@
 ! gives us
 Xft.dpi: 163
 
-XTerm.vt100.faceName: DejaVu Sans Mono:size=7:antialias=true
-XTerm.vt100.metaSendsEscape: true
+XTerm*faceName: DejaVu Sans Mono:size=6.5:antialias=true
+XTerm*metaSendsEscape: true
 XTerm*selectToClipboard: true
-Xterm.vt100.translations: #override \n\
+Xterm*translations: #override \n\
     Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
 
 ! The MIT License (MIT)
