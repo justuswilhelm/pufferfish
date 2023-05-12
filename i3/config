@@ -126,9 +126,8 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# Locking and sleeping
-bindsym $mod+t exec "i3lock --nofork --show-failed-attempts --color bd93f9"
-bindsym $mod+Shift+t exec "i3lock --nofork --show-failed-attempts --color 8be9fd && systemctl suspend"
+# Locking (the power button is configured to make the system suspend)
+bindsym $mod+t exec ~/.dotfiles/bin/lock-screen "Locked the screen yo"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -158,6 +157,7 @@ exec_always --no-startup-id "setxkbmap -config ~/.config/x/Xkbmap && xmodmap ~/.
 exec_always "xrdb ~/.Xresources"
 
 # Lock after 2 minutes, suspend after 15 minutes
-# exec_always --no-startup-id "xset dpms 0 900 120 &"
-# exec_always --no-startup-id "xss-lock -- i3lock --nofork --show-failed-attempts --color ff6e67 &"
-exec_always --no-startup-id "xautolock -time 2 -locker 'i3lock --nofork --show-failed-attempts --color ff6e67' -time 15 -locker 'systemctl suspend'"
+exec_always --no-startup-id xset dpms 0 0 120 &
+exec_always --no-startup-id xautolock -time 15 -locker "systemctl suspend" &
+# Make sure we also lock after suspend
+exec_always --no-startup-id xss-lock -- ~/.dotfiles/bin/lock-screen xss-lock &
