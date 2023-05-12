@@ -148,13 +148,14 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-exec ibus-daemon -dxr
-exec nm-applet
-exec /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
-exec opensnitch-ui
+exec --no-startup-id ibus-daemon -dxr
+exec --no-startup-id nm-applet
+exec --no-startup-id "/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh"
+exec --no-startup-id opensnitch-ui
 
-exec_always --no-startup-id "setxkbmap -config ~/.config/x/Xkbmap && xmodmap ~/.config/x/Xmodmap"
-exec_always "xrdb ~/.Xresources"
+# Keyboard mapping
+exec_always --no-startup-id setxkbmap -config ~/.config/x/Xkbmap && xmodmap ~/.config/x/Xmodmap
+exec_always --no-startup-id xrdb ~/.Xresources
 
 # Lock after 2 minutes, suspend after 15 minutes
 exec_always --no-startup-id xset dpms 0 0 120 &
