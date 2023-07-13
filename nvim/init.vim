@@ -16,6 +16,15 @@ Plug 'dag/vim-fish', {'for': 'fish'}
 Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 Plug 'tpope/vim-markdown', {'for': 'markdown'}
 
+" Treesitter
+" ----------
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'kylechui/nvim-surround' " Works with treesitter
+
+" nvim-orgmode
+" ------------
+Plug 'nvim-orgmode/orgmode'
+
 " Improve editor appearance
 " -------------------------
 Plug 'Yggdroot/indentLine'
@@ -33,11 +42,11 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'mattn/emmet-vim'
+Plug 'nvim-tree/nvim-tree.lua'
 Plug 'rgroli/other.nvim'
 Plug 'rking/ag.vim'
-Plug 'tpope/vim-surround'
-" TODO Still needed?
 Plug 'tpope/vim-fugitive'
+
 
 call plug#end()
 
@@ -96,9 +105,9 @@ cnoremap \>s/ \>s/\v
 " ------------------
 inoremap jk <esc>
 
-" Ctags
+" Nvim-tree
 " -----
-nnoremap <leader>t :CtrlPTag<cr>
+nnoremap <C-t> :NvimTreeOpen<CR>
 
 
 " TODO timestamp
@@ -141,8 +150,9 @@ endif
 
 " Netrw
 " =====
-let g:netrw_altv=1
-let g:netrw_liststyle=3
+" We use nvim-tree instead
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
 " Show unprintable characters
 " ===========================
