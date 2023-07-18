@@ -1,7 +1,7 @@
 {
     "scripts": {
-        "lint": "prettier --check --plugin-search-dir=. .",
-        "format": "prettier --write --plugin-search-dir=. --cache --cache-strategy metadata ."
+        "lint": "prettier --check .",
+        "format": "prettier --cache --cache-strategy metadata --write ."
     },
     "devDependencies": {
         "prettier": "^2.7.1"
