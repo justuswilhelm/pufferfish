@@ -61,8 +61,24 @@ require("other-nvim").setup({
             },
         },
         {
-            pattern = "/src/lib/figma/(.*).svelte$",
-            target = "/src/stories/figma/%1.stories.ts",
+            -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+layout.ts
+            pattern = "/src/routes/(.*)%+layout.*$",
+            target = {
+                {
+                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+layout.svelte
+                    target = "/src/routes/%1+layout.svelte",
+                    context = "layout",
+                },
+                {
+                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+layout.ts
+                    target = "/src/routes/%1+layout.ts",
+                    context = "layout-data",
+                },
+            },
+        },
+        {
+            pattern = "/src/lib/(.*).svelte$",
+            target = "/src/stories/%1.stories.ts",
             context = "story",
         },
         {
