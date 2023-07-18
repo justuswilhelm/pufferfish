@@ -80,9 +80,6 @@ set formatoptions-=t
 " ==================
 let mapleader = ','
 let maplocalleader = ','
-" Fix TmuxNavigateLeft
-" --------------------
-nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
 " Append to end
 " -------------
 nnoremap L $p
@@ -123,7 +120,6 @@ inoremap jk <esc>
 " -----
 nnoremap <C-t> :NvimTreeOpen<CR>
 
-
 " TODO timestamp
 " --------------
 nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
@@ -155,6 +151,8 @@ set wildignore+=*.o
 let g:ctrlp_show_hidden=1
 let g:ctrlp_working_path_mode = ''
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_max_files = 10000
+let g:ctrlp_cmd = 'CtrlPMRU'
 
 " Use a different shell
 " =====================
