@@ -1,0 +1,38 @@
+{
+    "percent": 0.4,
+    "name": "xterm",
+    "swallows": [
+        {
+            "class": "^XTerm$"
+        }
+    ],
+    "type": "con"
+}
+
+{
+    "percent": 0.6,
+    "layout": "splitv",
+    "type": "con",
+    "nodes": [
+        {
+            "floating": "auto_off",
+            "name": "Firefox Top",
+            "swallows": [
+                {
+                    "class": "^Firefox\\-esr$"
+                }
+            ],
+            "type": "con"
+        },
+        {
+            "floating": "auto_off",
+            "name": "Firefox Bottom",
+            "swallows": [
+                {
+                    "class": "^Firefox\\-esr$"
+                }
+            ],
+            "type": "con"
+        }
+    ]
+}
