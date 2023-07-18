@@ -1,4 +1,17 @@
+# Fish
 fish/fish_variables
 fish/config_local.fish
-node_modules/
+fish/fishd.*
+fish/fish_history
+fish/fish_read_history
+
+# Neovim
+nvim/.netrwhist
 nvim/plugged
+nvim/swap
+
+# Karabiner
+karabiner/automatic_backups
+
+# NPM
+node_modules
