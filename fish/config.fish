@@ -81,7 +81,7 @@ abbr -a gm git commit
 # Amend to the previous commit
 abbr -a gma git commit --amend
 # Commit the current staged changes with a message
-abbr -a gmm git commit -m
+abbr -a gmm git commit -e -m
 # Push to remote
 abbr -a gp git push
 # Push to remote and force update (potentially dangerous)
