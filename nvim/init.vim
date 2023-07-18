@@ -278,7 +278,7 @@ let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets/')
 let g:svelte_preprocessor_tags = [
             \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
             \ ]
-let g:svelte_preprocessors = ['ts']
+let g:svelte_preprocessors = ['ts', 'typescript']
 
 " Autoreload
 " ==========
