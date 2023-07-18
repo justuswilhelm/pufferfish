@@ -46,9 +46,21 @@ Plug 'nvim-tree/nvim-tree.lua'
 Plug 'rgroli/other.nvim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-fugitive'
+
 " LSP Config
+" ----------
 Plug 'neovim/nvim-lspconfig'
 
+" Autocomplete
+" ------------
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+" For vsnip
+Plug 'hrsh7th/cmp-vsnip'
 
 call plug#end()
 
