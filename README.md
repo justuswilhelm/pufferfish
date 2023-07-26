@@ -4,9 +4,9 @@
 
 Add useful defaults and configuration files for
 
--   tmux,
--   neovim, and
--   fish
+- tmux,
+- neovim, and
+- fish
 
 Please also refer to the
 [Wiki](https://github.com/justuswilhelm/pufferfish/wiki)
@@ -88,4 +88,4 @@ xmodmap ~/.Xmodmap
 Everything I have created myself is licensed under the MIT License. Other works
 included in this project are licensed under their respective licenses.
 
--   Iosevka (`fonts/`): SIL Open Font License v1.1, refer to `fonts/LICENSE.md`
+- Iosevka (`fonts/`): SIL Open Font License v1.1, refer to `fonts/LICENSE.md`
