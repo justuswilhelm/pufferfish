@@ -162,7 +162,7 @@ exec_always --no-startup-id xrdb ~/.Xresources
 
 # Lock after 2 minutes, suspend after six hours
 exec_always --no-startup-id xset dpms 0 0 120 &
-exec_always --no-startup-id xautolock -time 360 -locker "systemctl suspend" &
+exec_always --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep &
 # Make sure we also lock after suspend
 exec_always --no-startup-id xss-lock -- ~/.dotfiles/bin/lock-screen xss-lock &
 
