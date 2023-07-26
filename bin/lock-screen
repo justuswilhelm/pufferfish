@@ -10,5 +10,16 @@ else
     message="$1"
 fi
 
-convert -size 600x400 xc:white -gravity center -pointsize 24 -fill black -annotate +0+0 "$message" "$output_file"
-i3lock --nofork --show-failed-attempts --color ff6e67 --image "$output_file"
+convert \
+    -size 600x400 xc:white \
+    -gravity center \
+    -pointsize 24 \
+    -fill black \
+    -annotate +0+0 \
+    "$message" \
+    "$output_file"
+i3lock \
+    --show-failed-attempts \
+    --color ff6e67 \
+    --image "$output_file" \
+    --nofork
