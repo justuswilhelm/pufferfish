@@ -188,11 +188,15 @@ set number relativenumber
 
 " Folds
 " =====
-set conceallevel=0
+" Use treesitter to do our folding
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set foldlevel=2
 set nofoldenable
 
 " Concealing
 " ===============
+set conceallevel=0
 " Tex
 " ---
 " Has to be one of the most annoying things ever
