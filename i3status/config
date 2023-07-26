@@ -7,7 +7,7 @@ general {
     color_bad = "#FF5555"
 }
 
-order += "ethernet enp7s0"
+order += "wireless wlo1"
 order += "ethernet tailscale0"
 order += "disk /"
 order += "disk /home"
@@ -15,9 +15,9 @@ order += "load"
 order += "memory"
 order += "tztime local"
 
-ethernet enp7s0 {
-    format_up = "enp7s0: %ip (%speed)"
-    format_down = "enp7s0: down"
+wireless wlo1 {
+    format_up = "wlo1: %ip (%quality, %bitrate / %frequency)"
+    format_down = "wlo1: down"
 }
 
 ethernet tailscale0 {
