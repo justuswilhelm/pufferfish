@@ -27,7 +27,6 @@ Plug 'nvim-orgmode/orgmode'
 
 " Improve editor appearance
 " -------------------------
-Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'dracula/vim'
 
