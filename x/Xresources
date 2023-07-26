@@ -7,7 +7,7 @@
 ! gives us
 Xft.dpi: 163
 
-XTerm*faceName: DejaVu Sans Mono:size=6.5:antialias=true
+XTerm*faceName: Iosevka Fixed:size=7.5:antialias=true
 XTerm*metaSendsEscape: true
 XTerm*selectToClipboard: true
 Xterm*translations: #override \n\

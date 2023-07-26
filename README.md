@@ -82,3 +82,10 @@ And configured with
 ```
 xmodmap ~/.Xmodmap
 ```
+
+# License
+
+Everything I have created myself is licensed under the MIT License. Other works
+included in this project are licensed under their respective licenses.
+
+-   Iosevka (`fonts/`): SIL Open Font License v1.1, refer to `fonts/LICENSE.md`
