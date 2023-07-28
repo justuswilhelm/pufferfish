@@ -68,7 +68,7 @@ and ln -sfv "$XDG_CONFIG_HOME/git/gitignore" "$HOME/.gitignore"
 and ln -sfv "$DOTFILES/x" "$XDG_CONFIG_HOME"
 and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xresources"
 and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xdefaults"
-and ln -sfv "$DOTFILES/fonts" "$HOME/.local/share/fonts"
+and ln -sfv "$DOTFILES/fonts" "$HOME/.local/share"
 or exit 1
 set_color green
 echo "All good!"
