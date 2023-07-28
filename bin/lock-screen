@@ -18,8 +18,7 @@ convert \
     -annotate +0+0 \
     "$message" \
     "$output_file"
-i3lock \
+swaylock \
     --show-failed-attempts \
     --color ff6e67 \
-    --image "$output_file" \
-    --nofork
+    --image "$output_file"
