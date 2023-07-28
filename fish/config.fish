@@ -22,8 +22,6 @@ set -x XDG_CONFIG_HOME "$HOME/.config"
 fish_add_path "$HOME/.dotfiles/bin"
 fish_add_path "$HOME/.local/bin"
 
-source "$DOTFILES/fish/config_local.fish"
-
 # Abbreviations
 # =============
 #
