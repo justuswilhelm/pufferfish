@@ -56,6 +56,7 @@ end
 
 ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3" "$XDG_CONFIG_HOME"
+and ln -sfv "$DOTFILES/foot" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/sway" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3status" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/karabiner" "$XDG_CONFIG_HOME"
