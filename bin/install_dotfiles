@@ -56,6 +56,7 @@ end
 
 ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3" "$XDG_CONFIG_HOME"
+and ln -sfv "$DOTFILES/sway" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3status" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/karabiner" "$XDG_CONFIG_HOME"
 and ln -fv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
@@ -65,6 +66,7 @@ and ln -sfv "$XDG_CONFIG_HOME/git/gitignore" "$HOME/.gitignore"
 # TODO make this vendor specific
 and ln -sfv "$DOTFILES/x" "$XDG_CONFIG_HOME"
 and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xresources"
+and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xdefaults"
 and ln -sfv "$DOTFILES/fonts" "$HOME/.local/share/fonts"
 or exit 1
 set_color green
