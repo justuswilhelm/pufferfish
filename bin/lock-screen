@@ -21,4 +21,5 @@ convert \
 swaylock \
     --show-failed-attempts \
     --color ff6e67 \
+    --daemonize \
     --image "$output_file"
