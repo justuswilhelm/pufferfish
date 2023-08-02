@@ -10,8 +10,6 @@ Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 " TODO Still needed? Justus 2023-03-10
 Plug 'elzr/vim-json', {'for': 'json'}
-Plug 'ElmCast/elm-vim', {'for': 'elm'}
-Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
 Plug 'dag/vim-fish', {'for': 'fish'}
 Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 Plug 'tpope/vim-markdown', {'for': 'markdown'}
