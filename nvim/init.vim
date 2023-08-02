@@ -31,7 +31,7 @@ Plug 'dracula/vim'
 " Improve general editor behavior
 " -------------------------------
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
 Plug 'easymotion/vim-easymotion'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'epeli/slimux'
@@ -143,25 +143,11 @@ set wildignore+=*/staticfiles/*
 set wildignore+=*.gch
 set wildignore+=*.o
 
-" ctrlp.vim
-" =========
-let g:ctrlp_show_hidden=1
-let g:ctrlp_working_path_mode = ''
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-let g:ctrlp_max_files = 10000
-nmap <leader>p :CtrlP<CR>
-
 " Use a different shell
 " =====================
 if &shell =~# 'fish$'
     set shell=sh
 endif
-
-" Netrw
-" =====
-" We use nvim-tree instead
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
 
 " Show unprintable characters
 " ===========================

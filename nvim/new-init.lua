@@ -1,35 +1,14 @@
-require("nvim-tree").setup({
-    sort_by = "case_sensitive",
-    view = {
-        width = 30,
-    },
-    renderer = {
-        group_empty = true,
-        icons = {
-            webdev_colors = false,
-            glyphs = {
-                default = ">",
-                symlink = "%",
-                bookmark = "#",
-                modified = "●",
-                folder = {
-                    arrow_closed = "v",
-                    arrow_open = ">",
-                    default = ">",
-                    open = ">",
-                    empty = "c",
-                    empty_open = ">",
-                    symlink = "v",
-                    symlink_open = ">",
-                },
-            },
+-- fzf-lua
+-- =======
+-- This replaces nvim-tree and ctrlp for me
+require("fzf-lua").setup({
+    winopts = {
+        preview = {
+            flip_columns = 200,
         },
     },
-    filters = {
-        dotfiles = true,
-    },
 })
-
+vim.keymap.set("n", "<c-P>", "<cmd>lua require('fzf-lua').files()<CR>", { silent=true })
 
 -- Other
 -- =====
