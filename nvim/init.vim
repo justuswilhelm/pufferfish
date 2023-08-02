@@ -239,13 +239,6 @@ augroup BgHighlight
     autocmd WinLeave * set nocul
 augroup END
 
-" Crontab
-" =======
-if $VIM_CRONTAB == "true"
-    set nobackup
-    set nowritebackup
-endif
-
 " ctags
 " =====
 set tags=./.tags,.tags;
