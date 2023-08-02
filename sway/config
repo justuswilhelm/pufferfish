@@ -4,6 +4,7 @@ set $mod Mod4
 
 # HiDPI setting
 output DP-1 scale 1.25
+output DP-4 scale 1.25
 output "*" background ~/.config/sway/backgrounds/Sun_background.xpm tile
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -13,7 +14,9 @@ output "*" background ~/.config/sway/backgrounds/Sun_background.xpm tile
 # TODO switch to iosevka
 font pango:Iosevka Fixed 11
 
-default_border pixel 8
+default_border normal 8
+smart_gaps on
+gaps inner 24
 
 # class                 border  bground text    indicator child_border
 client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
@@ -34,7 +37,9 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec foot
-bindsym $mod+Shift+Return exec env MOZ_ENABLE_WAYLAND=1 firefox-esr
+bindsym $mod+Shift+Return exec firefox-esr
+bindsym $mod+Shift+d exec torbrowser-launcher
+bindsym $mod+Shift+p exec 1password
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -108,7 +113,7 @@ bindsym $mod+Shift+r reload
 # restart sway inplace (preserves your layout/session, can be used to upgrade sway)
 bindsym $mod+Shift+c restart
 # exit sway (logs you out of your X session)
-bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'"
+bindsym $mod+Shift+e exit
 
 # Locking (the power button is configured to make the system suspend)
 bindsym $mod+t exec ~/.dotfiles/bin/lock-screen "Locked the screen yo"
@@ -153,7 +158,8 @@ input "1133:16394:Logitech_M325" {
 # TODO migrate to sway
 exec --no-startup-id swayidle -w \
     timeout 120 '~/.dotfiles/bin/lock-screen swayidle' \
-    timeout 125 'swaymsg "output * power off"' \
+    timeout 125 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
     timeout 21600 'systemctl suspend'
 # TODO migrate to sway
 # exec_always --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep &
