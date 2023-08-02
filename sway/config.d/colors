@@ -1,0 +1,7 @@
+# Maybe use:
+# https://github.com/jan-warchol/selenized/blob/master/other-apps/i3/i3-selenized-light.conf
+
+bar {
+    status_command i3status
+    position top
+}

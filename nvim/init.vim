@@ -26,7 +26,6 @@ Plug 'nvim-orgmode/orgmode'
 " Improve editor appearance
 " -------------------------
 Plug 'airblade/vim-gitgutter'
-Plug 'dracula/vim'
 
 " Improve general editor behavior
 " -------------------------------
@@ -212,11 +211,11 @@ set hlsearch
 
 " Color Stuff
 " ===========
-let g:dracula_colorterm = 0
-if trim(system("tput colors")) !=# "256"
-    set termguicolors
+if has("termguicolors")
+  set termguicolors
 endif
-colorscheme dracula
+colorscheme selenized
+set background=light
 
 " Customize Backup Dir location
 " =============================
