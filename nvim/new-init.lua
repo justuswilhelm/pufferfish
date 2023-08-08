@@ -176,8 +176,8 @@ require('nvim-treesitter.configs').setup {
         enable = true,
         -- Required for spellcheck, some LaTex highlights and
         -- code block highlights that do not have ts grammar
-        additional_vim_regex_highlighting = {'diff', 'org'},
-        disable = { "diff" },
+        additional_vim_regex_highlighting = {'diff', 'org', 'gitcommit'},
+        -- disable = { "diff" },
     },
     ensure_installed = {'org'}, -- Or run :TSUpdate org
 }
