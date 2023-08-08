@@ -21,7 +21,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec foot
 bindsym $mod+Shift+Return exec firefox-esr
-bindsym $mod+Shift+d exec torbrowser-launcher
+bindsym $mod+Shift+t exec torbrowser-launcher
 bindsym $mod+Shift+p exec 1password
 
 # kill focused window
