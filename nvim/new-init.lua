@@ -101,6 +101,11 @@ local cmp = require'cmp'
 cmp.setup.filetype(
     { "python", "svelte", "typescript" },
     {
+        snippet = {
+            expand = function(args)
+                vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+            end,
+        },
         preselect = cmp.PreselectMode.None,
         window = {
             completion = cmp.config.window.bordered(),
