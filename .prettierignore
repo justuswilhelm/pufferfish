@@ -3,4 +3,7 @@ karabiner/assets
 karabiner/automatic_backups
 nvim/plugged
 i3/workspace-*.json
+# 3rd party
 fonts/LICENSE.md
+macos-terminal-selenized
+selenized
