@@ -14,6 +14,10 @@ Plug 'dag/vim-fish', {'for': 'fish'}
 Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 Plug 'tpope/vim-markdown', {'for': 'markdown'}
 
+" Ascii stuff
+" -----------
+Plug 'jbyuki/venn.nvim'
+
 " Treesitter
 " ----------
 Plug 'nvim-treesitter/nvim-treesitter'
