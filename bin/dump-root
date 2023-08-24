@@ -1,0 +1,26 @@
+#!/bin/bash
+# Expects $recipient to be set to an email address in our gpg keychain
+# TODO: Sign our dumps
+# TODO: Exit trap lvremove
+set -e
+set -o pipefail
+bs=4M
+root_name=helium--vg-root
+fs="/dev/mapper/$root_name"
+snap_name=rootsnap
+snap="/dev/mapper/helium--vg-$snap_name"
+out_dir=/srv/dumping-grounds/dump
+dest="$out_dir/$root_name-$(date -R).gz.gpg"
+
+echo "Creating snapshot of $root_name at $snap"
+sudo lvcreate --size 8G --snapshot --name "$snap_name" "$fs"
+size="$(df -h $fs | awk 'NR==2{print $3}')"
+echo "Approximate size of snapshot is $size"
+echo "Dumping $snap to $dest"
+sudo dd if="$snap" bs="$bs" |
+    pv -s "$size" |
+    gzip -c - |
+    gpg --encrypt --recipient "$recipient" |
+    sudo tee "$dest" > /dev/null
+
+sudo lvremove "$snap"
