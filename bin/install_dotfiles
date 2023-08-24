@@ -61,7 +61,7 @@ and ln -sfv "$DOTFILES/sway" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3status" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/karabiner" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/systemd" "$XDG_CONFIG_HOME"
-and ln -fv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+and ln -sfv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 and ln -sfv "$DOTFILES/git" "$XDG_CONFIG_HOME"
 # TODO make this vendor specific
 and ln -sfv "$DOTFILES/x" "$XDG_CONFIG_HOME"
