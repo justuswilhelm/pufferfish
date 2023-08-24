@@ -12,8 +12,9 @@ output "*" background ~/.config/sway/backgrounds/Sun_background.xpm tile
 font pango:Iosevka Fixed 10
 
 default_border normal 10
-smart_gaps on
-gaps inner 8
+
+gaps outer 32
+gaps inner 16
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
