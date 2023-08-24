@@ -9,6 +9,7 @@ require("fzf-lua").setup({
     },
 })
 vim.keymap.set("n", "<c-P>", require('fzf-lua').files, { silent=true })
+vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, { silent=true })
 
 -- Other
 -- =====
