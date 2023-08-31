@@ -221,3 +221,9 @@ function _G.Toggle_venn()
 end
 -- toggle keymappings for venn using <leader>v
 vim.api.nvim_set_keymap('n', '<leader>v', ":lua Toggle_venn()<CR>", { noremap = true})
+
+-- fugitive config
+vim.api.nvim_set_keymap('n', '<leader>gap', ":Git add -p<CR>", { noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>gm', ":Git commit<CR>", { noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>gdd', ":Git diff<CR>", { noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>gdc', ":Git diff --cached<CR>", { noremap = true})
