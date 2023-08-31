@@ -1,0 +1,6 @@
+#!/usr/bin/env fish
+read -S -P "where: " location
+read -P "replace: " replace
+read -P "with: " with
+grep --recursive "$location" --regexp "$replace" --files-with-matches |
+    xargs --max-procs 0 sed --in-place "s/$replace\b/$with/g"
