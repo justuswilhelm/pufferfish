@@ -3,9 +3,10 @@
 set $mod Mod4
 
 # HiDPI setting
-output DP-1 scale 1.5
-output DP-4 scale 1.5
-output "*" background ~/.config/sway/backgrounds/Sun_background.xpm tile
+output DP-1 {
+    scale 1.5
+    background ~/.config/sway/backgrounds/Sun_background.xpm tile
+}
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -13,8 +14,10 @@ font pango:Iosevka Fixed 10
 
 default_border normal 10
 
-gaps outer 32
-gaps inner 16
+gaps {
+    outer 32
+    inner 16
+}
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -120,31 +123,30 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# TODO migrate to sway
-# exec --no-startup-id ibus-daemon -dxr
-
-exec --no-startup-id opensnitch-ui
+# Prevent focus steal
+focus_on_window_activation none
+# Float open snitch
+for_window [app_id="opensnitch_ui"] floating enable
 
 # Keyboard / mouse mapping
 input "1133:16394:Logitech_M325" {
     natural_scroll enabled
 }
 
-# Might not be needed anymore
 
-# Lock after 2 minutes, suspend after six hours
-# TODO migrate to sway
-exec --no-startup-id swayidle -w \
-    timeout 120 '~/.dotfiles/bin/lock-screen swayidle' \
-    timeout 125 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-    timeout 21600 'systemctl suspend'
-
-exec wl-paste -t text --watch clipman store --no-persist
-
-focus_on_window_activation none
-
-# TODO always launch opensnitch modals as floating
+exec --no-startup-id {
+    # TODO migrate to sway
+    # ibus-daemon -dxr
+    opensnitch-ui
+    # Lock after 2 minutes, suspend after six hours
+    swayidle -w \
+        timeout 120 '~/.dotfiles/bin/lock-screen swayidle' \
+        timeout 125 'swaymsg "output * dpms off"' \
+        resume 'swaymsg "output * dpms on"' \
+        timeout 21600 'systemctl poweroff'
+    # Wayland copy-pasting
+    wl-paste -t text --watch clipman store --no-persist
+}
 
 include ~/.config/sway/config.d/*
 include /etc/sway/config.d/*
