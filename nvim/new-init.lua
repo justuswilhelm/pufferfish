@@ -133,10 +133,12 @@ cmp.setup.filetype(
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
 lspconfig.tsserver.setup {
-    capabilities = capabilities
+    capabilities = capabilities,
+    cmd = { 'npm', 'run', 'typescript-language-server', '--', '--stdio' },
 }
 lspconfig.svelte.setup {
-    capabilities = capabilities
+    capabilities = capabilities,
+    cmd = { 'npm', 'run', 'svelteserver', '--', '--stdio' },
 }
 lspconfig.pyright.setup {
     capabilities = capabilities
