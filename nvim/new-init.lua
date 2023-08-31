@@ -227,3 +227,6 @@ vim.api.nvim_set_keymap('n', '<leader>gap', ":Git add -p<CR>", { noremap = true}
 vim.api.nvim_set_keymap('n', '<leader>gm', ":Git commit<CR>", { noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>gdd', ":Git diff<CR>", { noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>gdc', ":Git diff --cached<CR>", { noremap = true})
+
+-- For searching
+vim.api.nvim_set_keymap('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>", {})
