@@ -18,3 +18,5 @@ tool = vimdiff
 tool = vimdiff
 [mergetool "vimdiff"]
 path = nvim
+[fetch]
+	prune = true
