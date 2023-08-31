@@ -177,7 +177,7 @@ set number relativenumber
 " Use treesitter to do our folding
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
-set foldlevel=2
+set foldlevel=1
 set nofoldenable
 
 " Concealing
