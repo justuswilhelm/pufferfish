@@ -4,23 +4,42 @@
 # TODO: Exit trap lvremove
 set -e
 set -o pipefail
+
+cleanup () {
+    sudo lvremove --yes "$snap"
+}
+trap cleanup EXIT
+trap cleanup SIGINT
+
 bs=4M
-root_name=helium--vg-root
+vg_name=helium--vg
+root_name="$vg_name-root"
 fs="/dev/mapper/$root_name"
-snap_name=rootsnap
-snap="/dev/mapper/helium--vg-$snap_name"
+snap_name="rootsnap$(openssl rand -hex 8)"
+snap="/dev/mapper/$vg_name-$snap_name"
 out_dir=/srv/dumping-grounds/dump
 dest="$out_dir/$root_name-$(date -R).gz.gpg"
 
 echo "Creating snapshot of $root_name at $snap"
-sudo lvcreate --size 8G --snapshot --name "$snap_name" "$fs"
-size="$(df -h $fs | awk 'NR==2{print $3}')"
-echo "Approximate size of snapshot is $size"
-echo "Dumping $snap to $dest"
-sudo dd if="$snap" bs="$bs" |
-    pv -s "$size" |
-    gzip -c - |
-    gpg --encrypt --recipient "$recipient" |
-    sudo tee "$dest" > /dev/null
+if sudo lvcreate --size 8G --snapshot --name "$snap_name" "$fs"
+then
+    size="$(df -h "$snap" | awk 'NR==2{print $3}')"
+    echo "Approximate size of snapshot is $size"
+else
+    exit
+fi
 
-sudo lvremove "$snap"
+echo "Dumping $snap to $dest"
+if sudo dd if="$snap" bs="$bs" |
+    pv --cursor --name "Dump" --size "$size" |
+    gzip --stdout - |
+    gpg --encrypt --recipient "$recipient" |
+    pv --cursor  --name "Compressed and gpg'ed" |
+    sudo tee "$dest" > /dev/null
+then
+    echo "Dumping complete"
+else
+    echo "Dumping did not work, removing archive at $dest"
+    sudo rm "$dest"
+    exit
+fi
