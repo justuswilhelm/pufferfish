@@ -43,7 +43,7 @@ Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'rgroli/other.nvim'
-Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-fugitive'
 
 " LSP Config
@@ -269,3 +269,9 @@ set autoread
 " Load Lua config
 " ===============
 luafile $HOME/.config/nvim/new-init.lua
+
+" ack.vim
+" =======
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
