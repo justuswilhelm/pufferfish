@@ -1,0 +1,10 @@
+#!/bin/bash
+swaymsg workspace 4
+swaymsg exec keepassxc
+sleep "0.3"
+swaymsg split h
+swaymsg exec foot manage-dotfiles
+swaymsg focus parent
+swaymsg split h
+swaymsg exec firefox-esr
+swaymsg exec keepasscx
