@@ -79,10 +79,6 @@ set formatoptions-=t
 " ==================
 let mapleader = ','
 let maplocalleader = ','
-" Append to end
-" -------------
-nnoremap L $p
-nnoremap K $pkJ
 " Yank till end
 " -------------
 nnoremap Y y$
