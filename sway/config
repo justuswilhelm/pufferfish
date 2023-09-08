@@ -100,8 +100,7 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
-# restart sway inplace (preserves your layout/session, can be used to upgrade sway)
-bindsym $mod+Shift+c restart
+# Sway does not provice a restart command
 # exit sway (logs you out of your X session)
 bindsym $mod+Shift+e exit
 
