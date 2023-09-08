@@ -28,6 +28,11 @@ bindsym $mod+Shift+Return exec firefox-esr
 bindsym $mod+Shift+t exec torbrowser-launcher
 bindsym $mod+Shift+p exec keepassxc
 
+# Launch my currently used workspace
+bindsym $mod+m exec "~/.dotfiles/bin/launch-workspace"
+# Launch a view into my dotfiles etc
+bindsym $mod+Shift+m exec "~/.dotfiles/bin/launch-settings"
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -62,7 +67,6 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-bindsym $mod+m focus mode_toggle
 
 # focus the parent container
 bindsym $mod+n focus parent
