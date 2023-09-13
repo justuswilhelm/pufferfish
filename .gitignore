@@ -1,7 +1,6 @@
 # Fish
 fish/fish_variables
 fish/fishd.*
-fish/conf.d
 fish/fish_history
 fish/fish_read_history
 fish/completions/asdf.fish
