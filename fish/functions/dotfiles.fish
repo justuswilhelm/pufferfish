@@ -1,15 +1,12 @@
-function dotfiles -d "Pull latest dotfiles from pufferfish repository"
+function dotfiles -d "Navigate to dotfiles directory"
     pushd $DOTFILES
-    if not git pull --rebase origin main
-        echo
-        echo ---
-        echo
-        set_color green
-        echo "Howdy dotfiles friend!"
-        set_color normal
-        echo
-        echo "I could not pull the latest changes from the repository."
-        echo "You might want to stash your changes and try running 'dotfiles'"
-        echo "again."
-    end
+    set_color green
+    echo "Howdy dotfiles friend!"
+    set_color normal
+    echo "You may want to pull in the latest changes using"
+    set_color blue
+    echo "git pull --rebase origin"
+    set_color normal
+    echo "Have a nice day :)"
+    echo
 end
