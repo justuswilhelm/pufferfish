@@ -132,7 +132,9 @@ focus_on_window_activation none
 for_window [app_id="opensnitch_ui"] floating enable
 
 # Keyboard / mouse mapping
-input "1133:16394:Logitech_M325" {
+# For more specific modification, find the device id using
+# swaymsg -t get_inputs
+input type:pointer {
     natural_scroll enabled
 }
 
