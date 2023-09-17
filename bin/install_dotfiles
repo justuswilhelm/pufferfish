@@ -70,15 +70,16 @@ and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xresources"
 and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xdefaults"
 and ln -sfv "$DOTFILES/fonts" "$HOME/.local/share"
 or exit 1
-set_color green
-echo "All good!"
-set_color normal
-echo
 
-echo "Updating git global config"
-echo "--------------------------"
-git config --global --replace-all core.excludesfile ~/.config/git/gitignore
+# Poetry needs some extra hand holding on macOS
+if is_darwin
+    echo "Darwin hand holding"
+    ln -sfv "$DOTFILES/pypoetry" "$HOME/Library/Application Support"
+else
+    ln -sfv "$DOTFILES/pypoetry" "$XDG_CONFIG_HOME"
+end
 or exit 1
+
 set_color green
 echo "All good!"
 set_color normal
