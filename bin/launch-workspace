@@ -6,5 +6,3 @@ sleep "0.1"
 swaymsg split h
 swaymsg exec foot projectify
 swaymsg focus parent
-swaymsg split h
-swaymsg exec firefox-esr
