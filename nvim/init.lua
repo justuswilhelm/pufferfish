@@ -1,3 +1,25 @@
+-- General editor settings
+-- =======================
+-- Shell
+-- -----
+-- Use sh (this is used for ! commands)
+vim.opt.shell = "sh"
+-- Autoreload
+-- ----------
+vim.opt.autoread = true
+-- Backup location
+-- ---------------
+vim.opt.backupdir = "~/.config/nvim/backup"
+-- Clipboard
+-- ---------
+-- Use system clipboard
+vim.opt.clipboard:append({"unnamedplus"})
+-- Undo
+-- ----
+-- A lot!
+vim.opt.history = 1000
+vim.opt.undolevels = 1000
+
 -- Visual
 -- ======
 -- Color scheme
@@ -33,18 +55,30 @@ vim.opt.listchars = {
     trail = '※',
 }
 vim.opt.colorcolumn = "80"
-
 -- Match highlighting
--- ==================
+-- ------------------
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.gdefault = true
 vim.opt.incsearch = true
 vim.opt.showmatch = true
 vim.opt.hlsearch = true
+-- Line numbers
+-- ------------
+vim.opt.number = true
+vim.opt.relativenumber = true
 
--- Folding and concealing
--- ======================
+-- Syntax settings
+-- ===========================================
+-- Enable syntax, if not done by an ftplugin for us
+vim.cmd.syntax("enable")
+-- This contains: indentation, folding and concealing
+-- Syntax
+-- ------
+vim.cmd.filetype("plugin", "indent", "on")
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
 -- Folding
 -- -------
 -- Use treesitter to do our folding
@@ -63,9 +97,159 @@ vim.g.tex_conceal = ""
 vim.g.vim_json_syntax_conceal = 0
 -- Markdown
 vim.g.markdown_syntax_conceal = 0
+-- Format options
+-- --------------
+-- Stop vim from inserting a newline at inopportune moments
+vim.opt.formatoptions:remove({"t"})
+
+
+-- Keyboard shortcuts
+-- =================
+-- (not plugin-specific, just neovim builtins)
+vim.cmd([[
+let mapleader = ','
+let maplocalleader = ','
+" Yank till end
+" -------------
+nnoremap Y y$
+" Smarter text navigation
+" -----------------------
+nnoremap j gj
+nnoremap k gk
+" Pinky pain
+" ----------
+nore ; :
+" Run default macro
+" -----------------
+nnoremap <Space> @q
+" Disable highlighting
+" --------------------
+nnoremap <leader><space> :noh<cr>
+
+" Reload configuration
+" --------------------
+nnoremap <leader>l :source ~/.config/nvim/init.lua<cr>
+
+" Make matching a little bit more magical
+" http://vim.wikia.com/wiki/Simplifying_regular_expressions_using_magic_and_no-magic
+nnoremap / /\v
+vnoremap / /\v
+cnoremap %s/ %s/\v
+cnoremap \>s/ \>s/\v
+
+" Young Padawan Mode
+" ------------------
+inoremap jk <esc>
+
+" TODO timestamp
+" --------------
+nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
+]])
+
+-- Mouse
+-- =====
+vim.opt.mouse = "a"
+
+-- Files and folders to ignore
+-- ===========================
+-- TODO is this still relevant? I mean... we have gitignore, right?
+vim.cmd([[
+set wildignore=*/.git/*
+set wildignore+=*/.DS_Store
+set wildignore+=*/vendor
+set wildignore+=*/env/*
+set wildignore+=*.pyc
+set wildignore+=*/__pycache__/
+set wildignore+=*/deps/* " Elixir deps
+set wildignore+=*/_build/* " Elixir builds
+set wildignore+=*/Pods/* " CocoaPods
+set wildignore+=*/node_modules/*
+set wildignore+=*/bower_components/*
+set wildignore+=*/elm-stuff/*
+set wildignore+=*/staticfiles/*
+set wildignore+=*.gch
+set wildignore+=*.o
+]])
+
+-- Plugin Specific Settings
+-- ========================
+-- Load plugins
+-- ------------
+vim.cmd([[
+call plug#begin('~/.config/nvim/plugged')
+" Language specific
+" -----------------
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
+Plug 'guersam/vim-j', {'for': 'j'}
+Plug 'leafgarland/typescript-vim'
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+" TODO Still needed? Justus 2023-03-10
+Plug 'elzr/vim-json', {'for': 'json'}
+Plug 'dag/vim-fish', {'for': 'fish'}
+Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+Plug 'tpope/vim-markdown', {'for': 'markdown'}
+
+" Ascii stuff
+" -----------
+Plug 'jbyuki/venn.nvim'
+
+" Treesitter
+" ----------
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'kylechui/nvim-surround' " Works with treesitter
+
+" nvim-orgmode
+" ------------
+Plug 'nvim-orgmode/orgmode'
+
+" Improve editor appearance
+" -------------------------
+Plug 'airblade/vim-gitgutter'
+
+" Improve general editor behavior
+" -------------------------------
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
+Plug 'easymotion/vim-easymotion'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'epeli/slimux'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
+Plug 'nvim-tree/nvim-tree.lua'
+Plug 'rgroli/other.nvim'
+Plug 'mileszs/ack.vim'
+Plug 'tpope/vim-fugitive'
+
+" LSP Config
+" ----------
+Plug 'neovim/nvim-lspconfig'
+
+" Autocomplete
+" ------------
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+" For vsnip
+Plug 'hrsh7th/cmp-vsnip'
+
+call plug#end()
+]])
+-- Slimux
+-- ------
+vim.cmd([[
+map <Leader>s :SlimuxREPLSendLine<CR>
+vmap <Leader>s :SlimuxREPLSendSelection<CR>
+map <Leader>a :SlimuxShellLast<CR>
+map <Leader>k :SlimuxSendKeysLast<CR>
+]])
 
 -- fzf-lua
--- =======
+-- -------
 -- This replaces nvim-tree and ctrlp for me
 require("fzf-lua").setup({
     winopts = {
@@ -78,7 +262,7 @@ vim.keymap.set("n", "<c-P>", require('fzf-lua').files, { silent=true })
 vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, { silent=true })
 
 -- Other
--- =====
+-- -----
 require("other-nvim").setup({
     rememberBuffers = false,
     mappings = {
@@ -155,16 +339,14 @@ require("other-nvim").setup({
     },
 })
 -- Key mappings
--- ------------
 vim.api.nvim_set_keymap("n", "<leader>oo", "<cmd>:Other<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>os", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>ov", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>oc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
 
 -- Nvim-Cmp
--- ========
+-- --------
 local cmp = require'cmp'
-
 cmp.setup.filetype(
     { "python", "svelte", "typescript" },
     {
@@ -194,7 +376,7 @@ cmp.setup.filetype(
 )
 
 -- Language Server Protocol
--- ========================
+-- ------------------------
 -- Capabilities added as per nvim-cmp README
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
@@ -209,7 +391,6 @@ lspconfig.svelte.setup {
 lspconfig.pyright.setup {
     capabilities = capabilities
 }
-
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -236,10 +417,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- Nvim orgmode
+-- ------------
 -- Load custom treesitter grammar for org filetype
 require('orgmode').setup_ts_grammar()
 
 -- Treesitter configuration
+-- ------------------------
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -258,15 +442,21 @@ require('nvim-treesitter.configs').setup {
         "org",
         "svelte",
         "typescript",
+        "markdown",
     },
 }
 
+-- TODO is the following needed?
 require('orgmode').setup({
 })
 
+-- Nvim surround
+-- -------------
 require("nvim-surround").setup()
 
--- venn.nvim: enable or disable keymappings
+-- venn.nvim
+-- ---------
+-- enable or disable keymappings
 function _G.Toggle_venn()
     local venn_enabled = vim.inspect(vim.b.venn_enabled)
     if venn_enabled == "nil" then
@@ -288,18 +478,15 @@ end
 -- toggle keymappings for venn using <leader>v
 vim.api.nvim_set_keymap('n', '<leader>venn', ":lua Toggle_venn()<CR>", { noremap = true})
 
--- fugitive config
+-- fugitive
+-- --------
 vim.api.nvim_set_keymap('n', '<leader>gap', ":Git add -p<CR>", { noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>gm', ":Git commit<CR>", { noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>gdd', ":Git diff<CR>", { noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>gdc', ":Git diff --cached<CR>", { noremap = true})
 
--- For searching
-vim.api.nvim_set_keymap('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>", {})
-vim.api.nvim_set_keymap('n', '<leader>ag', ":Ack ", {})
-
 -- vim-vsnip
--- =========
+-- ---------
 vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snippets/")
 vim.keymap.set(
     "i", "<Tab>",
@@ -316,18 +503,21 @@ vim.keymap.set(
 )
 
 -- Svelte
--- ======
+-- ------
 vim.g.svelte_preprocessor_tags = {
     { name = "ts", tag = "script", as = "typescript" }
 }
 vim.g.svelte_preprocessors = { "ts", "typescript" }
-
--- Autoreload
--- ==========
-vim.opt.autoread = true
 
 -- ack.vim
 -- =======
 if vim.fn.executable("ag") then
     vim.g.ackprg = "ag --vimgrep"
 end
+vim.api.nvim_set_keymap('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>", {})
+vim.api.nvim_set_keymap('n', '<leader>ag', ":Ack ", {})
+
+-- EditorConfig
+-- ------------
+-- Don't let EditorConfig mess with our configuration
+vim.g.EditorConfig_preserve_formatoptions = 1
