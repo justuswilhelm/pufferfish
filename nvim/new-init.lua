@@ -1,3 +1,69 @@
+-- Visual
+-- ======
+-- Color scheme
+-- ------------
+if vim.fn.has("termguicolors") then
+  vim.opt.termguicolors = true
+end
+vim.cmd.colorscheme("selenized")
+vim.opt.background = "light"
+-- Make active pane visible
+-- ------------------------
+-- https://superuser.com/questions/385553/making-the-active-window-in-vim-more-obvious
+-- Translated to lua
+-- See: https://neovim.io/doc/user/lua-guide.html#lua-guide-autocommands
+local BgHighlight = vim.api.nvim_create_augroup('BgHighlight', { clear = true })
+vim.api.nvim_create_autocmd({ 'WinEnter' }, {
+  pattern = '*',
+  group = BgHighlight,
+  command = 'set cul',
+})
+vim.api.nvim_create_autocmd({ 'WinLeave' }, {
+  pattern = '*',
+  group = BgHighlight,
+  command = 'set nocul',
+})
+-- Show commands while they're being typed
+vim.opt.showcmd = true
+-- Show unprintable characters
+vim.opt.list = true
+vim.opt.listchars = {
+    tab = '»\\ ',
+    nbsp = '෴',
+    trail = '※',
+}
+vim.opt.colorcolumn = "80"
+
+-- Match highlighting
+-- ==================
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.gdefault = true
+vim.opt.incsearch = true
+vim.opt.showmatch = true
+vim.opt.hlsearch = true
+
+-- Folding and concealing
+-- ======================
+-- Folding
+-- -------
+-- Use treesitter to do our folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr"
+vim.opt.foldlevel = 1
+-- TODO maybe vim.opt.foldenable?
+vim.opt.foldenable = true
+-- Concealing
+-- ----------
+vim.opt.conceallevel = 0
+-- Tex
+-- Has to be one of the most annoying things ever
+vim.g.tex_conceal = ""
+-- Json
+vim.g.vim_json_syntax_conceal = 0
+-- Markdown
+vim.g.markdown_syntax_conceal = 0
+
 -- fzf-lua
 -- =======
 -- This replaces nvim-tree and ctrlp for me

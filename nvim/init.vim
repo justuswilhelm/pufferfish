@@ -147,16 +147,6 @@ if &shell =~# 'fish$'
     set shell=sh
 endif
 
-" Show unprintable characters
-" ===========================
-set list
-set listchars=tab:»\ ,nbsp:෴,trail:※
-set colorcolumn=80
-
-" Show commands while they're being typed
-" =======================================
-set showcmd
-
 " Slimux
 " ======
 map <Leader>s :SlimuxREPLSendLine<CR>
@@ -168,28 +158,6 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 " ============
 set number relativenumber
 
-" Folds
-" =====
-" Use treesitter to do our folding
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-set foldlevel=1
-set nofoldenable
-
-" Concealing
-" ===============
-set conceallevel=0
-" Tex
-" ---
-" Has to be one of the most annoying things ever
-let g:tex_conceal = ""
-" Json
-" ----
-let g:vim_json_syntax_conceal = 0
-" Markdown
-" --------
-let g:markdown_syntax_conceal = 0
-
 " Use system clipboard
 " ====================
 set clipboard+=unnamedplus
@@ -198,23 +166,6 @@ set clipboard+=unnamedplus
 " ===========
 set history=1000
 set undolevels=1000
-
-" Matching
-" ========
-set ignorecase
-set smartcase
-set gdefault
-set incsearch
-set showmatch
-set hlsearch
-
-" Color Stuff
-" ===========
-if has("termguicolors")
-  set termguicolors
-endif
-colorscheme selenized
-set background=light
 
 " Customize Backup Dir location
 " =============================
@@ -227,19 +178,6 @@ let g:clang_format#code_style = "llvm"
 " Mouse mode
 " ==========
 set mouse=a
-
-" Make active pane visible
-" ========================
-" https://superuser.com/questions/385553/making-the-active-window-in-vim-more-obvious
-augroup BgHighlight
-    autocmd!
-    autocmd WinEnter * set cul
-    autocmd WinLeave * set nocul
-augroup END
-
-" ctags
-" =====
-set tags=./.tags,.tags;
 
 " Why not zoidberg?
 " =================
