@@ -231,3 +231,9 @@ vim.api.nvim_set_keymap('n', '<leader>gdc', ":Git diff --cached<CR>", { noremap 
 -- For searching
 vim.api.nvim_set_keymap('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>ag', ":Ack ", {})
+
+-- ack.vim
+-- =======
+if vim.fn.executable("ag") then
+    vim.g.ackprg = "ag --vimgrep"
+end
