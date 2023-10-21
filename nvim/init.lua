@@ -1,4 +1,8 @@
+-- General configuration
+-- =====================
+nvim_init_file = vim.fn.expand("~/.config/nvim/init.lua")
 vim.cmd.source("~/.config/nvim/init_base.lua")
+
 -- Plugin Specific Settings
 -- ========================
 -- Load plugins
@@ -28,10 +32,6 @@ Plug("jbyuki/venn.nvim")
 Plug("nvim-treesitter/nvim-treesitter")
 -- Works with treesitter
 Plug("kylechui/nvim-surround")
-
--- nvim-orgmode
--- ------------
-Plug("nvim-orgmode/orgmode")
 
 -- Improve editor appearance
 -- -------------------------
@@ -246,11 +246,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Nvim orgmode
--- ------------
--- Load custom treesitter grammar for org filetype
-require('orgmode').setup_ts_grammar()
-
 -- Treesitter configuration
 -- ------------------------
 require('nvim-treesitter.configs').setup {
@@ -261,23 +256,17 @@ require('nvim-treesitter.configs').setup {
         additional_vim_regex_highlighting = {
             "diff",
             "gitcommit",
-            "org",
             "svelte",
         },
         -- disable = { "diff" },
     },
     ensure_installed = {
         "lua",
-        "org",
         "svelte",
         "typescript",
         "markdown",
     },
 }
-
--- TODO is the following needed?
-require('orgmode').setup({
-})
 
 -- Nvim surround
 -- -------------
