@@ -9,7 +9,7 @@ vim.opt.shell = "sh"
 vim.opt.autoread = true
 -- Backup location
 -- ---------------
-vim.opt.backupdir = "~/.config/nvim/backup"
+vim.opt.backupdir = vim.fn.expand("~/.config/nvim/backup")
 -- Clipboard
 -- ---------
 -- Use system clipboard
@@ -85,7 +85,6 @@ vim.opt.tabstop = 4
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr"
 vim.opt.foldlevel = 1
--- TODO maybe vim.opt.foldenable?
 vim.opt.foldenable = true
 -- Concealing
 -- ----------
@@ -135,7 +134,7 @@ vim.keymap.set(
     "n",
     "<leader>l",
     function()
-        vim.cmd.source("~/.config/nvim/init.lua")
+        vim.cmd.source(nvim_init_file)
     end
 )
 
