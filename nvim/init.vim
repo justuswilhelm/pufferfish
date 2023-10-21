@@ -265,9 +265,3 @@ set autoread
 " Load Lua config
 " ===============
 luafile $HOME/.config/nvim/new-init.lua
-
-" ack.vim
-" =======
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
