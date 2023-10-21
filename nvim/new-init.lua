@@ -298,6 +298,34 @@ vim.api.nvim_set_keymap('n', '<leader>gdc', ":Git diff --cached<CR>", { noremap 
 vim.api.nvim_set_keymap('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>ag', ":Ack ", {})
 
+-- vim-vsnip
+-- =========
+vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snippets/")
+vim.keymap.set(
+    "i", "<Tab>",
+    "vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'",
+    -- TODO maybe switch to something like this:
+    -- function()
+    --     if vim.fn["vsnip#available"](1) then
+    --         return "<Plug>(vsnip-export-or-jump)"
+    --     else
+    --         return "<Tab>"
+    --     end
+    -- end,
+    {expr=true}
+)
+
+-- Svelte
+-- ======
+vim.g.svelte_preprocessor_tags = {
+    { name = "ts", tag = "script", as = "typescript" }
+}
+vim.g.svelte_preprocessors = { "ts", "typescript" }
+
+-- Autoreload
+-- ==========
+vim.opt.autoread = true
+
 -- ack.vim
 -- =======
 if vim.fn.executable("ag") then

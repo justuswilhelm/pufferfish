@@ -119,10 +119,6 @@ nnoremap <C-t> :NvimTreeOpen<CR>
 " --------------
 nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
 
-" vim-vsnip
-" =========
-imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
-
 " Files and folders to ignore
 " ===========================
 set wildignore=*/.git/*
@@ -184,21 +180,6 @@ set mouse=a
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-" vim-vsnip
-" =========
-let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets/')
-
-" Svelte
-" ======
-let g:svelte_preprocessor_tags = [
-            \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
-            \ ]
-let g:svelte_preprocessors = ['ts', 'typescript']
-
-" Autoreload
-" ==========
-set autoread
 
 " Load Lua config
 " ===============
