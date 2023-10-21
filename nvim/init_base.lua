@@ -102,71 +102,68 @@ vim.g.markdown_syntax_conceal = 0
 -- Stop vim from inserting a newline at inopportune moments
 vim.opt.formatoptions:remove({"t"})
 
-
 -- Keyboard shortcuts
 -- =================
 -- (not plugin-specific, just neovim builtins)
-vim.cmd([[
-let mapleader = ','
-let maplocalleader = ','
-" Yank till end
-" -------------
-nnoremap Y y$
-" Smarter text navigation
-" -----------------------
-nnoremap j gj
-nnoremap k gk
-" Pinky pain
-" ----------
-nore ; :
-" Run default macro
-" -----------------
-nnoremap <Space> @q
-" Disable highlighting
-" --------------------
-nnoremap <leader><space> :noh<cr>
+-- From the lua-guide
+-- By default, all mappings are nonrecursive (i.e., vim.keymap.set() behaves
+-- like :noremap).
+-- Map leader
+-- ----------
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
+-- Yank till end
+-- -------------
+vim.keymap.set('n', 'Y', 'y$')
+-- Smarter text navigation
+-- -----------------------
+vim.keymap.set('n', 'j', 'gj')
+vim.keymap.set('n', 'k', 'gk')
+-- Pinky pain
+-- ----------
+vim.keymap.set('n', ';', ':')
+-- Run default macro
+-- -----------------
+vim.keymap.set("n", "<Space>", "@q")
+-- Disable highlighting
+-- --------------------
+vim.keymap.set("n", "<leader><space>", vim.cmd.nohlsearch)
 
-" Reload configuration
-" --------------------
-nnoremap <leader>l :source ~/.config/nvim/init.lua<cr>
+-- Reload configuration
+-- --------------------
+vim.keymap.set(
+    "n",
+    "<leader>l",
+    function()
+        vim.cmd.source("~/.config/nvim/init.lua")
+    end
+)
 
-" Make matching a little bit more magical
-" http://vim.wikia.com/wiki/Simplifying_regular_expressions_using_magic_and_no-magic
-nnoremap / /\v
-vnoremap / /\v
-cnoremap %s/ %s/\v
-cnoremap \>s/ \>s/\v
+-- Make matching a little bit more magical
+-- http://vim.wikia.com/wiki/Simplifying_regular_expressions_using_magic_and_no-magic
+vim.keymap.set("n", "/", "/\v")
+vim.keymap.set("v", "/", "/\v")
+vim.keymap.set("c", "%s/", "%s/\v")
 
-" Young Padawan Mode
-" ------------------
-inoremap jk <esc>
+-- Young Padawan Mode
+-- ------------------
+vim.keymap.set("i", "jk", "<esc>")
 
-" TODO timestamp
-" --------------
-nmap <leader>ts A Justusjk:r!date "+\%Y-\%m-\%d"<CR>kJ$
-]])
+-- TODO timestamp
+-- --------------
+vim.keymap.set(
+    "n",
+    "<leader>ts",
+    function()
+        -- Remove newline at end
+        date = string.format(
+            "Justus %s",
+            string.sub(vim.fn.system({"date", "-Idate"}), 0, -2)
+        )
+        vim.api.nvim_put({date}, "", true, true)
+    end
+)
 
 -- Mouse
 -- =====
 vim.opt.mouse = "a"
-
--- Files and folders to ignore
--- ===========================
--- TODO is this still relevant? I mean... we have gitignore, right?
-vim.cmd([[
-set wildignore=*/.git/*
-set wildignore+=*/.DS_Store
-set wildignore+=*/vendor
-set wildignore+=*/env/*
-set wildignore+=*.pyc
-set wildignore+=*/__pycache__/
-set wildignore+=*/deps/* " Elixir deps
-set wildignore+=*/_build/* " Elixir builds
-set wildignore+=*/Pods/* " CocoaPods
-set wildignore+=*/node_modules/*
-set wildignore+=*/bower_components/*
-set wildignore+=*/elm-stuff/*
-set wildignore+=*/staticfiles/*
-set wildignore+=*.gch
-set wildignore+=*.o
-]])
