@@ -332,10 +332,27 @@ vim.g.svelte_preprocessors = { "ts", "typescript" }
 if vim.fn.executable("ag") then
     vim.g.ackprg = "ag --vimgrep"
 end
+-- Search for selected text
 vim.api.nvim_set_keymap('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>ag', ":Ack ", {})
+-- Search for the current file
+vim.api.nvim_set_keymap('n', '<leader>af', ":Ack %:t<CR>", {})
 
 -- EditorConfig
 -- ------------
 -- Don't let EditorConfig mess with our configuration
 vim.g.EditorConfig_preserve_formatoptions = 1
+
+-- Clear registers
+vim.api.nvim_create_user_command(
+    'WipeReg',
+    function()
+        -- ascii '"' to 'z'
+        for i=34,122 do
+            char = string.char(i)
+            cmd = string.format("silent! call setreg('%s', [])", char)
+            vim.cmd(cmd)
+        end
+    end,
+    { nargs = 0}
+)
