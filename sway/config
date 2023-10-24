@@ -5,7 +5,6 @@ set $mod Mod4
 # HiDPI setting
 output * {
     scale 1.25
-    background ~/.config/sway/backgrounds/Sun_background.xpm tile
 }
 
 # Font for window titles. Will also be used by the bar unless a different font
