@@ -1,0 +1,6 @@
+{
+    "Django gettext lazy shortcut": {
+        "prefix": ["django-gettext"],
+        "body": ["from django.utils.translation import gettext_lazy as _"]
+    }
+}
