@@ -168,10 +168,10 @@ require("other-nvim").setup({
     },
 })
 -- Key mappings
-vim.api.nvim_set_keymap("n", "<leader>oo", "<cmd>:Other<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>os", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>ov", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>oc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>oo", "<cmd>:Other<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>os", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ov", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>oc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
 
 -- Nvim-Cmp
 -- --------
@@ -258,7 +258,7 @@ require('nvim-treesitter.configs').setup {
             "gitcommit",
             "svelte",
         },
-        -- disable = { "diff" },
+        -- disable = { "sh" },
     },
     ensure_installed = {
         "lua",
@@ -275,33 +275,34 @@ require("nvim-surround").setup()
 -- venn.nvim
 -- ---------
 -- enable or disable keymappings
-function _G.Toggle_venn()
-    local venn_enabled = vim.inspect(vim.b.venn_enabled)
-    if venn_enabled == "nil" then
-        vim.b.venn_enabled = true
-        vim.cmd[[setlocal ve=all]]
-        -- draw a line on HJKL keystokes
-        vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
-        -- draw a box by pressing "f" with visual selection
-        vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
+venn_enabled = false
+function toggle_venn()
+    if venn_enabled then
+        venn_enabled = false
+        vim.opt_local.virtualedit = ""
+        vim.cmd.mapclear("<buffer>")
     else
-        vim.cmd[[setlocal ve=]]
-        vim.cmd[[mapclear <buffer>]]
-        vim.b.venn_enabled = nil
+        venn_enabled = true
+        vim.opt_local.virtualedit = "all"
+        opts = { buffer = true }
+        -- draw a line on HJKL keystokes
+        vim.keymap.set("n", "J", "<C-v>j:VBox<CR>", opts)
+        vim.keymap.set("n", "K", "<C-v>k:VBox<CR>", opts)
+        vim.keymap.set("n", "L", "<C-v>l:VBox<CR>", opts)
+        vim.keymap.set("n", "H", "<C-v>h:VBox<CR>", opts)
+        -- draw a box by pressing "f" with visual selection
+        vim.keymap.set("v", "f", ":VBox<CR>", opts)
     end
 end
 -- toggle keymappings for venn using <leader>v
-vim.api.nvim_set_keymap('n', '<leader>venn', ":lua Toggle_venn()<CR>", { noremap = true})
+vim.keymap.set('n', '<leader>venn', toggle_venn)
 
 -- fugitive
 -- --------
-vim.api.nvim_set_keymap('n', '<leader>gap', ":Git add -p<CR>", { noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>gm', ":Git commit<CR>", { noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>gdd', ":Git diff<CR>", { noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>gdc', ":Git diff --cached<CR>", { noremap = true})
+vim.keymap.set('n', '<leader>gap', ":Git add -p<CR>")
+vim.keymap.set('n', '<leader>gm', ":Git commit<CR>")
+vim.keymap.set('n', '<leader>gdd', ":Git diff<CR>")
+vim.keymap.set('n', '<leader>gdc', ":Git diff --cached<CR>")
 
 -- vim-vsnip
 -- ---------
@@ -333,10 +334,10 @@ if vim.fn.executable("ag") then
     vim.g.ackprg = "ag --vimgrep"
 end
 -- Search for selected text
-vim.api.nvim_set_keymap('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>", {})
-vim.api.nvim_set_keymap('n', '<leader>ag', ":Ack ", {})
+vim.keymap.set('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
+vim.keymap.set('n', '<leader>ag', ":Ack ")
 -- Search for the current file
-vim.api.nvim_set_keymap('n', '<leader>af', ":Ack %:t<CR>", {})
+vim.keymap.set('n', '<leader>af', ":Ack %:t<CR>")
 
 -- EditorConfig
 -- ------------
