@@ -140,9 +140,10 @@ vim.keymap.set(
 
 -- Make matching a little bit more magical
 -- http://vim.wikia.com/wiki/Simplifying_regular_expressions_using_magic_and_no-magic
-vim.keymap.set("n", "/", "/\v")
-vim.keymap.set("v", "/", "/\v")
-vim.keymap.set("c", "%s/", "%s/\v")
+vim.keymap.set("n", "/", "/\\v")
+vim.keymap.set("v", "/", "/\\v")
+vim.keymap.set("c", "%s/", "%smagic/")
+vim.keymap.set("c", "\\>s/", "\\>smagic/")
 
 -- Young Padawan Mode
 -- ------------------
