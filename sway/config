@@ -3,20 +3,20 @@
 set $mod Mod4
 
 # HiDPI setting
-output DP-1 {
-    scale 1.5
+output * {
+    scale 1.25
     background ~/.config/sway/backgrounds/Sun_background.xpm tile
 }
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Iosevka Fixed 10
+font pango:Iosevka Fixed 11
 
-default_border normal 10
+default_border normal 4
 
 gaps {
-    outer 32
-    inner 16
+    outer 16
+    inner 8
 }
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -32,12 +32,14 @@ bindsym $mod+Shift+p exec keepassxc
 bindsym $mod+m exec "~/.dotfiles/bin/launch-workspace"
 # Launch a view into my dotfiles etc
 bindsym $mod+Shift+m exec "~/.dotfiles/bin/launch-settings"
+# Launch a view into my laptop
+bindsym $mod+Shift+f exec "~/.dotfiles/bin/mosh-lithium"
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec "bemenu-run -c --hp '10' --fn 'Iosevka Fixed 16' -p 'bemenu%'"
+bindsym $mod+d exec "bemenu-run -c --hp '10' --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --"
 
 # change focus
 bindsym $mod+h focus left
