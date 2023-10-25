@@ -1,1 +1,2 @@
 - Add a way to have local git settings (email / name)
+- Enable auto pushing to new upstream branch in git
