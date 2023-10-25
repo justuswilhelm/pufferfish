@@ -131,6 +131,7 @@ bindsym $mod+r mode "resize"
 focus_on_window_activation none
 # Float open snitch
 for_window [app_id="opensnitch_ui"] floating enable
+for_window [app_id="org.keepassxc.KeePassXC"] move to workspace 5
 
 # Keyboard / mouse mapping
 # For more specific modification, find the device id using
@@ -152,6 +153,7 @@ exec --no-startup-id {
         timeout 21600 'systemctl poweroff'
     # Wayland copy-pasting
     wl-paste -t text --watch clipman store --no-persist
+    keepasscx
 }
 
 include ~/.config/sway/config.d/*

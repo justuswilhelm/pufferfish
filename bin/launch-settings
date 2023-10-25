@@ -7,4 +7,3 @@ swaymsg exec foot manage-dotfiles
 swaymsg focus parent
 swaymsg split h
 swaymsg exec firefox-esr
-swaymsg exec keepasscx
