@@ -1,0 +1,16 @@
+#!/bin/bash
+if ! parent="$(fd --type d | fzf)"
+then
+    echo "Must give parent"
+    exit 1
+fi
+
+echo "Creating new note in $parent"
+if ! read -p "name of note: " note_name
+then
+    echo "Must give name"
+    exit 1
+fi
+
+new_note="$parent/$(date -Idate)_$(echo "$note_name" | tr "A-Z " "a-z-").org"
+orgmode "$new_note"

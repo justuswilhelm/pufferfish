@@ -1,16 +1,7 @@
 #!/bin/bash
-# Add orgmode paths here
-ORGMODE_PATHS=""
-
-if ! path=$(echo "$ORGMODE_PATHS" | fzf)
+if test -z "$1"
 then
-    echo "No path was specified"
-    exit 1
+    nvim -u ~/.config/nvim/init_org.lua -c "lua require('fzf-lua').files()"
+else
+    nvim -u ~/.config/nvim/init_org.lua "$*"
 fi
-
-if ! cd "$path"
-then
-    echo "Couldn't change to $path"
-    exit 1
-fi
-nvim -u ~/.config/nvim/init_org.lua -c "lua require('fzf-lua').files()"
