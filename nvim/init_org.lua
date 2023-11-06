@@ -11,9 +11,20 @@ local Plug = vim.fn["plug#"]
 vim.call("plug#begin", "~/.config/nvim/plugged")
 Plug("nvim-treesitter/nvim-treesitter")
 Plug("kylechui/nvim-surround")
-Plug("nvim-orgmode/orgmode")
+Plug("nvim-orgmode/orgmode", {['for'] = "orgmode"})
 Plug("ibhagwan/fzf-lua", {branch= "main"})
+Plug("christoomey/vim-tmux-navigator")
+Plug("epeli/slimux")
 vim.call('plug#end')
+
+-- Slimux
+-- ------
+vim.cmd([[
+map <Leader>s :SlimuxREPLSendLine<CR>
+vmap <Leader>s :SlimuxREPLSendSelection<CR>
+map <Leader>a :SlimuxShellLast<CR>
+map <Leader>k :SlimuxSendKeysLast<CR>
+]])
 
 -- fzf-lua
 -- =======
