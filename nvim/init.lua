@@ -275,14 +275,15 @@ require("nvim-surround").setup()
 -- venn.nvim
 -- ---------
 -- enable or disable keymappings
-venn_enabled = false
 function toggle_venn()
-    if venn_enabled then
-        venn_enabled = false
+    if vim.b.venn_enabled then
+        print("disabling venn mode")
+        vim.b.venn_enabled = false
         vim.opt_local.virtualedit = ""
         vim.cmd.mapclear("<buffer>")
     else
-        venn_enabled = true
+        print("enabling venn mode")
+        vim.b.venn_enabled = true
         vim.opt_local.virtualedit = "all"
         opts = { buffer = true }
         -- draw a line on HJKL keystokes
