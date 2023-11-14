@@ -313,19 +313,23 @@ vim.keymap.set('n', '<leader>gdc', ":Git diff --cached<CR>")
 -- vim-vsnip
 -- ---------
 vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snippets/")
-vim.keymap.set(
-    "i", "<Tab>",
-    "vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'",
-    -- TODO maybe switch to something like this:
-    -- function()
-    --     if vim.fn["vsnip#available"](1) then
-    --         return "<Plug>(vsnip-export-or-jump)"
-    --     else
-    --         return "<Tab>"
-    --     end
-    -- end,
-    {expr=true}
-)
+vim.cmd([[
+imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
+]])
+-- XXX This one didn't work well
+-- vim.keymap.set(
+--     "i", "<Tab>",
+--     "vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'",
+--     -- This one doesn't work very well either ...
+--     -- function()
+--     --     if vim.fn["vsnip#available"](1) then
+--     --         return "<Plug>(vsnip-export-or-jump)"
+--     --     else
+--     --         return "<Tab>"
+--     --     end
+--     -- end,
+--     {expr=true}
+-- )
 
 -- Svelte
 -- ------
