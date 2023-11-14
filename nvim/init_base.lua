@@ -50,7 +50,7 @@ vim.opt.showcmd = true
 -- Show unprintable characters
 vim.opt.list = true
 vim.opt.listchars = {
-    tab = '»\\ ',
+    tab = '»·',
     nbsp = '෴',
     trail = '※',
 }
