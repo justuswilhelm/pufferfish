@@ -168,10 +168,10 @@ require("other-nvim").setup({
     },
 })
 -- Key mappings
-vim.keymap.set("n", "<leader>oo", "<cmd>:Other<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>os", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ov", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>oc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>oo", "<cmd>:Other<CR>")
+vim.keymap.set("n", "<leader>os", "<cmd>:OtherSplit<CR>")
+vim.keymap.set("n", "<leader>ov", "<cmd>:OtherVSplit<CR>")
+vim.keymap.set("n", "<leader>oc", "<cmd>:OtherClear<CR>")
 
 -- Nvim-Cmp
 -- --------
