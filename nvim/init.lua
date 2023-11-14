@@ -17,6 +17,7 @@ Plug("guersam/vim-j", { ['for'] = "j"})
 Plug("leafgarland/typescript-vim")
 Plug("othree/html5.vim")
 Plug("pangloss/vim-javascript")
+Plug("nvim-orgmode/orgmode")
 -- TODO Still needed? Justus 2023-03-10
 Plug("elzr/vim-json", {['for'] = "json"})
 Plug("dag/vim-fish", {['for'] = "fish"})
@@ -248,6 +249,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Treesitter configuration
 -- ------------------------
+-- Load in orgmode grammar
+require('orgmode').setup_ts_grammar()
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -257,6 +260,7 @@ require('nvim-treesitter.configs').setup {
             "diff",
             "gitcommit",
             "svelte",
+            "org",
         },
         -- disable = { "sh" },
     },
@@ -265,6 +269,7 @@ require('nvim-treesitter.configs').setup {
         "svelte",
         "typescript",
         "markdown",
+        "org",
     },
 }
 
@@ -358,3 +363,8 @@ vim.api.nvim_create_user_command(
     end,
     { nargs = 0}
 )
+
+-- Orgmode.nvim
+---------------
+require('orgmode').setup({
+})
