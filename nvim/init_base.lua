@@ -35,6 +35,8 @@ vim.opt.background = "light"
 -- Translated to lua
 -- See: https://neovim.io/doc/user/lua-guide.html#lua-guide-autocommands
 local BgHighlight = vim.api.nvim_create_augroup('BgHighlight', { clear = true })
+-- XXX Seems to be buggy when called :GRemove or otherwise messing
+-- around with file creation / deletion
 vim.api.nvim_create_autocmd({ 'WinEnter' }, {
     pattern = '*',
     group = BgHighlight,
