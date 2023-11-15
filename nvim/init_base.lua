@@ -25,7 +25,7 @@ vim.opt.undolevels = 1000
 -- Color scheme
 -- ------------
 if vim.fn.has("termguicolors") then
-  vim.opt.termguicolors = true
+    vim.opt.termguicolors = true
 end
 vim.cmd.colorscheme("selenized")
 vim.opt.background = "light"
@@ -36,14 +36,14 @@ vim.opt.background = "light"
 -- See: https://neovim.io/doc/user/lua-guide.html#lua-guide-autocommands
 local BgHighlight = vim.api.nvim_create_augroup('BgHighlight', { clear = true })
 vim.api.nvim_create_autocmd({ 'WinEnter' }, {
-  pattern = '*',
-  group = BgHighlight,
-  command = 'set cul',
+    pattern = '*',
+    group = BgHighlight,
+    command = 'set cul',
 })
 vim.api.nvim_create_autocmd({ 'WinLeave' }, {
-  pattern = '*',
-  group = BgHighlight,
-  command = 'set nocul',
+    pattern = '*',
+    group = BgHighlight,
+    command = 'set nocul',
 })
 -- Show commands while they're being typed
 vim.opt.showcmd = true
