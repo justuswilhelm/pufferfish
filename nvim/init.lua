@@ -83,12 +83,11 @@ vim.call('plug#end')
 
 -- Slimux
 -- ======
-vim.cmd([[
-map <Leader>s :SlimuxREPLSendLine<CR>
-vmap <Leader>s :SlimuxREPLSendSelection<CR>
-map <Leader>a :SlimuxShellLast<CR>
-map <Leader>k :SlimuxSendKeysLast<CR>
-]])
+vim.keymap.set("n", "<leader>s", ":SlimuxREPLSendLine<CR>")
+vim.keymap.set("v", "<leader>s", ":SlimuxREPLSendSelection<CR>")
+-- TODO investigate if these two commands still work
+-- vim.keymap.set("n", "<leader>a", ":SlimuxShellLast<CR>")
+-- vim.keymap.set("n", "<leader>k", ":SlimuxSendKeysLast<CR>")
 
 -- fzf-lua
 -- =======
@@ -181,10 +180,11 @@ require("other-nvim").setup({
     },
 })
 -- Key mappings
-vim.keymap.set("n", "<leader>oo", "<cmd>:Other<CR>")
 vim.keymap.set("n", "<leader>os", "<cmd>:OtherSplit<CR>")
-vim.keymap.set("n", "<leader>ov", "<cmd>:OtherVSplit<CR>")
-vim.keymap.set("n", "<leader>oc", "<cmd>:OtherClear<CR>")
+-- TODO investigate if these three are still needed
+-- vim.keymap.set("n", "<leader>oo", "<cmd>:Other<CR>")
+-- vim.keymap.set("n", "<leader>ov", "<cmd>:OtherVSplit<CR>")
+-- vim.keymap.set("n", "<leader>oc", "<cmd>:OtherClear<CR>")
 
 -- Nvim-Cmp
 -- ========
