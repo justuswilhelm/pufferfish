@@ -284,6 +284,26 @@ require('nvim-treesitter.configs').setup {
         "org",
     },
 }
+-- Folding
+-- -------
+-- Use treesitter to do our folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = true
+vim.opt.foldclose = all
+
+-- fold autocommand
+-- ----------------
+-- Inspired by https://www.jmaguire.tech/posts/treesitter_folding/
+local OpenFolds = vim.api.nvim_create_augroup("OpenFolds", { clear = true })
+-- XXX Problem: this is executed even when calling :edit to reload it.
+-- On a simple reload, we don't want to have this autocmd called
+vim.api.nvim_create_autocmd({ "BufReadPost", "FileReadPost" }, {
+   pattern = "*",
+   group = OpenFolds,
+   -- We want to open up, and then close one level
+   command = "normal zRzm",
+})
 
 -- Nvim surround
 -- =============
