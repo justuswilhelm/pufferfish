@@ -3,8 +3,8 @@
 nvim_init_file = vim.fn.expand("~/.config/nvim/init.lua")
 vim.cmd.source("~/.config/nvim/init_base.lua")
 
--- Plugin Specific Settings
--- ========================
+-- Plug
+-- ====
 -- Load plugins
 -- ------------
 local Plug = vim.fn["plug#"]
@@ -69,7 +69,7 @@ Plug("hrsh7th/cmp-vsnip")
 
 vim.call('plug#end')
 -- Slimux
--- ------
+-- ======
 vim.cmd([[
 map <Leader>s :SlimuxREPLSendLine<CR>
 vmap <Leader>s :SlimuxREPLSendSelection<CR>
@@ -78,7 +78,7 @@ map <Leader>k :SlimuxSendKeysLast<CR>
 ]])
 
 -- fzf-lua
--- -------
+-- =======
 -- This replaces nvim-tree and ctrlp for me
 require("fzf-lua").setup({
     winopts = {
@@ -91,7 +91,7 @@ vim.keymap.set("n", "<c-P>", require('fzf-lua').files, { silent=true })
 vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, { silent=true })
 
 -- Other
--- -----
+-- =====
 require("other-nvim").setup({
     rememberBuffers = false,
     mappings = {
@@ -174,7 +174,7 @@ vim.keymap.set("n", "<leader>ov", "<cmd>:OtherVSplit<CR>")
 vim.keymap.set("n", "<leader>oc", "<cmd>:OtherClear<CR>")
 
 -- Nvim-Cmp
--- --------
+-- ========
 local cmp = require'cmp'
 cmp.setup.filetype(
     { "python", "svelte", "typescript" },
@@ -205,7 +205,7 @@ cmp.setup.filetype(
 )
 
 -- Language Server Protocol
--- ------------------------
+-- ========================
 -- Capabilities added as per nvim-cmp README
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
@@ -247,7 +247,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Treesitter configuration
--- ------------------------
+-- ========================
 -- Load in orgmode grammar
 require('orgmode').setup_ts_grammar()
 require('nvim-treesitter.configs').setup {
@@ -273,11 +273,11 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Nvim surround
--- -------------
+-- =============
 require("nvim-surround").setup()
 
 -- venn.nvim
--- ---------
+-- =========
 -- enable or disable keymappings
 function toggle_venn()
     if vim.b.venn_enabled then
@@ -303,14 +303,14 @@ end
 vim.keymap.set('n', '<leader>venn', toggle_venn)
 
 -- fugitive
--- --------
+-- ========
 vim.keymap.set('n', '<leader>gap', ":Git add -p<CR>")
 vim.keymap.set('n', '<leader>gm', ":Git commit<CR>")
 vim.keymap.set('n', '<leader>gdd', ":Git diff<CR>")
 vim.keymap.set('n', '<leader>gdc', ":Git diff --cached<CR>")
 
 -- vim-vsnip
--- ---------
+-- =========
 vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snippets/")
 vim.cmd([[
 imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
@@ -331,7 +331,7 @@ imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab
 -- )
 
 -- Svelte
--- ------
+-- ======
 vim.g.svelte_preprocessor_tags = {
     { name = "ts", tag = "script", as = "typescript" }
 }
@@ -349,7 +349,7 @@ vim.keymap.set('n', '<leader>ag', ":Ack ")
 vim.keymap.set('n', '<leader>af', ":Ack %:t<CR>")
 
 -- EditorConfig
--- ------------
+-- ============
 -- Don't let EditorConfig mess with our configuration
 vim.g.EditorConfig_preserve_formatoptions = 1
 
@@ -368,6 +368,6 @@ vim.api.nvim_create_user_command(
 )
 
 -- Orgmode.nvim
----------------
+-- ============
 require('orgmode').setup({
 })
