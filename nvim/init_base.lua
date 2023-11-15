@@ -79,13 +79,6 @@ vim.cmd.filetype("plugin", "indent", "on")
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
--- Folding
--- -------
--- Use treesitter to do our folding
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr"
-vim.opt.foldlevel = 1
-vim.opt.foldenable = true
 -- Concealing
 -- ----------
 vim.opt.conceallevel = 0
