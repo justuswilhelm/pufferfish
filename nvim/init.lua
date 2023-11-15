@@ -23,6 +23,8 @@ Plug("elzr/vim-json", {['for'] = "json"})
 Plug("dag/vim-fish", {['for'] = "fish"})
 Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
 Plug("tpope/vim-markdown", {['for'] = "markdown"})
+-- Read .editorconfig
+Plug("editorconfig/editorconfig-vim")
 
 -- Ascii stuff
 -- -----------
@@ -37,37 +39,48 @@ Plug("kylechui/nvim-surround")
 -- Improve editor appearance
 -- -------------------------
 Plug("airblade/vim-gitgutter")
+Plug("jeffkreeftmeijer/vim-numbertoggle")
 
 -- Improve general editor behavior
 -- -------------------------------
-Plug("christoomey/vim-tmux-navigator")
-Plug("ibhagwan/fzf-lua", {branch= "main"})
 Plug("easymotion/vim-easymotion")
-Plug("editorconfig/editorconfig-vim")
-Plug("epeli/slimux")
-Plug("hrsh7th/vim-vsnip")
-Plug("hrsh7th/vim-vsnip-integ")
-Plug("jeffkreeftmeijer/vim-numbertoggle")
-Plug("rgroli/other.nvim")
-Plug("mileszs/ack.vim")
-Plug("tpope/vim-fugitive")
 
--- LSP Config
--- ----------
-Plug("neovim/nvim-lspconfig")
+-- tmux interaction
+-- ----------------
+Plug("epeli/slimux")
+Plug("christoomey/vim-tmux-navigator")
+
+-- Search and file jump
+-- --------------------
+Plug("mileszs/ack.vim")
+Plug("ibhagwan/fzf-lua", {branch= "main"})
+Plug("rgroli/other.nvim")
+
+-- Git
+-- ---
+Plug("tpope/vim-fugitive")
 
 -- Autocomplete
 -- ------------
 Plug("hrsh7th/nvim-cmp")
-Plug("hrsh7th/cmp-nvim-lsp")
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
 Plug("hrsh7th/nvim-cmp")
--- For vsnip
+
+-- Snippets
+-- --------
+Plug("hrsh7th/vim-vsnip")
+Plug("hrsh7th/vim-vsnip-integ")
 Plug("hrsh7th/cmp-vsnip")
 
+-- LSP Config
+-- ----------
+Plug("neovim/nvim-lspconfig")
+Plug("hrsh7th/cmp-nvim-lsp")
+
 vim.call('plug#end')
+
 -- Slimux
 -- ======
 vim.cmd([[
