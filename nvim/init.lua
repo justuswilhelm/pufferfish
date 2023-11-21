@@ -291,6 +291,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = true
 vim.opt.foldclose = all
+vim.opt.foldminlines = 15
 
 -- fold autocommand
 -- ----------------
@@ -301,8 +302,7 @@ local OpenFolds = vim.api.nvim_create_augroup("OpenFolds", { clear = true })
 vim.api.nvim_create_autocmd({ "BufReadPost", "FileReadPost" }, {
    pattern = "*",
    group = OpenFolds,
-   -- We want to open up, and then close one level
-   command = "normal zRzm",
+   command = "normal zR",
 })
 
 -- Nvim surround
