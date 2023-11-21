@@ -404,3 +404,22 @@ vim.api.nvim_create_user_command(
 -- ============
 require('orgmode').setup({
 })
+
+-- EasyMotion
+-- ==========
+-- Taking a hint from
+-- https://github.com/easymotion/vim-easymotion#minimal-configuration-tutorial
+-- accessed on 2023-11-15
+-- Disable default mappings
+vim.g.EasyMotion_do_mapping = 0
+vim.g.EasyMotion_keys = 'qwertyuiasdfghjkzxcvbnm'
+
+vim.keymap.set("n", "<Leader>w", "<Plug>(easymotion-bd-w)")
+vim.keymap.set("n", "<Leader>e", "<Plug>(easymotion-bd-e)")
+
+-- Turn on case-insensitive feature
+vim.g.EasyMotion_smartcase = 1
+
+-- JK motions: Line motions
+vim.keymap.set("n", "<Leader>j", "<Plug>(easymotion-j)")
+vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
