@@ -144,8 +144,10 @@ input type:pointer {
 
 
 exec --no-startup-id {
-    # TODO migrate to sway
+    # TODO migrate ibus to sway, there is no Japanese input right now
     # ibus-daemon -dxr
+    # Will use it anyway
+    firefox-esr
     opensnitch-ui
     # Lock after 2 minutes, suspend after six hours
     swayidle -w \
