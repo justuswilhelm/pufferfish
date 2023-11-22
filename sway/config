@@ -24,6 +24,8 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec foot
 bindsym $mod+Shift+Return exec firefox-esr
+# open an url if given in wl clipboard, like example.com
+bindsym $mod+Shift+o exec 'bash -c "firefox-esr $(wl-paste)"'
 bindsym $mod+Shift+t exec torbrowser-launcher
 bindsym $mod+Shift+p exec keepassxc
 
