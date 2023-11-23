@@ -1,6 +1,4 @@
 #!/bin/bash
-NVIM="nvim -u \$HOME/.config/nvim/init_org.lua -c \"lua require('fzf-lua').files()\""
-
 # Add orgmode paths here
 ORGMODE_PATHS=""
 
@@ -37,7 +35,7 @@ else
     exit 1
 fi
 
-tmux send-keys -t "$session:0" "$NVIM" C-m || exit 1
+tmux send-keys -t "$session:0" "nvim" C-m || exit 1
 
 tmux new-window -t "$session" -n "files" || exit 1
 tmux send-keys -t "$session:1" "ls" C-m || exit 1

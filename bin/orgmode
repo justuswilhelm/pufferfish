@@ -1,7 +1,0 @@
-#!/bin/bash
-if test -z "$1"
-then
-    nvim -u ~/.config/nvim/init_org.lua -c "lua require('fzf-lua').files()"
-else
-    nvim -u ~/.config/nvim/init_org.lua "$*"
-fi
