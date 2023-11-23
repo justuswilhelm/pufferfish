@@ -12,5 +12,6 @@ then
     exit 1
 fi
 
-new_note="$parent/$(date -Idate)_$(echo "$note_name" | tr "A-Z " "a-z-").org"
-orgmode "$new_note"
+new_note="$parent$(date -Idate)_$(echo "$note_name" | tr "A-Z " "a-z-").org"
+touch "$new_note"
+exec nvim "$new_note"
