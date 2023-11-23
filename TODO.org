@@ -1,2 +1,16 @@
-- Add a way to have local git settings (email / name)
-- Enable auto pushing to new upstream branch in git
+* TODO Add a way to have local git settings (email / name)
+  So far we have just added email and name and checked it into the repo. On the
+  other hand, I would like to be able to have irssi settings be in irssi/config
+  or other personal information without being afraid of accidentally checking
+  it into git
+* TODO Enable auto pushing to new upstream branch in git
+  How would this look like? There could be a command for creating a local
+  dotfiles branch like ~branch-dotfiles~.
+
+* TODO Ensure CI dependencies are up to date
+  <2023-11-23 Thu>
+  Haven't checked this at all since updating to Debian bookworm
+
+* TODO Check for old and outdated files
+  <2023-11-23 Thu>
+  A lot of cruft has gathered over the years, time for a spring cleaning
