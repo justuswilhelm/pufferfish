@@ -38,9 +38,6 @@ abbr -a reload exec fish
 # ------------------
 # Ls shortcut with color, humanized, list-based output
 abbr -a l ls -lhaG
-# TODO delete the below, I don't think I ever use it
-# Re-cd to the current directory. Useful if inode was changed.
-abbr -a cdp 'cd $PWD'
 
 # Homebrew abbreviations
 # ----------------------
