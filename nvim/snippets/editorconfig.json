@@ -1,0 +1,24 @@
+{
+    ".editorconfig with examples": {
+        "prefix": ["editorconfig"],
+        "body": [
+            "root = true",
+            "",
+            "[*]",
+            "charset = utf-8",
+            "end_of_line = lf",
+            "insert_final_newline = true",
+            "# Might want to set:",
+            "# trim_trailing_whitespace = true",
+            "# max_line_length = 79",
+            "",
+            "# Examples:",
+            "# [filename] or",
+            "# [*.ext] or",
+            "# [*.{ext1,ext2}] or",
+            "# [folder/glob]",
+            "# indent_style = space | tab",
+            "# indent_size = 4"
+        ]
+    }
+}
