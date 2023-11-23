@@ -11,11 +11,6 @@ abbr -a reload exec fish
 # Ls shortcut with color, humanized, list-based output
 abbr -a l ls -lhaG
 
-# Homebrew abbreviations
-# ----------------------
-# Perform a full update/upgrade cycle
-abbr -a bbb 'brew update; and brew upgrade; and brew cleanup --prune=all -s -v'
-
 # Git abbreviations
 # -----------------
 # Stage changed files in git index
@@ -87,23 +82,7 @@ abbr -a grom 'git fetch --all; and git rebase origin/main'
 # Show current status
 abbr -a gs git status
 
-# Python abbreviations
-# --------------------
-# Run pipenv
-abbr -a pe pipenv
-# Install something in pipenv
-abbr -a pei pipenv install
-# Lock pipenv
-abbr -a pel pipenv lock --dev
-# Sync pipenv
-abbr -a pes pipenv sync --dev
-
 # Neovim abbreviations
 # --------------------
 # Start neovim
 abbr -a e nvim
-
-# Gnome abbreviations
-# -------------------
-# Take screenshot of area, copy to clipboard
-abbr -a scrsh 'gnome-screenshot -ca'
