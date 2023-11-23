@@ -103,13 +103,6 @@ abbr -a pes pipenv sync --dev
 # Start neovim
 abbr -a e nvim
 
-# Tmux abbreviations
-# --------------------
-# Run tmux
-abbr -a t tmux
-# Attach tmux
-abbr -a ta tmux attach
-
 # Gnome abbreviations
 # -------------------
 # Take screenshot of area, copy to clipboard
