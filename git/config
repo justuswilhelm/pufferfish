@@ -14,6 +14,10 @@ defaultBranch = main
 
 [diff]
 tool = vimdiff
+# https://stackoverflow.com/questions/13271643/git-hook-for-diff-sqlite-table/21789167#21789167
+[diff "sqlite3"]
+binary = true
+textconv = "echo .dump | sqlite3"
 [merge]
 tool = vimdiff
 [mergetool "vimdiff"]
