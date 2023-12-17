@@ -128,7 +128,7 @@ bindsym $mod+r mode "resize"
 focus_on_window_activation none
 # Float open snitch
 for_window [app_id="opensnitch_ui"] floating enable
-for_window [app_id="org.keepassxc.KeePassXC"] move to workspace 5
+for_window [title="Passwords.* - KeePassXC" app_id="org.keepassxc.KeePassXC"] move to workspace 5
 
 # Keyboard / mouse mapping
 # For more specific modification, find the device id using
