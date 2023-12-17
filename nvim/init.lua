@@ -18,13 +18,15 @@ Plug("leafgarland/typescript-vim")
 Plug("othree/html5.vim")
 Plug("pangloss/vim-javascript")
 Plug("nvim-orgmode/orgmode")
--- TODO Still needed? Justus 2023-03-10
-Plug("elzr/vim-json", {['for'] = "json"})
-Plug("dag/vim-fish", {['for'] = "fish"})
-Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
-Plug("tpope/vim-markdown", {['for'] = "markdown"})
 -- Read .editorconfig
 Plug("editorconfig/editorconfig-vim")
+-- If this isn't enabled, indentation on the next line is wrong.
+Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
+-- Commenting these out -- add back if needed Justus 2023-11-15
+-- TODO Still needed? Justus 2023-03-10
+-- Plug("elzr/vim-json", {['for'] = "json"})
+-- Plug("dag/vim-fish", {['for'] = "fish"})
+-- Plug("tpope/vim-markdown", {['for'] = "markdown"})
 
 -- Ascii stuff
 -- -----------
