@@ -1,4 +1,4 @@
-#!/bin/fish
+#!/usr/bin/env fish
 argparse 'p/parent=' -- $argv
 or return
 
