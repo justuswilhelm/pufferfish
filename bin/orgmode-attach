@@ -1,6 +1,9 @@
 #!/bin/bash
 # Add orgmode paths here
-ORGMODE_PATHS=""
+ORGMODE_PATHS="/Users/justusperlwitz/Documents/Private
+/Users/justusperlwitz/Documents/Midnight Destroyer
+/Users/justusperlwitz/Documents/JWP Consulting
+"
 
 if ! path=$(echo "$ORGMODE_PATHS" | fzf)
 then

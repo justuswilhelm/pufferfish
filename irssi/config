@@ -166,5 +166,8 @@ statusbar = {
 };
 settings = {
   core = {
+    real_name = "Justus Wilhelm";
+    user_name = "justuswilhelm";
+    nick = "justuswilhelm";
   };
 };
