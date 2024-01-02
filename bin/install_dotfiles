@@ -64,6 +64,7 @@ and ln -sfv "$DOTFILES/systemd" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 and ln -sfv "$DOTFILES/git" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/pomoglorbo" "$XDG_CONFIG_HOME"
+and ln -sfv "$DOTFILES/nixpkgs" "$XDG_CONFIG_HOME"
 # TODO make this vendor specific
 and ln -sfv "$DOTFILES/x" "$XDG_CONFIG_HOME"
 and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xresources"
