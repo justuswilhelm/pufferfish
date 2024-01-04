@@ -5,7 +5,13 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [
     # Interpreters
+    pkgs.asdf-vm
     pkgs.python311
+    pkgs.jq
+    pkgs.miller
+
+    # Databases
+    pkgs.sqlite
 
     # Build tools
     pkgs.hugo
@@ -14,33 +20,55 @@
     pkgs.pandoc
 
     # TUIs
+    pkgs.htop
+    pkgs.fzf
+    pkgs.htop
+    pkgs.ncdu
     pkgs.ncurses
     pkgs.neovim
+    pkgs.nnn
+
+    # Spellchecking
+    pkgs.aspell
+    pkgs.aspellDicts.en
 
     # Shell
     pkgs.fish
     pkgs.mosh
+    pkgs.tmux
+    pkgs.timewarrior
 
     # Media
     pkgs.cmus
-    # TODO ffmpeg/imagemagick
+    pkgs.ffmpeg
+    pkgs.imagemagick
 
     # Networking
     pkgs.curl
     pkgs.nmap
 
-    # TODO borgmatic/borg
+    # File transfers, Backups
+    pkgs.borgmatic
+    pkgs.rsync
+    pkgs.unison
 
     # Version control
     pkgs.git
     pkgs.git-annex
 
     # Shell tools
+    pkgs.autojump
+    pkgs.cloc
     pkgs.fdupes
-    pkgs.fzf
-    pkgs.fd
-    pkgs.nnn
     pkgs.watch
+
+    # Core tools
+    pkgs.silver-searcher
+    pkgs.fd
+    pkgs.gnused
+    pkgs.gnutar
+    pkgs.coreutils
+    pkgs.moreutils
   ];
   environment.shells = [ pkgs.fish ];
   environment.etc = {
