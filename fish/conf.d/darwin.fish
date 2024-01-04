@@ -4,7 +4,4 @@ if is_darwin
 
     # Timewarrior
     # set -x TIMEWARRIORDB "$HOME/.config/timewarrior"
-
-    # We use timeout from coreutils
-    set -x TIMEOUT_CMD gtimeout
 end
