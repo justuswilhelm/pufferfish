@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ user, config, pkgs, ... }:
 
 {
   # List packages installed in system profile. To search by name, run:
@@ -49,18 +49,27 @@
     pkgs.nmap
 
     # File transfers, Backups
+    pkgs.borgbackup
     pkgs.borgmatic
     pkgs.rsync
     pkgs.unison
 
     # Version control
     pkgs.git
-    pkgs.git-annex
+    (
+      pkgs.git-annex.overrideAttrs (
+        previous: {
+          # This implicitly strips away bup -- bup breaks the build.
+          buildInputs = builtins.tail previous.buildInputs;
+        }
+      )
+    )
 
     # Shell tools
     pkgs.autojump
     pkgs.cloc
     pkgs.fdupes
+    pkgs.tree
     pkgs.watch
 
     # Core tools
@@ -87,7 +96,7 @@
   launchd.user.agents = {
     "borgmatic" = {
       serviceConfig = let
-        logPath = toString ~/Library/Logs/borgmatic;
+        logPath = "/Users/justusperlwitz/Library/Logs/borgmatic";
         script = pkgs.writeShellApplication {
           name = "borgmatic-timestamp";
           runtimeInputs = with pkgs; [ borgmatic ts ];
@@ -126,6 +135,7 @@ borgmatic create prune \
     }
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
+
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
