@@ -12,6 +12,7 @@
 
     # Databases
     pkgs.sqlite
+    pkgs.postgresql_15
 
     # Build tools
     pkgs.hugo
@@ -112,6 +113,11 @@ borgmatic create prune \
         TimeOut = 1800;
       };
     };
+  };
+
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_15;
   };
 
   nix.nixPath = [
