@@ -80,6 +80,25 @@
   # Use a custom configuration.nix location.
   # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin-configuration.nix
   environment.darwinConfig = "$HOME/.config/nixpkgs/darwin-configuration.nix";
+
+  launchd.labelPrefix = "net.jwpconsulting";
+
+  launchd.user.agents = {
+    "borgmatic" = {
+      serviceConfig = let logPath = toString ~/Library/Logs/borgmatic; in {
+        Program = (toString ~/.local/bin/borgmatic_timestamp.sh);
+        StandardOutPath = "${logPath}/borgmatic.stderr.log";
+        StandardErrorPath = "${logPath}/borgmatic.stdout.log";
+        StartCalendarInterval = [
+          {
+            Minute = 0;
+          }
+        ];
+        TimeOut = 1800;
+      };
+    };
+  };
+
   nix.nixPath = [
     {
       darwin-config = "$HOME/.config/nixpkgs/darwin-configuration.nix";
