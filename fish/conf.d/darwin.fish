@@ -3,8 +3,5 @@ if is_darwin
     fish_add_path --global /opt/local/bin
 
     # Timewarrior
-    # set -x TIMEWARRIORDB "$HOME/.config/timewarrior"
-
-    # We use timeout from coreutils
-    set -x TIMEOUT_CMD gtimeout
+    set -x TIMEWARRIORDB "$HOME/.config/timewarrior"
 end
