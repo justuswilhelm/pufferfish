@@ -12,7 +12,7 @@ in
   };
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
-  home-manager.users."${username}" = ./home.nix;
+  home-manager.users."${username}" = ../home-manager./home.nix;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget

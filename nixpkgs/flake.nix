@@ -17,10 +17,5 @@
         ./darwin-configuration.nix
       ];
     };
-    overlays = {
-      fix-git-annex = final: prev: {
-        git-annex = prev.git-annex;
-      };
-    };
   };
 }
