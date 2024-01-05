@@ -49,7 +49,6 @@
     pkgs.nmap
 
     # File transfers, Backups
-    pkgs.borgbackup
     pkgs.borgmatic
     pkgs.rsync
     pkgs.unison
@@ -99,7 +98,7 @@
         logPath = "/Users/justusperlwitz/Library/Logs/borgmatic";
         script = pkgs.writeShellApplication {
           name = "borgmatic-timestamp";
-          runtimeInputs = with pkgs; [ borgmatic ts ];
+          runtimeInputs = with pkgs; [ borgmatic moreutils ];
           text = ''
 # https://apple.stackexchange.com/a/406097
 borgmatic create prune \
