@@ -4,30 +4,35 @@ function branch-off
 
     if set -q _flag_parent
         set parent "$_flag_parent"
-        echo "Branching off $parent"
         if set -q _flag_remote
             set remote "$_flag_remote"
             echo "Using remote $remote"
+        else if set -q _flag_no_remote
+            echo "Assuming parent is a local branch"
         else
             set remote origin
             echo "Assuming remote is $remote"
         end
 
-        if ! git fetch "$origin"
-            echo "Could not fetch from $origin"
-            return 1
+        if set -q remote
+            if ! git fetch "$remote"
+                echo "Could not fetch from $remote"
+                return 1
+            end
+            set upstream "$remote/$parent"
+        else
+            set upstream "$parent"
         end
+
+        echo "Branching off $upstream"
     else
-        echo "Branching off "(git branch --show-current)
+        set upstream (git branch --show-current)
+        echo "Branching off current branch $upstream"
     end
-
-
-    set user justus
-
-    set date (date -I)
 
     if test -n "$argv[1]"
         set branchname "$argv[1]"
+        echo "Using branchname $branchname"
     else if read -P "Enter new branch name: " branchname
         echo "Using $branchname as new branch name"
     else
@@ -35,9 +40,10 @@ function branch-off
         return 1
     end
 
-    if set -q parent
-        git checkout -b "$user/$date-$branchname" "$origin/$parent"
-    else
-        git checkout -b "$user/$date-$branchname"
-    end; or return
+    set user justus
+    set date (date -I)
+    set new_branch "$user/$date-$branchname"
+
+    echo "New branch will be $new_branch"
+    git checkout -b "$new_branch" "$upstream"
 end
