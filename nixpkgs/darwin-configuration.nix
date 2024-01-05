@@ -102,17 +102,12 @@
           text = ''
 # https://apple.stackexchange.com/a/406097
 borgmatic create prune \
-  --verbosity 1 \
   --log-file-verbosity 1 \
-  --log-file "${logPath}/borgmatic.$(date -Iseconds).log" \
-  2> >(ts -m '[%Y-%m-%d %H:%M:%S] -' 1>&2) \
-  1> >(ts -m '[%Y-%m-%d %H:%M:%S] -')
+  --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
         '';
         };
       in {
         Program = "${script}/bin/borgmatic-timestamp";
-        StandardOutPath = "${logPath}/borgmatic.stderr.log";
-        StandardErrorPath = "${logPath}/borgmatic.stdout.log";
         StartCalendarInterval = [
           {
             Minute = 0;
