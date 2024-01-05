@@ -45,6 +45,7 @@ function git_status -d "Show git status"
             printf "*"
         case 124
             # Timed out
+            set_color normal
             return
         case '*'
             echo "Error when checking for staged changes"
@@ -64,6 +65,7 @@ function git_status -d "Show git status"
             end
         case 124
             # Timed out
+            set_color normal
             return
         case "*"
             echo "Error when counting untracked files"
@@ -73,6 +75,7 @@ function git_status -d "Show git status"
     set_color blue
     if ! git branch --show-current | tr -d '\n'
         echo "Error when getting current branch"
+        set_color normal
         return
     end
     set_color normal
