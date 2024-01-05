@@ -4,6 +4,8 @@ fish/fishd.*
 fish/fish_history
 fish/fish_read_history
 fish/completions/asdf.fish
+fish/conf.d/nix-session.fish
+fish/conf.d/nix.fish
 
 # Neovim
 nvim/.netrwhist
