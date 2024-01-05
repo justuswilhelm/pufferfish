@@ -9,7 +9,6 @@ let
   xdgDataHome = "${homeDirectory}/.local/share";
   applicationSupport = "${homeDirectory}/Library/Application Support";
   linkScript = from: to:
-    lib.hm.dag.entryAfter ["writeBoundary"]
     ''$DRY_RUN_CMD ln --force --symbolic $VERBOSE_ARG "${from}" "${to}"'';
 in {
   home.username = username;
@@ -25,52 +24,123 @@ in {
     darwinOnly = lib.lists.optionals isDarwin [
     ]; in
   [
+    # Databases
+    pkgs.sqlite
+
+    # Build tools
+    pkgs.hugo
+
+    # File conversion
+    pkgs.pandoc
+
+    # Media
+    pkgs.imagemagick
+
+    # Networking
+    pkgs.curl
+    pkgs.nmap
+
+    # File transfers, Backups
+    pkgs.rsync
+    pkgs.unison
+
+    # Spellchecking
+    pkgs.aspell
+    pkgs.aspellDicts.en
+
+    # Interpreters
+    pkgs.asdf-vm
+    pkgs.python311
+    pkgs.jq
+    pkgs.miller
+
+    # TUIs
+    pkgs.htop
+    pkgs.fzf
+    pkgs.htop
+    pkgs.ncdu
+    pkgs.ncurses
     pkgs.neovim
-    pkgs.tmux
-    pkgs.git
+    pkgs.nnn
+
+    # Shell
     pkgs.fish
+    pkgs.tmux
+    pkgs.timewarrior
+
+    # Version control
+    pkgs.git
+    (
+      pkgs.git-annex.overrideAttrs (
+        previous: {
+          # This implicitly strips away bup -- bup breaks the build.
+          buildInputs = builtins.tail previous.buildInputs;
+        }
+      )
+    )
+
+    # Shell tools
+    pkgs.autojump
+    pkgs.cloc
+    pkgs.fdupes
+    pkgs.tree
+    pkgs.watch
+
+    # Core tools
+    pkgs.silver-searcher
+    pkgs.fd
+    pkgs.gnused
+    pkgs.gnutar
+    pkgs.coreutils
+    pkgs.moreutils
   ]
   ++ debianOnly
   ++ darwinOnly;
 
   home.activation = let
-    debianOnly = lib.attrsets.optionalAttrs isDebian {
-      poetry = linkScript "${dotfiles}/pypoetry" "${xdgConfigHome}";
-      foot = linkScript "${dotfiles}/foot" "${xdgConfigHome}";
-      sway = linkScript "${dotfiles}/sway" "${xdgConfigHome}";
-      i3status = linkScript "${dotfiles}/i3status" "${xdgConfigHome}";
-      home-manager = linkScript "${dotfiles}/home-manager" "${xdgConfigHome}";
-      systemd = linkScript "${dotfiles}/systemd" "${xdgConfigHome}";
-      x = linkScript "${dotfiles}/x" "${xdgConfigHome}";
-      xResources = linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xresources";
-      xDefaults = linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xdefaults";
-    };
-    darwinOnly = lib.attrsets.optionalAttrs isDarwin {
-      poetry = linkScript "${dotfiles}/pypoetry" "${applicationSupport}";
-      karabiner = linkScript "${dotfiles}/karabiner" "${xdgConfigHome}";
-    };
-  in {
-      # Darwin + Debian
-      nvim = linkScript "${dotfiles}/nvim" "${xdgConfigHome}";
-      nvimUpdate = lib.hm.dag.entryAfter ["nvim"] ''
+    debianOnly = lib.lists.optionals isDebian [
+      (linkScript "${dotfiles}/pypoetry" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/foot" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/sway" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/i3status" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/home-manager" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/systemd" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/x" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xresources")
+      (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xdefaults")
+    ];
+    darwinOnly = lib.lists.optionals isDarwin [
+      (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
+      (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
+    ];
+    shared = [
+      (linkScript "${dotfiles}/nvim" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/git" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/pomoblorbo" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/nix" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
+      (linkScript "${dotfiles}/tmux" "${xdgConfigHome}")
+    ];
+    links = debianOnly ++ darwinOnly ++ shared;
+  in
+    {
+      performNvimUpdate = lib.hm.dag.entryAfter ["links"] ''
         export PATH=${pkgs.git}/bin:$PATH
         $DRY_RUN_CMD exec ${pkgs.neovim}/bin/nvim \
           --headless \
           +"PlugInstall --sync" +qa
       '';
-      tmux = linkScript "${dotfiles}/tmux" "${xdgConfigHome}";
-      git = linkScript "${dotfiles}/git" "${xdgConfigHome}";
-      pomoglorbo = linkScript "${dotfiles}/pomoblorbo" "${xdgConfigHome}";
-      nixpkgs = linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}";
-      nix = linkScript "${dotfiles}/nix" "${xdgConfigHome}";
-      fonts = linkScript "${dotfiles}/fonts" "${xdgDataHome}";
     }
-    // debianOnly
-    // darwinOnly
+    // (lib.hm.dag.entriesAfter "links" ["writeBoundary"] links)
   ;
 
   home.stateVersion = "23.11";
+
+  # Workaround for LANG issue
+  # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
   xdg.configFile.fishSession = {
+    enable = isDebian;
     target = "${xdgConfigHome}/fish/conf.d/nix-session.fish";
     text = "set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive";
   };

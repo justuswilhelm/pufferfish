@@ -10,87 +10,27 @@ in
     home = "/Users/${username}";
     shell = pkgs.fish;
   };
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users."${username}" = ../home-manager./home.nix;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [
-    # Interpreters
-    pkgs.asdf-vm
-    pkgs.python311
-    pkgs.jq
-    pkgs.miller
-
+    # TODO re-check these packages after some time passes
     # Databases
-    pkgs.sqlite
+    # Not sure if this needs to be available outside somehow
     pkgs.postgresql_15
 
-    # Build tools
-    pkgs.hugo
-
-    # File conversion
-    pkgs.pandoc
-
-    # TUIs
-    pkgs.htop
-    pkgs.fzf
-    pkgs.htop
-    pkgs.ncdu
-    pkgs.ncurses
-    pkgs.neovim
-    pkgs.nnn
-
-    # Spellchecking
-    pkgs.aspell
-    pkgs.aspellDicts.en
-
     # Shell
-    pkgs.fish
+    # Not sure if this needs to be available outside somehow
     pkgs.mosh
-    pkgs.tmux
-    pkgs.timewarrior
 
     # Media
+    # Not sure if I need these on Debian or not
     pkgs.cmus
     pkgs.ffmpeg
-    pkgs.imagemagick
-
-    # Networking
-    pkgs.curl
-    pkgs.nmap
 
     # File transfers, Backups
+    # Can this be put in the home config?
     pkgs.borgmatic
-    pkgs.rsync
-    pkgs.unison
-
-    # Version control
-    pkgs.git
-    (
-      pkgs.git-annex.overrideAttrs (
-        previous: {
-          # This implicitly strips away bup -- bup breaks the build.
-          buildInputs = builtins.tail previous.buildInputs;
-        }
-      )
-    )
-
-    # Shell tools
-    pkgs.autojump
-    pkgs.cloc
-    pkgs.fdupes
-    pkgs.tree
-    pkgs.watch
-
-    # Core tools
-    pkgs.silver-searcher
-    pkgs.fd
-    pkgs.gnused
-    pkgs.gnutar
-    pkgs.coreutils
-    pkgs.moreutils
   ];
   environment.shells = [ pkgs.fish ];
   environment.etc = {
