@@ -13,8 +13,18 @@
     darwinConfigurations."lithium" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
-        home-manager.darwinModules.home-manager
         ./darwin-configuration.nix
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.verbose = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.justusperlwitz = import ../home-manager/home.nix;
+          home-manager.extraSpecialArgs = {
+            homeBaseDirectory = "/Users";
+            system = "darwin";
+          };
+        }
       ];
     };
   };
