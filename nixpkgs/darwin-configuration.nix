@@ -6,7 +6,9 @@ in
 {
   users.users."${username}" = {
     name = username;
+    description = "Justus Perlwitz";
     home = "/Users/${username}";
+    shell = pkgs.fish;
   };
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
