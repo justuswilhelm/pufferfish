@@ -55,7 +55,6 @@ if not ln -sfv "$DOTFILES/fish" "$XDG_CONFIG_HOME"
 end
 
 ln -sfv "$DOTFILES/nvim" "$XDG_CONFIG_HOME"
-and ln -sfv "$DOTFILES/i3" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/foot" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/sway" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/i3status" "$XDG_CONFIG_HOME"
@@ -66,6 +65,7 @@ and ln -sfv "$DOTFILES/git" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/pomoglorbo" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/nixpkgs" "$XDG_CONFIG_HOME"
 and ln -sfv "$DOTFILES/nix" "$XDG_CONFIG_HOME"
+and ln -sfv "$DOTFILES/home-manager" "$XDG_CONFIG_HOME"
 # TODO make this vendor specific
 and ln -sfv "$DOTFILES/x" "$XDG_CONFIG_HOME"
 and ln -sfv "$XDG_CONFIG_HOME/x/Xresources" "$HOME/.Xresources"
@@ -117,3 +117,5 @@ end
 set_color green
 echo "All Done!"
 set_color normal
+
+echo "This script will be replaced by home-manager / nix-darwin"
