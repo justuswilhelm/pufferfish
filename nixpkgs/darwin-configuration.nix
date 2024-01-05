@@ -1,6 +1,17 @@
+let
+  username = "justusperlwitz";
+in
 { user, config, pkgs, ... }:
 
 {
+  users.users."${username}" = {
+    name = username;
+    home = "/Users/${username}";
+  };
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users."${username}" = ./home.nix;
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [
@@ -95,7 +106,7 @@
   launchd.user.agents = {
     "borgmatic" = {
       serviceConfig = let
-        logPath = "/Users/justusperlwitz/Library/Logs/borgmatic";
+        logPath = "/Users/${username}/Library/Logs/borgmatic";
         script = pkgs.writeShellApplication {
           name = "borgmatic-timestamp";
           runtimeInputs = with pkgs; [ borgmatic moreutils ];
