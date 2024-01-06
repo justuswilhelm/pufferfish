@@ -1,3 +1,4 @@
+# home-manager switch --flake $HOME/.dotfiles/home-manager
 {
   description = "Debian configuration of justusperlwitz";
 
@@ -18,16 +19,12 @@
       homeConfigurations."justusperlwitz" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
         modules = [ ./home.nix ];
 
         extraSpecialArgs = {
           homeBaseDirectory = "/home";
           system = "debian";
         };
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
       };
     };
 }
