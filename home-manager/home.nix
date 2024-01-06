@@ -66,7 +66,6 @@ in {
     # Shell
     pkgs.fish
     pkgs.tmux
-    pkgs.timewarrior
 
     # Version control
     pkgs.git
@@ -83,6 +82,7 @@ in {
     pkgs.autojump
     pkgs.cloc
     pkgs.fdupes
+    pkgs.timewarrior
     pkgs.tree
     pkgs.watch
 
