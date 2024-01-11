@@ -22,6 +22,7 @@ in {
       # pkgs.i3status
     ];
     darwinOnly = lib.lists.optionals isDarwin [
+    pkgs.openjdk17
     ]; in
   [
     # Databases
