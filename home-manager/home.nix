@@ -164,6 +164,7 @@ in {
       (linkScript "${dotfiles}/nix" "${xdgConfigHome}")
       (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
       (linkScript "${dotfiles}/tmux" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/gdb" "${xdgConfigHome}")
     ];
     links = debianOnly ++ darwinOnly ++ shared;
   in
