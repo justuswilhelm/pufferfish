@@ -110,6 +110,7 @@ in {
     # Shell
     pkgs.fish
     pkgs.tmux
+    pkgs.shellcheck
 
     # Version control
     pkgs.git
