@@ -4,7 +4,7 @@ set $mod Mod4
 
 # HiDPI setting
 output * {
-    scale 1.6
+    scale 1.5
 }
 
 # Font for window titles. Will also be used by the bar unless a different font
