@@ -40,6 +40,7 @@ in {
     # Networking
     pkgs.curl
     pkgs.nmap
+    pkgs.mitmproxy
 
     # File transfers, Backups
     pkgs.rsync
