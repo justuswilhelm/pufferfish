@@ -36,6 +36,9 @@ in {
       # pkgs.swaylock
       # Disabling this just to be safe
       # pkgs.swayidle
+
+      # GUIs
+      pkgs.keepassxc
     ];
     darwinOnly = lib.lists.optionals isDarwin [
     ]; in
