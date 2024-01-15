@@ -67,6 +67,26 @@ in {
     pkgs.aspell
     pkgs.aspellDicts.en
 
+    # Compilers
+    pkgs.gcc
+
+    # Debugger
+    pkgs.gdb
+    pkgs.qemu
+
+    # Reverse engineering
+    (
+      pkgs.symlinkJoin {
+        name = "ghidra";
+        paths = [ pkgs.ghidra ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/ghidra --set _JAVA_AWT_WM_NONREPARENTING=1
+        '';
+      }
+    )
+    pkgs.radare2
+
     # Interpreters
     pkgs.asdf-vm
     pkgs.python311
