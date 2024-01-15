@@ -89,7 +89,7 @@ in {
 
     # Interpreters
     pkgs.asdf-vm
-    pkgs.python311
+    pkgs.python310
     pkgs.jq
     pkgs.miller
 
