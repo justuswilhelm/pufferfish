@@ -1,4 +1,4 @@
-{ lib, options, config, pkgs, specialArgs, ... }:
+{ lib, pkgs, specialArgs, ... }:
 let
   isDebian = specialArgs.system == "debian";
   isDarwin = specialArgs.system == "darwin";
@@ -9,7 +9,16 @@ let
   xdgDataHome = "${homeDirectory}/.local/share";
   applicationSupport = "${homeDirectory}/Library/Application Support";
   linkScript = from: to:
-    ''$DRY_RUN_CMD ln --force --symbolic $VERBOSE_ARG "${from}" "${to}"'';
+    ''
+    if [ -a "${from}" ]
+    then
+      [ -n "$VERBOSE_ARG" ] && echo "Found source ${from}"
+      $DRY_RUN_CMD ln --force --symbolic $VERBOSE_ARG "${from}" "${to}"
+    else
+      [ -n "$VERBOSE_ARG" ] && echo "Could not find ${from}"
+      exit 1
+    fi
+    '';
 in {
   home.username = username;
   home.homeDirectory = homeDirectory;
@@ -118,7 +127,7 @@ in {
     shared = [
       (linkScript "${dotfiles}/nvim" "${xdgConfigHome}")
       (linkScript "${dotfiles}/git" "${xdgConfigHome}")
-      (linkScript "${dotfiles}/pomoblorbo" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/pomoglorbo" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nix" "${xdgConfigHome}")
       (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
