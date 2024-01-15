@@ -1,17 +1,16 @@
-#!/bin/bash
-if ! parent="$(fd --type d | fzf)"
-then
-    echo "Must give parent"
-    exit 1
-fi
-echo "Existing folders are:"
+function orgmode-mkdir
+    if ! set parent (fd --type d | sort | fzf)
+        echo "Must select parent"
+        return 1
+    end
+    echo "Existing folders are:"
 
-fd --type d . "$parent"
+    fd --type d . "$parent"
 
-if ! read -p "new dir $parent" new_dir
-then
-    echo "Must give directory name"
-    exit 1
-fi
+    if ! read -p "new dir $parent" new_dir
+        echo "Must give directory name"
+        return 1
+    end
 
-mkdir -v "$parent$new_dir"
+    mkdir -v "$parent$new_dir"
+end
