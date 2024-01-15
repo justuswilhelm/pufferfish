@@ -25,10 +25,17 @@ in {
 
   home.packages = let
     debianOnly = lib.lists.optionals isDebian [
+      # Terminal
       pkgs.foot
-      # TODO
+
+      # Compositor
+      pkgs.i3status
+      # This won't load because of some OpenGL issue
       # pkgs.sway
-      # pkgs.i3status
+      # Swaylock doesn't work well.
+      # pkgs.swaylock
+      # Disabling this just to be safe
+      # pkgs.swayidle
     ];
     darwinOnly = lib.lists.optionals isDarwin [
     ]; in
