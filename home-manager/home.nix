@@ -138,6 +138,9 @@ in {
     pkgs.gnutar
     pkgs.coreutils
     pkgs.moreutils
+
+    # Nix
+    pkgs.nix-index
   ]
   ++ debianOnly
   ++ darwinOnly;
