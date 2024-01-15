@@ -41,6 +41,7 @@ in {
       pkgs.keepassxc
     ];
     darwinOnly = lib.lists.optionals isDarwin [
+    pkgs.openjdk17
     ]; in
   [
     # Databases
@@ -58,6 +59,7 @@ in {
     # Networking
     pkgs.curl
     pkgs.nmap
+    pkgs.mitmproxy
 
     # File transfers, Backups
     pkgs.rsync
