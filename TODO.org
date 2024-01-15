@@ -14,3 +14,8 @@
 * TODO Check for old and outdated files
   <2023-11-23 Thu>
   A lot of cruft has gathered over the years, time for a spring cleaning
+
+* TODO create nix flake for testing
+  We test using CircleCI, and run Node/Python (inside pipenv woah). It would be
+  helpful to have all the tools available locally as well in a clean
+  environment.
