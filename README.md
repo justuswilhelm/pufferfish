@@ -4,40 +4,56 @@
 
 Add useful defaults and configuration files for
 
+- Nix,
 - tmux,
-- neovim, and
-- fish
+- neovim,
+- fish,
+- and many more.
 
-Please also refer to the
-[Wiki](https://github.com/justuswilhelm/pufferfish/wiki)
-for more documentation on the individual features implemented in pufferfish.
+## Using on macOS
 
-## Installing fish
+- [Nix](https://nixos.org/download#download-nix), and
+- [nix darwin](https://github.com/LnL7/nix-darwin)
 
-After installing fish, ensure that fish is your login shell, meaning that if
-you open a new terminal session fish will be launched. Find out how to do this
-[here](https://fishshell.com/docs/current/faq.html#faq-default)
+Initial installation:
 
-![Installer](docs/installer.png)
-
-## Quickstart on macOS
-
-```bash
-brew update
-brew install neovim fish git
+```
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-cd "$HOME/.dotfiles"
-bin/install_dotfiles
+TODO
 ```
 
-## Quickstart on Debian and Ubuntu
+Rebuild:
 
-```bash
-apt update
-apt install -y install neovim fish git
+```
+darwin-rebuild switch -I TODO
+```
+
+## Using on Debian
+
+Requirements are:
+
+- [Nix](https://nixos.org/download#download-nix), and
+- [home manager](https://nix-community.github.io/home-manager/index.xhtml#sec-install-standalone)
+
+Furthermore, to properly use the window manager, you need to have installed (using apt)
+
+- sway
+- swaylock
+- swayidle
+
+All other dependencies will be installed using home manager.
+
+Initial installation:
+
+```
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-cd "$HOME/.dotfiles"
-bin/install_dotfiles
+TODO
+```
+
+Rebuild:
+
+```
+home-manager switch --flake $HOME/.dotfiles/home-manager
 ```
 
 ## How to report a bug
@@ -54,34 +70,6 @@ a pull request right
 The best way to get started is by forking this repository and developing a new
 feature or bug fix on your own repository. Then, you can create a pull request
 to contribute the code back.
-
-## How to remap Caps Lock to Return
-
-When using X11, try this:
-
-```
-sudo patch --strip=6 --directory=/usr/share/X11/xkb/symbols/ < x/patch-fix_pc-0001.patch
-```
-
-Undo this change by running
-
-```
-sudo patch --reverse --strip=6 --directory=/usr/share/X11/xkb/symbols/ < x/patch-fix_pc-0001.patch
-```
-
-Previously, the way the key mapping was changed, was using a Xmodmap configuration
-like so:
-
-```
-clear lock
-keycode 66 = Return
-```
-
-And configured with
-
-```
-xmodmap ~/.Xmodmap
-```
 
 # License
 
