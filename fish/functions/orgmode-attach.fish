@@ -1,8 +1,10 @@
 function orgmode-attach
-    # Add orgmode paths here
-    set ORGMODE_PATHS ""
-
-    if ! set path (echo "$ORGMODE_PATHS" | fzf)
+    # Make sure to set global variable ORGMODE_PATHS
+    if ! set -q ORGMODE_PATHS
+        echo "Must define ORGMODE_PATHS"
+        return 1
+    end
+    if ! set path (string join0 $ORGMODE_PATHS | fzf --scheme=path --read0)
         echo "No path was specified"
         return 1
     end
@@ -13,8 +15,7 @@ function orgmode-attach
 
     if tmux has-session -t "$session"
         echo "Attaching to session"
-        tsa "$session:0"; or return 1
-        return
+        tsa "$session:0"; or return
     else
         echo "Session does not exist yet"
     end
@@ -32,5 +33,5 @@ function orgmode-attach
     tmux new-window -c "$path" -t "$session" -n "files" || return 1
     tmux send-keys -t "$session:1" "ls" C-m || return 1
 
-    tsa "$session:0"
+    tsa "$session:0"; or return
 end
