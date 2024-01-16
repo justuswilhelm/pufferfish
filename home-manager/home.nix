@@ -74,6 +74,9 @@ in {
     pkgs.neovim
     pkgs.nnn
 
+    # Business
+    pkgs.hledger
+
     # Shell
     pkgs.fish
     pkgs.tmux
