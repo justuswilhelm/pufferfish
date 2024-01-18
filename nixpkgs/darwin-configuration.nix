@@ -57,11 +57,10 @@ in
           name = "borgmatic-timestamp";
           runtimeInputs = with pkgs; [ borgmatic moreutils ];
           text = ''
-# https://apple.stackexchange.com/a/406097
-borgmatic create prune \
-  --log-file-verbosity 1 \
-  --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
-        '';
+          borgmatic create prune \
+            --log-file-verbosity 1 \
+            --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
+          '';
         };
       in {
         Program = "${script}/bin/borgmatic-timestamp";
@@ -82,7 +81,7 @@ borgmatic create prune \
           text = ''
           mkdir -p "${logPath}" || exit
           exec offlineimap -l "${logPath}/offlineimap.$(date -Iseconds).log"
-        '';
+          '';
         };
       in {
         Program = "${script}/bin/offlineimap";
