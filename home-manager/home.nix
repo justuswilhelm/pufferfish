@@ -145,6 +145,10 @@ in {
     pkgs.tree
     pkgs.watch
 
+    # Secrets
+    pkgs.gnupg
+    pkgs.pass
+
     # Core tools
     pkgs.silver-searcher
     pkgs.fd
