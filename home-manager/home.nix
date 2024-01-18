@@ -139,7 +139,6 @@ in {
     )
 
     # Shell tools
-    pkgs.autojump
     pkgs.cloc
     pkgs.fdupes
     pkgs.timewarrior
