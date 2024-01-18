@@ -92,6 +92,7 @@ in {
     # Interpreters
     pkgs.asdf-vm
     pkgs.python310
+    pkgs.poetry
     pkgs.jq
     pkgs.miller
 
