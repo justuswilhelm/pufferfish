@@ -176,6 +176,7 @@ in {
       (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
       (linkScript "${dotfiles}/neomutt" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/offlineimap" "${xdgConfigHome}")
     ];
     shared = [
       (linkScript "${dotfiles}/nvim" "${xdgConfigHome}")

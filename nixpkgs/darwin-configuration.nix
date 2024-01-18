@@ -31,6 +31,10 @@ in
     # File transfers, Backups
     # Can this be put in the home config?
     pkgs.borgmatic
+
+    # Mail - runs as a launchagent, so not sure if this makes sense as a home
+    # manager package
+    pkgs.offlineimap
   ];
   environment.shells = [ pkgs.fish ];
   environment.etc = {
@@ -67,6 +71,25 @@ borgmatic create prune \
           }
         ];
         TimeOut = 1800;
+      };
+    };
+    "offlineimap" = {
+      serviceConfig = let
+        logPath = "/Users/${username}/Library/Logs/offlineimap";
+        script = pkgs.writeShellApplication {
+          name = "offlineimap";
+          runtimeInputs = with pkgs; [ offlineimap coreutils ];
+          text = ''
+          mkdir -p "${logPath}" || exit
+          exec offlineimap -l "${logPath}/offlineimap.$(date -Iseconds).log"
+        '';
+        };
+      in {
+        Program = "${script}/bin/offlineimap";
+        # Every 5 minutes
+        StartInterval = 5 * 60;
+        # Time out after 3 minutes
+        TimeOut = 3 * 60;
       };
     };
   };
