@@ -1,5 +1,6 @@
 { lib, pkgs, specialArgs, ... }:
 let
+  selenized = (import ./selenized.nix) {inherit lib;};
   isDebian = specialArgs.system == "debian";
   isDarwin = specialArgs.system == "darwin";
   username = "justusperlwitz";
@@ -108,6 +109,19 @@ in {
     # Business
     pkgs.hledger
 
+    # Email
+    (
+      pkgs.symlinkJoin {
+        name = "neomutt";
+        paths = [ pkgs.neomutt ];
+        buildInputs = [ pkgs.makeWrapper ];
+        # https://neomutt.org/guide/reference.html#color-directcolor
+        postBuild = ''
+          wrapProgram $out/bin/neomutt --set TERM xterm-direct
+        '';
+      }
+    )
+
     # Shell
     pkgs.fish
     pkgs.tmux
@@ -161,6 +175,7 @@ in {
     darwinOnly = lib.lists.optionals isDarwin [
       (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
+      (linkScript "${dotfiles}/neomutt" "${xdgConfigHome}")
     ];
     shared = [
       (linkScript "${dotfiles}/nvim" "${xdgConfigHome}")
@@ -187,12 +202,38 @@ in {
 
   home.stateVersion = "23.11";
 
-  # Workaround for LANG issue
-  # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
-  xdg.configFile.fishSession = {
-    enable = isDebian;
-    target = "${xdgConfigHome}/fish/conf.d/nix-session.fish";
-    text = "set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive";
+  xdg.configFile = {
+    # Workaround for LANG issue
+    # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
+    fishSession = {
+      enable = isDebian;
+      target = "${xdgConfigHome}/fish/conf.d/nix-session.fish";
+      text = "set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive";
+    };
+    neomuttColors = {
+      text = selenized.neomutt;
+      target = "neomutt/colors";
+    };
+    neomuttMailcap = {
+      text =
+      let
+        convert = pkgs.writeShellApplication {
+          name = "convert";
+          runtimeInputs = with pkgs; [ pandoc libuchardet ];
+          text = ''
+          format="$(uchardet "$1")"
+          if [ "$format" = "unknown" ]; then
+            format="utf-8"
+          fi
+          iconv -f "$format" -t utf-8 "$1" | pandoc -f html -t plain -
+          '';
+        };
+      in
+        ''
+        text/html; ${convert}/bin/convert %s; copiousoutput
+        '';
+      target = "neomutt/mailcap";
+    };
   };
 
   programs.home-manager.enable = true;

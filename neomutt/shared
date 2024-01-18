@@ -1,0 +1,23 @@
+set mailcap_path = "~/.config/neomutt/mailcap"
+auto_view text/html
+set sidebar_visible
+
+# Key bindings
+# Index
+bind index j next-entry
+bind index k previous-entry
+# unbind index \Cd
+macro index \Cd '<bottom-page><current-middle>'
+# unbind index \Cu
+macro index \Cu '<top-page><current-middle>'
+unbind index g
+bind index gg first-entry
+bind index G last-entry
+# Pager
+bind pager j next-line
+bind pager k previous-line
+bind pager \Cd half-down
+bind pager \Cu half-up
+unbind pager g
+bind pager gg top
+bind pager G bottom
