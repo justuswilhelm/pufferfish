@@ -110,6 +110,11 @@ in
   services.nix-daemon.enable = true;
   # nix.package = pkgs.nix;
 
+  # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
+  # For iterm2 see:
+  # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
+  security.pam.enableSudoTouchIdAuth = true;
+
   # Create /etc/zshrc that loads the nix-darwin environment.
   # programs.zsh.enable = true;  # default shell on catalina
   programs.fish.enable = true;
