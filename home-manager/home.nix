@@ -207,6 +207,11 @@ in {
 
   home.stateVersion = "23.11";
 
+  home.sessionPath = [
+    "$HOME/.dotfiles/bin"
+    "$HOME/.local/bin"
+  ];
+
   xdg.configFile = {
     fishAsdfVm = {
       target = "fish/conf.d/asdf.fish";
