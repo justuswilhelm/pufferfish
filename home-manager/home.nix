@@ -180,7 +180,6 @@ in {
     darwinOnly = lib.lists.optionals isDarwin [
       (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
-      (linkScript "${dotfiles}/neomutt" "${xdgConfigHome}")
       (linkScript "${dotfiles}/offlineimap" "${xdgConfigHome}")
     ];
     shared = [
@@ -262,6 +261,10 @@ in {
     neomuttColors = {
       text = selenized.neomutt;
       target = "neomutt/colors";
+    };
+    neomuttShared = {
+      source = ../neomutt/shared;
+      target = "neomutt/shared";
     };
     neomuttMailcap = {
       text =
