@@ -182,7 +182,6 @@ in {
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
     ];
     shared = [
-      (linkScript "${dotfiles}/git" "${xdgConfigHome}")
       (linkScript "${dotfiles}/pomoglorbo" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nix" "${xdgConfigHome}")
@@ -422,5 +421,49 @@ in {
       # Start neovim
       e = "nvim";
     };
+  };
+
+  programs.git = {
+    enable = true;
+    # TODO try these out
+    # difftastic = { enable = true; };
+    # delta = { enable = true; };
+    userName = "Justus Perlwitz";
+    userEmail = "hello@justus.pw";
+    extraConfig = {
+      pull = {
+        rebase = true;
+      };
+      rebase = {
+        autostash = true;
+      };
+      commit = {
+        verbose = true;
+      };
+      init = {
+        defaultBranch = "main";
+
+      };
+      diff = {
+        tool = "vimdiff";
+      };
+      "diff \"sqlite3\"" = {
+        binary = true;
+        # https://stackoverflow.com/questions/13271643/git-hook-for-diff-sqlite-table/21789167#21789167
+        textconv = "echo .dump | sqlite3";
+      };
+      merge = {
+        tool = "vimdiff";
+      };
+      "mergetool \"vimdiff\"" = {
+        path = "nvim";
+      };
+      fetch = {
+        prune = true;
+      };
+    };
+    ignores = if isDarwin then [
+      ".DS_Store"
+    ] else [];
   };
 }
