@@ -180,7 +180,6 @@ in {
     darwinOnly = lib.lists.optionals isDarwin [
       (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
-      (linkScript "${dotfiles}/offlineimap" "${xdgConfigHome}")
     ];
     shared = [
       (linkScript "${dotfiles}/nvim" "${xdgConfigHome}")
