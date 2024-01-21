@@ -224,6 +224,36 @@ in {
       set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive
       '';
     };
+    fishAbbreviations = {
+      target = "fish/conf.d/abbreviations.fish";
+      source = ../fish/conf.d/abbreviations.fish;
+    };
+    fishDarwin = {
+      enable = isDarwin;
+      target = "fish/conf.d/darwin.fish";
+      source = ../fish/conf.d/darwin.fish;
+    };
+    fishLinux = {
+      enable = isDebian;
+      target = "fish/conf.d/linux.fish";
+      source = ../fish/conf.d/linux.fish;
+    };
+    fishNnn = {
+      target = "fish/conf.d/nnn.fish";
+      source = ../fish/conf.d/nnn.fish;
+    };
+    fishPass = {
+      target = "fish/conf.d/pass.fish";
+      source = ../fish/conf.d/pass.fish;
+    };
+    fishSway = {
+      target = "fish/conf.d/sway.fish";
+      source = ../fish/conf.d/sway.fish;
+    };
+    fishFunctions = {
+      target = "fish/functions";
+      source = ../fish/functions;
+    };
     neomuttColors = {
       text = selenized.neomutt;
       target = "neomutt/colors";
@@ -273,5 +303,10 @@ in {
     keyMode = "vi";
     # Best compability for true color
     terminal = "screen-256color";
+  };
+
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = builtins.readFile ../fish/config.fish;
   };
 }
