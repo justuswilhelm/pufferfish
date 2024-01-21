@@ -239,10 +239,6 @@ in {
       set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive
       '';
     };
-    fishDirenv = {
-      target = "fish/conf.d/direnv.fish";
-      source = ../fish/conf.d/direnv.fish;
-    };
     fishLinux = {
       enable = isDebian;
       target = "fish/conf.d/linux.fish";
