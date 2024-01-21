@@ -212,6 +212,18 @@ in {
     "$HOME/.local/bin"
   ];
 
+  home.sessionVariables = {
+    DOTFILES = "${homeDirectory}/.dotfiles";
+    XDG_CONFIG_HOME = "${homeDirectory}/.config";
+    EDITOR = "${pkgs.neovim}/bin/nvim";
+    NNN_OPENER = "file";
+    PASSWORD_STORE_DIR = "${homeDirectory}/.local/var/pass";
+    # Still needed?
+    LANG = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    TIMEWARRIORDB = "${homeDirectory}/.config/timewarrior";
+  };
+
   xdg.configFile = {
     fishAsdfVm = {
       target = "fish/conf.d/asdf.fish";
@@ -233,25 +245,17 @@ in {
       target = "fish/conf.d/abbreviations.fish";
       source = ../fish/conf.d/abbreviations.fish;
     };
-    fishDarwin = {
-      enable = isDarwin;
-      target = "fish/conf.d/darwin.fish";
-      source = ../fish/conf.d/darwin.fish;
+    fishDirenv = {
+      target = "fish/conf.d/direnv.fish";
+      source = ../fish/conf.d/direnv.fish;
     };
     fishLinux = {
       enable = isDebian;
       target = "fish/conf.d/linux.fish";
       source = ../fish/conf.d/linux.fish;
     };
-    fishNnn = {
-      target = "fish/conf.d/nnn.fish";
-      source = ../fish/conf.d/nnn.fish;
-    };
-    fishPass = {
-      target = "fish/conf.d/pass.fish";
-      source = ../fish/conf.d/pass.fish;
-    };
     fishSway = {
+      enable = isDebian;
       target = "fish/conf.d/sway.fish";
       source = ../fish/conf.d/sway.fish;
     };
