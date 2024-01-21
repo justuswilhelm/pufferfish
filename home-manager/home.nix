@@ -40,6 +40,9 @@ in {
 
       # GUIs
       pkgs.keepassxc
+
+      # Debugger
+      pkgs.gdb
     ];
     darwinOnly = lib.lists.optionals isDarwin [
     pkgs.openjdk17
@@ -74,7 +77,6 @@ in {
     pkgs.gcc
 
     # Debugger
-    pkgs.gdb
     pkgs.qemu
 
     # Reverse engineering
