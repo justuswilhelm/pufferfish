@@ -18,7 +18,3 @@ karabiner/automatic_backups
 
 # NPM
 node_modules
-
-# Neomutt
-/neomutt/colors
-/neomutt/mailcap
