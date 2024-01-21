@@ -182,7 +182,6 @@ in {
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
     ];
     shared = [
-      (linkScript "${dotfiles}/nvim" "${xdgConfigHome}")
       (linkScript "${dotfiles}/git" "${xdgConfigHome}")
       (linkScript "${dotfiles}/pomoglorbo" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}")
@@ -281,6 +280,30 @@ in {
         text/html; ${convert}/bin/convert %s; copiousoutput
         '';
       target = "neomutt/mailcap";
+    };
+    nvimAfter = {
+      source = ../nvim/after;
+      target = "nvim/after";
+    };
+    nvimSelenized = {
+      source = ../nvim/colors/selenized.vim;
+      target = "nvim/colors/selenized.vim";
+    };
+    nvimInit = {
+      source = ../nvim/init.lua;
+      target = "nvim/init.lua";
+    };
+    nvimInitBase = {
+      source = ../nvim/init_base.lua;
+      target = "nvim/init_base.lua";
+    };
+    nvimPlug = {
+      source = ../nvim/autoload/plug.vim;
+      target = "nvim/autoload/plug.vim";
+    };
+    nvimSnippets = {
+      source = ../nvim/snippets;
+      target = "nvim/snippets";
     };
   };
 
