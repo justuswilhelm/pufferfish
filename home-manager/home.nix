@@ -249,6 +249,7 @@ in {
       target = "fish/conf.d/linux.fish";
       source = ../fish/conf.d/linux.fish;
     };
+    # This should be fish loginShellInit option
     fishSway = {
       enable = isDebian;
       target = "fish/conf.d/sway.fish";
