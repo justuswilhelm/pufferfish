@@ -207,6 +207,13 @@ in {
   home.stateVersion = "23.11";
 
   xdg.configFile = {
+    fishAsdfVm = {
+      target = "fish/conf.d/asdf.fish";
+      text = ''
+      set -x ASDF_DIR ${pkgs.asdf-vm}/share/asdf-vm
+      source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
+      '';
+    };
     # Workaround for LANG issue
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
     fishSession = {
