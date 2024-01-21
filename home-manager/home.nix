@@ -190,7 +190,6 @@ in {
       (linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nix" "${xdgConfigHome}")
       (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
-      (linkScript "${dotfiles}/tmux" "${xdgConfigHome}")
       (linkScript "${dotfiles}/gdb" "${xdgConfigHome}")
     ];
     links = debianOnly ++ darwinOnly ++ shared;
@@ -256,5 +255,13 @@ in {
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+  };
+
+  programs.tmux = {
+    enable = true;
+    extraConfig = ''
+    ${builtins.readFile ../tmux/tmux.conf}
+    ${selenized.tmux}
+    '';
   };
 }

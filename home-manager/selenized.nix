@@ -74,4 +74,47 @@ in
     colors = lib.attrsets.mapAttrsToList toColorLine pairs;
   in
     lib.strings.concatStringsSep "\n" colors;
+
+  tmux = let
+    # most likely, we only need set-option and just need to pass the right flags
+    # (see man page for tmux at set-option)
+    so = "set-option";
+    swo = "set-window-option";
+    toStyleLine = arguments: let
+      inherit (builtins) elemAt;
+      type = elemAt arguments 0;
+      name = elemAt arguments 1;
+      fg = elemAt arguments 2;
+      bg = elemAt arguments 3;
+      comment = elemAt arguments 4;
+    in ''
+    # ${comment}
+    ${type} -g ${name} 'fg=${fg}'' + (if bg != null then ",bg=${bg}'" else "'");
+    toColorLine = arguments: let
+      inherit (builtins) elemAt;
+      type = elemAt arguments 0;
+      name = elemAt arguments 1;
+      color = elemAt arguments 2;
+      comment = elemAt arguments 3;
+    in ''
+    # ${comment}
+    ${type} -g ${name} '${color}'
+    '';
+    stylePairs = [
+      [ so "message-style" fg_0 bg_0 "Message text" ]
+      [ so "mode-style" fg_1 bg_2 "Selection" ]
+      [ so "pane-active-border-style" fg_0 null "Pane border" ]
+      [ so "pane-border-style" bg_2 null "Pane border" ]
+      [ so "status-style" magenta bg_1 "Default statusbar colors" ]
+      [ swo "window-status-bell-style" fg_0 bg_0 "Bell" ]
+      [ swo "window-status-current-style" bg_0 fg_0 "Active window title colors" ]
+      [ swo "window-status-style" fg_0 bg_0 "Default window title colors" ]
+    ];
+    colourPairs = [
+      [ so "display-panes-active-colour" fg_0 "Pane number display" ]
+      [ so "display-panes-colour" fg_0 "Pane number display" ]
+    ];
+    colors = (map toStyleLine stylePairs) ++ (map toColorLine colourPairs);
+  in
+    lib.strings.concatStringsSep "\n" colors;
 }
