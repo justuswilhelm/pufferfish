@@ -218,8 +218,10 @@ in {
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
     fishSession = {
       enable = isDebian;
-      target = "${xdgConfigHome}/fish/conf.d/nix-session.fish";
-      text = "set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive";
+      target = "fish/conf.d/nix-session.fish";
+      text = ''
+      set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive
+      '';
     };
     neomuttColors = {
       text = selenized.neomutt;
