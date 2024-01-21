@@ -1,17 +1,19 @@
-#!/bin/bash
-if ! parent="$(fd --type d | fzf)"
-then
-    echo "Must give parent"
-    exit 1
-fi
+function orgmode-new
+    if ! set parent (fd --type d | fzf)
+        echo "Must give parent"
+        return 1
+    end
 
-echo "Creating new note in $parent"
-if ! read -p "name of note: " note_name
-then
-    echo "Must give name"
-    exit 1
-fi
+    echo "Creating new note in $parent"
+    if ! read -P "name of note: " note_name
+        echo "Must give name"
+        return 1
+    end
 
-new_note="$parent$(date -Idate)_$(echo "$note_name" | tr "A-Z " "a-z-").org"
-touch "$new_note"
-exec nvim "$new_note"
+    set date (date -Idate)
+    set note_name_escaped (echo "$note_name" | tr "A-Z " "a-z-")
+
+    set new_note $parent$date"_"$note_name_escaped.org
+    touch $new_note
+    nvim $new_note
+end
