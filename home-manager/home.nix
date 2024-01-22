@@ -143,9 +143,12 @@ in {
     # Shell tools
     pkgs.cloc
     pkgs.fdupes
-    pkgs.timewarrior
     pkgs.tree
     pkgs.watch
+
+    # Time tracking
+    pkgs.timewarrior
+    specialArgs.pomoglorbo
 
     # Secrets
     pkgs.gnupg
@@ -182,7 +185,6 @@ in {
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
     ];
     shared = [
-      (linkScript "${dotfiles}/pomoglorbo" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}")
       (linkScript "${dotfiles}/nix" "${xdgConfigHome}")
       (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
@@ -204,20 +206,21 @@ in {
   home.stateVersion = "23.11";
 
   home.sessionPath = [
-    "$HOME/.dotfiles/bin"
+    "${dotfiles}/bin"
     "$HOME/.local/bin"
   ];
 
   home.sessionVariables = {
-    DOTFILES = "${homeDirectory}/.dotfiles";
-    XDG_CONFIG_HOME = "${homeDirectory}/.config";
+    DOTFILES = dotfiles;
+    XDG_CONFIG_HOME = xdgConfigHome;
     EDITOR = "${pkgs.neovim}/bin/nvim";
     NNN_OPENER = "file";
-    PASSWORD_STORE_DIR = "${homeDirectory}/.local/var/pass";
+    PASSWORD_STORE_DIR = "${xdgDataHome}/pass";
     # Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
-    TIMEWARRIORDB = "${homeDirectory}/.config/timewarrior";
+    # TODO split up time warrior conf and db
+    TIMEWARRIORDB = "${xdgConfigHome}/timewarrior";
   };
 
   xdg.configFile = {
@@ -303,6 +306,10 @@ in {
     nvimSnippets = {
       source = ../nvim/snippets;
       target = "nvim/snippets";
+    };
+    pomoglorbo = {
+      source = ../pomoglorbo/config.ini;
+      target = "pomoglorbo/config.ini";
     };
   };
 

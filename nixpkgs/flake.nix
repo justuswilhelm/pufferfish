@@ -7,11 +7,17 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    pomoglorbo = {
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=main&rev=7859bc36fe08f8dc7248fd75c0b1752c7a8304dd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nix-darwin, home-manager, nixpkgs }: {
+  outputs = { self, nix-darwin, home-manager, nixpkgs, pomoglorbo }: let
+    system = "aarch64-darwin";
+  in {
     darwinConfigurations."lithium" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
+      inherit system;
       modules = [
         ./darwin-configuration.nix
         home-manager.darwinModules.home-manager
@@ -23,6 +29,7 @@
           home-manager.extraSpecialArgs = {
             homeBaseDirectory = "/Users";
             system = "darwin";
+            pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
           };
         }
       ];
