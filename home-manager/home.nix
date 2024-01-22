@@ -428,8 +428,6 @@ in {
     # TODO try these out
     # difftastic = { enable = true; };
     # delta = { enable = true; };
-    userName = "Justus Perlwitz";
-    userEmail = "hello@justus.pw";
     extraConfig = {
       pull = {
         rebase = true;
@@ -465,5 +463,14 @@ in {
     ignores = if isDarwin then [
       ".DS_Store"
     ] else [];
+    includes = [
+      {
+        # Create something like this:
+        # [user]
+        # name = "My name"
+        # email = "my@email.address";
+        path = "${xdgConfigHome}/git/user";
+      }
+    ];
   };
 }
