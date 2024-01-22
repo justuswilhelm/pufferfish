@@ -57,6 +57,7 @@ in
           name = "borgmatic-timestamp";
           runtimeInputs = with pkgs; [ borgmatic moreutils ];
           text = ''
+          mkdir -p "${logPath}" || exit
           borgmatic create prune \
             --log-file-verbosity 1 \
             --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
