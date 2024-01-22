@@ -207,7 +207,6 @@ in {
 
   home.sessionPath = [
     "${dotfiles}/bin"
-    "$HOME/.local/bin"
   ];
 
   home.sessionVariables = {
