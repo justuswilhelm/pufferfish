@@ -174,7 +174,6 @@ in {
       (linkScript "${dotfiles}/foot" "${xdgConfigHome}")
       (linkScript "${dotfiles}/sway" "${xdgConfigHome}")
       (linkScript "${dotfiles}/i3status" "${xdgConfigHome}")
-      (linkScript "${dotfiles}/home-manager" "${xdgConfigHome}")
       (linkScript "${dotfiles}/systemd" "${xdgConfigHome}")
       (linkScript "${dotfiles}/x" "${xdgConfigHome}")
       (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xresources")
@@ -186,8 +185,6 @@ in {
       (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
     ];
     shared = [
-      (linkScript "${dotfiles}/nixpkgs" "${xdgConfigHome}")
-      (linkScript "${dotfiles}/nix" "${xdgConfigHome}")
       (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
     ];
     links = debianOnly ++ darwinOnly ++ shared;
@@ -223,6 +220,10 @@ in {
   };
 
   xdg.configFile = {
+    nix = {
+      source = ../nix/nix.conf;
+      target = "nix/nix.conf";
+    };
     fishAsdfVm = {
       target = "fish/conf.d/asdf.fish";
       text = ''
