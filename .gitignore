@@ -8,11 +8,6 @@ fish/conf.d/nix-session.fish
 fish/conf.d/nix.fish
 /fish/conf.d/asdf.fish
 
-# Neovim
-nvim/.netrwhist
-nvim/plugged
-nvim/swap
-
 # Karabiner
 karabiner/automatic_backups
 
