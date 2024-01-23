@@ -25,7 +25,7 @@ TODO
 Rebuild:
 
 ```
-darwin-rebuild switch -I TODO
+darwin-rebuild switch --flake "$HOME/.dotfiles/nixpkgs"
 ```
 
 ## Using on Debian

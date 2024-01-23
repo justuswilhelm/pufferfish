@@ -31,6 +31,10 @@ in
     # File transfers, Backups
     # Can this be put in the home config?
     pkgs.borgmatic
+
+    # Mail - runs as a launchagent, so not sure if this makes sense as a home
+    # manager package
+    pkgs.offlineimap
   ];
   environment.shells = [ pkgs.fish ];
   environment.etc = {
@@ -53,11 +57,11 @@ in
           name = "borgmatic-timestamp";
           runtimeInputs = with pkgs; [ borgmatic moreutils ];
           text = ''
-# https://apple.stackexchange.com/a/406097
-borgmatic create prune \
-  --log-file-verbosity 1 \
-  --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
-        '';
+          mkdir -p "${logPath}" || exit
+          borgmatic create prune \
+            --log-file-verbosity 1 \
+            --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
+          '';
         };
       in {
         Program = "${script}/bin/borgmatic-timestamp";
@@ -67,6 +71,25 @@ borgmatic create prune \
           }
         ];
         TimeOut = 1800;
+      };
+    };
+    "offlineimap" = {
+      serviceConfig = let
+        logPath = "/Users/${username}/Library/Logs/offlineimap";
+        script = pkgs.writeShellApplication {
+          name = "offlineimap";
+          runtimeInputs = with pkgs; [ offlineimap coreutils ];
+          text = ''
+          mkdir -p "${logPath}" || exit
+          exec offlineimap -l "${logPath}/offlineimap.$(date -Iseconds).log"
+          '';
+        };
+      in {
+        Program = "${script}/bin/offlineimap";
+        # Every 5 minutes
+        StartInterval = 5 * 60;
+        # Time out after 3 minutes
+        TimeOut = 3 * 60;
       };
     };
   };
@@ -87,6 +110,11 @@ borgmatic create prune \
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   # nix.package = pkgs.nix;
+
+  # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
+  # For iterm2 see:
+  # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
+  security.pam.enableSudoTouchIdAuth = true;
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   # programs.zsh.enable = true;  # default shell on catalina
