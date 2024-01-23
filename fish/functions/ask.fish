@@ -14,12 +14,14 @@ function ask
         echo "Asking '$query'"
     end
 
-    set query (jq --arg query $query --null-input '{query: $query}') || return
+    set query_data (jq --compact-output --arg query $query --null-input '{query: $query}') || return
+
+    echo "Query data:" $query_data
 
     curl \
         -H "Authorization: Bot $KAGI_API_TOKEN" \
         -H "Content-Type: application/json" \
-        --data $query \
+        --data $query_data \
         https://kagi.com/api/v0/fastgpt |
     jq "."
 end
