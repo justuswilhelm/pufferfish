@@ -19,7 +19,7 @@ Initial installation:
 
 ```
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-TODO
+darwin-rebuild switch --flake "$HOME/.dotfiles/nixpkgs"
 ```
 
 Rebuild:
