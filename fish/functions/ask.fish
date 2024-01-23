@@ -4,17 +4,17 @@ function ask
         echo "Consult "
         echo "https://help.kagi.com/kagi/api/intro/auth.html"
         echo "for how to retrieve the correct token"
-        exit 1
+        return 1
     end
 
     if [ -z $1 ]
-        read -P "Enter a query: " query
+        read -P "Enter a query: " query || return
     else
         set query $1
         echo "Asking '$query'"
     end
 
-    set query (jq --arg query $query --null-input '{query: $query}')
+    set query (jq --arg query $query --null-input '{query: $query}') || return
 
     curl \
         -H "Authorization: Bot $KAGI_API_TOKEN" \
