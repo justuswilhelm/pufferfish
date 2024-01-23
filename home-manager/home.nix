@@ -217,6 +217,9 @@ in {
     LC_ALL = "en_US.UTF-8";
     # TODO split up time warrior conf and db
     TIMEWARRIORDB = "${xdgConfigHome}/timewarrior";
+    # Workaround for LANG issue
+    # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
+    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
   };
 
   xdg.configFile = {
@@ -229,15 +232,6 @@ in {
       text = ''
       set -x ASDF_DIR ${pkgs.asdf-vm}/share/asdf-vm
       source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
-      '';
-    };
-    # Workaround for LANG issue
-    # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
-    fishSession = {
-      enable = isDebian;
-      target = "fish/conf.d/nix-session.fish";
-      text = ''
-      set -x LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive
       '';
     };
     fishLinux = {
