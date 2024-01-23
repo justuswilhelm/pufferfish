@@ -217,10 +217,11 @@ in {
     LC_ALL = "en_US.UTF-8";
     # TODO split up time warrior conf and db
     TIMEWARRIORDB = "${xdgConfigHome}/timewarrior";
+  } // (lib.attrsets.optionalAttrs isDebian {
     # Workaround for LANG issue
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-  };
+  });
 
   xdg.configFile = {
     nix = {
