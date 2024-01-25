@@ -43,6 +43,12 @@ in
     };
   };
 
+  # Rid ourselves of Apple Music automatically launching
+  # https://apple.stackexchange.com/questions/372948/how-can-i-prevent-music-app-from-starting-automatically-randomly/373557#373557
+  environment.extraInit = ''
+    sudo systemctl bootout gui/501/com.apple.rcd
+  '';
+
   # Use a custom configuration.nix location.
   # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin-configuration.nix
   environment.darwinConfig = "$HOME/.config/nixpkgs/darwin-configuration.nix";
