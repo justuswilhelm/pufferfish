@@ -70,8 +70,7 @@ in {
     pkgs.unison
 
     # Spellchecking
-    pkgs.aspell
-    pkgs.aspellDicts.en
+    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
 
     # Compilers
     pkgs.gcc
@@ -217,10 +216,11 @@ in {
     LC_ALL = "en_US.UTF-8";
     # TODO split up time warrior conf and db
     TIMEWARRIORDB = "${xdgConfigHome}/timewarrior";
+  } // (lib.attrsets.optionalAttrs isDebian {
     # Workaround for LANG issue
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-  };
+  });
 
   xdg.configFile = {
     nix = {
@@ -293,6 +293,10 @@ in {
     pomoglorbo = {
       source = ../pomoglorbo/config.ini;
       target = "pomoglorbo/config.ini";
+    };
+    cmusRc = {
+      source = ../cmus/rc;
+      target = "cmus/rc";
     };
   };
 
