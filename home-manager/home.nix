@@ -70,8 +70,7 @@ in {
     pkgs.unison
 
     # Spellchecking
-    pkgs.aspell
-    pkgs.aspellDicts.en
+    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
 
     # Compilers
     pkgs.gcc
