@@ -306,6 +306,10 @@ in {
       source = ../pomoglorbo/config.ini;
       target = "pomoglorbo/config.ini";
     };
+    cmusRc = {
+      source = ../cmus/rc;
+      target = "cmus/rc";
+    };
   };
 
   programs.home-manager.enable = true;
