@@ -234,17 +234,6 @@ in {
       source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
       '';
     };
-    fishLinux = {
-      enable = isDebian;
-      target = "fish/conf.d/linux.fish";
-      source = ../fish/conf.d/linux.fish;
-    };
-    # This should be fish loginShellInit option
-    fishSway = {
-      enable = isDebian;
-      target = "fish/conf.d/sway.fish";
-      source = ../fish/conf.d/sway.fish;
-    };
     fishFunctions = {
       target = "fish/functions";
       source = ../fish/functions;
