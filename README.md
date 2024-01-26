@@ -90,3 +90,4 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 # Credits
 
 - Iosevka (`fonts/`): SIL Open Font License v1.1, refer to `fonts/LICENSE.md`
+- 24-bit-color (`bin/24-bit-color`): GPL v2, https://github.com/gnachman/iTerm2/blob/master/LICENSE
