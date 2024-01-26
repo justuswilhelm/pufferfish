@@ -1,8 +1,11 @@
 { xdgConfigHome, isDarwin }: {
   enable = true;
-  # TODO try these out
-  # difftastic = { enable = true; };
-  # delta = { enable = true; };
+  delta = {
+    enable = true;
+    options = {
+      light = true;
+    };
+  };
   extraConfig = {
     pull = {
       rebase = true;
