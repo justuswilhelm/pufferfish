@@ -24,8 +24,9 @@ darwin-rebuild switch --flake "$HOME/.dotfiles/nix/generic"
 
 Rebuild:
 
-```
-darwin-rebuild switch --flake "$HOME/.dotfiles/nix/generic"
+```fish
+# In fish run the following function
+rebuild
 ```
 
 ## Using on Debian
@@ -53,7 +54,8 @@ home-manager --extra-experimental-features flakes --extra-experimental-features 
 Rebuild:
 
 ```
-home-manager switch --flake $DOTFILES/nix/generic
+# In fish run the following function
+rebuild
 ```
 
 ## How to report a bug

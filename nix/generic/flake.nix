@@ -16,10 +16,10 @@
 
   outputs = { self, nix-darwin, home-manager, nixpkgs, nixpkgs-darwin, pomoglorbo }: {
     homeConfigurations."justusperlwitz" =
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
+      let
+        system = "x86_64-linux";
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
@@ -31,9 +31,10 @@
           pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
         };
       };
-    darwinConfigurations."lithium" = let
-      system = "aarch64-darwin";
-    in
+    darwinConfigurations."lithium" =
+      let
+        system = "aarch64-darwin";
+      in
       nix-darwin.lib.darwinSystem {
         inherit system;
         modules = [
