@@ -1,4 +1,4 @@
-{ lib, pkgs, isDarwin, isDebian, homeDirectory }:
+{ lib, pkgs, isDarwin, isDebian, homeDirectory, xdgCacheHome }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
 in
@@ -91,9 +91,8 @@ in
   };
   pyPoetryDebian = {
     enable = isDebian;
-    # We would like to use XDG_CACHE_HOME here
     text = ''
-      cache-dir = "${homeDirectory}/.cache/pypoetry"
+      cache-dir = "${xdgCacheHome}/pypoetry"
     '';
     target = "pypoetry/config.toml";
   };

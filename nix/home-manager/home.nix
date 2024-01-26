@@ -8,8 +8,10 @@ let
   dotfiles = "${homeDirectory}/.dotfiles";
   xdgConfigHome = "${homeDirectory}/.config";
   xdgDataHome = "${homeDirectory}/.local/share";
-  # TODO Add xdgCacheHome here
   applicationSupport = "${homeDirectory}/Library/Application Support";
+  xdgCacheHome =
+    if isDebian then
+      "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
 in
 {
   home.username = username;
@@ -42,10 +44,11 @@ in
     DOTFILES = dotfiles;
     XDG_CONFIG_HOME = xdgConfigHome;
     XDG_DATA_HOME = xdgDataHome;
+    XDG_CACHE_HOME = xdgCacheHome;
     EDITOR = "${pkgs.neovim}/bin/nvim";
     NNN_OPENER = "file";
     PASSWORD_STORE_DIR = "${xdgDataHome}/pass";
-    # Still needed?
+    # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     # TODO split up time warrior conf and db
@@ -67,14 +70,14 @@ in
   xdg.dataHome = xdgDataHome;
 
   xdg.configFile = (import ./xdgConfigFiles.nix) {
-    inherit lib pkgs isDarwin isDebian homeDirectory;
+    inherit lib pkgs isDarwin isDebian homeDirectory xdgCacheHome;
   };
   # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
   home.file = {
     pyPoetryDarwin = {
       enable = isDarwin;
       text = ''
-        cache-dir = "${homeDirectory}/Library/Caches"
+        cache-dir = "${xdgCacheHome}/pypoetry"
       '';
       target = "${applicationSupport}/pypoetry/config.toml";
     };
