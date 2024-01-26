@@ -236,6 +236,7 @@ in {
     fishFunctions = {
       target = "fish/functions";
       source = ../fish/functions;
+      recursive = true;
     };
     neomuttColors = {
       text = selenized.neomutt;
