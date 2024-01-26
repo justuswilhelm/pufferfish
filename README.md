@@ -19,13 +19,13 @@ Initial installation:
 
 ```
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-darwin-rebuild switch --flake "$HOME/.dotfiles/nixpkgs"
+darwin-rebuild switch --flake "$HOME/.dotfiles/nix/darwin"
 ```
 
 Rebuild:
 
 ```
-darwin-rebuild switch --flake "$HOME/.dotfiles/nixpkgs"
+darwin-rebuild switch --flake "$HOME/.dotfiles/nix/darwin"
 ```
 
 ## Using on Debian

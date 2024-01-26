@@ -25,7 +25,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.verbose = true;
           home-manager.useUserPackages = true;
-          home-manager.users.justusperlwitz = import ../home-manager/home.nix;
+          home-manager.users.justusperlwitz = import ../../home-manager/home.nix;
           home-manager.extraSpecialArgs = {
             homeBaseDirectory = "/Users";
             system = "darwin";
