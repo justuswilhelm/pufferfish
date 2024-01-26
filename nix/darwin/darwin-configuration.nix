@@ -56,46 +56,50 @@ in
 
   launchd.user.agents = {
     "borgmatic" = {
-      serviceConfig = let
-        logPath = "/Users/${username}/Library/Logs/borgmatic";
-        script = pkgs.writeShellApplication {
-          name = "borgmatic-timestamp";
-          runtimeInputs = with pkgs; [ borgmatic moreutils ];
-          text = ''
-          mkdir -p "${logPath}" || exit
-          borgmatic create prune \
-            --log-file-verbosity 1 \
-            --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
-          '';
+      serviceConfig =
+        let
+          logPath = "/Users/${username}/Library/Logs/borgmatic";
+          script = pkgs.writeShellApplication {
+            name = "borgmatic-timestamp";
+            runtimeInputs = with pkgs; [ borgmatic moreutils ];
+            text = ''
+              mkdir -p "${logPath}" || exit
+              borgmatic create prune \
+                --log-file-verbosity 1 \
+                --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
+            '';
+          };
+        in
+        {
+          Program = "${script}/bin/borgmatic-timestamp";
+          StartCalendarInterval = [
+            {
+              Minute = 0;
+            }
+          ];
+          TimeOut = 1800;
         };
-      in {
-        Program = "${script}/bin/borgmatic-timestamp";
-        StartCalendarInterval = [
-          {
-            Minute = 0;
-          }
-        ];
-        TimeOut = 1800;
-      };
     };
     "offlineimap" = {
-      serviceConfig = let
-        logPath = "/Users/${username}/Library/Logs/offlineimap";
-        script = pkgs.writeShellApplication {
-          name = "offlineimap";
-          runtimeInputs = with pkgs; [ offlineimap coreutils ];
-          text = ''
-          mkdir -p "${logPath}" || exit
-          exec offlineimap -l "${logPath}/offlineimap.$(date -Iseconds).log"
-          '';
+      serviceConfig =
+        let
+          logPath = "/Users/${username}/Library/Logs/offlineimap";
+          script = pkgs.writeShellApplication {
+            name = "offlineimap";
+            runtimeInputs = with pkgs; [ offlineimap coreutils ];
+            text = ''
+              mkdir -p "${logPath}" || exit
+              exec offlineimap -l "${logPath}/offlineimap.$(date -Iseconds).log"
+            '';
+          };
+        in
+        {
+          Program = "${script}/bin/offlineimap";
+          # Every 5 minutes
+          StartInterval = 5 * 60;
+          # Time out after 3 minutes
+          TimeOut = 3 * 60;
         };
-      in {
-        Program = "${script}/bin/offlineimap";
-        # Every 5 minutes
-        StartInterval = 5 * 60;
-        # Time out after 3 minutes
-        TimeOut = 3 * 60;
-      };
     };
   };
 
