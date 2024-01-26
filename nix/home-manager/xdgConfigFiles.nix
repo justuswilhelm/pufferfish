@@ -101,4 +101,8 @@ in
     source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
   };
+  alacrittyTheme = {
+    source = ../../selenized/terminals/alacritty/selenized-light.yml;
+    target = "alacritty/selenized-light.yml";
+  };
 }

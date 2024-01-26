@@ -131,6 +131,17 @@ in
     };
   };
 
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      import = [ "${xdgConfigHome}/alacritty/selenized-light.yml" ];
+      font = {
+        family = "Iosevka Fixed";
+        size = 11;
+      };
+    };
+  };
+
   programs.i3status = {
     enable = isDebian;
     enableDefault = false;

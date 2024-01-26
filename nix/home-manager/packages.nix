@@ -8,6 +8,7 @@ let
     # pkgs.swaylock
     # Disabling this just to be safe
     # pkgs.swayidle
+    pkgs.alacritty
 
     # GUIs
     pkgs.keepassxc
