@@ -524,5 +524,14 @@ in
     ];
   };
 
+  programs.ssh = {
+    enable = true;
+    extraConfig = ''
+      Host *
+          AddKeysToAgent yes
+          IdentityFile ~/.ssh/id_rsa
+    '';
+  };
+
   services.ssh-agent.enable = isDebian;
 }
