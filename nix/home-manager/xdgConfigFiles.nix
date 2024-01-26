@@ -9,13 +9,6 @@ in
     '';
     target = "nix/nix.conf";
   };
-  fishAsdfVm = {
-    target = "fish/conf.d/asdf.fish";
-    text = ''
-      set -x ASDF_DIR ${pkgs.asdf-vm}/share/asdf-vm
-      source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
-    '';
-  };
   fishFunctions = {
     target = "fish/functions";
     source = ../../fish/functions;

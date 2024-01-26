@@ -102,7 +102,7 @@ in
     # Best compability for true color
     terminal = "screen-256color";
   };
-  programs.fish = (import ./fish.nix) { inherit isDebian; };
+  programs.fish = (import ./fish.nix) { inherit isDebian pkgs; };
 
   programs.git = import ./git.nix { inherit xdgConfigHome isDarwin; };
 

@@ -1,39 +1,36 @@
-{ isDebian }:
+{ isDebian, pkgs }:
 let
-  debianConfig = ''
-    # for ssh-agent
-    # Need XDG_RUNTIME_DIR, which is not present over SSH
-    if [ -n $XDG_RUNTIME_DIR ]
-        set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent
-        if [ ! -e $SSH_AUTH_SOCK ]
-            echo "Could not find $SSH_AUTH_SOCK" >&2
-        end
+  debianLogin = ''
+    # Only need to source this once
+    source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
+
+    # We always want to enable wayland in moz, since we start sway through the terminal
+    set -x MOZ_ENABLE_WAYLAND 1
+
+    # If running from tty1 start sway
+    set TTY1 (tty)
+
+    if [ $TTY1 = /dev/tty1 ]
+        exec sway
     end
+  '';
+  debianInteractive = ''
   '';
 in
 {
   enable = true;
-  loginShellInit =
-    if isDebian then ''
-      # Only need to source this once
-      source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
-
-      # We always want to enable wayland in moz, since we start sway through the terminal
-      set -x MOZ_ENABLE_WAYLAND 1
-
-      # If running from tty1 start sway
-      set TTY1 (tty)
-
-      if [ $TTY1 = /dev/tty1 ]
-          exec sway
-      end
-    '' else "";
-  interactiveShellInit = ''
-    # Theme
-    # =====
-    # TODO make this selenized
+  loginShellInit = ''
     fish_config theme choose "Solarized Light"
-    ${if isDebian then debianConfig else ""}'';
+    ${if isDebian then debianLogin else ""}
+  '';
+  interactiveShellInit = ''
+  if ! set -q ASDF_DIR
+    # ASDF initialization
+    set -x ASDF_DIR ${pkgs.asdf-vm}/share/asdf-vm
+    source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
+  end
+  ${if isDebian then debianInteractive else ""}
+  '';
   shellAbbrs = {
     # Fish abbreviations
     # ------------------
