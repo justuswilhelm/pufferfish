@@ -16,7 +16,6 @@ let
     pkgs.gdb
   ];
   darwinOnly = lib.lists.optionals isDarwin [
-    pkgs.openjdk17
   ];
 in
 [
