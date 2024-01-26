@@ -50,8 +50,7 @@ in
   '';
 
   # Use a custom configuration.nix location.
-  # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin-configuration.nix
-  environment.darwinConfig = "$HOME/.config/nixpkgs/darwin-configuration.nix";
+  environment.darwinConfig = "$HOME/.config/nix/darwin/darwin-configuration.nix";
 
   launchd.labelPrefix = "net.jwpconsulting";
 
@@ -107,7 +106,7 @@ in
 
   nix.nixPath = [
     {
-      darwin-config = "$HOME/.config/nixpkgs/darwin-configuration.nix";
+      darwin-config = "$HOME/.config/nix/darwin/darwin-configuration.nix";
     }
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
