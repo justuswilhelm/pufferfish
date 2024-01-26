@@ -57,7 +57,7 @@ let
   bold = "bold";
 in
 # Test with
-# nix eval --file home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
+# nix eval --file $DOTFILES/nix/home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
 {lib } : {
   # https://neomutt.org/guide/configuration
   neomutt = let
