@@ -181,7 +181,6 @@ in {
     ];
     darwinOnly = lib.lists.optionals isDarwin [
       (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
-      (linkScript "${dotfiles}/karabiner" "${xdgConfigHome}")
     ];
     shared = [
       (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
@@ -297,6 +296,11 @@ in {
     cmusRc = {
       source = ../cmus/rc;
       target = "cmus/rc";
+    };
+    karabiner = {
+      enable = isDarwin;
+      source = ../karabiner/karabiner.json;
+      target = "karabiner/karabiner.json";
     };
   };
 
