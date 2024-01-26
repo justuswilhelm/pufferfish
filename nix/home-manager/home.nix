@@ -27,6 +27,7 @@ in {
   home.packages = let
     debianOnly = lib.lists.optionals isDebian [
       # Terminal
+      # TODO make me a home manager program
       pkgs.foot
 
       # Compositor
@@ -169,20 +170,30 @@ in {
 
   home.activation = let
     debianOnly = lib.lists.optionals isDebian [
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/pypoetry" "${xdgConfigHome}")
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/foot" "${xdgConfigHome}")
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/sway" "${xdgConfigHome}")
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/i3status" "${xdgConfigHome}")
       (linkScript "${dotfiles}/systemd" "${xdgConfigHome}")
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/x" "${xdgConfigHome}")
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xresources")
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xdefaults")
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/gdb" "${xdgConfigHome}")
     ];
     darwinOnly = lib.lists.optionals isDarwin [
+      # TODO symlink me as config file
       (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
     ];
     shared = [
+      # TODO symlink me as data file
       (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
     ];
     links = debianOnly ++ darwinOnly ++ shared;
