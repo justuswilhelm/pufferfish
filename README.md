@@ -91,3 +91,5 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 - Iosevka (`fonts/`): SIL Open Font License v1.1, refer to `fonts/LICENSE.md`
 - 24-bit-color (`bin/24-bit-color`): GPL v2, https://github.com/gnachman/iTerm2/blob/master/LICENSE
+- neovim selenized colors (`nvim/colors/selenized.vim`): MIT License, see `nvim/colors/LICENSE.txt`
+- iterm2 selenized colors (`selenized/terminals/iterm`): MIT License, see `selenized/LICENSE.txt`
