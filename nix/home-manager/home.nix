@@ -170,8 +170,6 @@ in
   home.activation =
     let
       debianOnly = lib.lists.optionals isDebian [
-        # TODO symlink me as config file
-        (linkScript "${dotfiles}/gdb" "${xdgConfigHome}")
       ];
       darwinOnly = lib.lists.optionals isDarwin [
       ];
@@ -316,6 +314,11 @@ in
         cache-dir = "${homeDirectory}/.cache/pypoetry"
       '';
       target = "pypoetry/config.toml";
+    };
+    gdb = {
+      enable = isDebian;
+      source = ../../gdb/gdbinit;
+      target = "gdb/gdbinit";
     };
   };
   # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
