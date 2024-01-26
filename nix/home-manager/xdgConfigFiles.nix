@@ -84,6 +84,46 @@ in
     source = ../../sway/config;
     target = "sway/config";
   };
+  swayLaunchers = {
+    text = ''
+      # start a terminal
+      bindsym $mod+Return exec "${pkgs.foot}/bin/foot"
+      bindsym $mod+Shift+Return exec "${pkgs.firefox-esr}/bin/firefox"
+      # open an url if given in wl clipboard, like example.com
+      bindsym $mod+Shift+o exec "${pkgs.fish}/bin/fish" -c "${pkgs.firefox-esr}/bin/firefox (wl-paste)"
+      bindsym $mod+Shift+t exec "${pkgs.tor-browser}/bin/tor-browser"
+      bindsym $mod+Shift+p exec "${pkgs.keepassxc}/bin/keepassxc"
+
+      # Launch my currently used workspace
+      bindsym $mod+m exec "${homeDirectory}/.dotfiles/bin/launch-workspace"
+      # Launch a view into my dotfiles etc
+      bindsym $mod+Shift+m exec "${homeDirectory}/.dotfiles/bin/launch-settings"
+      # Launch a view into my laptop
+      bindsym $mod+Shift+f exec "${homeDirectory}/.dotfiles/bin/mosh-lithium"
+      # start dmenu (a program launcher)
+      bindsym $mod+d exec "${pkgs.bemenu}/bin/bemenu-run" -c --hp '10' --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
+
+      exec --no-startup-id {
+          # Part of Debian
+          opensnitch-ui
+          # TODO migrate ibus to sway, there is no Japanese input right now
+          # ibus-daemon -dxr
+          # Lock after 2 minutes, suspend after six hours
+          # Part of debian
+          swayidle -w \
+              timeout 120 '${homeDirectory}/.dotfiles/bin/lock-screen swayidle' \
+              timeout 125 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+              timeout 21600 'systemctl poweroff'
+          # Wayland copy-pasting, part of debian
+          wl-paste -t text --watch clipman store --no-persist
+          # Will these two anyway
+          "${pkgs.firefox-esr}/bin/firefox"
+          "${pkgs.keepassxc}/bin/keepassxc"
+      }
+    '';
+    target = "sway/config.d/launchers";
+  };
   swayColors = {
     enable = isDebian;
     source = ../../sway/config.d/colors;

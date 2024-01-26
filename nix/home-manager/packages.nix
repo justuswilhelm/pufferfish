@@ -8,10 +8,13 @@ let
     # pkgs.swaylock
     # Disabling this just to be safe
     # pkgs.swayidle
+    pkgs.bemenu
     pkgs.alacritty
 
     # GUIs
     pkgs.keepassxc
+    pkgs.firefox-esr
+    pkgs.tor-browser
 
     # Debugger
     pkgs.gdb
