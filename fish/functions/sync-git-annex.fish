@@ -5,7 +5,7 @@ function sync-git-annex
     end
     for annex in $GIT_ANNEX_PATHS
         echo "Sync $annex"
-        env --chdir $annex git annex sync --content
+        fish -c "cd $annex && git annex sync --content"
         or return
     end
 end
