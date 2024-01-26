@@ -173,8 +173,6 @@ in
         # TODO symlink me as config file
         (linkScript "${dotfiles}/pypoetry" "${xdgConfigHome}")
         # TODO symlink me as config file
-        (linkScript "${dotfiles}/sway" "${xdgConfigHome}")
-        # TODO symlink me as config file
         (linkScript "${dotfiles}/x" "${xdgConfigHome}")
         # TODO symlink me as config file
         (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xresources")
@@ -310,6 +308,16 @@ in
       enable = isDarwin;
       source = ../../karabiner/karabiner.json;
       target = "karabiner/karabiner.json";
+    };
+    sway = {
+      enable = isDebian;
+      source = ../../sway/config;
+      target = "sway/config";
+    };
+    swayColors = {
+      enable = isDebian;
+      source = ../../sway/config.d/colors;
+      target = "sway/config.d/colors";
     };
   };
 
