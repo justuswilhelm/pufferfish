@@ -28,10 +28,6 @@ in
   home.packages =
     let
       debianOnly = lib.lists.optionals isDebian [
-        # Terminal
-        # TODO make me a home manager program
-        pkgs.foot
-
         # Compositor
         pkgs.i3status
         # This won't load because of some OpenGL issue
@@ -177,8 +173,6 @@ in
       debianOnly = lib.lists.optionals isDebian [
         # TODO symlink me as config file
         (linkScript "${dotfiles}/pypoetry" "${xdgConfigHome}")
-        # TODO symlink me as config file
-        (linkScript "${dotfiles}/foot" "${xdgConfigHome}")
         # TODO symlink me as config file
         (linkScript "${dotfiles}/sway" "${xdgConfigHome}")
         # TODO symlink me as config file
@@ -531,6 +525,17 @@ in
           AddKeysToAgent yes
           IdentityFile ~/.ssh/id_rsa
     '';
+  };
+
+  programs.foot = {
+    enable = isDebian;
+    settings = {
+      main = {
+        # Install foot-themes
+        include = "${pkgs.foot.themes}/share/foot/themes/selenized-light";
+        font = "Iosevka Fixed:size=11";
+      };
+    };
   };
 
   services.ssh-agent.enable = isDebian;
