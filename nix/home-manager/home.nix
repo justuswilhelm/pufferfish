@@ -171,12 +171,6 @@ in
     let
       debianOnly = lib.lists.optionals isDebian [
         # TODO symlink me as config file
-        (linkScript "${dotfiles}/x" "${xdgConfigHome}")
-        # TODO symlink me as config file
-        (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xresources")
-        # TODO symlink me as config file
-        (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xdefaults")
-        # TODO symlink me as config file
         (linkScript "${dotfiles}/gdb" "${xdgConfigHome}")
       ];
       darwinOnly = lib.lists.optionals isDarwin [
@@ -623,4 +617,17 @@ in
   };
 
   services.ssh-agent.enable = isDebian;
+
+  xresources = {
+    properties = {
+      # Dell U2720qm bought 2022 on Amazon Japan
+      # Has physical width x height
+      # 60.5 cm * 33.4 cm (approx)
+      # and claims 27 inches with 4K resolution (3840 x 2160)
+      # Which if we plug into
+      # https://www.sven.de/dpi/
+      # gives us
+      "Xft.dpi"= 163;
+    };
+  };
 }
