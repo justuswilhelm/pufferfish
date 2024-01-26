@@ -237,7 +237,7 @@ in {
     };
     fishFunctions = {
       target = "fish/functions";
-      source = ../fish/functions;
+      source = ../../fish/functions;
       recursive = true;
     };
     neomuttColors = {
@@ -245,7 +245,7 @@ in {
       target = "neomutt/colors";
     };
     neomuttShared = {
-      source = ../neomutt/shared;
+      source = ../../neomutt/shared;
       target = "neomutt/shared";
     };
     neomuttMailcap = {
@@ -269,40 +269,40 @@ in {
       target = "neomutt/mailcap";
     };
     nvimAfter = {
-      source = ../nvim/after;
+      source = ../../nvim/after;
       target = "nvim/after";
     };
     nvimSelenized = {
-      source = ../nvim/colors/selenized.vim;
+      source = ../../nvim/colors/selenized.vim;
       target = "nvim/colors/selenized.vim";
     };
     nvimInit = {
-      source = ../nvim/init.lua;
+      source = ../../nvim/init.lua;
       target = "nvim/init.lua";
     };
     nvimInitBase = {
-      source = ../nvim/init_base.lua;
+      source = ../../nvim/init_base.lua;
       target = "nvim/init_base.lua";
     };
     nvimPlug = {
-      source = ../nvim/autoload/plug.vim;
+      source = ../../nvim/autoload/plug.vim;
       target = "nvim/autoload/plug.vim";
     };
     nvimSnippets = {
-      source = ../nvim/snippets;
+      source = ../../nvim/snippets;
       target = "nvim/snippets";
     };
     pomoglorbo = {
-      source = ../pomoglorbo/config.ini;
+      source = ../../pomoglorbo/config.ini;
       target = "pomoglorbo/config.ini";
     };
     cmusRc = {
-      source = ../cmus/rc;
+      source = ../../cmus/rc;
       target = "cmus/rc";
     };
     karabiner = {
       enable = isDarwin;
-      source = ../karabiner/karabiner.json;
+      source = ../../karabiner/karabiner.json;
       target = "karabiner/karabiner.json";
     };
   };
@@ -317,7 +317,7 @@ in {
   programs.tmux = {
     enable = true;
     extraConfig = ''
-    ${builtins.readFile ../tmux/tmux.conf}
+    ${builtins.readFile ../../tmux/tmux.conf}
     ${selenized.tmux}
     '';
     # Set longer scrollback buffer

@@ -1,4 +1,3 @@
-# home-manager --extra-experimental-features flakes --extra-experimental-features nix-command switch --flake $HOME/.dotfiles/home-manager
 {
   description = "Debian configuration of justusperlwitz";
 

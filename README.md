@@ -47,13 +47,13 @@ Initial installation:
 
 ```
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-home-manager --extra-experimental-features flakes --extra-experimental-features nix-command switch --flake $HOME/.dotfiles/home-manager
+home-manager --extra-experimental-features flakes --extra-experimental-features nix-command switch --flake $HOME/.dotfiles/nix/debian
 ```
 
 Rebuild:
 
 ```
-home-manager switch --flake $DOTFILES/home-manager
+home-manager switch --flake $DOTFILES/nix/debian
 ```
 
 ## How to report a bug
