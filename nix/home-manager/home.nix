@@ -174,8 +174,6 @@ in
       darwinOnly = lib.lists.optionals isDarwin [
       ];
       shared = [
-        # TODO symlink me as data file
-        (linkScript "${dotfiles}/fonts" "${xdgDataHome}")
       ];
       links = debianOnly ++ darwinOnly ++ shared;
     in
@@ -199,6 +197,7 @@ in
   home.sessionVariables = {
     DOTFILES = dotfiles;
     XDG_CONFIG_HOME = xdgConfigHome;
+    XDG_DATA_HOME = xdgDataHome;
     EDITOR = "${pkgs.neovim}/bin/nvim";
     NNN_OPENER = "file";
     PASSWORD_STORE_DIR = "${xdgDataHome}/pass";
@@ -212,6 +211,14 @@ in
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
   });
+
+  xdg.dataFile = {
+    iosevka = {
+      source = ../../fonts/iosevka-fixed-regular.ttf;
+      target = "fonts/iosevka-fixed-regular.ttf";
+    };
+  };
+  xdg.dataHome = xdgDataHome;
 
   xdg.configFile = {
     nixConfig = {
