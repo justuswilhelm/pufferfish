@@ -54,6 +54,8 @@ in
     # Workaround for LANG issue
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+    # We always want to enable wayland in moz, since we start sway through the terminal
+    MOZ_ENABLE_WAYLAND = 1;
   });
 
   xdg.dataFile = {

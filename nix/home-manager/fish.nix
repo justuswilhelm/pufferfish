@@ -4,13 +4,8 @@ let
     # Only need to source this once
     source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
 
-    # We always want to enable wayland in moz, since we start sway through the terminal
-    set -x MOZ_ENABLE_WAYLAND 1
-
     # If running from tty1 start sway
-    set TTY1 (tty)
-
-    if [ $TTY1 = /dev/tty1 ]
+    if [ (tty) = /dev/tty1 ]
         exec sway
     end
   '';
