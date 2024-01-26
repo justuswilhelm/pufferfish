@@ -2,6 +2,27 @@
 
 Written according to [http://keepachangelog.com](Keep a Changelog).
 
+## [2024-01-27]
+
+### Added
+
+- neomutt config in `neomutt/`
+- 24-bit-color test program in `bin/`
+- pomoglorbo as a nix flake
+- cmus config in `cmus/`
+
+### Changed
+
+- Nix directly manages most of my dotfiles now and they are just symbolic links
+  added through home manager and nix-darwin.
+- Disable Apple Music auto-launch when pressing media keys
+- Relicense as GPL v3 or later
+- Unify debian and darwin nix config
+
+### Removed
+
+- bin/abbr_doc script
+
 ## [2024-01-16]
 
 I haven't written to this changelog for 9 years, woops! A lot has changed since
