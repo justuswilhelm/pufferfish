@@ -178,7 +178,6 @@ in {
       (linkScript "${dotfiles}/sway" "${xdgConfigHome}")
       # TODO symlink me as config file
       (linkScript "${dotfiles}/i3status" "${xdgConfigHome}")
-      (linkScript "${dotfiles}/systemd" "${xdgConfigHome}")
       # TODO symlink me as config file
       (linkScript "${dotfiles}/x" "${xdgConfigHome}")
       # TODO symlink me as config file
@@ -348,7 +347,7 @@ in {
     # for ssh-agent
     # Need XDG_RUNTIME_DIR, which is not present over SSH
     if [ -n $XDG_RUNTIME_DIR ]
-        set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent.socket
+        set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent
         if [ ! -e $SSH_AUTH_SOCK ]
             echo "Could not find $SSH_AUTH_SOCK" >&2
         end
@@ -515,4 +514,6 @@ in {
       }
     ];
   };
+
+  services.ssh-agent.enable = isDebian;
 }
