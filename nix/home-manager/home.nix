@@ -9,17 +9,6 @@ let
   xdgConfigHome = "${homeDirectory}/.config";
   xdgDataHome = "${homeDirectory}/.local/share";
   applicationSupport = "${homeDirectory}/Library/Application Support";
-  linkScript = from: to:
-    ''
-      if [ -a "${from}" ]
-      then
-        [ -n "$VERBOSE_ARG" ] && echo "Found source ${from}"
-        $DRY_RUN_CMD ln --force --symbolic $VERBOSE_ARG "${from}" "${to}"
-      else
-        [ -n "$VERBOSE_ARG" ] && echo "Could not find ${from}"
-        exit 1
-      fi
-    '';
 in
 {
   home.username = username;
@@ -168,24 +157,14 @@ in
     ++ darwinOnly;
 
   home.activation =
-    let
-      debianOnly = lib.lists.optionals isDebian [
-      ];
-      darwinOnly = lib.lists.optionals isDarwin [
-      ];
-      shared = [
-      ];
-      links = debianOnly ++ darwinOnly ++ shared;
-    in
     {
-      performNvimUpdate = lib.hm.dag.entryAfter [ "links" ] ''
+      performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         export PATH=${pkgs.git}/bin:$PATH
         $DRY_RUN_CMD exec ${pkgs.neovim}/bin/nvim \
           --headless \
           +"PlugInstall --sync" +qa
       '';
     }
-    // (lib.hm.dag.entriesAfter "links" [ "writeBoundary" ] links)
   ;
 
   home.stateVersion = "23.11";
