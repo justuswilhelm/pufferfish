@@ -171,8 +171,6 @@ in
     let
       debianOnly = lib.lists.optionals isDebian [
         # TODO symlink me as config file
-        (linkScript "${dotfiles}/pypoetry" "${xdgConfigHome}")
-        # TODO symlink me as config file
         (linkScript "${dotfiles}/x" "${xdgConfigHome}")
         # TODO symlink me as config file
         (linkScript "${dotfiles}/x/Xresources" "${xdgConfigHome}/.Xresources")
@@ -182,8 +180,6 @@ in
         (linkScript "${dotfiles}/gdb" "${xdgConfigHome}")
       ];
       darwinOnly = lib.lists.optionals isDarwin [
-        # TODO symlink me as config file
-        (linkScript "${dotfiles}/pypoetry" "${applicationSupport}")
       ];
       shared = [
         # TODO symlink me as data file
@@ -318,6 +314,24 @@ in
       enable = isDebian;
       source = ../../sway/config.d/colors;
       target = "sway/config.d/colors";
+    };
+    pyPoetryDebian = {
+      enable = isDebian;
+      # We would like to use XDG_CACHE_HOME here
+      text = ''
+        cache-dir = "${homeDirectory}/.cache/pypoetry"
+      '';
+      target = "pypoetry/config.toml";
+    };
+  };
+  # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
+  home.file = {
+    pyPoetryDarwin = {
+      enable = isDarwin;
+      text = ''
+        cache-dir = "${homeDirectory}/Library/Caches"
+      '';
+      target = "${applicationSupport}/pypoetry/config.toml";
     };
   };
 
