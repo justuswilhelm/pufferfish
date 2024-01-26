@@ -222,8 +222,10 @@ in {
   });
 
   xdg.configFile = {
-    nix = {
-      source = ../nix/nix.conf;
+    nixConfig = {
+      text = ''
+      experimental-features = nix-command flakes
+      '';
       target = "nix/nix.conf";
     };
     fishAsdfVm = {
