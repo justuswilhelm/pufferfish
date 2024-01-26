@@ -116,6 +116,7 @@ in
   pkgs.fdupes
   pkgs.tree
   pkgs.watch
+  pkgs.hyperfine
 
   # Time tracking
   pkgs.timewarrior
