@@ -136,8 +136,13 @@ in
     settings = {
       import = [ "${xdgConfigHome}/alacritty/selenized-light.yml" ];
       font = {
-        family = "Iosevka Fixed";
-        size = 11;
+        size = if isDebian then 11 else 12;
+        normal = {
+          family = "Iosevka Fixed";
+        };
+      };
+      window = {
+        option_as_alt = "OnlyRight";
       };
     };
   };
