@@ -8,7 +8,6 @@ let
     # pkgs.swaylock
     # Disabling this just to be safe
     # pkgs.swayidle
-    pkgs.alacritty
 
     # GUIs
     pkgs.keepassxc
@@ -100,6 +99,7 @@ in
   pkgs.fish
   pkgs.tmux
   pkgs.shellcheck
+  pkgs.alacritty
 
   # Version control
   pkgs.git
