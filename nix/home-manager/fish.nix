@@ -64,7 +64,7 @@ in
     # Fetch from all remote branches
     gfa = "git fetch --all";
     # Initialize an empty repository
-    gi = "git init; and git commit --allow-empty -m 'nitial commit'";
+    gi = "git init; and git commit --allow-empty -m 'Initial commit'";
     # Show the git log
     gl = "git log";
     # Show the git log in patch mode
