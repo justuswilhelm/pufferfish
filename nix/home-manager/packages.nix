@@ -35,6 +35,8 @@ in
   pkgs.curl
   pkgs.nmap
   pkgs.mitmproxy
+  pkgs.wget
+  pkgs.netcat-gnu
 
   # File transfers, Backups
   pkgs.rsync
