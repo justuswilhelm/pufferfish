@@ -6,7 +6,7 @@ function tomato
         return
     end
 
-    tmux new-session -c "$HOME" -d -s "$session" -n "Tomato"
+    tmux new-session -c "$HOME" -d -s "$session" -n Tomato
 
     tmux send-keys -t "$session" "watch timew summary" C-m
 
