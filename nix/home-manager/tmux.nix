@@ -2,6 +2,7 @@
   enable = true;
   extraConfig = ''
     ${builtins.readFile ../../tmux/tmux.conf}
+    ${builtins.readFile ../../tmux/vim-tmux-navigator.conf}
     ${selenized.tmux}
   '';
   # Set longer scrollback buffer
