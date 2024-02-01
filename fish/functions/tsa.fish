@@ -5,6 +5,6 @@ function tsa
         tmux switch-client -t "$session"
     else
         echo "Attaching to $session"
-        exec tmux attach-session -t "$session"
+        tmux attach-session -t "$session"
     end
 end
