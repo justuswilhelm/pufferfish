@@ -1,48 +1,53 @@
-#!/usr/bin/env fish
-if [ -n "$argv[1]" ]
-    set location "$argv[1]"
-else
-    read -S -P "where: " location || exit 1
-end
+function far -d "Replace all occurences of a word with another recursively in a given folder" -a location search with
+    if [ -z $location ]
+        read -S -P "where: " location || begin
+            echo "Must enter location"
+            return 1
+        end
+    end
 
-if [ -n "$argv[2]" ]
-    set replace "$argv[2]"
-else
-    read -P "replace: " replace || exit 1
-end
+    if [ -z $search ]
+        read -P "search: " search || begin
+            echo "Must enter search text"
+            return 1
+        end
+    end
 
+    if [ -z $with ]
+        read -P "with: " with || begin
+            echo "Must enter replacement text"
+            return 1
+        end
+    end
 
-if [ -n "$argv[3]" ]
-    set with "$argv[3]"
-else
-    read -P "with: " with || exit 1
-end
+    set files (
+        grep --recursive $location --regexp $search --files-with-matches
+    ) || begin
+        echo "Couldn't find matches in '$location' for '$search'"
+        return 1
+    end
 
-if ! set files (grep --recursive "$location" --regexp "$replace" --files-with-matches)
-    echo "Couldn't find matches in '$location' for '$replace'"
-    exit 1
-end
+    echo "Found matches for '$search' in these files:"
+    echo $files
 
-echo "Found matches for '$replace' in these files:"
-echo $files
+    set script "/$search/{
+    h
+    s//$with/g
+    H
+    x
+    s/\n/ >>> /
+    w /dev/stdout
+    x
+    }"
 
-set script "/$replace/{
-h
-s//$with/g
-H
-x
-s/\n/ >>> /
-w /dev/stdout
-x
-}"
+    echo "Script is
+$script"
 
-echo "Script is"
-echo "$script"
-
-for file in $files
-    echo "Replacing '$replace' with '$with' in '$file'"
-    if ! sed --in-place "$script" "$file"
-        echo "Couldn't replace '$replace' with '$with' in '$file'"
-        exit 1
+    for file in $files
+        echo "Replacing '$search' with '$with' in '$file'"
+        if ! sed --in-place $script $file
+            echo "Couldn't search '$search' with '$with' in '$file'"
+            return 1
+        end
     end
 end
