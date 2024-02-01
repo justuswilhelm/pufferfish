@@ -71,6 +71,7 @@ in
   pkgs.poetry
   pkgs.jq
   pkgs.miller
+  pkgs.nodejs_20
 
   # TUIs
   pkgs.htop
