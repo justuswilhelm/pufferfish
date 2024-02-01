@@ -1,21 +1,20 @@
-#!/bin/bash
-if ! files=$(git diff --cached --name-only)
-then
-    echo "Nothing is staged"
-    exit 1
-fi
-# Last 10 commit subjects, commented out
-if ! message=$(git log --pretty=%s -- $files | head -n10 | sed -e 's/^/# /')
-then
-    echo "Couldn't get log for these files:
-    $files
-    "
-    exit 1
-fi
+function commit -d "Suggest git commit messages based on previous commit messages of staged files"
+    if ! set files (git diff --cached --name-only)
+        echo "Nothing is staged"
+        exit 1
+    end
+    # Last 10 commit subjects, commented out
+    if ! set message (git log --pretty=%s -- $files | head -n10 | sed -e 's/^/# /')
+        echo "Couldn't get log for these files:
+        $files
+        "
+        exit 1
+    end
 
-git commit --edit --message "
+    git commit --edit --message "
 
-# Commit message suggestions:
-# ---------------------------
-#
-$message"
+    # Commit message suggestions:
+    # ---------------------------
+    #
+    $message"
+end
