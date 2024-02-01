@@ -7,3 +7,4 @@ i3/workspace-*.json
 fonts/LICENSE.md
 macos-terminal-selenized
 selenized
+flake.lock
