@@ -1,31 +1,26 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env fish
+set output_file "$(mktemp).png"
 
-output_file="$(mktemp).png"
-
-if [ -z "$1" ]
-then
-    message="Hello, World!"
+if [ -z $argv[1] ]
+    message "Hello, World!"
 else
-    message="$1"
-fi
+    message $argv[1]
+end
 
-if ! font="$(fc-match sans file | cut -d= -f2)"
-then
+if ! set font (fc-match sans file | cut -d= -f2)
     echo "Couldn't find font"
-    font=""
-fi
+    set font ""
+end
 
 if ! convert \
-    -font "$font" \
-    -size 1024x768 xc:white \
-    -gravity center \
-    -pointsize 24 \
-    -fill black \
-    -annotate +0+0 \
-    "$message" \
-    "$output_file"
-then
+        -font $font \
+        -size 1024x768 xc:white \
+        -gravity center \
+        -pointsize 24 \
+        -fill black \
+        -annotate +0+0 \
+        $message \
+        $output_file
     swaylock \
         --show-failed-attempts \
         --color ff6e67 \
@@ -35,5 +30,5 @@ else
         --show-failed-attempts \
         --color ff6e67 \
         --daemonize \
-        --image "$output_file"
-fi
+        --image $output_file
+end
