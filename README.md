@@ -58,6 +58,21 @@ Rebuild:
 rebuild
 ```
 
+## Formatting the code
+
+There is a nix flake in the root directory that installs prettier. Inside
+a `nix develop` shell, you can run
+
+```
+prettier --check .
+```
+
+to check everything. If you want to format everything, run
+
+```
+prettier --write .
+```
+
 ## How to report a bug
 
 You can file an issue
