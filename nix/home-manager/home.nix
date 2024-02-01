@@ -90,23 +90,7 @@ in
     nix-direnv.enable = true;
   };
 
-  programs.tmux = {
-    enable = true;
-    extraConfig = ''
-      ${builtins.readFile ../../tmux/tmux.conf}
-      ${selenized.tmux}
-    '';
-    # Set longer scrollback buffer
-    historyLimit = 500000;
-    # Escape time, for vi
-    escapeTime = 10;
-    # Mouse input
-    mouse = true;
-    # vi navigation in tmux screens
-    keyMode = "vi";
-    # Best compability for true color
-    terminal = "screen-256color";
-  };
+  programs.tmux = (import ./tmux.nix) { inherit selenized; };
   programs.fish = (import ./fish.nix) { inherit isDebian pkgs; };
 
   programs.git = import ./git.nix { inherit xdgConfigHome isDarwin; };
