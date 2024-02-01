@@ -1,72 +1,63 @@
-#!/bin/bash
+#!/usr/bin/env fish
 # Install a pip package in a new Python virtual environment
-if test -z "$1"
-then
-    echo "Usage: venv-install [package]"
+if [ -z $argv[1] ]
+    echo "Usage venv-install [package]"
     exit 1
-fi
+end
 
-package="$1"
+set package $argv[1]
 
-VENV_PATH="$HOME/.local/share/$package"
-BIN_DIR="$VENV_PATH/bin"
-LOCAL_BIN_DIR="$HOME/.local/bin"
-PIP="$BIN_DIR/pip"
-declare -a binaries
+set PREFIX "$HOME/.local/share/venv-install"
+set VENV_PATH "$PREFIX/$package"
+set BIN_DIR "$VENV_PATH/bin"
+set LOCAL_BIN_DIR "$HOME/.local/bin"
+set PIP "$BIN_DIR/pip"
 
-if test "$#" -gt 1
-then
-    echo "Specified binary name(s) to link:"
-    binaries=${@:2}
-    echo $binaries
+if [ (count $argv) -gt 1 ]
+    echo "Specified binary name(s) to link"
+    set binaries $argv[2..]
+    echo "Assuming binaries: $binaries"
 else
-    echo "Assuming you want to link binary '$package' contained in '$package'"
-    binaries="$BIN_DIR/$package"
-fi
+    set binaries "$BIN_DIR/$package"
+    echo "Assuming you want to link binary '$binaries' contained in '$package'"
+end
 
-if test -e "$VENV_PATH"
-then
+if [ -e $VENV_PATH ]
     echo "Warning: a venv already exists at '$VENV_PATH'. Continue?"
-    read -p "Enter 'y' to continue: " cont
-    if test "$cont" != "y"
-    then
+    read -P "Enter 'y' to continue: " cont
+    if [ $cont != y ]
         echo "Quitting"
         exit 1
-    fi
-fi
+    end
+end
 
-if ! python3 -m venv "$VENV_PATH"
-then
+if ! python3 -m venv $VENV_PATH
     echo "Couldn't create virtual environment at '$VENV_PATH'"
     exit 1
-fi
+end
 
-if ! "$PIP" install -U pip setuptools
-then
+if ! command $PIP install -U pip setuptools
     echo "Couldn't update and install pip/setuptools"
     echo "You might want to manually inspect the venv path at '$VENV_PATH'"
     exit 1
-fi
+end
 
-if ! "$PIP" install "$package"
-then
+if ! command $PIP install $package
     echo "Couldn't install '$package'"
     echo "You might want to manually inspect the venv path at '$VENV_PATH'"
     exit 1
-fi
+end
 
 echo "Linking binaries: $binaries"
 
 for binary in $binaries
-do
-    prefixed="$package-$binary"
+    set prefixed "$package-$binary"
     echo "Prefixed the binary so that it becomes: $prefixed"
-    src="$BIN_DIR/$binary"
-    dest="$LOCAL_BIN_DIR/$prefixed"
-    if ! ln -v -s "$src" "$dest"
-    then
+    set src "$BIN_DIR/$binary"
+    set dest "$LOCAL_BIN_DIR/$prefixed"
+    ln -v -s "$src" "$dest" || begin
         echo "Failed to link '$package' binary '$src' to '$dest'"
         echo "You might want to manually inspect the venv path at '$VENV_PATH'"
         exit 1
-    fi
-done
+    end
+end
