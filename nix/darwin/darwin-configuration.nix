@@ -37,10 +37,11 @@ in
     pkgs.offlineimap
   ];
   environment.shells = [ pkgs.fish ];
-  environment.etc = {
-    terminfo = {
-      source = "${pkgs.ncurses}/share/terminfo";
-    };
+  environment.variables = {
+    TERMINFO_DIRS = [
+      "${pkgs.ncurses}/share/terminfo"
+      "${pkgs.alacritty.terminfo}/share/terminfo"
+    ];
   };
 
   # Rid ourselves of Apple Music automatically launching
