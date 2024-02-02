@@ -1,3 +1,4 @@
+* TODO Configure macOS /etc/sshd using nix-darwin
 * TODO Add a way to have local git settings (email / name)
   So far we have just added email and name and checked it into the repo. On the
   other hand, I would like to be able to have irssi settings be in irssi/config
