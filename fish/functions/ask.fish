@@ -23,5 +23,5 @@ function ask
         -H "Content-Type: application/json" \
         --data $query_data \
         https://kagi.com/api/v0/fastgpt |
-    jq "."
+        jq "."
 end

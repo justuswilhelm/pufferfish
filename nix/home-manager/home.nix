@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, specialArgs, osConfig, ... }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
   isDebian = specialArgs.system == "debian";
@@ -90,24 +90,8 @@ in
     nix-direnv.enable = true;
   };
 
-  programs.tmux = {
-    enable = true;
-    extraConfig = ''
-      ${builtins.readFile ../../tmux/tmux.conf}
-      ${selenized.tmux}
-    '';
-    # Set longer scrollback buffer
-    historyLimit = 500000;
-    # Escape time, for vi
-    escapeTime = 10;
-    # Mouse input
-    mouse = true;
-    # vi navigation in tmux screens
-    keyMode = "vi";
-    # Best compability for true color
-    terminal = "screen-256color";
-  };
-  programs.fish = (import ./fish.nix) { inherit isDebian pkgs; };
+  programs.tmux = (import ./tmux.nix) { inherit selenized; };
+  programs.fish = (import ./fish.nix) { inherit isDebian pkgs lib osConfig; };
 
   programs.git = import ./git.nix { inherit xdgConfigHome isDarwin; };
 
@@ -136,8 +120,13 @@ in
     settings = {
       import = [ "${xdgConfigHome}/alacritty/selenized-light.yml" ];
       font = {
-        family = "Iosevka Fixed";
-        size = 11;
+        size = if isDebian then 11 else 12;
+        normal = {
+          family = "Iosevka Fixed";
+        };
+      };
+      window = {
+        option_as_alt = "OnlyRight";
       };
     };
   };

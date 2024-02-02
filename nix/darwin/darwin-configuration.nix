@@ -37,10 +37,11 @@ in
     pkgs.offlineimap
   ];
   environment.shells = [ pkgs.fish ];
-  environment.etc = {
-    terminfo = {
-      source = "${pkgs.ncurses}/share/terminfo";
-    };
+  environment.variables = {
+    TERMINFO_DIRS = [
+      "${pkgs.ncurses}/share/terminfo"
+      "${pkgs.alacritty.terminfo}/share/terminfo"
+    ];
   };
 
   # Rid ourselves of Apple Music automatically launching
@@ -130,6 +131,19 @@ in
   programs.fish = {
     enable = true;
     useBabelfish = true;
+  };
+
+  system.defaults = {
+    NSGlobalDomain = {
+      # https://github.com/alacritty/alacritty/issues/7333#issuecomment-1784737226
+      AppleFontSmoothing = 0;
+    };
+    # XXX broken with
+    # ~$defaults write com.apple.universalaccess reduceMotion -bool true
+    # 2024-01-27 09:27:42.075 defaults[24764:10236019] Could not write domain com.apple.universalaccess; exiting
+    # universalaccess = {
+    #   reduceMotion = true;
+    # };
   };
 
   # Used for backwards compatibility, please read the changelog before changing.

@@ -9,7 +9,6 @@ let
     # Disabling this just to be safe
     # pkgs.swayidle
     pkgs.bemenu
-    pkgs.alacritty
     pkgs.grim
     pkgs.slurp
 
@@ -41,6 +40,8 @@ in
   pkgs.curl
   pkgs.nmap
   pkgs.mitmproxy
+  pkgs.wget
+  pkgs.netcat-gnu
 
   # File transfers, Backups
   pkgs.rsync
@@ -75,6 +76,7 @@ in
   pkgs.poetry
   pkgs.jq
   pkgs.miller
+  pkgs.nodejs_20
 
   # TUIs
   pkgs.htop
@@ -105,6 +107,7 @@ in
   pkgs.fish
   pkgs.tmux
   pkgs.shellcheck
+  pkgs.alacritty
 
   # Version control
   pkgs.git

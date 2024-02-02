@@ -58,6 +58,21 @@ Rebuild:
 rebuild
 ```
 
+## Formatting the code
+
+There is a nix flake in the root directory that installs prettier. Inside
+a `nix develop` shell, you can run
+
+```
+prettier --check .
+```
+
+to check everything. If you want to format everything, run
+
+```
+prettier --write .
+```
+
 ## How to report a bug
 
 You can file an issue
@@ -84,10 +99,10 @@ version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program.  If not, see <https://www.gnu.org/licenses/>.
+this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Credits
 

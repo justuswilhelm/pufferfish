@@ -6,11 +6,11 @@ function manage-dotfiles
         return
     end
 
-    tmux new-session -c "$DOTFILES" -d -s "$session" -n "Dotfilezzzz"
-    tmux send-keys -t "$session:0" "nvim" C-m
+    tmux new-session -c "$DOTFILES" -d -s "$session" -n Dotfilezzzz
+    tmux send-keys -t "$session:0" nvim C-m
 
     tmux split-window -c "$DOTFILES" -t "$session:0"
-    tmux send-keys -t "$session:0" "dotfiles" C-m
+    tmux send-keys -t "$session:0" dotfiles C-m
 
     tsa "$session"
 end

@@ -1,45 +1,42 @@
-#!/bin/bash
+#!/usr/bin/env fish
 # Expects $recipient to be set to an email address in our gpg keychain
-# TODO: Sign our dumps
-# TODO: Exit trap lvremove
-set -e
-set -o pipefail
+# TODO Sign our dumps
+# TODO Exit trap lvremove
 
-cleanup () {
+function cleanup --on-signal EXIT --on-signal SIGINT
     sudo lvremove --yes "$snap"
-}
-trap cleanup EXIT
-trap cleanup SIGINT
+end
 
-bs=4M
-vg_name=helium--vg
-root_name="$vg_name-root"
-fs="/dev/mapper/$root_name"
-snap_name="rootsnap$(openssl rand -hex 8)"
-snap="/dev/mapper/$vg_name-$snap_name"
-out_dir=/srv/dumping-grounds/dump
-dest="$out_dir/$root_name-$(date -R).gz.gpg"
+set bs 4M
+set vg_name helium--vg
+set root_name "$vg_name-root"
+set fs "/dev/mapper/$root_name"
+set snap_name "rootsnap$(openssl rand -hex 8)"
+set snap "/dev/mapper/$vg_name-$snap_name"
+set out_dir /srv/dumping-grounds/dump
+set dest "$out_dir/$root_name-$(date -R).gz.gpg"
 
 echo "Creating snapshot of $root_name at $snap"
-if sudo lvcreate --size 8G --snapshot --name "$snap_name" "$fs"
-then
-    size="$(df -h "$snap" | awk 'NR==2{print $3}')"
+if sudo lvcreate --size 8G --snapshot --name $snap_name $fs
+    echo "Snapshot created"
+    set size (df -h $snap | awk 'NR==2{print $3}')
     echo "Approximate size of snapshot is $size"
 else
-    exit
-fi
+    echo "Unable to create snapshot"
+    exit 1
+end
 
 echo "Dumping $snap to $dest"
-if sudo dd if="$snap" bs="$bs" |
-    pv --cursor --name "Dump" --size "$size" |
-    gzip --stdout - |
-    gpg --encrypt --recipient "$recipient" |
-    pv --cursor  --name "Compressed and gpg'ed" |
-    sudo tee "$dest" > /dev/null
-then
+
+if sudo dd if=$snap bs=$bs |
+        pv --cursor --name Dump --size $size |
+        gzip --stdout - |
+        gpg --encrypt --recipient $recipient |
+        pv --cursor --name "Compressed and gpg'ed" |
+        sudo tee $dest >/dev/null
     echo "Dumping complete"
 else
     echo "Dumping did not work, removing archive at $dest"
-    sudo rm "$dest"
-    exit
-fi
+    sudo rm $dest
+    exit 1
+end
