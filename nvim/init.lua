@@ -326,12 +326,30 @@ function toggle_venn()
         vim.opt_local.virtualedit = "all"
         opts = { buffer = true }
         -- draw a line on HJKL keystokes
+        -- TODO call VBox function directly here
         vim.keymap.set("n", "J", "<C-v>j:VBox<CR>", opts)
         vim.keymap.set("n", "K", "<C-v>k:VBox<CR>", opts)
         vim.keymap.set("n", "L", "<C-v>l:VBox<CR>", opts)
         vim.keymap.set("n", "H", "<C-v>h:VBox<CR>", opts)
         -- draw a box by pressing "f" with visual selection
         vim.keymap.set("v", "f", ":VBox<CR>", opts)
+
+        set_line = require"venn".set_line
+        set_arrow = require"venn".set_arrow
+        set_line({ "s", "s" , " ", " " }, '|')
+        set_line({ " ", "s" , " ", "s" }, '.')
+        set_line({ "s", " " , " ", "s" }, '.')
+        set_line({ " ", "s" , "s", " " }, '.')
+        set_line({ "s", " " , "s", " " }, '.')
+        set_line({ " ", "s" , "s", "s" }, '+')
+        set_line({ "s", " " , "s", "s" }, '+')
+        set_line({ "s", "s" , " ", "s" }, '+')
+        set_line({ "s", "s" , "s", " " }, '+')
+        set_line({ " ", " " , "s", "s" }, '-')
+        set_arrow("up", '^')
+        set_arrow("down", 'v')
+        set_arrow("left", '<')
+        set_arrow("right", '>')
     end
 end
 -- toggle keymappings for venn using <leader>v
