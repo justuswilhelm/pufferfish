@@ -142,6 +142,7 @@ in
 
   # Nix
   pkgs.nix-index
+  pkgs.cntr
 ]
 ++ debianOnly
 ++ darwinOnly
