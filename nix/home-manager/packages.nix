@@ -130,6 +130,7 @@ in
   pkgs.tree
   pkgs.watch
   pkgs.hyperfine
+  pkgs.pv
 
   # Time tracking
   pkgs.timewarrior
