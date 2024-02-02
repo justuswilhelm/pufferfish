@@ -93,6 +93,10 @@ in
       bindsym $mod+Shift+o exec "${pkgs.fish}/bin/fish" -c "${pkgs.firefox-esr}/bin/firefox (wl-paste)"
       bindsym $mod+Shift+t exec "${pkgs.tor-browser}/bin/tor-browser"
       bindsym $mod+Shift+p exec "${pkgs.keepassxc}/bin/keepassxc"
+      # Take a screenshot
+      bindsym $mod+Shift+b exec "${pkgs.grim}/bin/grim"
+      # Take a screenshot of a region
+      bindsym $mod+Shift+g exec "${pkgs.grim}/bin/grim" -g "$(${pkgs.slurp}/bin/slurp)"
 
       # Launch my currently used workspace
       bindsym $mod+m exec "${homeDirectory}/.dotfiles/bin/launch-workspace"

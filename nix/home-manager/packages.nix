@@ -10,6 +10,8 @@ let
     # pkgs.swayidle
     pkgs.bemenu
     pkgs.alacritty
+    pkgs.grim
+    pkgs.slurp
 
     # GUIs
     pkgs.keepassxc
