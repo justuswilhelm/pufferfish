@@ -8,12 +8,21 @@ let
     # pkgs.swaylock
     # Disabling this just to be safe
     # pkgs.swayidle
+    pkgs.bemenu
+    pkgs.grim
+    pkgs.slurp
 
     # GUIs
     pkgs.keepassxc
+    pkgs.firefox-esr
+    pkgs.tor-browser
 
     # Debugger
     pkgs.gdb
+
+    # Nix
+    # Not available on Darwin
+    pkgs.cntr
   ];
   darwinOnly = lib.lists.optionals isDarwin [
   ];
