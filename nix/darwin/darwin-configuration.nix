@@ -137,6 +137,8 @@ in
     NSGlobalDomain = {
       # https://github.com/alacritty/alacritty/issues/7333#issuecomment-1784737226
       AppleFontSmoothing = 0;
+      "com.apple.keyboard.fnState" = true;
+      NSDocumentSaveNewDocumentsToCloud = false;
     };
     # XXX broken with
     # ~$defaults write com.apple.universalaccess reduceMotion -bool true
@@ -144,6 +146,21 @@ in
     # universalaccess = {
     #   reduceMotion = true;
     # };
+    dock = {
+      # Hot corner actions
+      # Mission control
+      wvous-bl-corner = 2;
+      # Disabled
+      wvous-br-corner = 1;
+      wvous-tl-corner = 1;
+      wvous-tr-corner = 1;
+    };
+    # Hide desktop, show all extensions
+    finder = {
+      AppleShowAllExtensions = true;
+      CreateDesktop = false;
+      FXEnableExtensionChangeWarning = false;
+    };
   };
 
   # Used for backwards compatibility, please read the changelog before changing.
