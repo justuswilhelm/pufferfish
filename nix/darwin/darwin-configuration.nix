@@ -43,6 +43,12 @@ in
       "${pkgs.alacritty.terminfo}/share/terminfo"
     ];
   };
+  environment.etc = {
+    sshd_config = {
+      source = ./sshd_config;
+      target = "ssh/sshd_config";
+    };
+  };
 
   # Rid ourselves of Apple Music automatically launching
   # https://apple.stackexchange.com/questions/372948/how-can-i-prevent-music-app-from-starting-automatically-randomly/373557#373557
