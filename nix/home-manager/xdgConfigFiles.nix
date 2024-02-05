@@ -150,4 +150,9 @@ in
     source = ../../selenized/terminals/alacritty/selenized-light.yml;
     target = "alacritty/selenized-light.yml";
   };
+  aerospace = {
+    enable = isDarwin;
+    source = ../../aerospace/aerospace.toml;
+    target = "aerospace/aerospace.toml";
+  };
 }

@@ -1,5 +1,21 @@
 { lib, isDebian, isDarwin, pkgs, extraPkgs }:
 let
+  aeroSpace = pkgs.stdenv.mkDerivation {
+    pname = "aerospace";
+    version = "0.8.4-Beta";
+    nativeBuildInputs = [ pkgs.installShellFiles ];
+    buildPhase = "";
+    installPhase = ''
+      mkdir -p $out/bin
+      cp bin/aerospace $out/bin
+      installManPage manpage/*
+    '';
+
+    src = pkgs.fetchzip {
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.4-Beta/AeroSpace-v0.8.4-Beta.zip";
+      hash = "sha256-EH+8K7gHs0phBMupPpzpQt5th3lQh5eNQSuwJEDMY4E=";
+    };
+  };
   debianOnly = lib.lists.optionals isDebian [
     # Compositor
     # This won't load because of some OpenGL issue
@@ -25,6 +41,7 @@ let
     pkgs.cntr
   ];
   darwinOnly = lib.lists.optionals isDarwin [
+    aeroSpace
   ];
 in
 [
