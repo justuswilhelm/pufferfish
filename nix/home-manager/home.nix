@@ -116,7 +116,7 @@ in
   };
 
   programs.alacritty = {
-    enable = true;
+    enable = isDarwin;
     settings = {
       import = [ "${xdgConfigHome}/alacritty/selenized-light.yml" ];
       font = {

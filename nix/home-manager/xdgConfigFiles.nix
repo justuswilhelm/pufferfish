@@ -147,6 +147,7 @@ in
     target = "gdb/gdbinit";
   };
   alacrittyTheme = {
+    enable = isDarwin;
     source = ../../selenized/terminals/alacritty/selenized-light.yml;
     target = "alacritty/selenized-light.yml";
   };
