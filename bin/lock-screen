@@ -2,9 +2,9 @@
 set output_file "$(mktemp).png"
 
 if [ -z $argv[1] ]
-    message "Hello, World!"
+    set message "Hello, World!"
 else
-    message $argv[1]
+    set message $argv[1]
 end
 
 if ! set font (fc-match sans file | cut -d= -f2)
