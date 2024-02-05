@@ -1,5 +1,8 @@
 # Reference: https://github.com/i3/i3/blob/next/etc/config
 
+# Start AeroSpace at login
+start-at-login = true
+
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = false
 
