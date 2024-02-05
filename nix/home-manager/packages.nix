@@ -98,6 +98,10 @@ in
   pkgs.jq
   pkgs.miller
   pkgs.nodejs_20
+  # Begrudgingly adding this to stop nvim lspconfig complaining about it
+  # missing. Possible workaround?
+  # https://stackoverflow.com/questions/75397223/can-i-configure-nvim-lspconfig-to-fail-silently-rather-than-print-a-warning/76873612#76873612
+  pkgs.nodePackages.pyright
 
   # TUIs
   pkgs.htop
