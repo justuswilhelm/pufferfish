@@ -3,8 +3,9 @@
 # TODO Sign our dumps
 # TODO Exit trap lvremove
 
-function cleanup --on-signal EXIT --on-signal SIGINT
-    sudo lvremove --yes "$snap"
+function cleanup --on-process-exit $fish_pid --on-signal SIGINT
+    echo "Removing snapshot at $snap"
+    sudo lvremove --yes $snap
 end
 
 set bs 4M
@@ -19,13 +20,16 @@ set dest "$out_dir/$root_name-$(date -R).gz.gpg"
 echo "Creating snapshot of $root_name at $snap"
 if sudo lvcreate --size 8G --snapshot --name $snap_name $fs
     echo "Snapshot created"
-    set size (df -h $snap | awk 'NR==2{print $3}')
+    lsblk $snap
+    df -h $snap
+    set size (lsblk $snap | awk 'NR==2{print $4}')
     echo "Approximate size of snapshot is $size"
 else
     echo "Unable to create snapshot"
     exit 1
 end
 
+echo "Assuming recipient is $recipient"
 echo "Dumping $snap to $dest"
 
 if sudo dd if=$snap bs=$bs |
@@ -33,7 +37,8 @@ if sudo dd if=$snap bs=$bs |
         gzip --stdout - |
         gpg --encrypt --recipient $recipient |
         pv --cursor --name "Compressed and gpg'ed" |
-        sudo tee $dest >/dev/null
+        sudo tee $dest | xxd
+    echo "Pipestatus $pipestatus"
     echo "Dumping complete"
 else
     echo "Dumping did not work, removing archive at $dest"
