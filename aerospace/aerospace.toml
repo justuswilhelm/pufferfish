@@ -87,3 +87,7 @@ l = 'resize width +50'
 
 # back to normal
 alt-r = 'mode main'
+
+[[on-window-detected]]
+if.app-id = "com.apple.mail"
+run = ["move-node-to-workspace 5"]
