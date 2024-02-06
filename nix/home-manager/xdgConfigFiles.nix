@@ -156,4 +156,11 @@ in
     source = (import ./aerospace.nix) { inherit pkgs lib; };
     target = "aerospace/aerospace.toml";
   };
+  timewarrior = {
+    text = ''
+      import ${pkgs.timewarrior}/share/doc/timew/themes/dark_blue.theme
+      ${builtins.readFile ../../timewarrior/timewarrior.cfg}
+    '';
+    target = "timewarrior/timewarrior.cfg";
+  };
 }

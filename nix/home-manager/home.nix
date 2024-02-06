@@ -51,8 +51,6 @@ in
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
-    # TODO split up time warrior conf and db
-    TIMEWARRIORDB = "${xdgConfigHome}/timewarrior";
   } // (lib.attrsets.optionalAttrs isDebian {
     # Workaround for LANG issue
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
