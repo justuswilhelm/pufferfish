@@ -7,9 +7,6 @@ enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = false
 
 [mode.main.binding]
-# exec-and-forget bindings do not work well, probably for path reasons
-# alt-enter = '''exec-and-forget "/run/current-system/sw/bin/fish alacritty"'''
-
 # change focus
 alt-h = 'focus left'
 alt-j = 'focus down'

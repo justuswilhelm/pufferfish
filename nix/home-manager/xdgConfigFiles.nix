@@ -153,7 +153,7 @@ in
   };
   aerospace = {
     enable = isDarwin;
-    source = ../../aerospace/aerospace.toml;
+    source = (import ./aerospace.nix) { inherit pkgs lib; };
     target = "aerospace/aerospace.toml";
   };
 }
