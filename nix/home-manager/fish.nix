@@ -9,29 +9,32 @@ let
         exec sway
     end
   '';
+  darwinLogin =
+    let
+      # Courtesy of
+      # https://github.com/LnL7/nix-darwin/issues/122#issuecomment-1659465635
+      # This naive quoting is good enough in this case. There shouldn't be any
+      # double quotes in the input string, and it needs to be double quoted in case
+      # it contains a space (which is unlikely!)
+      dquote = str: "\"" + str + "\"";
+
+      makeBinPathList = map (path: path + "/bin");
+      path = lib.concatMapStringsSep " " dquote (makeBinPathList osConfig.environment.profiles);
+    in
+    ''
+      fish_add_path --move --path ${path}
+      set fish_user_paths $fish_user_paths
+    '';
   debianInteractive = ''
   '';
 in
 {
   enable = true;
-  loginShellInit =
-    if isDebian then ''
-      fish_config theme choose "Solarized Light"
-    '' else
-      let
-        # Courtesy of
-        # https://github.com/LnL7/nix-darwin/issues/122#issuecomment-1659465635
-        # This naive quoting is good enough in this case. There shouldn't be any
-        # double quotes in the input string, and it needs to be double quoted in case
-        # it contains a space (which is unlikely!)
-        dquote = str: "\"" + str + "\"";
-
-        makeBinPathList = map (path: path + "/bin");
-      in
-      ''
-        fish_add_path --move --path ${lib.concatMapStringsSep " " dquote (makeBinPathList osConfig.environment.profiles)}
-        set fish_user_paths $fish_user_paths
-      '';
+  loginShellInit = ''
+    fish_config theme choose "Solarized Light"
+  '' + (
+    if isDebian then debianLogin else darwinLogin
+  );
   interactiveShellInit = ''
     if ! set -q ASDF_DIR
       # ASDF initialization
