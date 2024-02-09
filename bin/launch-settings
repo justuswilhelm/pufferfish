@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Only works on Debian right now ;)
 swaymsg workspace 4
 swaymsg exec keepassxc
 sleep "0.3"
