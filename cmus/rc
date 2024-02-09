@@ -1,5 +1,8 @@
 set output_plugin=ao
+set lib_sort=genre artist
 
+# https://manpages.ubuntu.com/manpages/trusty/man1/cmus.1.html
+set format_playlist=%{genre} %{artist} %-15%{album} %3{tracknumber}. %{title}%= %{date} %{duration}
 # Taken from cmus-themes/themes/solarized-light.theme
 # Found here:
 # https://github.com/johnnymatthews/cmus-themes/blob/master/themes/solarized-light.theme
