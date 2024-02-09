@@ -10,7 +10,7 @@ function manage-dotfiles
     tmux send-keys -t "$session:0" nvim C-m
 
     tmux split-window -c "$DOTFILES" -h -t "$session:0"
-    tmux send-keys -t "$session:0" dotfiles C-m
+    tmux send-keys -t "$session:0" git status C-m
 
     tsa "$session"
 end
