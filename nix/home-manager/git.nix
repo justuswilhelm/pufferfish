@@ -8,7 +8,7 @@
   };
   extraConfig = {
     pull = {
-      rebase = true;
+      rebase = false;
     };
     rebase = {
       autostash = true;
