@@ -46,5 +46,10 @@ function branch-off
 
     echo "New branch will be $new_branch"
     git checkout -b $new_branch || return
-    git rebase "$remote/main"
+
+    if set -q remote
+        echo "Ensuring we are up to date with $remote"
+        git fetch $remote || return
+        git rebase "$remote/main" || return
+    end
 end
