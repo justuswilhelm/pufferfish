@@ -122,6 +122,9 @@ in
     package = pkgs.postgresql_15;
   };
 
+  # Auto upgrade nix package and the daemon service.
+  services.nix-daemon.enable = true;
+
   nix.nixPath = [
     {
       darwin-config = "$HOME/.config/nix/darwin/darwin-configuration.nix";
@@ -129,9 +132,6 @@ in
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
   # nix.package = pkgs.nix;
 
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
