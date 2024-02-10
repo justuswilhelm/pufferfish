@@ -1,5 +1,6 @@
 let
   username = "justusperlwitz";
+  uid = 501;
 in
 { user, config, pkgs, ... }:
 
@@ -9,6 +10,7 @@ in
     description = "Justus Perlwitz";
     home = "/Users/${username}";
     shell = pkgs.fish;
+    inherit uid;
   };
 
   # List packages installed in system profile. To search by name, run:
@@ -52,8 +54,13 @@ in
 
   # Rid ourselves of Apple Music automatically launching
   # https://apple.stackexchange.com/questions/372948/how-can-i-prevent-music-app-from-starting-automatically-randomly/373557#373557
+  # Does this actually work? Might have to revisit this
+  # Other sources say this works:
+  # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
+  # But unload is deprecated in newer versions of launchd
   system.activationScripts.disableRcd.text = ''
-    sudo systemctl bootout gui/501/com.apple.rcd
+    sudo -u ${username} launchctl bootout gui/${uid}/com.apple.rcd
+    sudo -u ${username} launchctl disable gui/${uid}/com.apple.rcd
   '';
 
   # Use a custom configuration.nix location.
