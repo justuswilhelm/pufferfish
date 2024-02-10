@@ -1,25 +1,28 @@
 # Contains just sway launcher config now
 { pkgs, homeDirectory }:
 let
+  # TODO see if we can add wl-paste as a nix package
   foot = "${pkgs.foot}/bin/foot";
   fish = "${pkgs.fish}/bin/fish";
   firefox = "${pkgs.firefox-esr}/bin/firefox";
   keepassxc = "${pkgs.keepassxc}/bin/keepassxc";
   grim = "${pkgs.grim}/bin/grim";
+  slurp = "${pkgs.slurp}/bin/slurp";
+  bemenu = "${pkgs.bemenu}/bin/bemenu-run";
 in
 {
   text = ''
     # start a terminal
-    bindsym $mod+Return exec "${foot}"
-    bindsym $mod+Shift+Return exec "${firefox}"
+    bindsym $mod+Return exec ${foot}
+    bindsym $mod+Shift+Return exec ${firefox}
     # open an url if given in wl clipboard, like example.com
-    bindsym $mod+Shift+o exec "${firefox}" $(wl-paste)
-    bindsym $mod+Shift+t exec "${pkgs.tor-browser}/bin/tor-browser"
-    bindsym $mod+Shift+p exec "${keepassxc}"
+    bindsym $mod+Shift+o exec ${firefox} $(wl-paste)
+    bindsym $mod+Shift+t exec ${pkgs.tor-browser}/bin/tor-browser
+    bindsym $mod+Shift+p exec ${keepassxc}
     # Take a screenshot
-    bindsym $mod+Shift+b exec "${grim}"
+    bindsym $mod+Shift+b exec ${grim}
     # Take a screenshot of a region
-    bindsym $mod+Shift+g exec "${grim}" -g "$(${pkgs.slurp}/bin/slurp)"
+    bindsym $mod+Shift+g exec ${grim} -g $(${slurp})
 
     # Launch my currently used workspace
     bindsym $mod+m workspace 1, split horizontal, exec ${foot} ${fish} -c projectify
@@ -29,7 +32,7 @@ in
     # Launch a view into my laptop and do pomodoros
     bindsym $mod+Shift+f workspace 3, exec ${foot} ${pkgs.mosh}/bin/mosh lithium.local -- fish -c tomato
     # start dmenu (a program launcher)
-    bindsym $mod+d exec "${pkgs.bemenu}/bin/bemenu-run" -c --hp '10' --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
+    bindsym $mod+d exec ${bemenu} -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
 
     exec {
         # Part of Debian
@@ -46,8 +49,8 @@ in
         # Wayland copy-pasting, part of debian
         wl-paste -t text --watch clipman store --no-persist
         # Will these two anyway
-        "${pkgs.firefox-esr}/bin/firefox"
-        "${pkgs.keepassxc}/bin/keepassxc"
+        ${firefox}
+        ${keepassxc}
     }
   '';
 }
