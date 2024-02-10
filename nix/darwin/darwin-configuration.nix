@@ -16,6 +16,8 @@ in
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [
+    # Hot key mapping
+    pkgs.skhd
     # TODO re-check these packages after some time passes
     # Databases
     # Not sure if this needs to be available outside somehow
@@ -124,6 +126,20 @@ in
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
+
+  services.skhd = {
+    enable = true;
+    # https://github.com/koekeishiya/skhd/issues/1
+    skhdConfig =
+      let
+        cmus-remote = "${pkgs.cmus}/bin/cmus-remote";
+      in
+      ''
+        play : ${cmus-remote} -u
+        rewind : ${cmus-remote} -r
+        fast : ${cmus-remote} -n
+      '';
+  };
 
   nix.nixPath = [
     {
