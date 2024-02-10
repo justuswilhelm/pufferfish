@@ -22,11 +22,12 @@ in
     bindsym $mod+Shift+g exec "${grim}" -g "$(${pkgs.slurp}/bin/slurp)"
 
     # Launch my currently used workspace
-    bindsym $mod+m exec "${homeDirectory}/.dotfiles/bin/launch-workspace"
+    bindsym $mod+m workspace 1, split horizontal, exec ${foot} ${fish} -c projectify
     # Launch a view into my dotfiles etc
-    bindsym $mod+Shift+m exec "${homeDirectory}/.dotfiles/bin/launch-settings"
-    # Launch a view into my laptop
-    bindsym $mod+Shift+f exec "${homeDirectory}/.dotfiles/bin/mosh-lithium"
+    bindsym $mod+Shift+m workspace 4, exec ${foot} ${fish} -c manage-dotfiles, split horizontal, exec ${firefox}
+
+    # Launch a view into my laptop and do pomodoros
+    bindsym $mod+Shift+f workspace 3, exec ${foot} ${pkgs.mosh}/bin/mosh lithium.local -- fish -c tomato
     # start dmenu (a program launcher)
     bindsym $mod+d exec "${pkgs.bemenu}/bin/bemenu-run" -c --hp '10' --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
 
