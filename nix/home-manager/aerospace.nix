@@ -15,6 +15,10 @@ let
         "exec-and-forget ${alacritty} msg create-window -e ${fish} -l -c manage-dotfiles"
         "exec-and-forget ${firefox} --new-window"
       ];
+      alt-shift-f = [
+        "workspace 3"
+        "exec-and-forget ${alacritty} msg create-window -e ${fish} -l -c tomato"
+      ];
     };
   };
   merged = lib.attrsets.recursiveUpdate source extra;

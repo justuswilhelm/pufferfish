@@ -37,6 +37,9 @@
     fetch = {
       prune = true;
     };
+    annex = {
+      autocommit = false;
+    };
   };
   ignores =
     if isDarwin then [
