@@ -8,7 +8,8 @@ function fish_prompt -d "Show prompt"
 
     if [ $last_status -gt 0 ]
         set_color red
+        echo -n $last_status
+        set_color normal
     end
-    printf "%d\$" $last_status
-    set_color normal
+    echo '$'
 end
