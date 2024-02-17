@@ -15,7 +15,7 @@ function git_status -d "Show git status"
             # Timed out
             return
         case '*'
-            echo "Some other error occured"
+            echo "E"
             return
     end
 
@@ -31,7 +31,7 @@ function git_status -d "Show git status"
             # Timed out
             return
         case '*'
-            echo "Error when checking for unstaged changes"
+            echo "U"
             return
     end
 
@@ -48,7 +48,7 @@ function git_status -d "Show git status"
             set_color normal
             return
         case '*'
-            echo "Error when checking for staged changes"
+            echo "S"
             return
     end
 
@@ -68,15 +68,13 @@ function git_status -d "Show git status"
             set_color normal
             return
         case "*"
-            echo "Error when counting untracked files"
+            echo "F"
             return
     end
 
     set_color blue
-    if ! git branch --show-current | tr -d '\n'
-        echo "Error when getting current branch"
-        set_color normal
-        return
+    if ! git branch --show-current | tr -d '\n' 2>/dev/null
+        echo "B"
     end
     set_color normal
 end
