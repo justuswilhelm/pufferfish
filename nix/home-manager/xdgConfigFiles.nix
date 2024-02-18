@@ -113,7 +113,7 @@ in
   };
   aerospace = {
     enable = isDarwin;
-    source = (import ./aerospace.nix) { inherit pkgs lib; };
+    source = (import ./aerospace.nix) { inherit pkgs lib homeDirectory; };
     target = "aerospace/aerospace.toml";
   };
   timewarrior = {
