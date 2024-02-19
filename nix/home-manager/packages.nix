@@ -2,7 +2,7 @@
 let
   aeroSpace = pkgs.stdenv.mkDerivation {
     pname = "aerospace";
-    version = "0.8.4-Beta";
+    version = "0.8.5-Beta";
     nativeBuildInputs = [ pkgs.installShellFiles ];
     buildPhase = "";
     installPhase = ''
@@ -12,8 +12,8 @@ let
     '';
 
     src = pkgs.fetchzip {
-      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.4-Beta/AeroSpace-v0.8.4-Beta.zip";
-      hash = "sha256-EH+8K7gHs0phBMupPpzpQt5th3lQh5eNQSuwJEDMY4E=";
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.5-Beta/AeroSpace-v0.8.5-Beta.zip";
+      hash = "sha256-IVIbIVkOISvfPRQcMuaTK+n+6xZSZX7/GaXtx+ZfaLI=";
     };
   };
   debianOnly = lib.lists.optionals isDebian [
