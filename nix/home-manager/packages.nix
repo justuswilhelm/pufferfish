@@ -112,7 +112,15 @@ in
   pkgs.ncdu
   pkgs.ncurses
   pkgs.neovim
-  pkgs.nnn
+  (
+    pkgs.symlinkJoin {
+      name = "nnn";
+      paths = [ pkgs.nnn pkgs.gnused ];
+      postBuild = ''
+        cp $out/bin/sed $out/bin/gsed
+      '';
+    }
+  )
 
   # Business
   pkgs.hledger
