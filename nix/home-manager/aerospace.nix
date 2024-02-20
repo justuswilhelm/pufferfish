@@ -14,15 +14,15 @@ let
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   extra = {
     mode.main.binding = {
-      alt-enter = openAlacritty fish;
-      alt-shift-enter = newFirefoxWindow;
+      cmd-alt-enter = openAlacritty fish;
+      cmd-alt-shift-enter = newFirefoxWindow;
       # TODO does not properly work right now -- alacritty already has to be launched
-      alt-shift-m = [
+      cmd-alt-shift-m = [
         "workspace 4"
         (openAlacritty "${fish} -l -c manage-dotfiles")
         newFirefoxWindow
       ];
-      alt-shift-f = [
+      cmd-alt-shift-f = [
         "workspace 3"
         (openAlacritty "${fish} -l -c tomato")
       ];

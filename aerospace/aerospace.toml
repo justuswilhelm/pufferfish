@@ -8,33 +8,33 @@ enable-normalization-opposite-orientation-for-nested-containers = false
 
 [mode.main.binding]
 # change focus
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
+cmd-alt-h = 'focus left'
+cmd-alt-j = 'focus down'
+cmd-alt-k = 'focus up'
+cmd-alt-l = 'focus right'
 
 # move focused window
-alt-shift-h = 'move left'
-alt-shift-j = 'move down'
-alt-shift-k = 'move up'
-alt-shift-l = 'move right'
+cmd-alt-shift-h = 'move left'
+cmd-alt-shift-j = 'move down'
+cmd-alt-shift-k = 'move up'
+cmd-alt-shift-l = 'move right'
 
 # split in horizontal orientation
-# alt-b = 'split horizontal'
+# cmd-alt-b = 'split horizontal'
 
 # split in vertical orientation
-# alt-v = 'split vertical'
+# cmd-alt-v = 'split vertical'
 
 # enter fullscreen mode for the focused container
-alt-f = 'fullscreen'
+cmd-alt-f = 'fullscreen'
 
 # change container layout (stacked, tabbed, toggle split)
-alt-s = 'layout v_accordion' # 'layout stacking' in i3
-alt-w = 'layout h_accordion' # 'layout tabbed' in i3
-alt-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
+cmd-alt-s = 'layout v_accordion' # 'layout stacking' in i3
+cmd-alt-w = 'layout h_accordion' # 'layout tabbed' in i3
+cmd-alt-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
 
 # toggle tiling / floating
-alt-shift-space = 'layout floating tiling' # 'floating toggle' in i3
+cmd-alt-shift-space = 'layout floating tiling' # 'floating toggle' in i3
 
 # Not supported, because this command is redundant in AeroSpace mental model.
 # See: https://nikitabobko.github.io/AeroSpace/guide.html#floating-windows
@@ -45,34 +45,34 @@ alt-shift-space = 'layout floating tiling' # 'floating toggle' in i3
 # alt-a = 'focus parent'
 
 # switch to workspace
-alt-1 = 'workspace 1'
-alt-2 = 'workspace 2'
-alt-3 = 'workspace 3'
-alt-4 = 'workspace 4'
-alt-5 = 'workspace 5'
-alt-6 = 'workspace 6'
-alt-7 = 'workspace 7'
-alt-8 = 'workspace 8'
-alt-9 = 'workspace 9'
-alt-0 = 'workspace 10'
+cmd-alt-1 = 'workspace 1'
+cmd-alt-2 = 'workspace 2'
+cmd-alt-3 = 'workspace 3'
+cmd-alt-4 = 'workspace 4'
+cmd-alt-5 = 'workspace 5'
+cmd-alt-6 = 'workspace 6'
+cmd-alt-7 = 'workspace 7'
+cmd-alt-8 = 'workspace 8'
+cmd-alt-9 = 'workspace 9'
+cmd-alt-0 = 'workspace 10'
 
 # move focused container to workspace
-alt-shift-1 = 'move-node-to-workspace 1'
-alt-shift-2 = 'move-node-to-workspace 2'
-alt-shift-3 = 'move-node-to-workspace 3'
-alt-shift-4 = 'move-node-to-workspace 4'
-alt-shift-5 = 'move-node-to-workspace 5'
-alt-shift-6 = 'move-node-to-workspace 6'
-alt-shift-7 = 'move-node-to-workspace 7'
-alt-shift-8 = 'move-node-to-workspace 8'
-alt-shift-9 = 'move-node-to-workspace 9'
-alt-shift-0 = 'move-node-to-workspace 10'
+cmd-alt-shift-1 = 'move-node-to-workspace 1'
+cmd-alt-shift-2 = 'move-node-to-workspace 2'
+cmd-alt-shift-3 = 'move-node-to-workspace 3'
+cmd-alt-shift-4 = 'move-node-to-workspace 4'
+cmd-alt-shift-5 = 'move-node-to-workspace 5'
+cmd-alt-shift-6 = 'move-node-to-workspace 6'
+cmd-alt-shift-7 = 'move-node-to-workspace 7'
+cmd-alt-shift-8 = 'move-node-to-workspace 8'
+cmd-alt-shift-9 = 'move-node-to-workspace 9'
+cmd-alt-shift-0 = 'move-node-to-workspace 10'
 
 # reload the configuration file
-alt-shift-r = 'reload-config'
+cmd-alt-shift-r = 'reload-config'
 
 # resize window (you can also use the mouse for that)
-alt-r = 'mode resize'
+cmd-alt-r = 'mode resize'
 
 [mode.resize.binding]
 # These bindings trigger as soon as you enter the resize mode
@@ -86,7 +86,7 @@ k = 'resize height -50'
 l = 'resize width +50'
 
 # back to normal
-alt-r = 'mode main'
+cmd-alt-r = 'mode main'
 
 [[on-window-detected]]
 if.app-id = "com.apple.mail"
