@@ -1,11 +1,11 @@
-function jump
+function jump -a query
     # If we are inside a git repo we want to jump relative to current dir
     if git rev-parse --is-inside-work-tree &>/dev/null
         set where (git rev-parse --show-toplevel)
     else
         set where $PWD
     end
-    if ! set dest (fd --type d . $where | fzf --scheme=path)
+    if ! set dest (fd --type d . $where | fzf --scheme=path --query=$query)
         echo "Must specify destination"
         return 1
     end
