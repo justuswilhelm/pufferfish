@@ -46,7 +46,7 @@ in
     XDG_DATA_HOME = xdgDataHome;
     XDG_CACHE_HOME = xdgCacheHome;
     EDITOR = "${pkgs.neovim}/bin/nvim";
-    NNN_OPENER = "file";
+    NNN_OPENER = "open";
     PASSWORD_STORE_DIR = "${xdgDataHome}/pass";
     # XXX Still needed?
     LANG = "en_US.UTF-8";
