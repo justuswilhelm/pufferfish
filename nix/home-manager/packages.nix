@@ -53,6 +53,7 @@ in
 
   # File conversion
   pkgs.pandoc
+  pkgs.texliveTeTeX
 
   # Media
   pkgs.imagemagick
