@@ -88,7 +88,7 @@ in
     nix-direnv.enable = true;
   };
 
-  programs.tmux = (import ./tmux.nix) { inherit selenized; };
+  programs.tmux = (import ./tmux.nix) { inherit selenized isDebian isDarwin; };
   programs.fish = (import ./fish.nix) { inherit isDebian pkgs lib osConfig; };
 
   programs.git = import ./git.nix { inherit xdgConfigHome isDarwin; };
