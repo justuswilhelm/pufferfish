@@ -7,7 +7,7 @@ function orgmode-mkdir
 
     fd --type d . "$parent"
 
-    if ! read -p "new dir $parent" new_dir
+    if ! read -P "new dir $parent" new_dir
         echo "Must give directory name"
         return 1
     end
