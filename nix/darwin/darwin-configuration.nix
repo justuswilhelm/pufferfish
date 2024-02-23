@@ -1,16 +1,16 @@
 let
-  username = "justusperlwitz";
+  name = "justusperlwitz";
   uid = 501;
+  home = "/Users/${name}";
+  library = "${home}/Library";
 in
 { user, config, pkgs, ... }:
 
 {
-  users.users."${username}" = {
-    name = username;
+  users.users."${name}" = {
     description = "Justus Perlwitz";
-    home = "/Users/${username}";
     shell = pkgs.fish;
-    inherit uid;
+    inherit uid home name;
   };
 
   # List packages installed in system profile. To search by name, run:
@@ -61,8 +61,8 @@ in
   # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
   # But unload is deprecated in newer versions of launchd
   system.activationScripts.disableRcd.text = ''
-    sudo -u ${username} launchctl bootout gui/${uid}/com.apple.rcd
-    sudo -u ${username} launchctl disable gui/${uid}/com.apple.rcd
+    sudo -u ${name} launchctl bootout gui/${uid}/com.apple.rcd
+    sudo -u ${name} launchctl disable gui/${uid}/com.apple.rcd
   '';
 
   # Use a custom configuration.nix location.
@@ -74,7 +74,7 @@ in
     "borgmatic" = {
       serviceConfig =
         let
-          logPath = "/Users/${username}/Library/Logs/borgmatic";
+          logPath = "${library}/Logs/borgmatic";
           script = pkgs.writeShellApplication {
             name = "borgmatic-timestamp";
             runtimeInputs = with pkgs; [ borgmatic moreutils ];
@@ -99,7 +99,7 @@ in
     "offlineimap" = {
       serviceConfig =
         let
-          logPath = "/Users/${username}/Library/Logs/offlineimap";
+          logPath = "${library}/Logs/offlineimap";
           script = pkgs.writeShellApplication {
             name = "offlineimap";
             runtimeInputs = with pkgs; [ offlineimap coreutils ];
@@ -143,6 +143,7 @@ in
 
   nix.nixPath = [
     {
+      # TODO insert ${home}
       darwin-config = "$HOME/.config/nix/darwin/darwin-configuration.nix";
     }
     "/nix/var/nix/profiles/per-user/root/channels"
