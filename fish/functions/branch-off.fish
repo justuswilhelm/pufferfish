@@ -46,11 +46,7 @@ function branch-off
 
     echo "New branch will be $new_branch"
 
-    if set -q parent
-        git checkout -b $new_branch $parent || return
-    else
-        git checkout -b $new_branch || return
-    end
+    git checkout -b $new_branch $upstream || return
 
     if set -q remote
         echo "Ensuring we are up to date with $remote"
