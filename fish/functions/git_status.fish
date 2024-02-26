@@ -15,7 +15,7 @@ function git_status -d "Show git status"
             # Timed out
             return
         case '*'
-            echo "E"
+            echo -n "E"
             return
     end
 
@@ -31,7 +31,7 @@ function git_status -d "Show git status"
             # Timed out
             return
         case '*'
-            echo "U"
+            echo -n "U"
             return
     end
 
@@ -48,7 +48,7 @@ function git_status -d "Show git status"
             set_color normal
             return
         case '*'
-            echo "S"
+            echo -n "S"
             return
     end
 
@@ -68,13 +68,15 @@ function git_status -d "Show git status"
             set_color normal
             return
         case "*"
-            echo "F"
+            echo -n "F"
             return
     end
 
     set_color blue
-    if ! git branch --show-current | tr -d '\n' 2>/dev/null
-        echo "B"
+    if set branch "$(git branch --show-current 2>/dev/null)"
+        echo -n "$branch"
+    else
+        echo -n "B"
     end
     set_color normal
 end
