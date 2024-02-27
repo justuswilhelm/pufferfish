@@ -10,7 +10,12 @@ let
   firefoxApp = "/Applications/Free/Firefox.app";
   firefox = "${firefoxApp}/Contents/MacOS/firefox";
   fish = "${pkgs.fish}/bin/fish";
-  openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
+  # XXX
+  # If telling alacritty to create-window it will not be focused when not
+  # focused on another alacritty instance window
+  # I am temporarily changing openAlacritty to just always a new instance instead.
+  # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
+  openAlacritty = cmd: ''exec-and-forget open -n -a '${alacrittyApp}' --args -e ${cmd}'';
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   extra = {
     mode.main.binding = {
