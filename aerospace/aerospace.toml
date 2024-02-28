@@ -1,4 +1,8 @@
 # Reference: https://github.com/i3/i3/blob/next/etc/config
+
+# Start AeroSpace at login
+start-at-login = true
+
 [mode.main.binding]
 # change focus
 cmd-alt-h = 'focus left'
