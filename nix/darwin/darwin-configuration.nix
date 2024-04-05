@@ -3,7 +3,6 @@ let
   uid = 501;
   home = "/Users/${name}";
   library = "${home}/Library";
-  nixApplications = "${home}/Applications/Home Manager Apps";
 in
 { user, config, pkgs, ... }:
 
@@ -117,15 +116,6 @@ in
           # Time out after 3 minutes
           TimeOut = 3 * 60;
         };
-    };
-    "aerospace" = {
-      serviceConfig = {
-        ProgramArguments = [
-          "${nixApplications}/AeroSpace.app/Contents/MacOS/AeroSpace"
-          "--started-at-login"
-        ];
-        RunAtLoad = true;
-      };
     };
   };
 
