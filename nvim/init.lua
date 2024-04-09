@@ -40,7 +40,6 @@ Plug("kylechui/nvim-surround")
 
 -- Improve editor appearance
 -- -------------------------
-Plug("airblade/vim-gitgutter")
 Plug("jeffkreeftmeijer/vim-numbertoggle")
 
 -- Improve general editor behavior
