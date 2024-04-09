@@ -295,7 +295,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = true
 vim.opt.foldclose = all
-vim.opt.foldminlines = 15
+vim.opt.foldminlines = 150
 
 -- fold autocommand
 -- ----------------
