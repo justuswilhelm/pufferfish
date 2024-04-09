@@ -45,7 +45,8 @@ function branch-off
     set new_branch "$user/$date-$branchname"
 
     echo "New branch will be $new_branch"
-    git checkout -b $new_branch || return
+
+    git checkout -b $new_branch $upstream || return
 
     if set -q remote
         echo "Ensuring we are up to date with $remote"

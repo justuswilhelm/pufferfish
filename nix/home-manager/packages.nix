@@ -64,6 +64,7 @@ in
   pkgs.mitmproxy
   pkgs.wget
   pkgs.netcat-gnu
+  pkgs.httperf
 
   # File transfers, Backups
   pkgs.rsync

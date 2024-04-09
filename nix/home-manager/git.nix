@@ -22,6 +22,7 @@
     };
     diff = {
       tool = "vimdiff";
+      algorithm = "histogram";
     };
     "diff \"sqlite3\"" = {
       binary = true;
