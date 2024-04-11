@@ -79,6 +79,25 @@ in
       '';
       target = "${applicationSupport}/pypoetry/config.toml";
     };
+    pdbpp = {
+      text = ''
+        import pdb
+
+        class Config(pdb.DefaultConfig):
+            def setup(self, Pdb: pdb.Pdb) -> None:
+                import readline as r
+                from atexit import register
+
+                register(r.write_history_file, ".pdb_history")
+
+                try:
+                    r.read_history_file(".pdb_history")
+                except IOError:
+                    pass
+                r.set_history_length(1000)
+      '';
+      target = ".pdbrc.py";
+    };
   };
 
   programs.home-manager.enable = true;
