@@ -22,6 +22,7 @@ Plug("nvim-orgmode/orgmode")
 Plug("editorconfig/editorconfig-vim")
 -- If this isn't enabled, indentation on the next line is wrong.
 Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
+Plug("ledger/vim-ledger", {["for"] = "ledger"})
 -- Commenting these out -- add back if needed Justus 2023-11-15
 -- TODO Still needed? Justus 2023-03-10
 -- Plug("elzr/vim-json", {['for'] = "json"})
@@ -286,6 +287,7 @@ require('nvim-treesitter.configs').setup {
         "typescript",
         "markdown",
         "org",
+        "ledger",
     },
 }
 -- Folding
@@ -445,3 +447,9 @@ vim.g.EasyMotion_smartcase = 1
 -- JK motions: Line motions
 vim.keymap.set("n", "<Leader>j", "<Plug>(easymotion-j)")
 vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
+
+
+-- vim-ledger
+-- ==========
+vim.g.ledger_accounts_cmd = "hledger accounts"
+vim.g.ledger_is_hledger = true
