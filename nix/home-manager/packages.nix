@@ -60,11 +60,12 @@ in
 
   # Networking
   pkgs.curl
-  pkgs.nmap
-  pkgs.mitmproxy
-  pkgs.wget
-  pkgs.netcat-gnu
   pkgs.httperf
+  pkgs.mitmproxy
+  pkgs.netcat-gnu
+  pkgs.nmap
+  pkgs.wget
+  pkgs.whois
 
   # File transfers, Backups
   pkgs.rsync
