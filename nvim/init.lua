@@ -68,7 +68,6 @@ Plug("hrsh7th/nvim-cmp")
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
-Plug("hrsh7th/nvim-cmp")
 
 -- Snippets
 -- --------
@@ -213,8 +212,15 @@ cmp.setup.filetype(
             ['<CR>'] = cmp.mapping.confirm({ select = false }),
         }),
         sources = cmp.config.sources(
-            { { name = 'buffer' }, { name = 'vsnip' }, { name = 'nvim_lsp' } },
-            { { name = 'buffer' } }
+            {
+                { name = 'buffer' },
+                { name = 'vsnip' },
+                { name = 'nvim_lsp' },
+                { name = 'orgmode' },
+            },
+            {
+                { name = 'buffer' },
+            }
         ),
     }
 )
