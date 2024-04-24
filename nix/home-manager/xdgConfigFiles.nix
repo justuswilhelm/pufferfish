@@ -65,6 +65,7 @@ in
   nvimSnippets = {
     source = ../../nvim/snippets;
     target = "nvim/snippets";
+    recursive = true;
   };
   pomoglorbo = {
     source = ../../pomoglorbo/config.ini;
