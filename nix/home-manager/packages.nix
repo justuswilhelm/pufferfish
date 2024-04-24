@@ -92,7 +92,16 @@ in
       '';
     }
   )
-  pkgs.radare2
+  (
+    pkgs.symlinkJoin {
+      name = "radare2";
+      paths = [
+        extraPkgs.radare2
+        pkgs.meson
+        pkgs.ninja
+      ];
+    }
+  )
 
   # Interpreters
   pkgs.asdf-vm
