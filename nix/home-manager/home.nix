@@ -12,6 +12,7 @@ let
   xdgCacheHome =
     if isDebian then
       "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
+  inherit (specialArgs) pkgs-unstable;
 in
 {
   home.username = username;
@@ -21,6 +22,7 @@ in
     inherit lib isDebian isDarwin pkgs;
     extraPkgs = {
       inherit (specialArgs) pomoglorbo;
+      inherit (pkgs-unstable) radare2 ncdu;
     };
   };
 

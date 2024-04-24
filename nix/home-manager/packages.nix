@@ -110,7 +110,9 @@ in
   pkgs.htop
   pkgs.fzf
   pkgs.htop
-  pkgs.ncdu
+  # Broken,
+  # https://github.com/NixOS/nixpkgs/issues/299091
+  extraPkgs.ncdu
   pkgs.ncurses
   pkgs.neovim
   (

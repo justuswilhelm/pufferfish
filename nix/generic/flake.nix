@@ -3,9 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     pomoglorbo = {
@@ -14,11 +14,12 @@
     };
   };
 
-  outputs = { self, nix-darwin, home-manager, nixpkgs, nixpkgs-darwin, pomoglorbo }: {
+  outputs = { self, nix-darwin, home-manager, nixpkgs, nixpkgs-unstable, pomoglorbo }: {
     homeConfigurations."justusperlwitz" =
       let
         system = "x86_64-linux";
         pkgs = nixpkgs.legacyPackages.${system};
+        pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
       in
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
@@ -26,6 +27,7 @@
         modules = [ ../home-manager/home.nix ];
 
         extraSpecialArgs = {
+          inherit pkgs-unstable;
           homeBaseDirectory = "/home";
           system = "debian";
           pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
@@ -46,6 +48,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.justusperlwitz = import ../home-manager/home.nix;
             home-manager.extraSpecialArgs = {
+              pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
               homeBaseDirectory = "/Users";
               system = "darwin";
               pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
