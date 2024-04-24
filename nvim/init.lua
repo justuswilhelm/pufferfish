@@ -270,7 +270,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Treesitter configuration
 -- ========================
 -- Load in orgmode grammar
-require('orgmode').setup_ts_grammar()
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -433,6 +432,8 @@ vim.api.nvim_create_user_command(
 -- Orgmode.nvim
 -- ============
 require('orgmode').setup({
+    org_startup_indented = false,
+    org_adapt_indentation = false,
 })
 
 -- EasyMotion
