@@ -102,6 +102,8 @@ in
       ];
     }
   )
+  # For hex overflow calc
+  pkgs.programmer-calculator
 
   # Interpreters
   pkgs.asdf-vm
