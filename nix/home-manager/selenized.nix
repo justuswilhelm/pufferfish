@@ -209,4 +209,25 @@ in
       colors = lib.attrsets.mapAttrsToList toColorLine pairs;
     in
     lib.strings.concatStringsSep "\n" colors;
+  # We are hoping on the terminal we are in to already have selenized colors
+  timewarrior = ''
+    theme.colors.debug = cyan
+    theme.colors.exclusion = yellow
+    theme.colors.holiday = red
+    theme.colors.ids = blue
+    theme.colors.label = green
+    theme.colors.today = magenta
+    theme.palette.color01 = black on red
+    theme.palette.color02 = black on green
+    theme.palette.color03 = white on yellow
+    theme.palette.color04 = black on blue
+    theme.palette.color05 = black on magenta
+    theme.palette.color06 = black on cyan
+    theme.palette.color07 = black on white
+    theme.palette.color08 = black on red
+    theme.palette.color09 = black on green
+    theme.palette.color10 = white on yellow
+    theme.palette.color11 = black on blue
+    theme.palette.color12 = black on magenta
+  '';
 }

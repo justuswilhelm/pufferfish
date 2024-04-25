@@ -119,8 +119,8 @@ in
   };
   timewarrior = {
     text = ''
-      import ${pkgs.timewarrior}/share/doc/timew/themes/dark_blue.theme
       ${builtins.readFile ../../timewarrior/timewarrior.cfg}
+      ${selenized.timewarrior}
     '';
     target = "timewarrior/timewarrior.cfg";
   };
