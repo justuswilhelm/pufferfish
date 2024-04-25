@@ -124,4 +124,13 @@ in
     '';
     target = "timewarrior/timewarrior.cfg";
   };
+  radare2 = {
+    text = ''
+      e cfg.fortunes = true
+      e scr.color = 3
+      # selenized colors
+      ${selenized.radare2}
+    '';
+    target = "radare2/radare2rc";
+  };
 }
