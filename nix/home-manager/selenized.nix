@@ -212,7 +212,7 @@ in
   # We are hoping on the terminal we are in to already have selenized colors
   timewarrior = ''
     theme.colors.debug = cyan
-    theme.colors.exclusion = yellow
+    theme.colors.exclusion = yellow on white
     theme.colors.holiday = red
     theme.colors.ids = blue
     theme.colors.label = green
