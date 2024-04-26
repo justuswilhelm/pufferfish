@@ -17,10 +17,13 @@ let
   # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
   openAlacritty = cmd: ''exec-and-forget open -n -a '${alacrittyApp}' --args -e ${cmd}'';
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
+  newFinderWindowScript = pkgs.writeText "new-finder-window" ''tell app "Finder" to make new Finder window'';
+  runOsaScript = scriptName: "exec-and-forget osascript ${scriptName}";
   extra = {
     mode.main.binding = {
       cmd-alt-enter = openAlacritty fish;
       cmd-alt-shift-enter = newFirefoxWindow;
+      cmd-alt-shift-n = runOsaScript newFinderWindowScript;
       # TODO does not properly work right now -- alacritty already has to be launched
       cmd-alt-shift-m = [
         "workspace 4"
