@@ -71,6 +71,8 @@ in
   launchd.labelPrefix = "net.jwpconsulting";
 
   launchd.user.agents = {
+    # TODO
+    # Could this be a systemwide launchd.agents.borgmatic instead?
     "borgmatic" = {
       serviceConfig =
         let

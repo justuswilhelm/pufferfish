@@ -1,0 +1,24 @@
+{
+  "quote": {
+    "prefix": ["quote"],
+    "body": [
+      "#+BEGIN_QUOTE",
+      "$1",
+      "#+END_QUOTE"
+    ]
+  },
+  "src": {
+    "prefix": ["src"],
+    "body": [
+      "#+BEGIN_SRC",
+      "$1",
+      "#+END_SRC"
+    ]
+  },
+  "title": {
+    "prefix": ["title"],
+    "body": [
+      "#+TITLE: $1"
+    ]
+  }
+}

@@ -24,15 +24,21 @@ let
       cmd-alt-enter = openAlacritty fish;
       cmd-alt-shift-enter = newFirefoxWindow;
       cmd-alt-shift-n = runOsaScript newFinderWindowScript;
-      # TODO does not properly work right now -- alacritty already has to be launched
+      # Dotfiles
       cmd-alt-shift-m = [
         "workspace 4"
         (openAlacritty "${fish} -l -c manage-dotfiles")
         newFirefoxWindow
       ];
+      # Time tracking
       cmd-alt-shift-f = [
         "workspace 3"
         (openAlacritty "${fish} -l -c tomato")
+      ];
+      # Cmus
+      cmd-alt-shift-t = [
+        "workspace 3"
+        (openAlacritty "${fish} -l -c t-cmus")
       ];
     };
   };
