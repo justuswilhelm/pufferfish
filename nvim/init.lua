@@ -22,6 +22,7 @@ Plug("nvim-orgmode/orgmode")
 Plug("editorconfig/editorconfig-vim")
 -- If this isn't enabled, indentation on the next line is wrong.
 Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
+Plug("ledger/vim-ledger", {["for"] = "ledger"})
 -- Commenting these out -- add back if needed Justus 2023-11-15
 -- TODO Still needed? Justus 2023-03-10
 -- Plug("elzr/vim-json", {['for'] = "json"})
@@ -67,7 +68,6 @@ Plug("hrsh7th/nvim-cmp")
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
-Plug("hrsh7th/nvim-cmp")
 
 -- Snippets
 -- --------
@@ -212,8 +212,15 @@ cmp.setup.filetype(
             ['<CR>'] = cmp.mapping.confirm({ select = false }),
         }),
         sources = cmp.config.sources(
-            { { name = 'buffer' }, { name = 'vsnip' }, { name = 'nvim_lsp' } },
-            { { name = 'buffer' } }
+            {
+                { name = 'buffer' },
+                { name = 'vsnip' },
+                { name = 'nvim_lsp' },
+                { name = 'orgmode' },
+            },
+            {
+                { name = 'buffer' },
+            }
         ),
     }
 )
@@ -263,7 +270,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Treesitter configuration
 -- ========================
 -- Load in orgmode grammar
-require('orgmode').setup_ts_grammar()
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -286,6 +292,7 @@ require('nvim-treesitter.configs').setup {
         "typescript",
         "markdown",
         "org",
+        "ledger",
     },
 }
 -- Folding
@@ -425,6 +432,8 @@ vim.api.nvim_create_user_command(
 -- Orgmode.nvim
 -- ============
 require('orgmode').setup({
+    org_startup_indented = false,
+    org_adapt_indentation = false,
 })
 
 -- EasyMotion
@@ -445,3 +454,9 @@ vim.g.EasyMotion_smartcase = 1
 -- JK motions: Line motions
 vim.keymap.set("n", "<Leader>j", "<Plug>(easymotion-j)")
 vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
+
+
+-- vim-ledger
+-- ==========
+vim.g.ledger_accounts_cmd = "hledger accounts"
+vim.g.ledger_is_hledger = true

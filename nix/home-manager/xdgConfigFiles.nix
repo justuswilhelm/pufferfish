@@ -65,6 +65,7 @@ in
   nvimSnippets = {
     source = ../../nvim/snippets;
     target = "nvim/snippets";
+    recursive = true;
   };
   pomoglorbo = {
     source = ../../pomoglorbo/config.ini;
@@ -118,9 +119,18 @@ in
   };
   timewarrior = {
     text = ''
-      import ${pkgs.timewarrior}/share/doc/timew/themes/dark_blue.theme
       ${builtins.readFile ../../timewarrior/timewarrior.cfg}
+      ${selenized.timewarrior}
     '';
     target = "timewarrior/timewarrior.cfg";
+  };
+  radare2 = {
+    text = ''
+      e cfg.fortunes = true
+      e scr.color = 3
+      # selenized colors
+      ${selenized.radare2}
+    '';
+    target = "radare2/radare2rc";
   };
 }

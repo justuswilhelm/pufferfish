@@ -123,4 +123,111 @@ in
       colors = (map toStyleLine stylePairs) ++ (map toColorLine colourPairs);
     in
     lib.strings.concatStringsSep "\n" colors;
+
+  radare2 =
+    let
+      pairs = {
+        comment = [ dim_0 ];
+        usrcmt = [ dim_0 ];
+        args = [ fg_1 ];
+        fname = [ fg_1 ];
+        floc = [ fg_0 ];
+        fline = [ fg_0 ];
+        flag = [ fg_1 ];
+        label = [ fg_1 ];
+        help = [ fg_0 ];
+        flow = [ fg_0 ];
+        flow2 = [ fg_0 ];
+        prompt = [ fg_0 ];
+        bgprompt = [ fg_0 ];
+        offset = [ fg_0 ];
+        input = [ fg_0 ];
+        invalid = [ red ];
+        other = [ fg_0 ];
+        b0x00 = [ bg_2 ];
+        b0x7f = [ bg_2 ];
+        b0xff = [ bg_2 ];
+        math = [ blue ];
+        bin = [ fg_0 ];
+        btext = [ fg_0 ];
+        push = [ green ];
+        pop = [ red ];
+        crypto = [ fg_0 ];
+        jmp = [ blue ];
+        cjmp = [ blue ];
+        call = [ cyan ];
+        nop = [ dim_0 ];
+        ret = [ green ];
+        trap = [ red ];
+        ucall = [ fg_0 ];
+        ujmp = [ blue ];
+        swi = [ fg_0 ];
+        cmp = [ magenta ];
+        reg = [ orange ];
+        creg = [ fg_0 ];
+        num = [ fg_0 ];
+        mov = [ violet ];
+        var = [ blue ];
+        "var.name" = [ fg_0 ];
+        "var.type" = [ fg_0 ];
+        "var.addr" = [ fg_0 ];
+        "widget.bg" = [ bg_1 ];
+        "widget.sel" = [ bg_1 ];
+        "ai.read" = [ fg_0 ];
+        "ai.write" = [ fg_0 ];
+        "ai.exec" = [ fg_0 ];
+        "ai.seq" = [ fg_0 ];
+        "ai.ascii" = [ fg_0 ];
+        "graph.box" = [ fg_0 ];
+        "graph.box2" = [ fg_0 ];
+        "graph.box3" = [ fg_0 ];
+        "graph.box4" = [ fg_0 ];
+        "graph.true" = [ fg_0 ];
+        "graph.false" = [ fg_0 ];
+        "graph.trufae" = [ fg_0 ];
+        "graph.current" = [ fg_0 ];
+        "graph.traced" = [ fg_0 ];
+        "diff.unknown" = [ fg_0 ];
+        "diff.new" = [ fg_0 ];
+        "diff.match" = [ fg_0 ];
+        "diff.unmatch" = [ fg_0 ];
+        "gui.cflow" = [ fg_0 ];
+        "gui.dataoffset" = [ fg_0 ];
+        "gui.background" = [ fg_0 ];
+        "gui.background2" = [ fg_0 ];
+        "gui.border" = [ fg_0 ];
+        wordhl = [ yellow bg_0 ];
+        linehl = [ violet bg_0 ];
+      };
+      makeRadare2Color = builtins.replaceStrings [ "#" ] [ "rgb:" ];
+      concatColors = colors:
+        lib.strings.concatStringsSep " " (map makeRadare2Color colors);
+      # Usage ec[s?] [key][[=| ]fg] [bg]
+      toColorLine = name: colors: ''
+        ec ${name} ${concatColors colors}
+      '';
+      colors = lib.attrsets.mapAttrsToList toColorLine pairs;
+    in
+    lib.strings.concatStringsSep "\n" colors;
+  # We are hoping on the terminal we are in to already have selenized colors
+  timewarrior = ''
+    theme.colors.debug = cyan
+    theme.colors.exclusion = yellow on white
+    theme.colors.holiday = red
+    theme.colors.ids = blue
+    theme.colors.label = green
+    theme.colors.today = magenta
+    theme.palette.color01 = black on red
+    theme.palette.color02 = black on green
+    theme.palette.color03 = white on yellow
+    theme.palette.color04 = black on blue
+    theme.palette.color05 = black on magenta
+    theme.palette.color06 = black on cyan
+    theme.palette.color07 = black on white
+    theme.palette.color08 = black on red
+    theme.palette.color09 = black on green
+    theme.palette.color10 = white on yellow
+    theme.palette.color11 = black on blue
+    theme.palette.color12 = black on magenta
+  '';
 }

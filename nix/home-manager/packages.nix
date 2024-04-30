@@ -93,7 +93,18 @@ in
       '';
     }
   )
-  pkgs.radare2
+  (
+    pkgs.symlinkJoin {
+      name = "radare2";
+      paths = [
+        extraPkgs.radare2
+        pkgs.meson
+        pkgs.ninja
+      ];
+    }
+  )
+  # For hex overflow calc
+  pkgs.programmer-calculator
 
   # Interpreters
   pkgs.asdf-vm
@@ -111,7 +122,9 @@ in
   pkgs.htop
   pkgs.fzf
   pkgs.htop
-  pkgs.ncdu
+  # Broken,
+  # https://github.com/NixOS/nixpkgs/issues/299091
+  extraPkgs.ncdu
   pkgs.ncurses
   pkgs.neovim
   (
