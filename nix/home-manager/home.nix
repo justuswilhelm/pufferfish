@@ -32,7 +32,7 @@ in
         export PATH=${pkgs.git}/bin:$PATH
         $DRY_RUN_CMD exec ${pkgs.neovim}/bin/nvim \
           --headless \
-          +"PlugInstall --sync" +qa
+          +"PlugUpdate --sync" +qa
       '';
     };
 
