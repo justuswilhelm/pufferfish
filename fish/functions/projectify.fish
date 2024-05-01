@@ -30,7 +30,7 @@ function projectify
 
     # Editor for backend
     tmux new-window -c "$projectify_path/backend" -t $session -n backend
-    tmux send-keys -t "$session:backend" "nvim" C-m
+    tmux send-keys -t "$session:backend" nvim C-m
 
     tmux split-window -c "$projectify_path/backend" -h -t "$session:backend"
     tmux send-keys -t "$session:backend" "git status" C-m
