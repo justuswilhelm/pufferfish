@@ -8,6 +8,7 @@ let
   dotfiles = "${homeDirectory}/.dotfiles";
   xdgConfigHome = "${homeDirectory}/.config";
   xdgDataHome = "${homeDirectory}/.local/share";
+  xdgStateHome = "${homeDirectory}/.local/state";
   applicationSupport = "${homeDirectory}/Library/Application Support";
   xdgCacheHome =
     if isDebian then
@@ -46,6 +47,7 @@ in
     DOTFILES = dotfiles;
     XDG_CONFIG_HOME = xdgConfigHome;
     XDG_DATA_HOME = xdgDataHome;
+    XDG_STATE_HOME = xdgStateHome;
     XDG_CACHE_HOME = xdgCacheHome;
     EDITOR = "${pkgs.neovim}/bin/nvim";
     NNN_OPENER = "open";
