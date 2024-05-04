@@ -23,7 +23,7 @@ in
     inherit lib isDebian isDarwin pkgs;
     extraPkgs = {
       inherit (specialArgs) pomoglorbo;
-      inherit (pkgs-unstable) radare2 ncdu;
+      inherit (pkgs-unstable) radare2 ncdu whois;
     };
   };
 

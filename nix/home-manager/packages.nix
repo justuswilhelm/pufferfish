@@ -65,7 +65,7 @@ in
   pkgs.netcat-gnu
   pkgs.nmap
   pkgs.wget
-  pkgs.whois
+  extraPkgs.whois
 
   # File transfers, Backups
   pkgs.rsync
