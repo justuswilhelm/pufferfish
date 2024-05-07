@@ -71,8 +71,19 @@ in
     source = ../../pomoglorbo/config.ini;
     target = "pomoglorbo/config.ini";
   };
-  cmusRc = {
-    source = ../../cmus/rc;
+  cmusRc = let
+    darwinRc = ''
+    set output_plugin=coreaudio
+    '';
+    debianRc = ''
+    '';
+  in
+  {
+    text = ''
+      ${builtins.readFile ../../cmus/rc}
+      ${if isDebian then debianRc else ""}
+      ${if isDarwin then darwinRc else ""}
+    '';
     target = "cmus/rc";
   };
   karabiner = {

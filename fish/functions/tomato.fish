@@ -8,7 +8,7 @@ function tomato
 
     tmux new-session -c "$HOME" -d -s "$session" -n Tomato
 
-    tmux send-keys -t "$session" "watch timew summary" C-m
+    tmux send-keys -t "$session" "watch timew summary :ids" C-m
 
     tmux split-window -c "$HOME" -t "$session:0" -h
 

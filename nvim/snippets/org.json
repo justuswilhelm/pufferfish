@@ -3,22 +3,41 @@
     "prefix": ["quote"],
     "body": [
       "#+BEGIN_QUOTE",
-      "$1",
+      "${1:TheQuote}",
       "#+END_QUOTE"
     ]
   },
   "src": {
     "prefix": ["src"],
     "body": [
-      "#+BEGIN_SRC",
-      "$1",
+      "#+BEGIN_SRC ${2:ProgrammingLanguage}",
+      "${1:Content}",
       "#+END_SRC"
+    ]
+  },
+  "example": {
+    "prefix": ["example"],
+    "body": [
+      "#+BEGIN_EXAMPLE",
+      "#+END_EXAMPLE"
     ]
   },
   "title": {
     "prefix": ["title"],
     "body": [
-      "#+TITLE: $1"
+      "#+TITLE: ${1:Title}"
+    ]
+  },
+  "author": {
+    "prefix": ["author"],
+    "body": [
+      "#+AUTHOR: ${1:AuthorName}"
+    ]
+  },
+  "date": {
+    "prefix": ["date"],
+    "body": [
+      "#+DATE: <$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_DAY_NAME_SHORT>"
     ]
   }
 }

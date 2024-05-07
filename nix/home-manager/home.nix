@@ -158,7 +158,11 @@ in
     inherit (import ./i3status.nix) general modules;
   };
 
+  programs.gpg = {
+    enable = true;
+  };
   services.ssh-agent.enable = isDebian;
+  services.gpg-agent.enable = isDebian;
 
   xresources = {
     properties = {
