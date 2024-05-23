@@ -56,5 +56,9 @@
     "message": {
         "prefix": ["message"],
         "body": ["\\$_(\"$1\")"]
+    },
+    "Image import": {
+        "prefix": ["img"],
+        "body": ["import ${1:ImageName} from \"./${2:path}\";"]
     }
 }

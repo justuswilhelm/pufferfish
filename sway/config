@@ -4,7 +4,7 @@ set $mod Mod4
 
 # HiDPI setting
 output * {
-    scale 1.6
+    scale 1.5
 }
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -16,26 +16,8 @@ default_border normal 4
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
-bindsym $mod+Return exec foot
-bindsym $mod+Shift+Return exec firefox-esr
-# open an url if given in wl clipboard, like example.com
-bindsym $mod+Shift+o exec 'bash -c "firefox-esr $(wl-paste)"'
-bindsym $mod+Shift+t exec torbrowser-launcher
-bindsym $mod+Shift+p exec keepassxc
-
-# Launch my currently used workspace
-bindsym $mod+m exec "~/.dotfiles/bin/launch-workspace"
-# Launch a view into my dotfiles etc
-bindsym $mod+Shift+m exec "~/.dotfiles/bin/launch-settings"
-# Launch a view into my laptop
-bindsym $mod+Shift+f exec "~/.dotfiles/bin/mosh-lithium"
-
 # kill focused window
 bindsym $mod+Shift+q kill
-
-# start dmenu (a program launcher)
-bindsym $mod+d exec "bemenu-run -c --hp '10' --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --"
 
 # change focus
 bindsym $mod+h focus left
@@ -118,7 +100,7 @@ mode "resize" {
     bindsym $mod+k resize shrink height 10 px or 10 ppt
     bindsym $mod+l resize grow width 10 px or 10 ppt
 
-    # back to normal: Enter or Escape
+    # back to normal
     bindsym $mod+r mode "default"
 }
 
@@ -128,31 +110,21 @@ bindsym $mod+r mode "resize"
 focus_on_window_activation none
 # Float open snitch
 for_window [app_id="opensnitch_ui"] floating enable
-for_window [app_id="org.keepassxc.KeePassXC"] move to workspace 5
+for_window [title="Passwords.* - KeePassXC" app_id="org.keepassxc.KeePassXC"] move to workspace 5
+
+
+# Float Ghidra windows, except for big windows
+for_window [class="ghidra-Ghidra"] floating enable
+for_window [title="Ghidra:.*" class="ghidra-Ghidra"] floating disable
+for_window [title="CodeBrowser.*" class="ghidra-Ghidra"] floating disable
+for_window [title="Debugger.*" class="ghidra-Ghidra"] floating disable
+for_window [title="Emulator.*" class="ghidra-Ghidra"] floating disable
 
 # Keyboard / mouse mapping
 # For more specific modification, find the device id using
 # swaymsg -t get_inputs
 input type:pointer {
     natural_scroll enabled
-}
-
-
-exec --no-startup-id {
-    # TODO migrate ibus to sway, there is no Japanese input right now
-    # ibus-daemon -dxr
-    # Will use it anyway
-    firefox-esr
-    opensnitch-ui
-    # Lock after 2 minutes, suspend after six hours
-    swayidle -w \
-        timeout 120 '~/.dotfiles/bin/lock-screen swayidle' \
-        timeout 125 'swaymsg "output * dpms off"' \
-        resume 'swaymsg "output * dpms on"' \
-        timeout 21600 'systemctl poweroff'
-    # Wayland copy-pasting
-    wl-paste -t text --watch clipman store --no-persist
-    keepasscx
 }
 
 include ~/.config/sway/config.d/*

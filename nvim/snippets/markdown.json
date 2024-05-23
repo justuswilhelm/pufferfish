@@ -1,0 +1,6 @@
+{
+    "markdown link": {
+        "prefix": ["link"],
+        "body": ["[${1:label}](${2:url})"]
+    }
+}

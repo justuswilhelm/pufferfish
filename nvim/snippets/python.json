@@ -2,5 +2,43 @@
     "Django gettext lazy shortcut": {
         "prefix": ["django-gettext"],
         "body": ["from django.utils.translation import gettext_lazy as _"]
+    },
+    "view test": {
+        "prefix": ["viewtest"],
+        "body": [
+            "@pytest.mark.django_db",
+            "class Test${1:ViewName}:",
+            "    \"\"\"Test ${2:what are you testing}.\"\"\"",
+            "",
+            "    @pytest.fixture",
+            "    def resource_url(self) -> str:",
+            "        \"\"\"Return URL to this view.\"\"\"",
+            "        return reverse(\"${3:resource-name}\")",
+            "",
+            "    def test_${4:what_i_want_to_test}(",
+            "        self,",
+            "        user: AbstractBaseUser,",
+            "        rest_user_client: APIClient,",
+            "        resource_url: str,",
+            "        django_assert_num_queries: DjangoAssertNumQueries,",
+            "    ) -> None:",
+            "        \"\"\"Test ${5:the thing that I want to test}.\"\"\"",
+            "        with django_assert_num_queries(1337):",
+            "            response = rest_user_client.post(",
+            "                resource_url,",
+            "                data={},",
+            "            )",
+            "        assert response.status_code == 1337, response.data"
+        ]
+    },
+    "DRF validation error": {
+        "prefix": ["validationerror"],
+        "body": [
+            "raise serializers.ValidationError({\"${1:key}\": _(\"${2:error message}\")})"
+        ]
+    },
+    "Python logger": {
+        "prefix": ["logger"],
+        "body": ["import logging", "logger = logging.getLogger(__name__)"]
     }
 }

@@ -1,17 +1,5 @@
-# Fish
-fish/fish_variables
-fish/fishd.*
-fish/fish_history
-fish/fish_read_history
-fish/completions/asdf.fish
-
-# Neovim
-nvim/.netrwhist
-nvim/plugged
-nvim/swap
-
-# Karabiner
-karabiner/automatic_backups
-
 # NPM
 node_modules
+
+# nix direnv
+.direnv

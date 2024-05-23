@@ -1,0 +1,63 @@
+#!/usr/bin/env fish
+# Install a pip package in a new Python virtual environment
+if [ -z $argv[1] ]
+    echo "Usage venv-install [package]"
+    exit 1
+end
+
+set package $argv[1]
+
+set PREFIX "$HOME/.local/share/venv-install"
+set VENV_PATH "$PREFIX/$package"
+set BIN_DIR "$VENV_PATH/bin"
+set LOCAL_BIN_DIR "$HOME/.local/bin"
+set PIP "$BIN_DIR/pip"
+
+if [ (count $argv) -gt 1 ]
+    echo "Specified binary name(s) to link"
+    set binaries $argv[2..]
+    echo "Assuming binaries: $binaries"
+else
+    set binaries "$BIN_DIR/$package"
+    echo "Assuming you want to link binary '$binaries' contained in '$package'"
+end
+
+if [ -e $VENV_PATH ]
+    echo "Warning: a venv already exists at '$VENV_PATH'. Continue?"
+    read -P "Enter 'y' to continue: " cont
+    if [ $cont != y ]
+        echo "Quitting"
+        exit 1
+    end
+end
+
+if ! python3 -m venv $VENV_PATH
+    echo "Couldn't create virtual environment at '$VENV_PATH'"
+    exit 1
+end
+
+if ! command $PIP install -U pip setuptools
+    echo "Couldn't update and install pip/setuptools"
+    echo "You might want to manually inspect the venv path at '$VENV_PATH'"
+    exit 1
+end
+
+if ! command $PIP install $package
+    echo "Couldn't install '$package'"
+    echo "You might want to manually inspect the venv path at '$VENV_PATH'"
+    exit 1
+end
+
+echo "Linking binaries: $binaries"
+
+for binary in $binaries
+    set prefixed "$package-$binary"
+    echo "Prefixed the binary so that it becomes: $prefixed"
+    set src "$BIN_DIR/$binary"
+    set dest "$LOCAL_BIN_DIR/$prefixed"
+    ln -v -s "$src" "$dest" || begin
+        echo "Failed to link '$package' binary '$src' to '$dest'"
+        echo "You might want to manually inspect the venv path at '$VENV_PATH'"
+        exit 1
+    end
+end

@@ -18,13 +18,16 @@ Plug("leafgarland/typescript-vim")
 Plug("othree/html5.vim")
 Plug("pangloss/vim-javascript")
 Plug("nvim-orgmode/orgmode")
--- TODO Still needed? Justus 2023-03-10
-Plug("elzr/vim-json", {['for'] = "json"})
-Plug("dag/vim-fish", {['for'] = "fish"})
-Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
-Plug("tpope/vim-markdown", {['for'] = "markdown"})
 -- Read .editorconfig
 Plug("editorconfig/editorconfig-vim")
+-- If this isn't enabled, indentation on the next line is wrong.
+Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
+Plug("ledger/vim-ledger", {["for"] = "ledger"})
+-- Commenting these out -- add back if needed Justus 2023-11-15
+-- TODO Still needed? Justus 2023-03-10
+-- Plug("elzr/vim-json", {['for'] = "json"})
+-- Plug("dag/vim-fish", {['for'] = "fish"})
+-- Plug("tpope/vim-markdown", {['for'] = "markdown"})
 
 -- Ascii stuff
 -- -----------
@@ -38,7 +41,6 @@ Plug("kylechui/nvim-surround")
 
 -- Improve editor appearance
 -- -------------------------
-Plug("airblade/vim-gitgutter")
 Plug("jeffkreeftmeijer/vim-numbertoggle")
 
 -- Improve general editor behavior
@@ -66,7 +68,6 @@ Plug("hrsh7th/nvim-cmp")
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
-Plug("hrsh7th/nvim-cmp")
 
 -- Snippets
 -- --------
@@ -211,8 +212,15 @@ cmp.setup.filetype(
             ['<CR>'] = cmp.mapping.confirm({ select = false }),
         }),
         sources = cmp.config.sources(
-            { { name = 'buffer' }, { name = 'vsnip' }, { name = 'nvim_lsp' } },
-            { { name = 'buffer' } }
+            {
+                { name = 'buffer' },
+                { name = 'vsnip' },
+                { name = 'nvim_lsp' },
+                { name = 'orgmode' },
+            },
+            {
+                { name = 'buffer' },
+            }
         ),
     }
 )
@@ -262,7 +270,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Treesitter configuration
 -- ========================
 -- Load in orgmode grammar
-require('orgmode').setup_ts_grammar()
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -276,12 +283,16 @@ require('nvim-treesitter.configs').setup {
         },
         -- disable = { "sh" },
     },
+    indent = {
+        enable = true,
+    },
     ensure_installed = {
         "lua",
         "svelte",
         "typescript",
         "markdown",
         "org",
+        "ledger",
     },
 }
 -- Folding
@@ -291,7 +302,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = true
 vim.opt.foldclose = all
-vim.opt.foldminlines = 15
+vim.opt.foldminlines = 150
 
 -- fold autocommand
 -- ----------------
@@ -324,12 +335,30 @@ function toggle_venn()
         vim.opt_local.virtualedit = "all"
         opts = { buffer = true }
         -- draw a line on HJKL keystokes
+        -- TODO call VBox function directly here
         vim.keymap.set("n", "J", "<C-v>j:VBox<CR>", opts)
         vim.keymap.set("n", "K", "<C-v>k:VBox<CR>", opts)
         vim.keymap.set("n", "L", "<C-v>l:VBox<CR>", opts)
         vim.keymap.set("n", "H", "<C-v>h:VBox<CR>", opts)
         -- draw a box by pressing "f" with visual selection
         vim.keymap.set("v", "f", ":VBox<CR>", opts)
+
+        set_line = require"venn".set_line
+        set_arrow = require"venn".set_arrow
+        set_line({ "s", "s" , " ", " " }, '|')
+        set_line({ " ", "s" , " ", "s" }, '.')
+        set_line({ "s", " " , " ", "s" }, '.')
+        set_line({ " ", "s" , "s", " " }, '.')
+        set_line({ "s", " " , "s", " " }, '.')
+        set_line({ " ", "s" , "s", "s" }, '+')
+        set_line({ "s", " " , "s", "s" }, '+')
+        set_line({ "s", "s" , " ", "s" }, '+')
+        set_line({ "s", "s" , "s", " " }, '+')
+        set_line({ " ", " " , "s", "s" }, '-')
+        set_arrow("up", '^')
+        set_arrow("down", 'v')
+        set_arrow("left", '<')
+        set_arrow("right", '>')
     end
 end
 -- toggle keymappings for venn using <leader>v
@@ -403,6 +432,8 @@ vim.api.nvim_create_user_command(
 -- Orgmode.nvim
 -- ============
 require('orgmode').setup({
+    org_startup_indented = false,
+    org_adapt_indentation = false,
 })
 
 -- EasyMotion
@@ -423,3 +454,9 @@ vim.g.EasyMotion_smartcase = 1
 -- JK motions: Line motions
 vim.keymap.set("n", "<Leader>j", "<Plug>(easymotion-j)")
 vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
+
+
+-- vim-ledger
+-- ==========
+vim.g.ledger_accounts_cmd = "hledger accounts"
+vim.g.ledger_is_hledger = true

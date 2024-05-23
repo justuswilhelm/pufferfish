@@ -11,14 +11,14 @@
         "body": [
             "import type { Meta, StoryObj } from \"@storybook/svelte\";",
             "",
-            "import $0 from \"\\$lib/figma/screens/task/$0.svelte\";",
+            "import ${1:ComponentName} from \"\\$lib/${2:path/to/component}/$1.svelte\";",
             "",
-            "const meta: Meta<$0> = {",
-            "    component: $0,",
+            "const meta: Meta<$1> = {",
+            "    component: $1,",
             "};",
             "export default meta;",
             "",
-            "type Story = StoryObj<$0>;",
+            "type Story = StoryObj<$1>;",
             "",
             "export const Default: Story = {",
             "};"

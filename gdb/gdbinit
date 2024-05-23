@@ -1,0 +1,10 @@
+set history filename ~/.local/share/gdb/gdb_history
+set history save on
+set history size 10000
+
+define bpl
+    info breakpoints
+end
+document bpl
+List all breakpoints.
+end

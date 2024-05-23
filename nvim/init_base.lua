@@ -162,3 +162,7 @@ vim.keymap.set(
 -- Mouse
 -- =====
 vim.opt.mouse = "a"
+
+-- Do math on highlighted text
+-- ---------------------------
+vim.keymap.set("v", "<leader>m", '"ms<C-R>=<C-R>m<CR><ESC>')
