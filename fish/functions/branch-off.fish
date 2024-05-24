@@ -50,7 +50,17 @@ function branch-off
 
     if set -q remote
         echo "Ensuring we are up to date with $remote"
-        git fetch $remote || return
-        git rebase "$remote/main" || return
+        if ! git fetch $remote
+            echo "
+Couldn't fet git remote $remote, leaving new branch checked out, but you might
+have to rebase against $remote/main manually."
+            return 1
+        end
+        if ! git rebase "$remote/main"
+            echo "
+Couldn't rebase against $remote/main. Please check manually and try rebasing
+again."
+            return 1
+        end
     end
 end
