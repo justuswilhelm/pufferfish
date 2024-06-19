@@ -61,11 +61,11 @@ in
   # Networking
   pkgs.curl
   pkgs.httperf
-  pkgs.mitmproxy
+  # TODO FIX pkgs.mitmproxy
   pkgs.netcat-gnu
   pkgs.nmap
   pkgs.wget
-  extraPkgs.whois
+  pkgs.whois
 
   # File transfers, Backups
   pkgs.rsync
@@ -97,7 +97,7 @@ in
     pkgs.symlinkJoin {
       name = "radare2";
       paths = [
-        extraPkgs.radare2
+        pkgs.radare2
         pkgs.meson
         pkgs.ninja
       ];
@@ -124,7 +124,7 @@ in
   pkgs.htop
   # Broken,
   # https://github.com/NixOS/nixpkgs/issues/299091
-  extraPkgs.ncdu
+  pkgs.ncdu
   pkgs.ncurses
   pkgs.neovim
   (
@@ -188,6 +188,7 @@ in
 
   # Core tools
   pkgs.silver-searcher
+  pkgs.ripgrep
   pkgs.fd
   pkgs.gnused
   pkgs.gnutar
