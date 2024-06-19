@@ -39,6 +39,10 @@ let
     # Nix
     # Not available on Darwin
     pkgs.cntr
+
+    # Networking
+    # Marked broken
+    pkgs.mitmproxy
   ];
   darwinOnly = lib.lists.optionals isDarwin [
     aeroSpace
@@ -61,7 +65,6 @@ in
   # Networking
   pkgs.curl
   pkgs.httperf
-  # TODO FIX pkgs.mitmproxy
   pkgs.netcat-gnu
   pkgs.nmap
   pkgs.wget
