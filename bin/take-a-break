@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Maybe set -e, -o pipefail or -u
+timew start break
+aerospace workspace 3
