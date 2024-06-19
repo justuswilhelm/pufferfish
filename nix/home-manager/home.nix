@@ -139,7 +139,6 @@ in
   programs.alacritty = {
     enable = isDarwin;
     settings = {
-      import = [ "${xdgConfigHome}/alacritty/selenized-light.yml" ];
       font = {
         size = if isDebian then 11 else 12;
         normal = {
@@ -149,7 +148,7 @@ in
       window = {
         option_as_alt = "OnlyRight";
       };
-    };
+    } // selenized.alacritty;
   };
 
   programs.i3status = {

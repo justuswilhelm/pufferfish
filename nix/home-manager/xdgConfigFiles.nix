@@ -118,11 +118,6 @@ in
     source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
   };
-  alacrittyTheme = {
-    enable = isDarwin;
-    source = ../../selenized/terminals/alacritty/selenized-light.yml;
-    target = "alacritty/selenized-light.yml";
-  };
   aerospace = {
     enable = isDarwin;
     source = (import ./aerospace.nix) { inherit pkgs lib homeDirectory; };
