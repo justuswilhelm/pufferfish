@@ -72,14 +72,20 @@ in
   xdg.configFile = (import ./xdgConfigFiles.nix) {
     inherit lib pkgs isDarwin isDebian homeDirectory xdgCacheHome;
   };
-  # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
   home.file = {
+    # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
     pyPoetryDarwin = {
       enable = isDarwin;
       text = ''
         cache-dir = "${xdgCacheHome}/pypoetry"
       '';
       target = "${applicationSupport}/pypoetry/config.toml";
+    };
+    xbar = {
+      enable = isDarwin;
+      source = ../../xbar;
+      target = "${applicationSupport}/xbar";
+      recursive = true;
     };
     pdbpp = {
       text = ''
