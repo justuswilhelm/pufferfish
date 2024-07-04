@@ -488,3 +488,4 @@ vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
 -- ==========
 vim.g.ledger_accounts_cmd = "hledger accounts"
 vim.g.ledger_is_hledger = true
+vim.g.ledger_fuzzy_account_completion = 1
