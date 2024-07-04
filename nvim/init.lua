@@ -234,10 +234,21 @@ lspconfig.tsserver.setup {
     capabilities = capabilities,
     cmd = { 'npm', 'run', 'typescript-language-server', '--', '--stdio' },
 }
+-- Svelte
+-- ------
 lspconfig.svelte.setup {
     capabilities = capabilities,
     cmd = { 'npm', 'run', 'svelteserver', '--', '--stdio' },
+    on_attach = function(client)
+        vim.api.nvim_create_autocmd("BufWritePost", {
+            pattern = { "*.js", "*.ts" },
+            callback = function(ctx)
+                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+            end,
+        })
+    end
 }
+
 lspconfig.pyright.setup {
     capabilities = capabilities
 }
