@@ -13,7 +13,6 @@ let
   xdgCacheHome =
     if isDebian then
       "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
-  inherit (specialArgs) pkgs-unstable;
 in
 {
   home.username = username;
@@ -23,7 +22,6 @@ in
     inherit lib isDebian isDarwin pkgs;
     extraPkgs = {
       inherit (specialArgs) pomoglorbo;
-      inherit (pkgs-unstable) radare2 ncdu;
     };
   };
 
@@ -74,14 +72,20 @@ in
   xdg.configFile = (import ./xdgConfigFiles.nix) {
     inherit lib pkgs isDarwin isDebian homeDirectory xdgCacheHome;
   };
-  # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
   home.file = {
+    # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
     pyPoetryDarwin = {
       enable = isDarwin;
       text = ''
         cache-dir = "${xdgCacheHome}/pypoetry"
       '';
       target = "${applicationSupport}/pypoetry/config.toml";
+    };
+    xbar = {
+      enable = isDarwin;
+      source = ../../xbar;
+      target = "${applicationSupport}/xbar";
+      recursive = true;
     };
     pdbrc =
       let
@@ -156,7 +160,6 @@ in
   programs.alacritty = {
     enable = isDarwin;
     settings = {
-      import = [ "${xdgConfigHome}/alacritty/selenized-light.yml" ];
       font = {
         size = if isDebian then 11 else 12;
         normal = {
@@ -166,7 +169,7 @@ in
       window = {
         option_as_alt = "OnlyRight";
       };
-    };
+    } // selenized.alacritty;
   };
 
   programs.i3status = {

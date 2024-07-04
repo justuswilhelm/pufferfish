@@ -88,3 +88,7 @@ cmd-alt-r = 'mode main'
 [[on-window-detected]]
 if.app-id = "com.apple.mail"
 run = ["move-node-to-workspace 5"]
+
+[[on-window-detected]]
+if.app-id = "org.libreoffice.script"
+run = ["layout tiling"]

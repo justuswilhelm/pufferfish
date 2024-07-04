@@ -230,4 +230,36 @@ in
     theme.palette.color11 = black on blue
     theme.palette.color12 = black on magenta
   '';
+  alacritty =
+    let
+      color = builtins.replaceStrings [ "#" ] [ "0x" ];
+    in
+    {
+      colors = {
+        primary = {
+          background = color bg_0;
+          foreground = color fg_0;
+        };
+        normal = {
+          black = color bg_1;
+          red = color red;
+          green = color green;
+          yellow = color yellow;
+          blue = color blue;
+          magenta = color magenta;
+          cyan = color cyan;
+          white = color dim_0;
+        };
+        bright = {
+          black = color bg_2;
+          red = color br_red;
+          green = color br_green;
+          yellow = color br_yellow;
+          blue = color br_blue;
+          magenta = color br_magenta;
+          cyan = color br_cyan;
+          white = color fg_1;
+        };
+      };
+    };
 }

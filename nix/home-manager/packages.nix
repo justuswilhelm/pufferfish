@@ -39,6 +39,10 @@ let
     # Nix
     # Not available on Darwin
     pkgs.cntr
+
+    # Networking
+    # Marked broken
+    pkgs.mitmproxy
   ];
   darwinOnly = lib.lists.optionals isDarwin [
     aeroSpace
@@ -61,7 +65,6 @@ in
   # Networking
   pkgs.curl
   pkgs.httperf
-  pkgs.mitmproxy
   pkgs.netcat-gnu
   pkgs.nmap
   pkgs.wget
@@ -97,7 +100,7 @@ in
     pkgs.symlinkJoin {
       name = "radare2";
       paths = [
-        extraPkgs.radare2
+        pkgs.radare2
         pkgs.meson
         pkgs.ninja
       ];
@@ -124,7 +127,7 @@ in
   pkgs.htop
   # Broken,
   # https://github.com/NixOS/nixpkgs/issues/299091
-  extraPkgs.ncdu
+  pkgs.ncdu
   pkgs.ncurses
   pkgs.neovim
   (
@@ -188,6 +191,7 @@ in
 
   # Core tools
   pkgs.silver-searcher
+  pkgs.ripgrep
   pkgs.fd
   pkgs.gnused
   pkgs.gnutar

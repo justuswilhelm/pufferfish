@@ -71,10 +71,22 @@ in
     source = ../../pomoglorbo/config.ini;
     target = "pomoglorbo/config.ini";
   };
-  cmusRc = {
-    source = ../../cmus/rc;
-    target = "cmus/rc";
-  };
+  cmusRc =
+    let
+      darwinRc = ''
+        set output_plugin=coreaudio
+      '';
+      debianRc = ''
+    '';
+    in
+    {
+      text = ''
+        ${if isDebian then debianRc else ""}
+        ${if isDarwin then darwinRc else ""}
+        ${builtins.readFile ../../cmus/rc}
+      '';
+      target = "cmus/rc";
+    };
   karabiner = {
     enable = isDarwin;
     source = ../../karabiner/karabiner.json;
@@ -106,11 +118,6 @@ in
     enable = isDebian;
     source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
-  };
-  alacrittyTheme = {
-    enable = isDarwin;
-    source = ../../selenized/terminals/alacritty/selenized-light.yml;
-    target = "alacritty/selenized-light.yml";
   };
   aerospace = {
     enable = isDarwin;
