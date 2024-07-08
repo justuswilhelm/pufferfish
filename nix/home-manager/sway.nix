@@ -4,7 +4,7 @@ let
   # TODO see if we can add wl-paste as a nix package
   foot = "${pkgs.foot}/bin/foot";
   fish = "${pkgs.fish}/bin/fish";
-  firefox = "${pkgs.firefox-esr}/bin/firefox";
+  firefox-esr = "${pkgs.firefox-esr}/bin/firefox-esr";
   keepassxc = "${pkgs.keepassxc}/bin/keepassxc";
   grim = "${pkgs.grim}/bin/grim";
   slurp = "${pkgs.slurp}/bin/slurp";
@@ -14,9 +14,9 @@ in
   text = ''
     # start a terminal
     bindsym $mod+Return exec ${foot}
-    bindsym $mod+Shift+Return exec ${firefox}
+    bindsym $mod+Shift+Return exec ${firefox-esr}
     # open an url if given in wl clipboard, like example.com
-    bindsym $mod+Shift+o exec ${firefox} $(wl-paste)
+    bindsym $mod+Shift+o exec ${firefox-esr} $(wl-paste)
     bindsym $mod+Shift+t exec ${pkgs.tor-browser}/bin/tor-browser
     bindsym $mod+Shift+p exec ${keepassxc}
     # Take a screenshot
@@ -27,7 +27,7 @@ in
     # Launch my currently used workspace
     bindsym $mod+m workspace 1, split horizontal, exec ${foot} ${fish} -c projectify
     # Launch a view into my dotfiles etc
-    bindsym $mod+Shift+m workspace 4, exec ${foot} ${fish} -c manage-dotfiles, split horizontal, exec ${firefox}
+    bindsym $mod+Shift+m workspace 4, exec ${foot} ${fish} -c manage-dotfiles, split horizontal, exec ${firefox-esr}
 
     # Launch a view into my laptop and do pomodoros
     bindsym $mod+Shift+f workspace 3, exec ${foot} ${pkgs.mosh}/bin/mosh lithium.local -- fish -c tomato
@@ -49,7 +49,7 @@ in
         # Wayland copy-pasting, part of debian
         wl-paste -t text --watch clipman store --no-persist
         # Will these two anyway
-        ${firefox}
+        ${firefox-esr}
         ${keepassxc}
     }
   '';
