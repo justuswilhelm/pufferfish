@@ -31,7 +31,7 @@ in
 
     # Launch a view into my laptop and do pomodoros
     bindsym $mod+Shift+f workspace 3, exec ${foot} ${pkgs.mosh}/bin/mosh lithium.local -- fish -c tomato
-    # start dmenu (a program launcher)
+    # start bemenu (a program launcher)
     bindsym $mod+d exec ${bemenu} -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
 
     exec {
