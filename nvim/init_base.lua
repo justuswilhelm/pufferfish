@@ -152,7 +152,7 @@ vim.keymap.set(
     function()
         -- Remove newline at end
         date = string.format(
-            "Justus %s",
+            " Justus %s",
             string.sub(vim.fn.system({"date", "-Idate"}), 0, -2)
         )
         vim.api.nvim_put({date}, "", true, true)
