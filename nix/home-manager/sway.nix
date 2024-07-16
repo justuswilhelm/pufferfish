@@ -9,6 +9,7 @@ let
   grim = "${pkgs.grim}/bin/grim";
   slurp = "${pkgs.slurp}/bin/slurp";
   bemenu = "${pkgs.bemenu}/bin/bemenu-run";
+  mosh = "${pkgs.mosh}/bin/mosh";
 in
 {
   text = ''
@@ -17,7 +18,8 @@ in
     bindsym $mod+Shift+Return exec ${firefox-esr}
     # open an url if given in wl clipboard, like example.com
     bindsym $mod+Shift+o exec ${firefox-esr} $(wl-paste)
-    bindsym $mod+Shift+t exec ${pkgs.tor-browser}/bin/tor-browser
+    # TODO find a new shortcut for this
+    # bindsym $mod+Shift+t exec ${pkgs.tor-browser}/bin/tor-browser
     bindsym $mod+Shift+p exec ${keepassxc}
     # Take a screenshot
     bindsym $mod+Shift+b exec ${grim}
@@ -30,7 +32,9 @@ in
     bindsym $mod+Shift+m workspace 4, exec ${foot} ${fish} -c manage-dotfiles, split horizontal, exec ${firefox-esr}
 
     # Launch a view into my laptop and do pomodoros
-    bindsym $mod+Shift+f workspace 3, exec ${foot} ${pkgs.mosh}/bin/mosh lithium.local -- fish -c tomato
+    bindsym $mod+Shift+f workspace 3, exec ${foot} ${mosh} lithium.local -- fish -c tomato
+    # Cmus on lithium.local
+    bindsym $mod+Shift+t workspace 3, exec ${foot} ${mosh} lithium.local -- fish -c t-cmus
     # start bemenu (a program launcher)
     bindsym $mod+d exec ${bemenu} -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
 
