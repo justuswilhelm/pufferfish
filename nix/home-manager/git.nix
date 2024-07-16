@@ -40,6 +40,7 @@
     };
     annex = {
       autocommit = false;
+      synccontent = true;
     };
   };
   ignores =
