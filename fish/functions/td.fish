@@ -12,8 +12,11 @@ function td -d "Create a new tmux session in a given directory"
         echo "Couldn't determine new tmux session name"
         return 1
     end
-    if ! tmux new-session -c $dir -s $session_name
+    if ! tmux new-session -d -c $dir -s $session_name
         echo "Couldn't create new tmux session $session_name in directory $dir"
         return 1
+    end
+    if ! tsa $session_name
+        echo "Couldn't tsa to session $session_name"
     end
 end

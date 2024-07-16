@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
-# Maybe set -e, -o pipefail or -u
+set -e
 timew start break
 aerospace workspace 3
+pmset displaysleepnow

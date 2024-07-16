@@ -12,6 +12,9 @@
     };
     rebase = {
       autostash = true;
+      # Make sure we run git rebase with --rebase-merges
+      # to not accidentally make merge commits disappear
+      rebaseMerges = true;
     };
     commit = {
       verbose = true;

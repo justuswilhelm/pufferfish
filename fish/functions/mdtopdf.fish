@@ -1,4 +1,5 @@
 function mdtopdf -a file
+    set additional $argv[2..]
     set out (path change-extension pdf $file)
     echo "Rendering $file to $out"
     pandoc \
@@ -6,5 +7,6 @@ function mdtopdf -a file
         --to pdf \
         --pdf-engine=xelatex \
         --output $out \
+        $additional \
         $file
 end

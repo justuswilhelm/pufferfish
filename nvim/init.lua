@@ -234,10 +234,21 @@ lspconfig.tsserver.setup {
     capabilities = capabilities,
     cmd = { 'npm', 'run', 'typescript-language-server', '--', '--stdio' },
 }
+-- Svelte
+-- ------
 lspconfig.svelte.setup {
     capabilities = capabilities,
     cmd = { 'npm', 'run', 'svelteserver', '--', '--stdio' },
+    on_attach = function(client)
+        vim.api.nvim_create_autocmd("BufWritePost", {
+            pattern = { "*.js", "*.ts" },
+            callback = function(ctx)
+                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+            end,
+        })
+    end
 }
+
 lspconfig.pyright.setup {
     capabilities = capabilities
 }
@@ -295,6 +306,7 @@ require('nvim-treesitter.configs').setup {
         "markdown",
         "org",
         "ledger",
+        "nix",
     },
 }
 -- Folding
@@ -479,3 +491,4 @@ vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
 -- ==========
 vim.g.ledger_accounts_cmd = "hledger accounts"
 vim.g.ledger_is_hledger = true
+vim.g.ledger_fuzzy_account_completion = 1

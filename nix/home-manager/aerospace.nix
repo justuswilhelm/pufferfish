@@ -17,6 +17,8 @@ let
   # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
   openAlacritty = cmd: ''exec-and-forget open -n -a '${alacrittyApp}' --args -e ${cmd}'';
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
+  # Try copying this to your clipboard: https://www.example.com
+  openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
   newFinderWindowScript = pkgs.writeText "new-finder-window" ''tell app "Finder" to make new Finder window'';
   runOsaScript = scriptName: "exec-and-forget osascript ${scriptName}";
   extra = {
@@ -39,6 +41,10 @@ let
       cmd-alt-shift-t = [
         "workspace 3"
         (openAlacritty "${fish} -l -c t-cmus")
+      ];
+      # Open URL
+      cmd-alt-shift-p = [
+        openClipboardInFirefox
       ];
     };
   };
