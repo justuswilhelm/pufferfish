@@ -139,11 +139,10 @@ in
 
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host *
-          AddKeysToAgent yes
-          IdentityFile ~/.ssh/id_rsa
-    '';
+    addKeysToAgent = "yes";
+    matchBlocks."*" = {
+      identityFile = "~/.ssh/id_rsa";
+    };
   };
 
   programs.foot = {
