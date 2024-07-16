@@ -306,6 +306,7 @@ require('nvim-treesitter.configs').setup {
         "markdown",
         "org",
         "ledger",
+        "nix",
     },
 }
 -- Folding
