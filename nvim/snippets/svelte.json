@@ -60,5 +60,12 @@
     "Image import": {
         "prefix": ["img"],
         "body": ["import ${1:ImageName} from \"./${2:path}\";"]
+    },
+    "Page data (typed)": {
+        "prefix": ["pagedata"],
+        "body": [
+            "    import type { PageData } from \"./\\$types\";",
+            "    export let data: PageData;"
+        ]
     }
 }
