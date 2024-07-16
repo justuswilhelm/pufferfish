@@ -28,7 +28,7 @@ in
   home.activation =
     {
       performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        export PATH=${pkgs.git}/bin:$PATH
+        export PATH=${pkgs.git}/bin:${pkgs.gcc}/bin:$PATH
         $DRY_RUN_CMD exec ${pkgs.neovim}/bin/nvim \
           --headless \
           +"PlugUpdate --sync" +qa
