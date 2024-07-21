@@ -1,4 +1,4 @@
-{ lib, pkgs, isDarwin, isDebian, homeDirectory, xdgCacheHome }:
+{ lib, pkgs, isNixOs, isLinux, isDarwin, isDebian, homeDirectory, xdgCacheHome }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
 in
@@ -93,29 +93,29 @@ in
     target = "karabiner/karabiner.json";
   };
   sway = {
-    enable = isDebian;
+    enable = isLinux;
     source = ../../sway/config;
     target = "sway/config";
   };
   swayLaunchers = {
-    enable = isDebian;
-    inherit ((import ./sway.nix) { inherit pkgs homeDirectory; }) text;
+    enable = isLinux;
+    inherit ((import ./sway.nix) { inherit pkgs homeDirectory isDebian isNixOs; }) text;
     target = "sway/config.d/launchers";
   };
   swayColors = {
-    enable = isDebian;
+    enable = isLinux;
     source = ../../sway/config.d/colors;
     target = "sway/config.d/colors";
   };
-  pyPoetryDebian = {
-    enable = isDebian;
+  pyPoetryLinux = {
+    enable = isLinux;
     text = ''
       cache-dir = "${xdgCacheHome}/pypoetry"
     '';
     target = "pypoetry/config.toml";
   };
   gdb = {
-    enable = isDebian;
+    enable = isLinux;
     source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
   };

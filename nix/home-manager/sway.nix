@@ -1,5 +1,5 @@
 # Contains just sway launcher config now
-{ pkgs, homeDirectory }:
+{ pkgs, homeDirectory, isDebian, isNixOs }:
 let
   # TODO see if we can add wl-paste as a nix package
   foot = "${pkgs.foot}/bin/foot";
@@ -13,6 +13,11 @@ let
 in
 {
   text = ''
+    # HiDPI setting
+    output * {
+        scale ${if isDebian then "1.5" else "1.25"}
+    }
+
     # start a terminal
     bindsym $mod+Return exec ${foot}
     bindsym $mod+Shift+Return exec ${firefox-esr}

@@ -1,4 +1,4 @@
-{ isDebian, pkgs, lib, osConfig }:
+{ isLinux, isNixOs, isDebian, pkgs, lib, osConfig ? null }:
 let
   debianLogin = ''
     # Only need to source this once

@@ -1,4 +1,4 @@
-{ isDebian, isDarwin, selenized }:
+{ isLinux, isNixOs, isDebian, isDarwin, selenized }:
 let
   darwinKeys = ''
     # Copy & paste
