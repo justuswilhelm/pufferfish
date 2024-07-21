@@ -188,6 +188,7 @@ in
   # Secrets
   pkgs.gnupg
   pkgs.pass
+  pkgs.yubikey-manager
 
   # Core tools
   pkgs.silver-searcher
