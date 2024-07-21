@@ -180,6 +180,7 @@ in
   pkgs.watch
   pkgs.hyperfine
   pkgs.pv
+  pkgs.mosh
 
   # Time tracking
   pkgs.timewarrior
