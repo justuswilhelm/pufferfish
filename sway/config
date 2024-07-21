@@ -112,14 +112,6 @@ focus_on_window_activation none
 for_window [app_id="opensnitch_ui"] floating enable
 for_window [title="Passwords.* - KeePassXC" app_id="org.keepassxc.KeePassXC"] move to workspace 5
 
-
-# Float Ghidra windows, except for big windows
-for_window [class="ghidra-Ghidra"] floating enable
-for_window [title="Ghidra:.*" class="ghidra-Ghidra"] floating disable
-for_window [title="CodeBrowser.*" class="ghidra-Ghidra"] floating disable
-for_window [title="Debugger.*" class="ghidra-Ghidra"] floating disable
-for_window [title="Emulator.*" class="ghidra-Ghidra"] floating disable
-
 # Keyboard / mouse mapping
 # For more specific modification, find the device id using
 # swaymsg -t get_inputs
