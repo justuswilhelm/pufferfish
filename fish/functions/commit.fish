@@ -1,5 +1,9 @@
 function commit -d "Suggest git commit messages based on previous commit messages of staged files"
-    set files (git diff --cached --name-only) || begin
+    set git_root (git rev-parse --show-toplevel) || begin
+        echo "Could not determine root"
+        return 1
+    end
+    set files (git diff --cached --name-only $git_root) || begin
         echo "Nothing is staged"
         return 1
     end
@@ -11,7 +15,7 @@ function commit -d "Suggest git commit messages based on previous commit message
 # Commit message suggestions:
 # ---------------------------
 #"
-        git log --pretty=%s -- $files | head -n10 | sed -e 's/^/# /' || return 1
+        git log --pretty=%s -- $git_root/$files | head -n10 | sed -e 's/^/# /' || return 1
     end > $commit_template
     if [ $status -ne 0 ]
         echo "Couldn't get log for these files:
