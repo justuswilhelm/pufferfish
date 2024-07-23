@@ -159,6 +159,10 @@ in
     enable = true;
     extraLuaConfig = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
+    extraPackages = [
+      pkgs.deno
+      pkgs.ruff-lsp
+    ];
   };
 
   programs.alacritty = {
