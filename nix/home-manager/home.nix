@@ -47,7 +47,6 @@ in
     XDG_DATA_HOME = xdgDataHome;
     XDG_STATE_HOME = xdgStateHome;
     XDG_CACHE_HOME = xdgCacheHome;
-    EDITOR = "${pkgs.neovim}/bin/nvim";
     NNN_OPENER = "open";
     PASSWORD_STORE_DIR = "${xdgDataHome}/pass";
     # XXX Still needed?
@@ -154,6 +153,12 @@ in
         font = "Iosevka Fixed:size=11";
       };
     };
+  };
+
+  programs.neovim = {
+    enable = true;
+    extraLuaConfig = builtins.readFile ../../nvim/init.lua;
+    defaultEditor = true;
   };
 
   programs.alacritty = {

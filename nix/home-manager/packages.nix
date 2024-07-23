@@ -129,7 +129,6 @@ in
   # https://github.com/NixOS/nixpkgs/issues/299091
   pkgs.ncdu
   pkgs.ncurses
-  pkgs.neovim
   (
     pkgs.symlinkJoin {
       name = "nnn";

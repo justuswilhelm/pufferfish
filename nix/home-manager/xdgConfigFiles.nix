@@ -50,10 +50,6 @@ in
     source = ../../nvim/colors/selenized.vim;
     target = "nvim/colors/selenized.vim";
   };
-  nvimInit = {
-    source = ../../nvim/init.lua;
-    target = "nvim/init.lua";
-  };
   nvimInitBase = {
     source = ../../nvim/init_base.lua;
     target = "nvim/init_base.lua";
