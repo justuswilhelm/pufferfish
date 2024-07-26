@@ -10,4 +10,18 @@
         exec sway
     end
   '';
+  xdg.configFile = {
+    swayHelium = {
+      text = ''
+        input type:keyboard {
+          xkb_layout x280
+        }
+        # HiDPI setting
+        output * {
+          scale 1.5
+        }
+      '';
+      target = "sway/config.d/helium";
+    };
+  };
 }

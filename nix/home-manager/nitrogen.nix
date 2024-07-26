@@ -21,6 +21,10 @@
         input type:keyboard {
           xkb_layout x280
         }
+        # HiDPI setting
+        output * {
+          scale 1.25
+        }
       '';
       target = "sway/config.d/nitrogen";
     };

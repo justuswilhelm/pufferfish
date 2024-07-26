@@ -13,11 +13,6 @@ let
 in
 {
   text = ''
-    # HiDPI setting
-    output * {
-        scale ${if isDebian then "1.5" else "1.25"}
-    }
-
     # start a terminal
     bindsym $mod+Return exec ${foot}
     bindsym $mod+Shift+Return exec ${firefox-esr}
