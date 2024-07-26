@@ -14,7 +14,23 @@
   };
 
   outputs = { self, nix-darwin, home-manager, nixpkgs, pomoglorbo }: {
-    homeConfigurations."justusperlwitz" =
+    homeConfigurations."justusperlwitz@nitrogen" =
+      let
+        system = "x86_64-linux";
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        modules = [ ../home-manager/home.nix ];
+
+        extraSpecialArgs = {
+          homeBaseDirectory = "/home";
+          system = "nixos";
+          pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+        };
+      };
+    homeConfigurations."justusperlwitz@helium" =
       let
         system = "x86_64-linux";
         pkgs = nixpkgs.legacyPackages.${system};

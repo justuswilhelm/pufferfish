@@ -142,8 +142,7 @@ in
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
-    matchBlocks."*" = {
-    };
+    matchBlocks."*" = { };
   };
 
   programs.foot = {
@@ -175,7 +174,7 @@ in
   programs.i3status = {
     enable = isLinux;
     enableDefault = false;
-    inherit (import ./i3status.nix) general modules;
+    inherit ((import ./i3status.nix) { isLaptop = isNixOs; }) general modules;
   };
 
   programs.gpg = {
@@ -255,7 +254,10 @@ in
     };
   };
   services.ssh-agent.enable = isLinux;
-  services.gpg-agent.enable = isLinux;
+  services.gpg-agent = {
+    enable = isLinux;
+    pinentryPackage = pkgs.pinentry-qt;
+  };
 
   xresources = {
     properties = {

@@ -19,7 +19,8 @@ let
       dquote = str: "\"" + str + "\"";
 
       makeBinPathList = map (path: path + "/bin");
-      path = lib.concatMapStringsSep " " dquote (makeBinPathList osConfig.environment.profiles);
+      # path = lib.concatMapStringsSep " " dquote (makeBinPathList osConfig.environment.profiles);
+      path = "";
     in
     ''
       fish_add_path --move --path ${path}
