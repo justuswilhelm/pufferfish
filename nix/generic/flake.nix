@@ -22,7 +22,7 @@
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
-        modules = [ ../home-manager/home.nix ];
+        modules = [ ../home-manager/nitrogen.nix ];
 
         extraSpecialArgs = {
           homeBaseDirectory = "/home";
