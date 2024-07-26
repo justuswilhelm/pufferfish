@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, config, specialArgs, ... }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
   isDebian = specialArgs.system == "debian";
@@ -135,7 +135,7 @@ in
   };
 
   programs.tmux = (import ./tmux.nix) { inherit selenized isLinux isNixOs isDebian isDarwin; };
-  programs.fish = (import ./fish.nix) { inherit isLinux isNixOs isDebian pkgs lib; };
+  programs.fish = (import ./fish.nix) { inherit pkgs lib; };
 
   programs.git = import ./git.nix { inherit xdgConfigHome isDarwin; };
 

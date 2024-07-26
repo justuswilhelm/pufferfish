@@ -38,7 +38,7 @@
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
-        modules = [ ../home-manager/home.nix ];
+        modules = [ ../home-manager/helium.nix ];
 
         extraSpecialArgs = {
           homeBaseDirectory = "/home";
@@ -59,7 +59,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.verbose = true;
             home-manager.useUserPackages = true;
-            home-manager.users.justusperlwitz = import ../home-manager/home.nix;
+            home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
             home-manager.extraSpecialArgs = {
               homeBaseDirectory = "/Users";
               system = "darwin";

@@ -1,48 +1,13 @@
-{ isLinux, isNixOs, isDebian, pkgs, lib, osConfig ? null }:
-let
-  debianLogin = ''
-    # Only need to source this once
-    source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
-
-    # If running from tty1 start sway
-    if [ (tty) = /dev/tty1 ]
-        exec sway
-    end
-  '';
-  darwinLogin =
-    let
-      # Courtesy of
-      # https://github.com/LnL7/nix-darwin/issues/122#issuecomment-1659465635
-      # This naive quoting is good enough in this case. There shouldn't be any
-      # double quotes in the input string, and it needs to be double quoted in case
-      # it contains a space (which is unlikely!)
-      dquote = str: "\"" + str + "\"";
-
-      makeBinPathList = map (path: path + "/bin");
-      # path = lib.concatMapStringsSep " " dquote (makeBinPathList osConfig.environment.profiles);
-      path = "";
-    in
-    ''
-      fish_add_path --move --path ${path}
-      set fish_user_paths $fish_user_paths
-    '';
-  debianInteractive = ''
-  '';
-in
+{ pkgs, lib, ... }:
 {
   enable = true;
-  loginShellInit = ''
-    fish_config theme choose "Solarized Light"
-  '' + (
-    if isDebian then debianLogin else darwinLogin
-  );
   interactiveShellInit = ''
+    fish_config theme choose "Solarized Light"
     if ! set -q ASDF_DIR
       # ASDF initialization
       set -x ASDF_DIR ${pkgs.asdf-vm}/share/asdf-vm
       source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
     end
-    ${if isDebian then debianInteractive else ""}
   '';
   shellAbbrs = {
     # Fish abbreviations
