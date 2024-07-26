@@ -1,6 +1,14 @@
 { lib, pkgs, specialArgs, ... }:
 {
-  imports = [ ./home.nix ./sway.nix ];
+  imports = [ ./home.nix ./sway.nix ./firefox.nix ];
+
+  programs.fish.loginShellInit = ''
+    # If running from tty1 start sway
+    if [ (tty) = /dev/tty1 ]
+        exec sway
+    end
+  '';
+
   home.file = {
     keyboardLayout = {
       text = ''

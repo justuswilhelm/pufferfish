@@ -30,7 +30,6 @@ let
 
     # GUIs
     pkgs.keepassxc
-    pkgs.firefox-esr
     pkgs.tor-browser
 
     # Debugger

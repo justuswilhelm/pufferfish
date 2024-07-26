@@ -4,7 +4,7 @@ let
   # TODO see if we can add wl-paste as a nix package
   foot = "${pkgs.foot}/bin/foot";
   fish = "${pkgs.fish}/bin/fish";
-  firefox-esr = "${pkgs.firefox-esr}/bin/firefox-esr";
+  firefox-esr = "${config.programs.firefox.finalPackage}/bin/firefox-esr";
   keepassxc = "${pkgs.keepassxc}/bin/keepassxc";
   grim = "${pkgs.grim}/bin/grim";
   slurp = "${pkgs.slurp}/bin/slurp";
@@ -60,7 +60,6 @@ in
             wl-paste -t text --watch clipman store --no-persist
             # Will these two anyway
             ${firefox-esr}
-            ${keepassxc}
         }
       '';
       target = "sway/config.d/launchers";
