@@ -92,21 +92,6 @@ in
     source = ../../karabiner/karabiner.json;
     target = "karabiner/karabiner.json";
   };
-  sway = {
-    enable = isLinux;
-    source = ../../sway/config;
-    target = "sway/config";
-  };
-  swayLaunchers = {
-    enable = isLinux;
-    inherit ((import ./sway.nix) { inherit pkgs homeDirectory isDebian isNixOs; }) text;
-    target = "sway/config.d/launchers";
-  };
-  swayColors = {
-    enable = isLinux;
-    source = ../../sway/config.d/colors;
-    target = "sway/config.d/colors";
-  };
   pyPoetryLinux = {
     enable = isLinux;
     text = ''

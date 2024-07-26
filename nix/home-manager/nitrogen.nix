@@ -1,6 +1,6 @@
 { lib, pkgs, specialArgs, ... }:
 {
-  imports = [ ./home.nix ];
+  imports = [ ./home.nix ./sway.nix ];
   home.file = {
     keyboardLayout = {
       text = ''

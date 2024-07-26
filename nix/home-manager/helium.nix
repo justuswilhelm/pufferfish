@@ -1,6 +1,6 @@
 { lib, pkgs, specialArgs, ... }:
 {
-  imports = [ ./home.nix ];
+  imports = [ ./home.nix ./sway.nix ];
   programs.fish.loginShellInit = ''
     # Only need to source this once
     source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
