@@ -1,4 +1,4 @@
-{ lib, isDebian, isDarwin, pkgs, extraPkgs }:
+{ lib, isLinux, isNixOs, isDebian, isDarwin, pkgs, extraPkgs }:
 let
   aeroSpace = pkgs.stdenv.mkDerivation {
     pname = "aerospace";
@@ -16,7 +16,7 @@ let
       hash = "sha256-AUPaGUqydrMMEnNq6AvZEpdUblTYwS+X3iCygPFWWbQ=";
     };
   };
-  debianOnly = lib.lists.optionals isDebian [
+  linuxOnly = lib.lists.optionals isLinux [
     # Compositor
     # This won't load because of some OpenGL issue
     # pkgs.sway
@@ -30,7 +30,6 @@ let
 
     # GUIs
     pkgs.keepassxc
-    pkgs.firefox-esr
     pkgs.tor-browser
 
     # Debugger
@@ -179,6 +178,7 @@ in
   pkgs.watch
   pkgs.hyperfine
   pkgs.pv
+  pkgs.mosh
 
   # Time tracking
   pkgs.timewarrior
@@ -201,5 +201,5 @@ in
   # Nix
   pkgs.nix-index
 ]
-++ debianOnly
+++ linuxOnly
 ++ darwinOnly

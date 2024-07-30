@@ -1,8 +1,10 @@
-{ lib, pkgs, specialArgs, osConfig, ... }:
+{ lib, pkgs, config, specialArgs, ... }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
   isDebian = specialArgs.system == "debian";
+  isNixOs = specialArgs.system == "nixos";
   isDarwin = specialArgs.system == "darwin";
+  isLinux = isDebian || isNixOs;
   username = "justusperlwitz";
   homeDirectory = "${specialArgs.homeBaseDirectory}/${username}";
   dotfiles = "${homeDirectory}/.dotfiles";
@@ -11,7 +13,7 @@ let
   xdgStateHome = "${homeDirectory}/.local/state";
   applicationSupport = "${homeDirectory}/Library/Application Support";
   xdgCacheHome =
-    if isDebian then
+    if isLinux then
       "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
 in
 {
@@ -19,7 +21,7 @@ in
   home.homeDirectory = homeDirectory;
 
   home.packages = import ./packages.nix {
-    inherit lib isDebian isDarwin pkgs;
+    inherit lib isLinux isNixOs isDebian isDarwin pkgs;
     extraPkgs = {
       inherit (specialArgs) pomoglorbo;
     };
@@ -52,7 +54,7 @@ in
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
-  } // (lib.attrsets.optionalAttrs isDebian {
+  } // (lib.attrsets.optionalAttrs isLinux {
     # Workaround for LANG issue
     # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
@@ -69,7 +71,7 @@ in
   xdg.dataHome = xdgDataHome;
 
   xdg.configFile = (import ./xdgConfigFiles.nix) {
-    inherit lib pkgs isDarwin isDebian homeDirectory xdgCacheHome;
+    inherit lib pkgs isLinux isNixOs isDarwin isDebian homeDirectory xdgCacheHome;
   };
   home.file = {
     # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
@@ -131,21 +133,19 @@ in
     nix-direnv.enable = true;
   };
 
-  programs.tmux = (import ./tmux.nix) { inherit selenized isDebian isDarwin; };
-  programs.fish = (import ./fish.nix) { inherit isDebian pkgs lib osConfig; };
+  programs.tmux = (import ./tmux.nix) { inherit selenized isLinux isNixOs isDebian isDarwin; };
+  programs.fish = (import ./fish.nix) { inherit pkgs lib; };
 
   programs.git = import ./git.nix { inherit xdgConfigHome isDarwin; };
 
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
-    matchBlocks."*" = {
-      identityFile = "~/.ssh/id_rsa";
-    };
+    matchBlocks."*" = { };
   };
 
   programs.foot = {
-    enable = isDebian;
+    enable = isLinux;
     settings = {
       main = {
         # Install foot-themes
@@ -169,7 +169,7 @@ in
     enable = isDarwin;
     settings = {
       font = {
-        size = if isDebian then 11 else 12;
+        size = if isLinux then 11 else 12;
         normal = {
           family = "Iosevka Fixed";
         };
@@ -181,9 +181,9 @@ in
   };
 
   programs.i3status = {
-    enable = isDebian;
+    enable = isLinux;
     enableDefault = false;
-    inherit (import ./i3status.nix) general modules;
+    inherit ((import ./i3status.nix) { isLaptop = isNixOs; }) general modules;
   };
 
   programs.gpg = {
@@ -262,8 +262,11 @@ in
       #verbose
     };
   };
-  services.ssh-agent.enable = isDebian;
-  services.gpg-agent.enable = isDebian;
+  services.ssh-agent.enable = isLinux;
+  services.gpg-agent = {
+    enable = isLinux;
+    pinentryPackage = pkgs.pinentry-qt;
+  };
 
   xresources = {
     properties = {

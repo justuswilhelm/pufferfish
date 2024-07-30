@@ -1,3 +1,22 @@
+{ isLaptop }:
+let
+  laptopOnly =
+    if isLaptop then {
+      "battery 0" = {
+        settings = {
+          format = "%status %percentage %remaining %emptytime";
+          format_down = "No battery";
+          status_chr = "⚡ CHR";
+          status_bat = "🔋 BAT";
+          status_unk = "? UNK";
+          status_full = "☻ FULL";
+          path = "/sys/class/power_supply/BAT%d/uevent";
+          low_threshold = 10;
+        };
+        position = 7;
+      };
+    } else { };
+in
 {
   general =
     {
@@ -58,5 +77,5 @@
       };
       position = 6;
     };
-  };
+  } // laptopOnly;
 }
