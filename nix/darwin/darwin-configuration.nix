@@ -203,6 +203,10 @@ in
   # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
   security.pam.enableSudoTouchIdAuth = true;
 
+  security.pki.certificateFiles = [
+    "/etc/caddy/lithium-ca.crt"
+  ];
+
   # Create /etc/zshrc that loads the nix-darwin environment.
   # programs.zsh.enable = true;  # default shell on catalina
   programs.fish = {
