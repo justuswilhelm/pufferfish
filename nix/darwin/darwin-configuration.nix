@@ -9,6 +9,7 @@ in
 {
   imports = [
     ./borgmatic.nix
+    ./offlineimap.nix
   ];
   users.users."${name}" = {
     description = "Justus Perlwitz";
@@ -34,10 +35,6 @@ in
     # Not sure if I need these on Debian or not
     pkgs.cmus
     pkgs.ffmpeg
-
-    # Mail - runs as a launchagent, so not sure if this makes sense as a home
-    # manager package
-    pkgs.offlineimap
 
     # Nix caching
     pkgs.attic-client
@@ -153,30 +150,6 @@ in
         StandardOutPath = "${logPath}/caddy.stdout.log";
         StandardErrorPath = "${logPath}/caddy.stderr.log";
       };
-  };
-
-  launchd.user.agents = {
-    "offlineimap" = {
-      serviceConfig =
-        let
-          logPath = "${library}/Logs/offlineimap";
-          script = pkgs.writeShellApplication {
-            name = "offlineimap";
-            runtimeInputs = with pkgs; [ offlineimap coreutils ];
-            text = ''
-              mkdir -p "${logPath}" || exit
-              exec offlineimap -l "${logPath}/offlineimap.$(date -Iseconds).log"
-            '';
-          };
-        in
-        {
-          Program = "${script}/bin/offlineimap";
-          # Every 5 minutes
-          StartInterval = 5 * 60;
-          # Time out after 3 minutes
-          TimeOut = 3 * 60;
-        };
-    };
   };
 
   services.postgresql = {
