@@ -17,5 +17,4 @@
       fish_add_path --move --path ${path}
       set fish_user_paths $fish_user_paths
     '';
-};
-
+}
