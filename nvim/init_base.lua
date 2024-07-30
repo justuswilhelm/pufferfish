@@ -79,8 +79,6 @@ vim.cmd.syntax("enable")
 -- ------
 vim.cmd.filetype("plugin", "indent", "on")
 vim.opt.expandtab = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
 -- Concealing
 -- ----------
 vim.opt.conceallevel = 0
