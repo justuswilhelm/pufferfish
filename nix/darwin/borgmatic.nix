@@ -23,7 +23,7 @@ in
           "--log-file"
           "/dev/stdout"
         ];
-        StandardOutPath = "${logPath}/borgmatic.stdout.log";
+        StandardOutPath = "${logPath}/borgmatic.log";
         StartCalendarInterval = [
           {
             Minute = 0;
