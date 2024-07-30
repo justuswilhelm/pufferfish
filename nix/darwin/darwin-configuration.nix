@@ -4,9 +4,12 @@ let
   home = "/Users/${name}";
   library = "${home}/Library";
 in
-{ user, config, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
+  imports = [
+    ./borgmatic.nix
+  ];
   users.users."${name}" = {
     description = "Justus Perlwitz";
     shell = pkgs.fish;
@@ -31,10 +34,6 @@ in
     # Not sure if I need these on Debian or not
     pkgs.cmus
     pkgs.ffmpeg
-
-    # File transfers, Backups
-    # Can this be put in the home config?
-    pkgs.borgmatic
 
     # Mail - runs as a launchagent, so not sure if this makes sense as a home
     # manager package
@@ -157,33 +156,6 @@ in
   };
 
   launchd.user.agents = {
-    # TODO
-    # Could this be a systemwide launchd.agents.borgmatic instead?
-    "borgmatic" = {
-      serviceConfig =
-        let
-          logPath = "${library}/Logs/borgmatic";
-          script = pkgs.writeShellApplication {
-            name = "borgmatic-timestamp";
-            runtimeInputs = with pkgs; [ borgmatic moreutils ];
-            text = ''
-              mkdir -p "${logPath}" || exit
-              borgmatic create prune \
-                --log-file-verbosity 1 \
-                --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
-            '';
-          };
-        in
-        {
-          Program = "${script}/bin/borgmatic-timestamp";
-          StartCalendarInterval = [
-            {
-              Minute = 0;
-            }
-          ];
-          TimeOut = 1800;
-        };
-    };
     "offlineimap" = {
       serviceConfig =
         let
