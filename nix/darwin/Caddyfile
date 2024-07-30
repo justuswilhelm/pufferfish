@@ -3,3 +3,9 @@ https://lithium.local:10100 {
 	tls /etc/caddy/lithium-server.crt /etc/caddy/lithium-server.key
 	reverse_proxy localhost:18080
 }
+
+# Anki
+https://lithium.local:10101 {
+	tls /etc/caddy/lithium-server.crt /etc/caddy/lithium-server.key
+	reverse_proxy localhost:18090
+}
