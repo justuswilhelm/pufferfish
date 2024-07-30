@@ -22,3 +22,6 @@ indent_size = 2
 
 [flake.lock]
 indent_size = 2
+
+[Caddyfile]
+indent_style = tab
