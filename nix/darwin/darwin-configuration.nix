@@ -39,6 +39,9 @@ in
     # Mail - runs as a launchagent, so not sure if this makes sense as a home
     # manager package
     pkgs.offlineimap
+
+    # Nix caching
+    pkgs.attic-client
   ];
   environment.shells = [ pkgs.fish ];
   environment.variables = {
@@ -51,6 +54,14 @@ in
     sshd_config = {
       source = ./sshd_config;
       target = "ssh/sshd_config";
+    };
+    caddyfile = {
+      source = ./Caddyfile;
+      target = "caddy/Caddyfile";
+    };
+    atticd = {
+      source = ./atticd.toml;
+      target = "attic/atticd.toml";
     };
   };
 
@@ -69,6 +80,48 @@ in
   environment.darwinConfig = "$HOME/.config/nix/darwin/darwin-configuration.nix";
 
   launchd.labelPrefix = "net.jwpconsulting";
+
+  launchd.daemons.attic = {
+    serviceConfig =
+      let
+        logPath = "/var/log/atticd";
+        script = pkgs.writeShellApplication {
+          name = "run-atticd";
+          runtimeInputs = with pkgs; [ attic-server ];
+          text = ''
+            ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="$(cat /etc/attic/secret.base64)"
+            export ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64
+            exec atticd --config /etc/attic/atticd.toml
+          '';
+        };
+      in
+      {
+        KeepAlive = true;
+        Program = "${script}/bin/run-atticd";
+        StandardOutPath = "${logPath}/attic.stdout.log";
+        StandardErrorPath = "${logPath}/attic.stderr.log";
+      };
+  };
+
+  launchd.daemons.caddy = {
+    serviceConfig =
+      let
+        logPath = "/var/log/caddy";
+        script = pkgs.writeShellApplication {
+          name = "run-caddy";
+          runtimeInputs = with pkgs; [ caddy ];
+          text = ''
+            exec caddy run --config /etc/caddy/Caddyfile
+          '';
+        };
+      in
+      {
+        KeepAlive = true;
+        Program = "${script}/bin/run-caddy";
+        StandardOutPath = "${logPath}/caddy.stdout.log";
+        StandardErrorPath = "${logPath}/caddy.stderr.log";
+      };
+  };
 
   launchd.user.agents = {
     # TODO
@@ -149,6 +202,20 @@ in
       darwin-config = "$HOME/.config/nix/darwin/darwin-configuration.nix";
     }
     "/nix/var/nix/profiles/per-user/root/channels"
+  ];
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
+  nix.settings.substituters = [
+    "https://lithium.default:10100/lithium-default"
+  ];
+  nix.settings.trusted-public-keys = [
+    "lithium-default:12m8tx3dPRBH0y4Gf6t/4eGh7Y8AJ7r2TT0Ug/w9Wvo="
+  ];
+
+  nix.settings.trusted-substituters = [
+    "https://lithium.default:10100/lithium-default"
   ];
 
   # nix.package = pkgs.nix;

@@ -3,12 +3,6 @@ let
   selenized = (import ./selenized.nix) { inherit lib; };
 in
 {
-  nixConfig = {
-    text = ''
-      experimental-features = nix-command flakes
-    '';
-    target = "nix/nix.conf";
-  };
   fishFunctions = {
     target = "fish/functions";
     source = ../../fish/functions;
