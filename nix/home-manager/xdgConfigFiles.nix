@@ -40,13 +40,6 @@ in
     source = ../../pomoglorbo/config.ini;
     target = "pomoglorbo/config.ini";
   };
-  pyPoetryLinux = {
-    enable = isLinux;
-    text = ''
-      cache-dir = "${xdgCacheHome}/pypoetry"
-    '';
-    target = "pypoetry/config.toml";
-  };
   gdb = {
     enable = isLinux;
     source = ../../gdb/gdbinit;
