@@ -18,6 +18,7 @@ in
 {
   imports = [
     ./git.nix
+    ./tmux.nix
   ];
 
   home.username = username;
@@ -121,8 +122,6 @@ in
     enable = true;
     nix-direnv.enable = true;
   };
-
-  programs.tmux = (import ./tmux.nix) { inherit selenized isLinux isNixOs isDebian isDarwin; };
   programs.fish = (import ./fish.nix) { inherit pkgs lib; };
 
   programs.ssh = {
