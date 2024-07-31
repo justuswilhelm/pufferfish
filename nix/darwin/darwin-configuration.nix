@@ -160,10 +160,10 @@ in
   nix.settings.trusted-public-keys = [
     "lithium-default:12m8tx3dPRBH0y4Gf6t/4eGh7Y8AJ7r2TT0Ug/w9Wvo="
   ];
-
   nix.settings.trusted-substituters = [
     "https://lithium.local:10100/lithium-default"
   ];
+  nix.settings.netrc-file = "/etc/nix/netrc";
 
   # nix.package = pkgs.nix;
 
