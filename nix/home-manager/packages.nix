@@ -1,4 +1,4 @@
-{ lib, isLinux, isNixOs, isDebian, isDarwin, pkgs, extraPkgs }:
+{ lib, isLinux, pkgs, extraPkgs }:
 let
   linuxOnly = lib.lists.optionals isLinux [
     # Compositor

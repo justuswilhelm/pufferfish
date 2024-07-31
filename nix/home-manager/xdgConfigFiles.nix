@@ -1,4 +1,4 @@
-{ lib, pkgs, isNixOs, isLinux, isDebian, homeDirectory, xdgCacheHome }:
+{ lib, pkgs, isLinux, homeDirectory, xdgCacheHome }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
 in

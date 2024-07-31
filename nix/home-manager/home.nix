@@ -3,7 +3,6 @@ let
   selenized = (import ./selenized.nix) { inherit lib; };
   isDebian = specialArgs.system == "debian";
   isNixOs = specialArgs.system == "nixos";
-  isDarwin = specialArgs.system == "darwin";
   isLinux = isDebian || isNixOs;
   username = "justusperlwitz";
   homeDirectory = specialArgs.homeDirectory;
@@ -26,7 +25,7 @@ in
   home.homeDirectory = homeDirectory;
 
   home.packages = import ./packages.nix {
-    inherit lib isLinux isNixOs isDebian isDarwin pkgs;
+    inherit lib isLinux pkgs;
     extraPkgs = {
       inherit (specialArgs) pomoglorbo;
     };
@@ -76,7 +75,7 @@ in
   xdg.dataHome = xdgDataHome;
 
   xdg.configFile = (import ./xdgConfigFiles.nix) {
-    inherit lib pkgs isLinux isNixOs isDebian homeDirectory xdgCacheHome;
+    inherit lib pkgs isLinux homeDirectory xdgCacheHome;
   };
   home.file = {
     pdbrc =
