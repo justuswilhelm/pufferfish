@@ -25,7 +25,7 @@
         modules = [ ../home-manager/nitrogen.nix ];
 
         extraSpecialArgs = {
-          homeBaseDirectory = "/home";
+          homeDirectory = "/home/justusperlwitz";
           system = "nixos";
           pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
         };
@@ -41,7 +41,7 @@
         modules = [ ../home-manager/helium.nix ];
 
         extraSpecialArgs = {
-          homeBaseDirectory = "/home";
+          homeDirectory = "/home/justusperlwitz";
           system = "debian";
           pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
         };
@@ -61,7 +61,6 @@
             home-manager.useUserPackages = true;
             home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
             home-manager.extraSpecialArgs = {
-              homeBaseDirectory = "/Users";
               homeDirectory = "/Users/justusperlwitz";
               system = "darwin";
               pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;

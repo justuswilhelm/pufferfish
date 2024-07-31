@@ -6,7 +6,7 @@ let
   isDarwin = specialArgs.system == "darwin";
   isLinux = isDebian || isNixOs;
   username = "justusperlwitz";
-  homeDirectory = "${specialArgs.homeBaseDirectory}/${username}";
+  homeDirectory = specialArgs.homeDirectory;
   dotfiles = "${homeDirectory}/.dotfiles";
   xdgConfigHome = "${homeDirectory}/.config";
   xdgDataHome = "${homeDirectory}/.local/share";
