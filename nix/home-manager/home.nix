@@ -19,6 +19,7 @@ in
     ./git.nix
     ./tmux.nix
     ./cmus.nix
+    ./nvim.nix
   ];
 
   home.username = username;
@@ -30,16 +31,6 @@ in
       inherit (specialArgs) pomoglorbo;
     };
   };
-
-  home.activation =
-    {
-      performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        export PATH=${pkgs.git}/bin:${pkgs.gcc}/bin:$PATH
-        $DRY_RUN_CMD exec ${pkgs.neovim}/bin/nvim \
-          --headless \
-          +"PlugUpdate --sync" +qa
-      '';
-    };
 
   home.stateVersion = "24.05";
 
@@ -146,16 +137,6 @@ in
         font = "Iosevka Fixed:size=11";
       };
     };
-  };
-
-  programs.neovim = {
-    enable = true;
-    extraLuaConfig = builtins.readFile ../../nvim/init.lua;
-    defaultEditor = true;
-    extraPackages = [
-      pkgs.deno
-      pkgs.ruff-lsp
-    ];
   };
 
   programs.i3status = {

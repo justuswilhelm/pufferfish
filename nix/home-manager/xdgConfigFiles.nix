@@ -36,27 +36,6 @@ in
       '';
     target = "neomutt/mailcap";
   };
-  nvimAfter = {
-    source = ../../nvim/after;
-    target = "nvim/after";
-  };
-  nvimSelenized = {
-    source = ../../nvim/colors/selenized.vim;
-    target = "nvim/colors/selenized.vim";
-  };
-  nvimInitBase = {
-    source = ../../nvim/init_base.lua;
-    target = "nvim/init_base.lua";
-  };
-  nvimPlug = {
-    source = ../../nvim/autoload/plug.vim;
-    target = "nvim/autoload/plug.vim";
-  };
-  nvimSnippets = {
-    source = ../../nvim/snippets;
-    target = "nvim/snippets";
-    recursive = true;
-  };
   pomoglorbo = {
     source = ../../pomoglorbo/config.ini;
     target = "pomoglorbo/config.ini";
