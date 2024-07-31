@@ -62,6 +62,7 @@
             home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
             home-manager.extraSpecialArgs = {
               homeBaseDirectory = "/Users";
+              homeDirectory = "/Users/justusperlwitz";
               system = "darwin";
               pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
             };

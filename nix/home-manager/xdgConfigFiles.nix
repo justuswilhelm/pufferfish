@@ -94,11 +94,6 @@ in
     source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
   };
-  aerospace = {
-    enable = isDarwin;
-    source = (import ./aerospace.nix) { inherit pkgs lib homeDirectory; };
-    target = "aerospace/aerospace.toml";
-  };
   timewarrior = {
     text = ''
       ${builtins.readFile ../../timewarrior/timewarrior.cfg}

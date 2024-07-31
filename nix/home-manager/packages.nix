@@ -1,21 +1,5 @@
 { lib, isLinux, isNixOs, isDebian, isDarwin, pkgs, extraPkgs }:
 let
-  aeroSpace = pkgs.stdenv.mkDerivation {
-    pname = "aerospace";
-    version = "0.8.6-Beta";
-    nativeBuildInputs = [ pkgs.installShellFiles ];
-    buildPhase = "";
-    installPhase = ''
-      mkdir -p $out/bin
-      cp bin/aerospace $out/bin
-      installManPage manpage/*
-    '';
-
-    src = pkgs.fetchzip {
-      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.6-Beta/AeroSpace-v0.8.6-Beta.zip";
-      hash = "sha256-AUPaGUqydrMMEnNq6AvZEpdUblTYwS+X3iCygPFWWbQ=";
-    };
-  };
   linuxOnly = lib.lists.optionals isLinux [
     # Compositor
     # This won't load because of some OpenGL issue
@@ -42,9 +26,6 @@ let
     # Networking
     # Marked broken
     pkgs.mitmproxy
-  ];
-  darwinOnly = lib.lists.optionals isDarwin [
-    aeroSpace
   ];
 in
 [
@@ -202,4 +183,3 @@ in
   pkgs.nix-index
 ]
 ++ linuxOnly
-++ darwinOnly

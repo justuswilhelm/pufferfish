@@ -1,6 +1,6 @@
 { lib, pkgs, specialArgs, osConfig, ... }:
 {
-  imports = [ ./home.nix ];
+  imports = [ ./home.nix ./aerospace.nix ];
   programs.fish.loginShellInit =
     let
       # Courtesy of

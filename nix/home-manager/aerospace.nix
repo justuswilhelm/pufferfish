@@ -1,9 +1,25 @@
-# Aerospace toml config, returns derivation, not text!
-{ lib, pkgs, homeDirectory }:
+# Contains just sway launcher config now
+{ lib, config, pkgs, specialArgs, osConfig, ... }:
 let
+  aerospace = pkgs.stdenv.mkDerivation {
+    pname = "aerospace";
+    version = "0.8.6-Beta";
+    nativeBuildInputs = [ pkgs.installShellFiles ];
+    buildPhase = "";
+    installPhase = ''
+      mkdir -p $out/bin
+      cp bin/aerospace $out/bin
+      installManPage manpage/*
+    '';
+
+    src = pkgs.fetchzip {
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.6-Beta/AeroSpace-v0.8.6-Beta.zip";
+      hash = "sha256-AUPaGUqydrMMEnNq6AvZEpdUblTYwS+X3iCygPFWWbQ=";
+    };
+  };
   # We need to convince macOS to open this as a proper app, not as a child of
   # aerospace
-  alacrittyApp = "${homeDirectory}/Applications/Home Manager Apps/Alacritty.app";
+  alacrittyApp = "${specialArgs.homeDirectory}/Applications/Home Manager Apps/Alacritty.app";
   alacritty = "${alacrittyApp}/Contents/MacOS/alacritty";
   # Hardcoded woops
   firefoxApp = "/Applications/Free/Firefox.app";
@@ -46,15 +62,15 @@ let
       cmd-alt-f = "fullscreen";
 
       # change container layout (stacked, tabbed, toggle split)
- # 'layout stacking' in i3
+      # 'layout stacking' in i3
       cmd-alt-s = "layout v_accordion";
- # 'layout tabbed' in i3
+      # 'layout tabbed' in i3
       cmd-alt-w = "layout h_accordion";
- # 'layout toggle split' in i3
+      # 'layout toggle split' in i3
       cmd-alt-e = "layout tiles horizontal vertical";
 
       # toggle tiling / floating
- # 'floating toggle' in i3
+      # 'floating toggle' in i3
       cmd-alt-shift-space = "layout floating tiling";
 
       # Not supported, because this command is redundant in AeroSpace mental model.
@@ -135,14 +151,20 @@ let
     on-window-detected = [
       {
         "if".app-id = "com.apple.mail";
-        run = ["move-node-to-workspace 5"];
+        run = [ "move-node-to-workspace 5" ];
       }
       {
         "if".app-id = "org.libreoffice.script";
-        run = ["layout tiling"];
+        run = [ "layout tiling" ];
       }
     ];
   };
   tomlFormat = pkgs.formats.toml { };
 in
-tomlFormat.generate "aerospace.toml" config
+{
+  xdg.configFile.aerospace = {
+    source = tomlFormat.generate "aerospace.toml" config;
+    target = "aerospace/aerospace.toml";
+  };
+  home.packages = [ aerospace ];
+}
