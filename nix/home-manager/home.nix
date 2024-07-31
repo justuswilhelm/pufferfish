@@ -17,6 +17,10 @@ let
       "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
 in
 {
+  imports = [
+    ./git.nix
+  ];
+
   home.username = username;
   home.homeDirectory = homeDirectory;
 
@@ -135,8 +139,6 @@ in
 
   programs.tmux = (import ./tmux.nix) { inherit selenized isLinux isNixOs isDebian isDarwin; };
   programs.fish = (import ./fish.nix) { inherit pkgs lib; };
-
-  programs.git = import ./git.nix { inherit xdgConfigHome isDarwin; };
 
   programs.ssh = {
     enable = true;
