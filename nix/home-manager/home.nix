@@ -151,21 +151,6 @@ in
     ];
   };
 
-  programs.alacritty = {
-    enable = isDarwin;
-    settings = {
-      font = {
-        size = if isLinux then 11 else 12;
-        normal = {
-          family = "Iosevka Fixed";
-        };
-      };
-      window = {
-        option_as_alt = "OnlyRight";
-      };
-    } // selenized.alacritty;
-  };
-
   programs.i3status = {
     enable = isLinux;
     enableDefault = false;

@@ -1,6 +1,7 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
   applicationSupport = "${specialArgs.homeDirectory}/Library/Application Support";
+  selenized = (import ./selenized.nix) { inherit lib; };
 in
 {
   imports = [ ./home.nix ./aerospace.nix ];
@@ -21,6 +22,22 @@ in
       set fish_user_paths $fish_user_paths
     '';
   programs.git.ignores = [ ".DS_Store" ];
+
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      font = {
+        size = 12;
+        normal = {
+          family = "Iosevka Fixed";
+        };
+      };
+      window = {
+        option_as_alt = "OnlyRight";
+      };
+    } // selenized.alacritty;
+  };
+
   home.file = {
     # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
     pyPoetryDarwin = {
