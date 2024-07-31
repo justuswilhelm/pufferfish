@@ -19,6 +19,7 @@ in
   imports = [
     ./git.nix
     ./tmux.nix
+    ./cmus.nix
   ];
 
   home.username = username;
