@@ -1,7 +1,6 @@
 # Aerospace toml config, returns derivation, not text!
 { lib, pkgs, homeDirectory }:
 let
-  source = builtins.fromTOML (builtins.readFile ../../aerospace/aerospace.toml);
   # We need to convince macOS to open this as a proper app, not as a child of
   # aerospace
   alacrittyApp = "${homeDirectory}/Applications/Home Manager Apps/Alacritty.app";
@@ -19,13 +18,84 @@ let
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
-  newFinderWindowScript = pkgs.writeText "new-finder-window" ''tell app "Finder" to make new Finder window'';
-  runOsaScript = scriptName: "exec-and-forget osascript ${scriptName}";
-  extra = {
+  config = {
+    # Reference: https://github.com/i3/i3/blob/next/etc/config
+
+    # Start AeroSpace at login
+    start-at-login = true;
     mode.main.binding = {
+      # change focus
+      cmd-alt-h = "focus left";
+      cmd-alt-j = "focus down";
+      cmd-alt-k = "focus up";
+      cmd-alt-l = "focus right";
+
+      # move focused window
+      cmd-alt-shift-h = "move left";
+      cmd-alt-shift-j = "move down";
+      cmd-alt-shift-k = "move up";
+      cmd-alt-shift-l = "move right";
+
+      # split in horizontal orientation
+      # cmd-alt-b = 'split horizontal'
+
+      # split in vertical orientation
+      # cmd-alt-v = 'split vertical'
+
+      # enter fullscreen mode for the focused container
+      cmd-alt-f = "fullscreen";
+
+      # change container layout (stacked, tabbed, toggle split)
+ # 'layout stacking' in i3
+      cmd-alt-s = "layout v_accordion";
+ # 'layout tabbed' in i3
+      cmd-alt-w = "layout h_accordion";
+ # 'layout toggle split' in i3
+      cmd-alt-e = "layout tiles horizontal vertical";
+
+      # toggle tiling / floating
+ # 'floating toggle' in i3
+      cmd-alt-shift-space = "layout floating tiling";
+
+      # Not supported, because this command is redundant in AeroSpace mental model.
+      # See: https://nikitabobko.github.io/AeroSpace/guide.html#floating-windows
+      #alt-space = 'focus toggle_tiling_floating'
+
+      # `focus parent`/`focus child` are not yet supported, and it's not clear whether they
+      # should be supported at all https://github.com/nikitabobko/AeroSpace/issues/5
+      # alt-a = 'focus parent'
+
+      # switch to workspace
+      cmd-alt-1 = "workspace 1";
+      cmd-alt-2 = "workspace 2";
+      cmd-alt-3 = "workspace 3";
+      cmd-alt-4 = "workspace 4";
+      cmd-alt-5 = "workspace 5";
+      cmd-alt-6 = "workspace 6";
+      cmd-alt-7 = "workspace 7";
+      cmd-alt-8 = "workspace 8";
+      cmd-alt-9 = "workspace 9";
+      cmd-alt-0 = "workspace 10";
+
+      # move focused container to workspace
+      cmd-alt-shift-1 = "move-node-to-workspace 1";
+      cmd-alt-shift-2 = "move-node-to-workspace 2";
+      cmd-alt-shift-3 = "move-node-to-workspace 3";
+      cmd-alt-shift-4 = "move-node-to-workspace 4";
+      cmd-alt-shift-5 = "move-node-to-workspace 5";
+      cmd-alt-shift-6 = "move-node-to-workspace 6";
+      cmd-alt-shift-7 = "move-node-to-workspace 7";
+      cmd-alt-shift-8 = "move-node-to-workspace 8";
+      cmd-alt-shift-9 = "move-node-to-workspace 9";
+      cmd-alt-shift-0 = "move-node-to-workspace 10";
+
+      # reload the configuration file
+      cmd-alt-shift-r = "reload-config";
+
+      # resize window (you can also use the mouse for that)
       cmd-alt-enter = openAlacritty fish;
       cmd-alt-shift-enter = newFirefoxWindow;
-      cmd-alt-shift-n = runOsaScript newFinderWindowScript;
+      cmd-alt-shift-n = openAlacritty "${fish} -l -c open-in-finder";
       # Dotfiles
       cmd-alt-shift-m = [
         "workspace 4"
@@ -46,9 +116,33 @@ let
       cmd-alt-shift-p = [
         openClipboardInFirefox
       ];
+      cmd-alt-r = "mode resize";
     };
+    mode.resize.binding = {
+      # These bindings trigger as soon as you enter the resize mode
+      # Pressing left will shrink the window’s width.
+      # Pressing right will grow the window’s width.
+      # Pressing up will shrink the window’s height.
+      # Pressing down will grow the window’s height.
+      h = "resize width -50";
+      j = "resize height +50";
+      k = "resize height -50";
+      l = "resize width +50";
+
+      # back to normal
+      cmd-alt-r = "mode main";
+    };
+    on-window-detected = [
+      {
+        "if".app-id = "com.apple.mail";
+        run = ["move-node-to-workspace 5"];
+      }
+      {
+        "if".app-id = "org.libreoffice.script";
+        run = ["layout tiling"];
+      }
+    ];
   };
-  merged = lib.attrsets.recursiveUpdate source extra;
   tomlFormat = pkgs.formats.toml { };
 in
-tomlFormat.generate "aerospace.toml" merged
+tomlFormat.generate "aerospace.toml" config
