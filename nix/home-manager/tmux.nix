@@ -1,7 +1,7 @@
 { lib, pkgs, config, specialArgs, ... }:
 let
   paste = if specialArgs.system == "darwin" then "pbpaste" else "wl-paste";
-  copy = if specialArgs.system == "darwin" then "pbcopy"  else "wl-copy";
+  copy = if specialArgs.system == "darwin" then "pbcopy" else "wl-copy";
   selenized = (import ./selenized.nix) { inherit lib; };
 in
 {

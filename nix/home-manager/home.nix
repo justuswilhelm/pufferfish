@@ -76,7 +76,7 @@ in
   xdg.dataHome = xdgDataHome;
 
   xdg.configFile = (import ./xdgConfigFiles.nix) {
-    inherit lib pkgs isLinux isNixOs isDarwin isDebian homeDirectory xdgCacheHome;
+    inherit lib pkgs isLinux isNixOs isDebian homeDirectory xdgCacheHome;
   };
   home.file = {
     pdbrc =

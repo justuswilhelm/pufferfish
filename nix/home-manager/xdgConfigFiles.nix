@@ -1,4 +1,4 @@
-{ lib, pkgs, isNixOs, isLinux, isDarwin, isDebian, homeDirectory, xdgCacheHome }:
+{ lib, pkgs, isNixOs, isLinux, isDebian, homeDirectory, xdgCacheHome }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
 in
@@ -61,22 +61,6 @@ in
     source = ../../pomoglorbo/config.ini;
     target = "pomoglorbo/config.ini";
   };
-  cmusRc =
-    let
-      darwinRc = ''
-        set output_plugin=coreaudio
-      '';
-      debianRc = ''
-    '';
-    in
-    {
-      text = ''
-        ${if isDebian then debianRc else ""}
-        ${if isDarwin then darwinRc else ""}
-        ${builtins.readFile ../../cmus/rc}
-      '';
-      target = "cmus/rc";
-    };
   pyPoetryLinux = {
     enable = isLinux;
     text = ''
