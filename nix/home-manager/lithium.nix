@@ -38,18 +38,9 @@ in
     } // selenized.alacritty;
   };
 
-  home.file = {
-    # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
-    pyPoetryDarwin = {
-      text = ''
-        cache-dir = "${config.xdg.cacheHome}/pypoetry"
-      '';
-      target = "${applicationSupport}/pypoetry/config.toml";
-    };
-    xbar = {
-      source = ../../xbar;
-      target = "${applicationSupport}/xbar";
-      recursive = true;
-    };
+  home.file.xbar = {
+    source = ../../xbar;
+    target = "${applicationSupport}/xbar";
+    recursive = true;
   };
 }

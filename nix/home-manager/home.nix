@@ -118,6 +118,13 @@ in
 
   programs.home-manager.enable = true;
 
+  programs.poetry = {
+    enable = true;
+    settings = {
+      cache-dir = "${config.xdg.cacheHome}/pypoetry";
+    };
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
