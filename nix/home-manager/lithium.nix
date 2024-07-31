@@ -1,4 +1,7 @@
-{ lib, pkgs, specialArgs, osConfig, ... }:
+{ lib, pkgs, specialArgs, config, osConfig, ... }:
+let
+  applicationSupport = "${specialArgs.homeDirectory}/Library/Application Support";
+in
 {
   imports = [ ./home.nix ./aerospace.nix ];
   programs.fish.loginShellInit =
@@ -18,4 +21,18 @@
       set fish_user_paths $fish_user_paths
     '';
   programs.git.ignores = [ ".DS_Store" ];
+  home.file = {
+    # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
+    pyPoetryDarwin = {
+      text = ''
+        cache-dir = "${config.xdg.cacheHome}/pypoetry"
+      '';
+      target = "${applicationSupport}/pypoetry/config.toml";
+    };
+    xbar = {
+      source = ../../xbar;
+      target = "${applicationSupport}/xbar";
+      recursive = true;
+    };
+  };
 }

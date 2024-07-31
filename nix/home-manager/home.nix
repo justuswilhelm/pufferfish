@@ -11,7 +11,6 @@ let
   xdgConfigHome = "${homeDirectory}/.config";
   xdgDataHome = "${homeDirectory}/.local/share";
   xdgStateHome = "${homeDirectory}/.local/state";
-  applicationSupport = "${homeDirectory}/Library/Application Support";
   xdgCacheHome =
     if isLinux then
       "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
@@ -78,20 +77,6 @@ in
     inherit lib pkgs isLinux isNixOs isDarwin isDebian homeDirectory xdgCacheHome;
   };
   home.file = {
-    # Pypoetry braucht ne extrawurst fuer xdg_config_home lol
-    pyPoetryDarwin = {
-      enable = isDarwin;
-      text = ''
-        cache-dir = "${xdgCacheHome}/pypoetry"
-      '';
-      target = "${applicationSupport}/pypoetry/config.toml";
-    };
-    xbar = {
-      enable = isDarwin;
-      source = ../../xbar;
-      target = "${applicationSupport}/xbar";
-      recursive = true;
-    };
     pdbrc =
       let
         pdbrcpy = pkgs.writeTextFile {
