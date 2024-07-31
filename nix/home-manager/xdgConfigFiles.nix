@@ -77,11 +77,6 @@ in
       '';
       target = "cmus/rc";
     };
-  karabiner = {
-    enable = isDarwin;
-    source = ../../karabiner/karabiner.json;
-    target = "karabiner/karabiner.json";
-  };
   pyPoetryLinux = {
     enable = isLinux;
     text = ''

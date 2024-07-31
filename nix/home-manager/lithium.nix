@@ -43,4 +43,9 @@ in
     target = "${applicationSupport}/xbar";
     recursive = true;
   };
+
+  xdg.configFile.karabiner = {
+    source = ../../karabiner/karabiner.json;
+    target = "karabiner/karabiner.json";
+  };
 }

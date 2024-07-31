@@ -129,6 +129,7 @@ in
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
+  services.karabiner-elements.enable = true;
   services.skhd = {
     enable = true;
     # https://github.com/koekeishiya/skhd/issues/1
