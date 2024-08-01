@@ -29,7 +29,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.justusperlwitz = import ../home-manager/lithium-nixos.nix;
               home-manager.extraSpecialArgs = {
-                homeDirectory = "/Users/justusperlwitz";
+                homeDirectory = "/home/justusperlwitz";
                 system = "nixos";
                 pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
               };
