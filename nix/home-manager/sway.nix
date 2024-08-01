@@ -25,7 +25,6 @@ in
         # open an url if given in wl clipboard, like example.com
         bindsym $mod+Shift+o exec ${firefox-esr} $(wl-paste)
         # TODO find a new shortcut for this
-        # bindsym $mod+Shift+t exec ${pkgs.tor-browser}/bin/tor-browser
         bindsym $mod+Shift+p exec ${keepassxc}
         # Take a screenshot
         bindsym $mod+Shift+b exec ${grim}

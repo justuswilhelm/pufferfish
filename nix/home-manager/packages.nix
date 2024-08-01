@@ -13,8 +13,8 @@ let
     pkgs.slurp
 
     # GUIs
+    # pkgs.tor-browser
     pkgs.keepassxc
-    pkgs.tor-browser
 
     # Debugger
     pkgs.gdb
@@ -130,14 +130,7 @@ in
 
   # Version control
   pkgs.git
-  (
-    pkgs.git-annex.overrideAttrs (
-      previous: {
-        # This implicitly strips away bup -- bup breaks the build.
-        buildInputs = builtins.tail previous.buildInputs;
-      }
-    )
-  )
+  pkgs.git-annex
 
   # Shell tools
   pkgs.cloc
@@ -150,7 +143,6 @@ in
 
   # Time tracking
   pkgs.timewarrior
-  extraPkgs.pomoglorbo
 
   # Secrets
   pkgs.gnupg

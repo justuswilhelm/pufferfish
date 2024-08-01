@@ -24,7 +24,6 @@ in
   ];
 
   home.username = username;
-  home.homeDirectory = homeDirectory;
 
   home.packages = import ./packages.nix {
     inherit lib isLinux pkgs;

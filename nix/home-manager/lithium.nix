@@ -5,6 +5,8 @@ let
 in
 {
   imports = [ ./home.nix ./aerospace.nix ];
+  home.packages = [ specialArgs.pomoglorbo ];
+
   programs.fish.loginShellInit =
     let
       # Courtesy of

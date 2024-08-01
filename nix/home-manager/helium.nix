@@ -1,6 +1,9 @@
 { lib, pkgs, specialArgs, ... }:
 {
   imports = [ ./home.nix ./sway.nix ./firefox.nix ];
+  home.packages = [
+    pkgs.tor-browser
+  ];
   programs.fish.loginShellInit = ''
     # Only need to source this once
     source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
