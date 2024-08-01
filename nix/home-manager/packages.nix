@@ -122,19 +122,6 @@ in
   # Business
   pkgs.hledger
 
-  # Email
-  (
-    pkgs.symlinkJoin {
-      name = "neomutt";
-      paths = [ pkgs.neomutt ];
-      buildInputs = [ pkgs.makeWrapper ];
-      # https://neomutt.org/guide/reference.html#color-directcolor
-      postBuild = ''
-        wrapProgram $out/bin/neomutt --set TERM xterm-direct
-      '';
-    }
-  )
-
   # Shell
   pkgs.fish
   pkgs.tmux

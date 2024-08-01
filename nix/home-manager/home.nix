@@ -20,6 +20,7 @@ in
     ./tmux.nix
     ./cmus.nix
     ./nvim.nix
+    ./neomutt.nix
   ];
 
   home.username = username;
