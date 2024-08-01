@@ -21,7 +21,7 @@
   networking.hostName = "lithium-nixos"; # Define your hostname.
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Asia/Tokyo";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.justusperlwitz = {
