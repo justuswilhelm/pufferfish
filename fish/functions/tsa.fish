@@ -1,5 +1,9 @@
 function tsa
     set session "$argv[1]"
+    if [ -z "$session" ]
+        echo "Must specify session"
+        return 1
+    end
     if set -q TMUX
         echo "Already in tmux, switching to session $session"
         tmux switch-client -t "$session" || begin
