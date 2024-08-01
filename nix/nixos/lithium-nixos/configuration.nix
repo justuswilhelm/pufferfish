@@ -9,6 +9,8 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../networkd.nix
+      ../yubikey.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

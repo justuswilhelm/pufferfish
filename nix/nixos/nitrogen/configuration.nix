@@ -10,6 +10,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
+      ../networkd.nix
     ];
 
   nix = {
@@ -88,9 +89,6 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  services.pcscd.enable = true;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
@@ -117,4 +115,3 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-

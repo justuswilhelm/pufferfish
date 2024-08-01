@@ -9,27 +9,6 @@
   };
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
-  # systemd networkd and resolved config
-  systemd.network = {
-    enable = true;
-    networks = {
-      "10-ethernet" = {
-        matchConfig = {
-          Type = "wlan";
-        };
-        networkConfig = {
-          DHCP = "yes";
-          MulticastDNS = "yes";
-        };
-      };
-    };
-  };
-  networking.useNetworkd = true;
-  services.resolved = {
-    enable = true;
-    domains = [ "~." ];
-  };
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
