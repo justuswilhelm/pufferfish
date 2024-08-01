@@ -1,6 +1,7 @@
 # Contains just sway launcher config now
 { lib, config, pkgs, specialArgs, osConfig, ... }:
 let
+  isNixOs = specialArgs.system == "nixos";
   # TODO see if we can add wl-paste as a nix package
   foot = "${pkgs.foot}/bin/foot";
   fish = "${pkgs.fish}/bin/fish";
@@ -66,6 +67,71 @@ in
     swayColors = {
       source = ../../sway/config.d/colors;
       target = "sway/config.d/colors";
+    };
+  };
+
+  programs.i3status = {
+    enable = true;
+    enableDefault = false;
+    general =
+      {
+        output_format = "i3bar";
+        interval = 5;
+      };
+
+    modules = {
+      "ethernet enp7s0" = {
+        settings = {
+          format_up = "enp7s0: %ip (%speed)";
+          format_down = "enp7s0: down";
+        };
+        position = 0;
+      };
+
+      "disk /" = {
+        settings = {
+          format = "/ %free";
+        };
+        position = 1;
+      };
+
+      "disk /home" = {
+        settings = {
+          format = "/home %free";
+        };
+        position = 2;
+      };
+
+      load = {
+        settings = {
+          format = "load: %1min, %5min, %15min";
+        };
+        position = 3;
+      };
+
+      memory = {
+        settings = {
+          format = "f: %free a: %available u: %used t: %total";
+          threshold_degraded = "10%";
+          format_degraded = "MEMORY: %free";
+        };
+        position = 4;
+      };
+
+      "tztime UTC" = {
+        settings = {
+          format = "UTC %Y-%m-%d %H:%M:%S";
+          timezone = "UTC";
+        };
+        position = 5;
+      };
+
+      "tztime local" = {
+        settings = {
+          format = "LCL %Y-%m-%d %H:%M:%S %Z";
+        };
+        position = 6;
+      };
     };
   };
 }

@@ -1,9 +1,7 @@
 { lib, pkgs, config, specialArgs, ... }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
-  isDebian = specialArgs.system == "debian";
-  isNixOs = specialArgs.system == "nixos";
-  isLinux = isDebian || isNixOs;
+  isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
   homeDirectory = specialArgs.homeDirectory;
   dotfiles = "${homeDirectory}/.dotfiles";
   xdgConfigHome = "${homeDirectory}/.config";
@@ -15,6 +13,7 @@ let
 in
 {
   imports = [
+    ./fish.nix
     ./git.nix
     ./tmux.nix
     ./cmus.nix
@@ -135,12 +134,6 @@ in
         font = "Iosevka Fixed:size=11";
       };
     };
-  };
-
-  programs.i3status = {
-    enable = isLinux;
-    enableDefault = false;
-    inherit ((import ./i3status.nix) { isLaptop = isNixOs; }) general modules;
   };
 
   xresources = {

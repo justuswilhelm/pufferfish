@@ -31,6 +31,7 @@
     extraPackages = [
       pkgs.deno
       pkgs.ruff-lsp
+      pkgs.nodePackages.pyright
     ];
     extraPython3Packages = python3Packages: [
       python3Packages.pillow
