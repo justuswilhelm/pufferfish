@@ -11,6 +11,7 @@
       ./hardware-configuration.nix
       ./networking.nix
       ../networkd.nix
+      ../sway.nix
     ];
 
   nix = {
@@ -65,18 +66,9 @@
   programs.fish.enable = true;
 
   environment.systemPackages = with pkgs; [
-    grim
-    slurp
-    wl-clipboard
-    mako
     vim
     git
   ];
-
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -11,6 +11,7 @@
       ./hardware-configuration.nix
       ../networkd.nix
       ../yubikey.nix
+      ../sway.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
