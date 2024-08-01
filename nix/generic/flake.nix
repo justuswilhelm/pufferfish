@@ -27,9 +27,9 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.justusperlwitz = import ../home-manager/lithium-nixos.nix;
+              home-manager.users.frugally-consonant-lanky = import ../home-manager/lithium-nixos.nix;
               home-manager.extraSpecialArgs = {
-                homeDirectory = "/home/justusperlwitz";
+                homeDirectory = "/home/frugally-consonant-lanky";
                 system = "nixos";
                 pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
               };

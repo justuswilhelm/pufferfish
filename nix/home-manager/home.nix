@@ -4,7 +4,6 @@ let
   isDebian = specialArgs.system == "debian";
   isNixOs = specialArgs.system == "nixos";
   isLinux = isDebian || isNixOs;
-  username = "justusperlwitz";
   homeDirectory = specialArgs.homeDirectory;
   dotfiles = "${homeDirectory}/.dotfiles";
   xdgConfigHome = "${homeDirectory}/.config";
@@ -24,8 +23,6 @@ in
     ./gpg.nix
     ./fish.nix
   ];
-
-  home.username = username;
 
   home.packages = import ./packages.nix {
     inherit lib isLinux pkgs;

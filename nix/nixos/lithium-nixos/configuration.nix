@@ -25,7 +25,7 @@
   time.timeZone = "Asia/Tokyo";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.justusperlwitz = {
+  users.users.frugally-consonant-lanky = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.fish;
