@@ -21,6 +21,7 @@ in
     ./cmus.nix
     ./nvim.nix
     ./neomutt.nix
+    ./fish.nix
   ];
 
   home.username = username;
@@ -120,7 +121,6 @@ in
     enable = true;
     nix-direnv.enable = true;
   };
-  programs.fish = (import ./fish.nix) { inherit pkgs lib; };
 
   programs.ssh = {
     enable = true;
