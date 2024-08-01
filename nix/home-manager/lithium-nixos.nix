@@ -7,6 +7,8 @@
     if [ (tty) = /dev/tty1 ]
         exec sway
     end
+    gpg-connect-agent /bye
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   '';
 
   xdg.configFile = {
