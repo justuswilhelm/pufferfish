@@ -32,6 +32,9 @@
       pkgs.deno
       pkgs.ruff-lsp
     ];
+    extraPython3Packages = python3Packages: [
+      python3Packages.pillow
+    ];
   };
 
   home.activation.performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
