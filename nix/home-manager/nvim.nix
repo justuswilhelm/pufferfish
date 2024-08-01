@@ -34,9 +34,9 @@
     ];
   };
 
-  home.activation. performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=${pkgs.git}/bin:${pkgs.gcc}/bin:$PATH
-    $DRY_RUN_CMD exec ${pkgs.neovim}/bin/nvim \
+    $DRY_RUN_CMD exec ${config.programs.neovim.finalPackage}/bin/nvim \
       --headless \
       +"PlugUpdate --sync" +qa
   '';
