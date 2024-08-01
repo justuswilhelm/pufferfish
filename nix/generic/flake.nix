@@ -15,7 +15,7 @@
 
   outputs = { self, nix-darwin, home-manager, nixpkgs, pomoglorbo }: {
     nixosConfigurations = {
-      nixos =
+      lithium-nixos =
         let
           system = "aarch64-linux";
         in
