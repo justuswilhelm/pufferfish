@@ -148,6 +148,7 @@ let
       # back to normal
       cmd-alt-r = "mode main";
     };
+    # https://nikitabobko.github.io/AeroSpace/guide#callbacks
     on-window-detected = [
       {
         "if".app-id = "com.apple.mail";
@@ -156,6 +157,11 @@ let
       {
         "if".app-id = "org.libreoffice.script";
         run = [ "layout tiling" ];
+      }
+      {
+        "if".app-id = "com.utmapp.UTM";
+        "if".window-title-regex-substring = "UTM - .+";
+        run = [ "layout floating" ];
       }
     ];
   };
