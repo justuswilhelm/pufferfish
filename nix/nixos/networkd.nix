@@ -6,6 +6,15 @@
     networks = {
       "10-ethernet" = {
         matchConfig = {
+          Type = "ether";
+        };
+        networkConfig = {
+          DHCP = "yes";
+          MulticastDNS = "yes";
+        };
+      };
+      "20-wlan" = {
+        matchConfig = {
           Type = "wlan";
         };
         networkConfig = {
