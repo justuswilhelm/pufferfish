@@ -14,6 +14,29 @@
   };
 
   outputs = { self, nix-darwin, home-manager, nixpkgs, pomoglorbo }: {
+    nixosConfigurations = {
+      nitrogen =
+        let
+          system = "x86_64-linux";
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ../nixos/nitrogen/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.justusperlwitz = import ../home-manager/nitrogen.nix;
+              home-manager.extraSpecialArgs = {
+                homeDirectory = "/home/justusperlwitz";
+                system = "nixos";
+                pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+              };
+            }
+          ];
+        };
+    };
     homeConfigurations."justusperlwitz@nitrogen" =
       let
         system = "x86_64-linux";
