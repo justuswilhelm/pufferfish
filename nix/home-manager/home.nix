@@ -1,9 +1,7 @@
 { lib, pkgs, config, specialArgs, ... }:
 let
   selenized = (import ./selenized.nix) { inherit lib; };
-  isDebian = specialArgs.system == "debian";
-  isNixOs = specialArgs.system == "nixos";
-  isLinux = isDebian || isNixOs;
+  isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
   username = "justusperlwitz";
   homeDirectory = specialArgs.homeDirectory;
   dotfiles = "${homeDirectory}/.dotfiles";
@@ -138,12 +136,6 @@ in
         font = "Iosevka Fixed:size=11";
       };
     };
-  };
-
-  programs.i3status = {
-    enable = isLinux;
-    enableDefault = false;
-    inherit ((import ./i3status.nix) { isLaptop = isNixOs; }) general modules;
   };
 
   programs.gpg = {
