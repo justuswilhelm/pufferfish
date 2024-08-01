@@ -25,4 +25,9 @@
       target = "sway/config.d/helium";
     };
   };
+
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+  nix.package = pkgs.nix;
 }
