@@ -6,7 +6,6 @@ let
   foot = "${pkgs.foot}/bin/foot";
   fish = "${pkgs.fish}/bin/fish";
   firefox-esr = "${config.programs.firefox.finalPackage}/bin/firefox-esr";
-  keepassxc = "${pkgs.keepassxc}/bin/keepassxc";
   grim = "${pkgs.grim}/bin/grim";
   slurp = "${pkgs.slurp}/bin/slurp";
   bemenu = "${pkgs.bemenu}/bin/bemenu-run";
@@ -27,7 +26,6 @@ in
         bindsym $mod+Shift+o exec ${firefox-esr} $(wl-paste)
         # TODO find a new shortcut for this
         # bindsym $mod+Shift+t exec ${pkgs.tor-browser}/bin/tor-browser
-        bindsym $mod+Shift+p exec ${keepassxc}
         # Take a screenshot
         bindsym $mod+Shift+b exec ${grim}
         # Take a screenshot of a region

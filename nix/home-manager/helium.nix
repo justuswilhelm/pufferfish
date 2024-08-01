@@ -17,7 +17,6 @@
         output * {
           scale 1.5
         }
-        exec ${pkgs.keepassxc}/bin/keepassxc
       '';
       target = "sway/config.d/helium";
     };

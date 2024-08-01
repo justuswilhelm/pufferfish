@@ -13,7 +13,6 @@ let
     pkgs.slurp
 
     # GUIs
-    pkgs.keepassxc
     pkgs.tor-browser
 
     # Debugger
