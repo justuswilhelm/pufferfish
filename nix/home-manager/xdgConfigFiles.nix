@@ -3,11 +3,6 @@ let
   selenized = (import ./selenized.nix) { inherit lib; };
 in
 {
-  fishFunctions = {
-    target = "fish/functions";
-    source = ../../fish/functions;
-    recursive = true;
-  };
   pomoglorbo = {
     source = ../../pomoglorbo/config.ini;
     target = "pomoglorbo/config.ini";

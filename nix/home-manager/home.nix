@@ -14,6 +14,7 @@ let
 in
 {
   imports = [
+    ./fish.nix
     ./git.nix
     ./tmux.nix
     ./cmus.nix
@@ -119,7 +120,6 @@ in
     enable = true;
     nix-direnv.enable = true;
   };
-  programs.fish = (import ./fish.nix) { inherit pkgs lib; };
 
   programs.ssh = {
     enable = true;
