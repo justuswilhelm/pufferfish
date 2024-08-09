@@ -3,12 +3,12 @@
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-    fish_config theme choose "Solarized Light"
-    if ! set -q ASDF_DIR
-      # ASDF initialization
-      set -x ASDF_DIR ${pkgs.asdf-vm}/share/asdf-vm
-      source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
-    end
+      fish_config theme choose "Solarized Light"
+      if ! set -q ASDF_DIR
+        # ASDF initialization
+        set -x ASDF_DIR ${pkgs.asdf-vm}/share/asdf-vm
+        source ${pkgs.asdf-vm}/share/asdf-vm/asdf.fish
+      end
     '';
     shellAbbrs = {
       # Fish abbreviations
