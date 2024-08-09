@@ -39,6 +39,7 @@
     nnn
     i3status
     pciutils
+    tcpdump
   ];
 
   nix = {

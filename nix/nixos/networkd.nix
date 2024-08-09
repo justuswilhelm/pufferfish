@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   # systemd networkd and resolved config
   systemd.network = {
@@ -29,4 +29,7 @@
     enable = true;
     domains = [ "~." ];
   };
+  environment.systemPackages = with pkgs; [
+    tcpdump
+  ];
 }
