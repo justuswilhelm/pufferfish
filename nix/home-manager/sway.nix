@@ -80,14 +80,6 @@ in
       };
 
     modules = {
-      "ethernet enp7s0" = {
-        settings = {
-          format_up = "enp7s0: %ip (%speed)";
-          format_down = "enp7s0: down";
-        };
-        position = 0;
-      };
-
       "disk /" = {
         settings = {
           format = "/ %free";

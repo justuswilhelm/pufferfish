@@ -4,6 +4,17 @@
   home.packages = [
     pkgs.tor-browser
   ];
+
+  programs.i3status.modules = {
+    "ethernet enp7s0" = {
+      settings = {
+        format_up = "enp7s0: %ip (%speed)";
+        format_down = "enp7s0: down";
+      };
+      position = 0;
+    };
+  };
+
   programs.fish.loginShellInit = ''
     # Only need to source this once
     source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
