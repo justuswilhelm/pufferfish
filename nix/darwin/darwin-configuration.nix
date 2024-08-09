@@ -11,7 +11,7 @@ in
     ./borgmatic.nix
     ./offlineimap.nix
     ./anki.nix
-    ./attic.nix
+    # ./attic.nix
   ];
   users.users."${name}" = {
     description = "Justus Perlwitz";
