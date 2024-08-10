@@ -11,6 +11,7 @@ in
     ./borgmatic.nix
     ./offlineimap.nix
     ./anki.nix
+    # ./attic.nix
   ];
   users.users."${name}" = {
     description = "Justus Perlwitz";
@@ -36,9 +37,6 @@ in
     # Not sure if I need these on Debian or not
     pkgs.cmus
     pkgs.ffmpeg
-
-    # Nix caching
-    pkgs.attic-client
   ];
   environment.shells = [ pkgs.fish ];
   environment.variables = {
@@ -55,10 +53,6 @@ in
     caddyfile = {
       source = ./Caddyfile;
       target = "caddy/Caddyfile";
-    };
-    atticd = {
-      source = ./atticd.toml;
-      target = "attic/atticd.toml";
     };
   };
 
@@ -77,29 +71,6 @@ in
   environment.darwinConfig = "$HOME/.config/nix/darwin/darwin-configuration.nix";
 
   launchd.labelPrefix = "net.jwpconsulting";
-
-  launchd.daemons.attic = {
-    serviceConfig =
-      let
-        logPath = "/var/log/atticd";
-        script = pkgs.writeShellApplication {
-          name = "run-atticd";
-          runtimeInputs = with pkgs; [ attic-server ];
-          text = ''
-            ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="$(cat /etc/attic/secret.base64)"
-            export ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64
-            exec atticd --config /etc/attic/atticd.toml
-          '';
-        };
-      in
-      {
-        KeepAlive = true;
-        Program = "${script}/bin/run-atticd";
-        StandardOutPath = "${logPath}/attic.stdout.log";
-        StandardErrorPath = "${logPath}/attic.stderr.log";
-      };
-  };
-
 
   launchd.daemons.caddy = {
     serviceConfig =
@@ -154,17 +125,6 @@ in
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
-
-  nix.settings.substituters = [
-    "https://lithium.local:10100/lithium-default"
-  ];
-  nix.settings.trusted-public-keys = [
-    "lithium-default:12m8tx3dPRBH0y4Gf6t/4eGh7Y8AJ7r2TT0Ug/w9Wvo="
-  ];
-  nix.settings.trusted-substituters = [
-    "https://lithium.local:10100/lithium-default"
-  ];
-  nix.settings.netrc-file = "/etc/nix/netrc";
 
   # nix.package = pkgs.nix;
 
