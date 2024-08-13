@@ -1,0 +1,21 @@
+source_directories:
+  - /etc
+  - /opt
+  - /Applications
+  - /Library
+  - /Users
+
+exclude_patterns:
+  - /Users/*/.cache
+  - /Users/*/Library/Caches
+  - /Users/*/Movies
+
+encryption_passcommand: cat /etc/borgmatic/passphrase
+ssh_command: ssh -i /etc/borgmatic/id_rsa
+
+retention:
+  keep_hourly: 6
+  keep_daily: 7
+  keep_weekly: 4
+  keep_monthly: 6
+  keep_yearly: 1

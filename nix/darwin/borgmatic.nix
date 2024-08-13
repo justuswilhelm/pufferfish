@@ -1,35 +1,38 @@
 { config, pkgs, ... }:
 let
+  logPath = "/var/log/borgmatic";
   borgmatic = pkgs.borgmatic;
-  name = "justusperlwitz";
-  home = "/Users/${name}";
-  library = "${home}/Library";
-  logPath = "${library}/Logs/borgmatic";
 in
 {
   environment.systemPackages = [
     borgmatic
   ];
+  environment.etc = {
+    borgmatic_base = {
+      source = ./borgmatic_base.yaml;
+      target = "borgmatic/base/borgmatic_base.yaml";
+    };
+  };
 
-  launchd.user.agents = {
-    # TODO
-    # Could this be a systemwide launchd.agents.borgmatic instead?
+  launchd.agents = {
     "borgmatic" = {
+      command = "${borgmatic}/bin/borgmatic --log-file-verbosity 1 --log-file /dev/stdout";
       serviceConfig = {
-        ProgramArguments = [
-          "${borgmatic}/bin/borgmatic"
-          "--log-file-verbosity"
-          "1"
-          "--log-file"
-          "/dev/stdout"
-        ];
+        # Performance
+        ProcessType = "Background";
+        LowPriorityBackgroundIO = true;
+        LowPriorityIO = true;
+        TimeOut = 1800;
+
+        # Logging
         StandardOutPath = "${logPath}/borgmatic.log";
+
+        # Timing
         StartCalendarInterval = [
           {
             Minute = 0;
           }
         ];
-        TimeOut = 1800;
       };
     };
   };
