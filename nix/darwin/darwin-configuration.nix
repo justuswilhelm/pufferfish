@@ -4,7 +4,7 @@ let
   home = "/Users/${name}";
   library = "${home}/Library";
 in
-{ config, pkgs, ... }:
+{ config, pkgs, projectify, ... }:
 
 {
   imports = [
@@ -12,6 +12,7 @@ in
     ./offlineimap.nix
     ./anki.nix
     # ./attic.nix
+    ./projectify.nix
   ];
   users.users."${name}" = {
     description = "Justus Perlwitz";

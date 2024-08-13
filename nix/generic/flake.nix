@@ -11,6 +11,10 @@
       url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=main&ref=2024.06.23.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    projectify = {
+      url = "git+https://github.com/jwpconsulting/projectify.git?ref=main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -19,6 +23,7 @@
     , home-manager
     , nixpkgs
     , pomoglorbo
+    , projectify
     }@inputs: {
       nixosConfigurations = {
         nitrogen =
