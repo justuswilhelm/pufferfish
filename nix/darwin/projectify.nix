@@ -8,6 +8,7 @@ let
   frontendPort = "18101";
   backendPort = "18102";
   redisPort = "18103";
+  hostname = "localhost";
 in
 {
   users.groups.projectify = {
@@ -46,7 +47,7 @@ in
     };
   };
   launchd.daemons.projectify-frontend-node = {
-    command = "${frontend }/bin/projectify-frontend-node";
+    command = "${frontend}/bin/projectify-frontend-node";
     serviceConfig =
       {
         KeepAlive = true;
@@ -76,9 +77,9 @@ in
         StandardOutPath = "${logPath}/projectify-backend.stdout.log";
         StandardErrorPath = "${logPath}/projectify-backend.stderr.log";
         EnvironmentVariables = {
-          FRONTEND_URL = "http://localhost:12000";
-          ALLOWED_HOSTS = "localhost";
-          REDIS_URL = "redis://localhost:12003";
+          FRONTEND_URL = "http://${hostname}:${revproxyPort}";
+          ALLOWED_HOSTS = hostname;
+          REDIS_URL = "redis://${hostname}:${redisPort}";
           DJANGO_SETTINGS_MODULE = "projectify.settings.production";
           DJANGO_CONFIGURATION = "Production";
           DATABASE_URL = "sqlite:////var/projectify/projectify-backend.sqlite";
@@ -96,11 +97,11 @@ in
         StandardOutPath = "${logPath}/projectify-revproxy.stdout.log";
         StandardErrorPath = "${logPath}/projectify-revproxy.stderr.log";
         EnvironmentVariables = {
-          HOST = "http://localhost";
+          HOST = "http://${hostname}";
           PORT = revproxyPort;
-          FRONTEND_HOST = "http://localhost";
+          FRONTEND_HOST = "http://${hostname}";
           FRONTEND_PORT = frontendPort;
-          BACKEND_HOST = "http://localhost";
+          BACKEND_HOST = "http://${hostname}";
           BACKEND_PORT = backendPort;
         };
         UserName = "projectify";
