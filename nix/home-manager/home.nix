@@ -1,6 +1,5 @@
 { lib, pkgs, config, specialArgs, ... }:
 let
-  selenized = (import ./selenized.nix) { inherit lib; };
   isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
   username = "justusperlwitz";
   homeDirectory = specialArgs.homeDirectory;
@@ -21,6 +20,7 @@ in
     ./nvim.nix
     ./neomutt.nix
     ./packages.nix
+    ./selenized.nix
   ];
 
   home.username = username;

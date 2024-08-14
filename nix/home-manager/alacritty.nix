@@ -1,7 +1,4 @@
 { lib, ... }:
-let
-  selenized = (import ./selenized.nix) { inherit lib; };
-in
 {
   programs.alacritty = {
     enable = true;
@@ -15,6 +12,6 @@ in
       window = {
         option_as_alt = "OnlyRight";
       };
-    } // selenized.alacritty;
+    };
   };
 }
