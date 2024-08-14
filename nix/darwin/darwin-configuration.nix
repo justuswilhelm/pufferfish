@@ -176,6 +176,29 @@ in
     };
   };
 
+  # https://developer.apple.com/library/archive/technotes/tn2450/_index.html
+  system.keyboard.enableKeyMapping = true;
+  system.keyboard.userKeyMapping = [
+    # Remap Caps lock to Enter
+    # Caps lock
+    # 0x39 + 0x700000000 = 30064771129
+    # Enter
+    # 0x28 + 0x700000000 = 30064771112
+    {
+      HIDKeyboardModifierMappingSrc = 30064771129;
+      HIDKeyboardModifierMappingDst = 30064771112;
+    }
+    # Remap backslash to grave
+    # Keyboard Non-US \ and |
+    # 0x63 + 0x700000000 = 30064771171
+    # Keyboard Grave Accent and Tilde
+    # 0x35 + 0x700000000 = 30064771125
+    {
+      HIDKeyboardModifierMappingSrc = 30064771171;
+      HIDKeyboardModifierMappingDst = 30064771125;
+    }
+  ];
+
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
