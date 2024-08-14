@@ -26,10 +26,6 @@ in
   home.username = username;
   home.homeDirectory = homeDirectory;
 
-  home.packages = [
-    specialArgs.pomoglorbo
-  ];
-
   home.stateVersion = "24.05";
 
   home.sessionPath = [
