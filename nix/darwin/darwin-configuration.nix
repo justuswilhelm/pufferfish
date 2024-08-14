@@ -12,7 +12,7 @@ in
     ./borgmatic.nix
     ./offlineimap.nix
     ./anki.nix
-    # ./attic.nix
+    ./attic.nix
     ./projectify.nix
   ];
   users.users."${name}" = {
