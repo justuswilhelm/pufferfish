@@ -30,6 +30,8 @@
     domains = [ "~." ];
   };
   environment.systemPackages = with pkgs; [
+    # For debugging
     tcpdump
+    ethtool
   ];
 }
