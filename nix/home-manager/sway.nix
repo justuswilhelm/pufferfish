@@ -1,7 +1,6 @@
 # Contains just sway launcher config now
-{ lib, config, pkgs, specialArgs, osConfig, ... }:
+{ lib, config, pkgs, ... }:
 let
-  isNixOs = specialArgs.system == "nixos";
   # TODO see if we can add wl-paste as a nix package
   foot = "${pkgs.foot}/bin/foot";
   fish = "${pkgs.fish}/bin/fish";
@@ -12,6 +11,13 @@ let
   mosh = "${pkgs.mosh}/bin/mosh";
 in
 {
+  programs.fish.loginShellInit = ''
+    # If running from tty1 start sway
+    if [ (tty) = /dev/tty1 ]
+        exec sway
+    end
+  '';
+
   xdg.configFile = {
     sway = {
       source = ../../sway/config;

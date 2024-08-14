@@ -7,14 +7,9 @@
     ./linux-packages.nix
     ./foot.nix
     ./gdb.nix
+    # Investigate if this fix is needed on NixOS
+    ./locale-fix.nix
   ];
-
-  programs.fish.loginShellInit = ''
-    # If running from tty1 start sway
-    if [ (tty) = /dev/tty1 ]
-        exec sway
-    end
-  '';
 
   home.file = {
     keyboardLayout = {

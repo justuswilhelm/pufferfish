@@ -1,7 +1,6 @@
 { lib, pkgs, config, options, specialArgs, ... }:
 let
   isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
-  dotfiles = "${specialArgs.homeDirectory}/.dotfiles";
 in
 {
   imports = [
@@ -21,11 +20,11 @@ in
   home.stateVersion = "24.05";
 
   home.sessionPath = [
-    "${dotfiles}/bin"
+    "${config.home.sessionVariables.DOTFILES}/bin"
   ];
 
   home.sessionVariables = {
-    DOTFILES = dotfiles;
+    DOTFILES = "${config.home.homeDirectory}/.dotfiles";
     XDG_CONFIG_HOME = config.xdg.configHome;
     XDG_DATA_HOME = config.xdg.dataHome;
     XDG_STATE_HOME = config.xdg.stateHome;
@@ -36,9 +35,6 @@ in
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
   } // (lib.attrsets.optionalAttrs isLinux {
-    # Workaround for LANG issue
-    # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
-    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
     # We always want to enable wayland in moz, since we start sway through the terminal
     MOZ_ENABLE_WAYLAND = 1;
   });

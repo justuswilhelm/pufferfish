@@ -3,20 +3,14 @@
   imports = [
     ./home.nix
     ./sway.nix
+    ./fish-debian.nix
     ./firefox.nix
     ./linux-packages.nix
     ./foot.nix
     ./gdb.nix
+    ./locale-fix.nix
   ];
-  programs.fish.loginShellInit = ''
-    # Only need to source this once
-    source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
 
-    # If running from tty1 start sway
-    if [ (tty) = /dev/tty1 ]
-        exec sway
-    end
-  '';
   xdg.configFile = {
     swayHelium = {
       text = ''
