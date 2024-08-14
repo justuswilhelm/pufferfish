@@ -8,7 +8,7 @@ in
     gid = 602;
   };
   users.users.caddy = {
-    createHome = false;
+    home = "/var/caddy/home";
     description = "Caddy";
     gid = 602;
     uid = 52;
@@ -47,8 +47,10 @@ in
       set -o pipefail
       mkdir -p /var/log/caddy
       mkdir -p /etc/caddy/certs
-      chown -R caddy:caddy /etc/caddy/certs /var/log/caddy
+      mkdir -p /var/caddy/home
+      chown -R caddy:caddy /etc/caddy/certs /var/log/caddy /var/caddy/home
       chmod 0400 /etc/caddy/certs/*
+      caddy validate --config /etc/caddy/Caddyfile
     '';
   };
 }

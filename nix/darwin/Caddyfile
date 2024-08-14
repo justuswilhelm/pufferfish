@@ -1,23 +1,42 @@
 {
-	admin off
-	persist_config off
+	log {
+		format console
+	}
 }
 # Attic
 https://lithium.local:10100 {
 	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
 	reverse_proxy localhost:18080
-	log /var/log/caddy/attic
+	handle {
+		respond "Not found" 404
+	}
+	log {
+		format console
+		output_file /var/log/caddy/attic.log
+	}
 }
 
 # Anki
 https://lithium.local:10101 {
 	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
 	reverse_proxy localhost:18090
-	log /var/log/caddy/anki
+	handle {
+		respond "Not found" 404
+	}
+	log {
+		format console
+		output_file /var/log/caddy/anki.log
+	}
 }
 
 https://lithium.local:10102 {
 	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
 	reverse_proxy localhost:18100
-	log /var/log/caddy/projectify
+	handle {
+		respond "Not found" 404
+	}
+	log {
+		format console
+		output_file /var/log/caddy/projectify.log
+	}
 }
