@@ -65,6 +65,7 @@
     pkgs.thc-hydra
     pkgs.sqlmap
     pkgs.gobuster
+    pkgs.nikto
 
     # Interpreters
     pkgs.asdf-vm
@@ -99,7 +100,6 @@
     pkgs.fish
     pkgs.tmux
     pkgs.shellcheck
-    pkgs.alacritty
 
     # Version control
     pkgs.git

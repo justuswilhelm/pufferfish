@@ -125,17 +125,6 @@ in
     matchBlocks."*" = { };
   };
 
-  programs.foot = {
-    enable = isLinux;
-    settings = {
-      main = {
-        # Install foot-themes
-        include = "${pkgs.foot.themes}/share/foot/themes/selenized-light";
-        font = "Iosevka Fixed:size=11";
-      };
-    };
-  };
-
   programs.gpg = {
     enable = true;
     scdaemonSettings = {

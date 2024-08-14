@@ -5,6 +5,7 @@
     ./sway.nix
     ./firefox.nix
     ./linux-packages.nix
+    ./foot.nix
   ];
   programs.fish.loginShellInit = ''
     # Only need to source this once
