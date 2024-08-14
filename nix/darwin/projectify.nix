@@ -14,7 +14,7 @@ in
     gid = 600;
   };
   users.users.projectify = {
-    createHome = false;
+    home = "/var/projectify/home";
     description = "Projectify";
     gid = 600;
     uid = 50;
