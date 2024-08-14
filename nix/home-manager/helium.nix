@@ -23,6 +23,19 @@
     };
   };
 
+  xresources = {
+    properties = {
+      # Dell U2720qm bought 2022 on Amazon Japan
+      # Has physical width x height
+      # 60.5 cm * 33.4 cm (approx)
+      # and claims 27 inches with 4K resolution (3840 x 2160)
+      # Which if we plug into
+      # https://www.sven.de/dpi/
+      # gives us
+      "Xft.dpi" = 163;
+    };
+  };
+
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';

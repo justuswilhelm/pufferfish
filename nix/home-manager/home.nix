@@ -34,10 +34,7 @@ in
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
-  } // (lib.attrsets.optionalAttrs isLinux {
-    # We always want to enable wayland in moz, since we start sway through the terminal
-    MOZ_ENABLE_WAYLAND = 1;
-  });
+  };
 
   xdg.dataFile = {
     iosevka = {
@@ -185,18 +182,5 @@ in
   services.gpg-agent = {
     enable = isLinux;
     pinentryPackage = pkgs.pinentry-qt;
-  };
-
-  xresources = {
-    properties = {
-      # Dell U2720qm bought 2022 on Amazon Japan
-      # Has physical width x height
-      # 60.5 cm * 33.4 cm (approx)
-      # and claims 27 inches with 4K resolution (3840 x 2160)
-      # Which if we plug into
-      # https://www.sven.de/dpi/
-      # gives us
-      "Xft.dpi" = 163;
-    };
   };
 }

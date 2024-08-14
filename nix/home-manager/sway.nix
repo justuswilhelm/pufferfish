@@ -18,6 +18,10 @@ in
     end
   '';
 
+  # We always want to enable wayland in moz, since we start sway through the
+  # terminal
+  home.sessionVariables.MOZ_ENABLE_WAYLAND = 1;
+
   xdg.configFile = {
     sway = {
       source = ../../sway/config;
