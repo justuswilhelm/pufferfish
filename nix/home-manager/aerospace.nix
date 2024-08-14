@@ -34,6 +34,7 @@ let
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
+  prefix = "cmd-alt";
   config = {
     # Reference: https://github.com/i3/i3/blob/next/etc/config
 
@@ -41,16 +42,16 @@ let
     start-at-login = true;
     mode.main.binding = {
       # change focus
-      cmd-alt-h = "focus left";
-      cmd-alt-j = "focus down";
-      cmd-alt-k = "focus up";
-      cmd-alt-l = "focus right";
+      "${prefix}-h" = "focus left";
+      "${prefix}-j" = "focus down";
+      "${prefix}-k" = "focus up";
+      "${prefix}-l" = "focus right";
 
       # move focused window
-      cmd-alt-shift-h = "move left";
-      cmd-alt-shift-j = "move down";
-      cmd-alt-shift-k = "move up";
-      cmd-alt-shift-l = "move right";
+      "${prefix}-shift-h" = "move left";
+      "${prefix}-shift-j" = "move down";
+      "${prefix}-shift-k" = "move up";
+      "${prefix}-shift-l" = "move right";
 
       # split in horizontal orientation
       # cmd-alt-b = 'split horizontal'
@@ -59,19 +60,19 @@ let
       # cmd-alt-v = 'split vertical'
 
       # enter fullscreen mode for the focused container
-      cmd-alt-f = "fullscreen";
+      "${prefix}-f" = "fullscreen";
 
       # change container layout (stacked, tabbed, toggle split)
       # 'layout stacking' in i3
-      cmd-alt-s = "layout v_accordion";
+      "${prefix}-s" = "layout v_accordion";
       # 'layout tabbed' in i3
-      cmd-alt-w = "layout h_accordion";
+      "${prefix}-w" = "layout h_accordion";
       # 'layout toggle split' in i3
-      cmd-alt-e = "layout tiles horizontal vertical";
+      "${prefix}-e" = "layout tiles horizontal vertical";
 
       # toggle tiling / floating
       # 'floating toggle' in i3
-      cmd-alt-shift-space = "layout floating tiling";
+      "${prefix}-shift-space" = "layout floating tiling";
 
       # Not supported, because this command is redundant in AeroSpace mental model.
       # See: https://nikitabobko.github.io/AeroSpace/guide.html#floating-windows
@@ -82,57 +83,57 @@ let
       # alt-a = 'focus parent'
 
       # switch to workspace
-      cmd-alt-1 = "workspace 1";
-      cmd-alt-2 = "workspace 2";
-      cmd-alt-3 = "workspace 3";
-      cmd-alt-4 = "workspace 4";
-      cmd-alt-5 = "workspace 5";
-      cmd-alt-6 = "workspace 6";
-      cmd-alt-7 = "workspace 7";
-      cmd-alt-8 = "workspace 8";
-      cmd-alt-9 = "workspace 9";
-      cmd-alt-0 = "workspace 10";
+      "${prefix}-1" = "workspace 1";
+      "${prefix}-2" = "workspace 2";
+      "${prefix}-3" = "workspace 3";
+      "${prefix}-4" = "workspace 4";
+      "${prefix}-5" = "workspace 5";
+      "${prefix}-6" = "workspace 6";
+      "${prefix}-7" = "workspace 7";
+      "${prefix}-8" = "workspace 8";
+      "${prefix}-9" = "workspace 9";
+      "${prefix}-0" = "workspace 10";
 
       # move focused container to workspace
-      cmd-alt-shift-1 = "move-node-to-workspace 1";
-      cmd-alt-shift-2 = "move-node-to-workspace 2";
-      cmd-alt-shift-3 = "move-node-to-workspace 3";
-      cmd-alt-shift-4 = "move-node-to-workspace 4";
-      cmd-alt-shift-5 = "move-node-to-workspace 5";
-      cmd-alt-shift-6 = "move-node-to-workspace 6";
-      cmd-alt-shift-7 = "move-node-to-workspace 7";
-      cmd-alt-shift-8 = "move-node-to-workspace 8";
-      cmd-alt-shift-9 = "move-node-to-workspace 9";
-      cmd-alt-shift-0 = "move-node-to-workspace 10";
+      "${prefix}-shift-1" = "move-node-to-workspace 1";
+      "${prefix}-shift-2" = "move-node-to-workspace 2";
+      "${prefix}-shift-3" = "move-node-to-workspace 3";
+      "${prefix}-shift-4" = "move-node-to-workspace 4";
+      "${prefix}-shift-5" = "move-node-to-workspace 5";
+      "${prefix}-shift-6" = "move-node-to-workspace 6";
+      "${prefix}-shift-7" = "move-node-to-workspace 7";
+      "${prefix}-shift-8" = "move-node-to-workspace 8";
+      "${prefix}-shift-9" = "move-node-to-workspace 9";
+      "${prefix}-shift-0" = "move-node-to-workspace 10";
 
       # reload the configuration file
-      cmd-alt-shift-r = "reload-config";
+      "${prefix}-shift-r" = "reload-config";
 
       # resize window (you can also use the mouse for that)
-      cmd-alt-enter = openAlacritty fish;
-      cmd-alt-shift-enter = newFirefoxWindow;
-      cmd-alt-shift-n = openAlacritty "${fish} -l -c open-in-finder";
+      "${prefix}-enter" = openAlacritty fish;
+      "${prefix}-shift-enter" = newFirefoxWindow;
+      "${prefix}-shift-n" = openAlacritty "${fish} -l -c open-in-finder";
       # Dotfiles
-      cmd-alt-shift-m = [
+      "${prefix}-shift-m" = [
         "workspace 4"
         (openAlacritty "${fish} -l -c manage-dotfiles")
         newFirefoxWindow
       ];
       # Time tracking
-      cmd-alt-shift-f = [
+      "${prefix}-shift-f" = [
         "workspace 3"
         (openAlacritty "${fish} -l -c tomato")
       ];
       # Cmus
-      cmd-alt-shift-t = [
+      "${prefix}-shift-t" = [
         "workspace 3"
         (openAlacritty "${fish} -l -c t-cmus")
       ];
       # Open URL
-      cmd-alt-shift-p = [
+      "${prefix}-shift-p" = [
         openClipboardInFirefox
       ];
-      cmd-alt-r = "mode resize";
+      "${prefix}-r" = "mode resize";
     };
     mode.resize.binding = {
       # These bindings trigger as soon as you enter the resize mode
@@ -148,6 +149,7 @@ let
       # back to normal
       cmd-alt-r = "mode main";
     };
+    # https://nikitabobko.github.io/AeroSpace/guide#callbacks
     on-window-detected = [
       {
         "if".app-id = "com.apple.mail";
@@ -156,6 +158,11 @@ let
       {
         "if".app-id = "org.libreoffice.script";
         run = [ "layout tiling" ];
+      }
+      {
+        "if".app-id = "com.utmapp.UTM";
+        "if".window-title-regex-substring = "UTM - .+";
+        run = [ "layout floating" ];
       }
     ];
   };
