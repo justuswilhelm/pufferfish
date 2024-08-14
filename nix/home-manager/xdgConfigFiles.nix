@@ -1,4 +1,4 @@
-{ lib, pkgs, isLinux, homeDirectory, xdgCacheHome }:
+{ isLinux, ... }:
 {
   pomoglorbo = {
     source = ../../pomoglorbo/config.ini;
@@ -8,9 +8,5 @@
     enable = isLinux;
     source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
-  };
-  timewarrior = {
-    source = ../../timewarrior/timewarrior.cfg;
-    target = "timewarrior/timewarrior.cfg";
   };
 }

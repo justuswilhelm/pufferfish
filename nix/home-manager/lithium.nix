@@ -3,7 +3,7 @@ let
   applicationSupport = "${specialArgs.homeDirectory}/Library/Application Support";
 in
 {
-  imports = [ ./home.nix ./aerospace.nix ./alacritty.nix ];
+  imports = [ ./home.nix ./aerospace.nix ./alacritty.nix ./timewarrior.nix ];
   programs.fish.loginShellInit =
     let
       # Courtesy of

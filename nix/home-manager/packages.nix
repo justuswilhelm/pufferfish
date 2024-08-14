@@ -114,9 +114,6 @@
     pkgs.pv
     pkgs.mosh
 
-    # Time tracking
-    pkgs.timewarrior
-
     # Secrets
     pkgs.gnupg
     pkgs.pass
