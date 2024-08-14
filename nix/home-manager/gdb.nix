@@ -1,8 +1,7 @@
-{ isLinux, ... }:
+{ ... } :
 {
-  gdb = {
-    enable = isLinux;
+  xdg.configFile.gdb = {
     source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
-  };
+  }
 }

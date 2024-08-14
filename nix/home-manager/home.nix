@@ -59,9 +59,6 @@ in
   };
   xdg.dataHome = xdgDataHome;
 
-  xdg.configFile = (import ./xdgConfigFiles.nix) {
-    inherit lib pkgs isLinux homeDirectory xdgCacheHome;
-  };
   home.file = {
     pdbrc =
       let
