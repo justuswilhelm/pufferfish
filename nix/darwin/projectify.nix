@@ -4,6 +4,10 @@ let
   backend = projectify.outputs.packages.aarch64-darwin.projectify-backend;
   revproxy = projectify.outputs.packages.aarch64-darwin.projectify-revproxy;
   logPath = "/var/log/projectify";
+  revproxyPort = "18100";
+  frontendPort = "18101";
+  backendPort = "18102";
+  redisPort = "18103";
 in
 {
   users.groups.projectify = {
@@ -26,7 +30,7 @@ in
 
   # From nix darwin redis services module
   environment.etc."projectify/redis.conf".text = ''
-    port 12003
+    port ${redisPort}
     bind 127.0.0.1
     dir /var/projectify/redis/
     logfile /var/log/projectify/projectify-redis.log
@@ -49,7 +53,7 @@ in
         StandardOutPath = "${logPath}/projectify-frontend-node.stdout.log";
         StandardErrorPath = "${logPath}/projectify-frontend-node.stderr.log";
         EnvironmentVariables = {
-          SVELTE_KIT_PORT = "12001";
+          SVELTE_KIT_PORT = frontendPort;
         };
         UserName = "projectify";
       };
@@ -78,7 +82,7 @@ in
           DJANGO_SETTINGS_MODULE = "projectify.settings.production";
           DJANGO_CONFIGURATION = "Production";
           DATABASE_URL = "sqlite:////var/projectify/projectify-backend.sqlite";
-          PORT = "12002";
+          PORT = backendPort;
         };
         UserName = "projectify";
       };
@@ -93,11 +97,11 @@ in
         StandardErrorPath = "${logPath}/projectify-revproxy.stderr.log";
         EnvironmentVariables = {
           HOST = "http://localhost";
-          PORT = "12000";
+          PORT = revproxyPort;
           FRONTEND_HOST = "http://localhost";
-          FRONTEND_PORT = "12001";
+          FRONTEND_PORT = frontendPort;
           BACKEND_HOST = "http://localhost";
-          BACKEND_PORT = "12002";
+          BACKEND_PORT = backendPort;
         };
         UserName = "projectify";
       };
