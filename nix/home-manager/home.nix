@@ -1,15 +1,7 @@
-{ lib, pkgs, config, specialArgs, ... }:
+{ lib, pkgs, config, options, specialArgs, ... }:
 let
   isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
-  username = "justusperlwitz";
-  homeDirectory = specialArgs.homeDirectory;
-  dotfiles = "${homeDirectory}/.dotfiles";
-  xdgConfigHome = "${homeDirectory}/.config";
-  xdgDataHome = "${homeDirectory}/.local/share";
-  xdgStateHome = "${homeDirectory}/.local/state";
-  xdgCacheHome =
-    if isLinux then
-      "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
+  dotfiles = "${specialArgs.homeDirectory}/.dotfiles";
 in
 {
   imports = [
@@ -23,9 +15,6 @@ in
     ./selenized.nix
   ];
 
-  home.username = username;
-  home.homeDirectory = homeDirectory;
-
   home.stateVersion = "24.05";
 
   home.sessionPath = [
@@ -34,12 +23,12 @@ in
 
   home.sessionVariables = {
     DOTFILES = dotfiles;
-    XDG_CONFIG_HOME = xdgConfigHome;
-    XDG_DATA_HOME = xdgDataHome;
-    XDG_STATE_HOME = xdgStateHome;
-    XDG_CACHE_HOME = xdgCacheHome;
+    XDG_CONFIG_HOME = config.xdg.configHome;
+    XDG_DATA_HOME = config.xdg.dataHome;
+    XDG_STATE_HOME = config.xdg.stateHome;
+    XDG_CACHE_HOME = config.xdg.cacheHome;
     NNN_OPENER = "open";
-    PASSWORD_STORE_DIR = "${xdgDataHome}/pass";
+    PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
@@ -57,7 +46,6 @@ in
       target = "fonts/iosevka-fixed-regular.ttf";
     };
   };
-  xdg.dataHome = xdgDataHome;
 
   home.file = {
     pdbrc =

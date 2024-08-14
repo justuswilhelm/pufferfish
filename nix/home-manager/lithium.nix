@@ -33,6 +33,7 @@ in
     target = "${applicationSupport}/xbar";
     recursive = true;
   };
+  xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
 
   xdg.configFile.karabiner = {
     source = ../../karabiner/karabiner.json;
