@@ -1,6 +1,5 @@
 { lib, pkgs, config, specialArgs, ... }:
 let
-  selenized = (import ./selenized.nix) { inherit lib; };
   # Wrap neomutt to ensure true color support
   package =
     pkgs.symlinkJoin {
@@ -22,10 +21,6 @@ in
   };
 
   xdg.configFile = {
-    neomuttColors = {
-      text = selenized.neomutt;
-      target = "neomutt/colors";
-    };
     neomuttShared = {
       source = ../../neomutt/shared;
       target = "neomutt/shared";

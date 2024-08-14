@@ -1,10 +1,16 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
   applicationSupport = "${specialArgs.homeDirectory}/Library/Application Support";
-  selenized = (import ./selenized.nix) { inherit lib; };
 in
 {
-  imports = [ ./home.nix ./aerospace.nix ];
+  imports = [
+    ./home.nix
+    ./aerospace.nix
+    ./alacritty.nix
+    ./timewarrior.nix
+    ./pomoglorbo.nix
+  ];
+
   home.packages = [ specialArgs.pomoglorbo ];
 
   programs.fish.loginShellInit =
@@ -25,26 +31,12 @@ in
     '';
   programs.git.ignores = [ ".DS_Store" ];
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      font = {
-        size = 12;
-        normal = {
-          family = "Iosevka Fixed";
-        };
-      };
-      window = {
-        option_as_alt = "OnlyRight";
-      };
-    } // selenized.alacritty;
-  };
-
   home.file.xbar = {
     source = ../../xbar;
     target = "${applicationSupport}/xbar";
     recursive = true;
   };
+  xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
 
   xdg.configFile.karabiner = {
     source = ../../karabiner/karabiner.json;

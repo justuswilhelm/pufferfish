@@ -1,6 +1,5 @@
-{ lib, pkgs, config, specialArgs, ... }:
+{ lib, pkgs, config, options, specialArgs, ... }:
 let
-  selenized = (import ./selenized.nix) { inherit lib; };
   isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
   homeDirectory = specialArgs.homeDirectory;
   dotfiles = "${homeDirectory}/.dotfiles";
@@ -21,14 +20,9 @@ in
     ./neomutt.nix
     ./gpg.nix
     ./fish.nix
+    ./packages.nix
+    ./selenized.nix
   ];
-
-  home.packages = import ./packages.nix {
-    inherit lib isLinux pkgs;
-    extraPkgs = {
-      inherit (specialArgs) pomoglorbo;
-    };
-  };
 
   home.stateVersion = "24.05";
 
@@ -38,12 +32,12 @@ in
 
   home.sessionVariables = {
     DOTFILES = dotfiles;
-    XDG_CONFIG_HOME = xdgConfigHome;
-    XDG_DATA_HOME = xdgDataHome;
-    XDG_STATE_HOME = xdgStateHome;
-    XDG_CACHE_HOME = xdgCacheHome;
+    XDG_CONFIG_HOME = config.xdg.configHome;
+    XDG_DATA_HOME = config.xdg.dataHome;
+    XDG_STATE_HOME = config.xdg.stateHome;
+    XDG_CACHE_HOME = config.xdg.cacheHome;
     NNN_OPENER = "open";
-    PASSWORD_STORE_DIR = "${xdgDataHome}/pass";
+    PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
@@ -61,11 +55,7 @@ in
       target = "fonts/iosevka-fixed-regular.ttf";
     };
   };
-  xdg.dataHome = xdgDataHome;
 
-  xdg.configFile = (import ./xdgConfigFiles.nix) {
-    inherit lib pkgs isLinux homeDirectory xdgCacheHome;
-  };
   home.file = {
     pdbrc =
       let
@@ -123,17 +113,6 @@ in
     enable = true;
     addKeysToAgent = "yes";
     matchBlocks."*" = { };
-  };
-
-  programs.foot = {
-    enable = isLinux;
-    settings = {
-      main = {
-        # Install foot-themes
-        include = "${pkgs.foot.themes}/share/foot/themes/selenized-light";
-        font = "Iosevka Fixed:size=11";
-      };
-    };
   };
 
   xresources = {

@@ -1,6 +1,14 @@
 { lib, pkgs, specialArgs, ... }:
 {
-  imports = [ ./home.nix ./sway.nix ./firefox.nix ];
+  imports = [
+    ./home.nix
+    ./sway.nix
+    ./firefox.nix
+    ./linux-packages.nix
+    ./foot.nix
+    ./gdb.nix
+  ];
+
   home.packages = [
     pkgs.tor-browser
   ];
