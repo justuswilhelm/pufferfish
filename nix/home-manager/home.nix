@@ -20,17 +20,15 @@ in
     ./cmus.nix
     ./nvim.nix
     ./neomutt.nix
+    ./packages.nix
   ];
 
   home.username = username;
   home.homeDirectory = homeDirectory;
 
-  home.packages = import ./packages.nix {
-    inherit lib isLinux pkgs;
-    extraPkgs = {
-      inherit (specialArgs) pomoglorbo;
-    };
-  };
+  home.packages = [
+    specialArgs.pomoglorbo
+  ];
 
   home.stateVersion = "24.05";
 
