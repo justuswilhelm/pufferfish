@@ -16,6 +16,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "lithium-nixos"; # Define your hostname.
+  networking.hosts = {
+    "10.0.2.2" = [ "lithium.local" ];
+  };
 
   time.timeZone = "Asia/Tokyo";
 
