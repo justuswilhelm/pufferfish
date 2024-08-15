@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
@@ -15,12 +16,14 @@
   boot.initrd.luks.devices.nvme0n1p4_crypt.device = "/dev/disk/by-uuid/04d9dabf-c8b0-4589-879b-fdfd1e212a75";
 
   fileSystems."/" =
-    { device = "/dev/mapper/helium--nixos--vg-nixos--root";
+    {
+      device = "/dev/mapper/helium--nixos--vg-nixos--root";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/aff0df62-b55a-4410-b7ef-8f933f795f42";
+    {
+      device = "/dev/disk/by-uuid/aff0df62-b55a-4410-b7ef-8f933f795f42";
       fsType = "ext2";
       options = [ "fmask=0077" "dmask=0077" ];
     };
