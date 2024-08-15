@@ -35,7 +35,6 @@ in
         # open an url if given in wl clipboard, like example.com
         bindsym $mod+Shift+o exec ${firefox-esr} $(wl-paste)
         # TODO find a new shortcut for this
-        # bindsym $mod+Shift+t exec ${pkgs.tor-browser}/bin/tor-browser
         # Take a screenshot
         bindsym $mod+Shift+b exec ${grim}
         # Take a screenshot of a region
@@ -89,14 +88,6 @@ in
       };
 
     modules = {
-      "ethernet enp7s0" = {
-        settings = {
-          format_up = "enp7s0: %ip (%speed)";
-          format_down = "enp7s0: down";
-        };
-        position = 0;
-      };
-
       "disk /" = {
         settings = {
           format = "/ %free";

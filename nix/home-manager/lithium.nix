@@ -11,6 +11,7 @@ in
     ./pomoglorbo.nix
     ./infosec.nix
   ];
+
   programs.fish.loginShellInit =
     let
       # Courtesy of

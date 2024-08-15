@@ -11,6 +11,17 @@
     ./locale-fix.nix
   ];
 
+  home.packages = [
+    pkgs.tor-browser
+  ];
+
+  programs.fish.loginShellInit = ''
+    # If running from tty1 start sway
+    if [ (tty) = /dev/tty1 ]
+        exec sway
+    end
+  '';
+
   home.file = {
     keyboardLayout = {
       text = ''

@@ -5,7 +5,7 @@
     pkgs.sqlite
 
     # GUIs
-    pkgs.tor-browser
+    pkgs.keepassxc
 
     # Build tools
     pkgs.hugo
