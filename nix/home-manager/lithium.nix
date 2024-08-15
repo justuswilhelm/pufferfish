@@ -9,6 +9,7 @@ in
     ./alacritty.nix
     ./timewarrior.nix
     ./pomoglorbo.nix
+    ./infosec.nix
   ];
   programs.fish.loginShellInit =
     let

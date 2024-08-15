@@ -161,7 +161,6 @@ let
       }
       {
         "if".app-id = "com.utmapp.UTM";
-        "if".window-title-regex-substring = "UTM - .+";
         run = [ "layout floating" ];
       }
     ];
