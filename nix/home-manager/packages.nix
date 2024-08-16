@@ -18,7 +18,6 @@
     pkgs.curl
     pkgs.httperf
     pkgs.netcat-gnu
-    pkgs.nmap
     pkgs.wget
     pkgs.whois
 
@@ -36,36 +35,6 @@
 
     # Debugger
     pkgs.qemu
-
-    # Reverse engineering
-    (
-      pkgs.symlinkJoin {
-        name = "ghidra";
-        paths = [ pkgs.ghidra ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          wrapProgram $out/bin/ghidra --set _JAVA_AWT_WM_NONREPARENTING 1
-        '';
-      }
-    )
-    (
-      pkgs.symlinkJoin {
-        name = "radare2";
-        paths = [
-          pkgs.radare2
-          pkgs.meson
-          pkgs.ninja
-        ];
-      }
-    )
-    # For hex overflow calc
-    pkgs.programmer-calculator
-
-    # InfoSec
-    pkgs.thc-hydra
-    pkgs.sqlmap
-    pkgs.gobuster
-    pkgs.nikto
 
     # Interpreters
     pkgs.asdf-vm

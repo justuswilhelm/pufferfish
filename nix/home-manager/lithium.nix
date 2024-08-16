@@ -9,6 +9,7 @@ in
     ./alacritty.nix
     ./timewarrior.nix
     ./pomoglorbo.nix
+    ./infosec.nix
   ];
 
   home.packages = [ specialArgs.pomoglorbo ];
