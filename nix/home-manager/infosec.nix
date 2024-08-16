@@ -1,6 +1,5 @@
 # Infosec related packages and config
-{ pkgs, ... }
-:
+{ lib, pkgs, ... }:
 {
   home.packages = [
     # Reverse engineering
@@ -34,11 +33,23 @@
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
+    pkgs.dig
+
+    # Packet sniffing
+    pkgs.tcpdump
 
     # Web scanning
-    pkgs.thc-hydra
     pkgs.gobuster
     pkgs.nikto
+
+    # Cracking
+    (pkgs.python311Packages.patator.override {
+      # odpic causes issues on Darwin
+      cx-oracle = null;
+    })
+    pkgs.thc-hydra
+    pkgs.john
+    pkgs.hashcat
 
     # Databases
     pkgs.sqlmap
