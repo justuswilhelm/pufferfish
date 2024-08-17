@@ -41,8 +41,7 @@
                 home-manager.users.justusperlwitz = import ../home-manager/nitrogen.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
-                  system = "nixos";
-                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                  inherit system;
                 };
               }
             ];
@@ -60,8 +59,7 @@
 
           extraSpecialArgs = {
             homeDirectory = "/home/justusperlwitz";
-            system = "nixos";
-            pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+            inherit system;
           };
         };
       homeConfigurations."justusperlwitz@helium" =
@@ -76,8 +74,7 @@
 
           extraSpecialArgs = {
             homeDirectory = "/home/justusperlwitz";
-            system = "debian";
-            pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+            inherit system;
           };
         };
       darwinConfigurations."lithium" =
@@ -97,8 +94,7 @@
               home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
               home-manager.extraSpecialArgs = {
                 homeDirectory = "/Users/justusperlwitz";
-                system = "darwin";
-                pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                inherit system;
               };
             }
           ];
