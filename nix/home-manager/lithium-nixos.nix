@@ -36,6 +36,7 @@
         output * {
           scale 1
         }
+        exec spice-vdagent
       '';
       target = "sway/config.d/sway-lithium-nixos";
     };
