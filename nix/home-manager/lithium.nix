@@ -11,6 +11,9 @@ in
     ./pomoglorbo.nix
     ./infosec.nix
   ];
+
+  home.packages = [ specialArgs.pomoglorbo ];
+
   programs.fish.loginShellInit =
     let
       # Courtesy of

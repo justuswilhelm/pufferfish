@@ -10,6 +10,8 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
+      ../networkd.nix
+      ../sway.nix
     ];
 
   nix = {
@@ -64,18 +66,9 @@
   programs.fish.enable = true;
 
   environment.systemPackages = with pkgs; [
-    grim
-    slurp
-    wl-clipboard
-    mako
     vim
     git
   ];
-
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -88,9 +81,6 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  services.pcscd.enable = true;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
@@ -117,4 +107,3 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-

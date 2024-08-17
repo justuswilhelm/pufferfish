@@ -14,7 +14,6 @@
 
     # GUIs
     pkgs.keepassxc
-    pkgs.tor-browser
 
     # Debugger
     pkgs.gdb

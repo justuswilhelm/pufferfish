@@ -16,7 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
   outputs =
     { self
     , nix-darwin
@@ -26,6 +25,27 @@
     , projectify
     }@inputs: {
       nixosConfigurations = {
+        lithium-nixos =
+          let
+            system = "aarch64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              ../nixos/lithium-nixos/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.frugally-consonant-lanky = import ../home-manager/lithium-nixos.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/frugally-consonant-lanky";
+                  system = "nixos";
+                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                };
+              }
+            ];
+          };
         nitrogen =
           let
             system = "x86_64-linux";
