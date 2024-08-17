@@ -5,6 +5,7 @@
     ./sway.nix
     ./firefox.nix
     ./linux-packages.nix
+    ./infosec.nix
     ./foot.nix
     ./gdb.nix
   ];
