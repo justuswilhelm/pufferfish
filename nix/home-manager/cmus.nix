@@ -1,6 +1,6 @@
 { lib, pkgs, config, specialArgs, ... }:
 let
-  output_plugin = if specialArgs.system == "darwin" then "coreaudio" else "pulse";
+  output_plugin = if specialArgs.system == "aarch64-darwin" then "coreaudio" else "pulse";
 in
 {
   xdg.configFile.cmusRc =

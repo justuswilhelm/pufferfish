@@ -103,6 +103,9 @@
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
+          specialArgs = {
+            inherit system;
+          };
           modules = [
             { _module.args = inputs; }
             ../darwin/darwin-configuration.nix
