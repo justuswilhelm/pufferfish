@@ -1,8 +1,8 @@
-{ pkgs, projectify, config, ... }:
+{ pkgs, projectify, specialArgs, ... }:
 let
-  frontend = projectify.outputs.packages.aarch64-darwin.projectify-frontend-node;
-  backend = projectify.outputs.packages.aarch64-darwin.projectify-backend;
-  revproxy = projectify.outputs.packages.aarch64-darwin.projectify-revproxy;
+  frontend = projectify.outputs.packages.${specialArgs.system}.projectify-frontend-node;
+  backend = projectify.outputs.packages.${specialArgs.system}.projectify-backend;
+  revproxy = projectify.outputs.packages.${specialArgs.system}.projectify-revproxy;
   logPath = "/var/log/projectify";
   revproxyPort = "18100";
   frontendPort = "18101";
