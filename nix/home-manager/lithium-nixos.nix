@@ -8,6 +8,7 @@
     ./infosec.nix
     ./foot.nix
     ./gdb.nix
+    ./gpg-agent.nix
   ];
 
   programs.i3status.modules = {

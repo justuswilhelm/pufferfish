@@ -7,6 +7,7 @@
     ./linux-packages.nix
     ./foot.nix
     ./gdb.nix
+    ./gpg-agent.nix
   ];
 
   home.packages = [
