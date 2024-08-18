@@ -30,12 +30,12 @@
     defaultEditor = true;
     extraPackages = [
       pkgs.deno
+      pkgs.ruff
       pkgs.ruff-lsp
       pkgs.nodePackages.pyright
     ];
     extraPython3Packages = python3Packages: [
       python3Packages.pillow
-      python3Packages.ruff
     ];
   };
 
