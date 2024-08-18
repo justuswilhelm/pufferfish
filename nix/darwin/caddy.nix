@@ -50,6 +50,7 @@ in
       mkdir -p /var/caddy/home
       chown -R caddy:caddy /etc/caddy/certs /var/log/caddy /var/caddy/home
       chmod 0400 /etc/caddy/certs/*
+      chmod 0444 /etc/caddy/certs/lithium-ca.crt
       caddy validate --config /etc/caddy/Caddyfile
     '';
   };
