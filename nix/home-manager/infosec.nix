@@ -51,8 +51,13 @@
     pkgs.john
     pkgs.hashcat
 
+    # Files
+    pkgs.rsync
+    pkgs.ncftp
+
     # Databases
     pkgs.sqlmap
     pkgs.mongosh
+    pkgs.postgresql
   ];
 }
