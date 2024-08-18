@@ -55,6 +55,9 @@
     pkgs.rsync
     pkgs.ncftp
 
+    # SSH
+    pkgs.sshpass
+
     # Databases
     pkgs.sqlmap
     pkgs.mongosh

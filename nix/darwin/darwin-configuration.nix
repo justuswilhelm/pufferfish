@@ -14,6 +14,7 @@ in
     ./anki.nix
     ./attic.nix
     ./projectify.nix
+    ./infosec.nix
   ];
   users.users."${name}" = {
     description = "Justus Perlwitz";
