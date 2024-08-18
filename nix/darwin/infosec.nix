@@ -1,20 +1,19 @@
 { config, pkgs, ... }:
+let
+  user = "delighted-negotiate-catchy";
+in
 {
-  # A not very privileged user
-  users.groups.delighted-negotiate-catchy = {
+  # Blank slate user to ensure we don't pass PID
+  users.groups.${user} = {
     gid = 604;
   };
-  users.users.delighted-negotiate-catchy = {
+  users.knownGroups = [ user ];
+  users.users.${user} = {
     createHome = false;
     description = "random user for pentesting";
     gid = 604;
-    uid = 54;
+    uid = 520;
     isHidden = true;
   };
-  users.knownUsers = [
-    "delighted-negotiate-catchy"
-  ];
-  users.knownGroups = [
-    "delighted-negotiate-catchy"
-  ];
+  users.knownUsers = [ user ];
 }
