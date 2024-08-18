@@ -35,6 +35,7 @@
     ];
     extraPython3Packages = python3Packages: [
       python3Packages.pillow
+      python3Packages.ruff
     ];
   };
 
