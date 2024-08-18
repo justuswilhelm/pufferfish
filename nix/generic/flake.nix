@@ -41,7 +41,6 @@
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/frugally-consonant-lanky";
                   system = "nixos";
-                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
                 };
               }
             ];
@@ -114,6 +113,9 @@
               home-manager.useGlobalPkgs = true;
               home-manager.verbose = true;
               home-manager.useUserPackages = true;
+              home-manager.sharedModules = [
+                { _module.args = inputs; }
+              ];
               home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
               home-manager.extraSpecialArgs = {
                 homeDirectory = "/Users/justusperlwitz";
