@@ -50,7 +50,7 @@
     pkgs.htop
     # Broken,
     # https://github.com/NixOS/nixpkgs/issues/299091
-    pkgs.ncdu
+    # pkgs.ncdu
     pkgs.ncurses
     (
       pkgs.symlinkJoin {
