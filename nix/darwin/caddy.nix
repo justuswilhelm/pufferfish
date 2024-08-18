@@ -39,7 +39,7 @@ in
   };
 
   security.pki.certificateFiles = [
-    "/etc/caddy/lithium-ca.crt"
+    "/etc/caddy/certs/lithium-ca.crt"
   ];
   system.activationScripts.postActivation = {
     text = ''
