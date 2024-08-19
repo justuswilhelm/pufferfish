@@ -6,36 +6,49 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../networkd.nix
+      ../sway.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  # boot.loader.systemd-boot.enable = true;
+  boot.blacklistedKernelModules = [
+    "iwlwifi"
+    "iwlmvm"
+  ];
   boot.loader.efi.canTouchEfiVariables = true;
+  # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # from /boot/grub/grub.cfg
-  boot.loader.grub.extraEntries = ''
-    menuentry "Debian GNU/Linux" {
-      search --set=debian --fs-uuid --set=root aff0df62-b55a-4410-b7ef-8f933f795f42
-      configfile "($debian)/boot/grub/grub.cfg"
-    }
-  '';
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    devices = [ "nodev" ];
+    enableCryptodisk = true;
+    useOSProber = true;
+  };
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.hostName = "helium-nixos"; # Define your hostname.
+  systemd.network.netdevs.wlo1.enable = false;
+
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Asia/Tokyo";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -63,14 +76,27 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
-  # };
+  users.users.justusperlwitz = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    home = "/home/justusperlwitz";
+    shell = pkgs.fish;
+    packages = with pkgs; [
+      firefox-esr
+      tree
+      tmux
+      foot
+    ];
+  };
+
+  programs.fish.enable = true;
+  programs.git.enable = true;
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
