@@ -54,6 +54,7 @@
     # Files
     pkgs.rsync
     pkgs.ncftp
+    pkgs.samba
 
     # SSH
     pkgs.sshpass
