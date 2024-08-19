@@ -9,11 +9,12 @@ in
   };
   users.knownGroups = [ user ];
   users.users.${user} = {
-    createHome = false;
     description = "random user for pentesting";
     gid = 604;
     uid = 520;
     isHidden = true;
+    home = "/tmp/${user}";
+    shell = pkgs.fish;
   };
   users.knownUsers = [ user ];
 }
