@@ -29,6 +29,7 @@
     (pkgs.aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
     (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
     pkgs.nixpkgs-fmt
+    pkgs.nodePackages.prettier
 
     # Compilers
     pkgs.gcc
