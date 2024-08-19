@@ -37,13 +37,14 @@
     # Debugger
     pkgs.qemu
 
-    # Interpreters
+    # Interpreters, VMs
     pkgs.asdf-vm
     pkgs.python310
     pkgs.poetry
     pkgs.jq
     pkgs.miller
     pkgs.nodejs_20
+    pkgs.openjdk
 
     # TUIs
     pkgs.htop
