@@ -107,6 +107,7 @@ in
     experimental-features = nix-command flakes
   '';
   nix.settings = {
+    auto-optimise-store = true;
     sandbox = "relaxed";
   };
 
