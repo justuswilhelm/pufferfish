@@ -106,8 +106,9 @@ in
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
-
-  # nix.package = pkgs.nix;
+  nix.settings = {
+    sandbox = "relaxed";
+  };
 
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:
