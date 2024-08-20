@@ -3,6 +3,7 @@
 {
   home.packages = [
     # Reverse engineering
+    # ===================
     (
       pkgs.symlinkJoin {
         name = "ghidra";
@@ -25,10 +26,12 @@
     )
 
     # Binary
+    # ======
     pkgs.programmer-calculator
     pkgs.xxd
 
     # Networking
+    # ==========
     pkgs.netcat-gnu
     pkgs.inetutils
     pkgs.whois
@@ -36,13 +39,16 @@
     pkgs.dig
 
     # Packet sniffing
+    # ===============
     pkgs.tcpdump
 
     # Web scanning
+    # ============
     pkgs.gobuster
     pkgs.nikto
 
     # Cracking
+    # ========
     (pkgs.python311Packages.patator.override {
       # odpic causes issues on Darwin
       cx-oracle = null;
@@ -52,14 +58,17 @@
     pkgs.hashcat
 
     # Files
+    # =====
     pkgs.rsync
     pkgs.ncftp
     pkgs.samba
 
     # SSH
+    # ===
     pkgs.sshpass
 
     # Databases
+    # =========
     pkgs.sqlmap
     pkgs.mongosh
     pkgs.postgresql
