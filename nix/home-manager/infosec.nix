@@ -61,7 +61,11 @@
     # =====
     pkgs.rsync
     pkgs.ncftp
+
+    # Samba
+    # =====
     pkgs.samba
+    pkgs.python3Packages.impacket
 
     # SSH
     # ===
