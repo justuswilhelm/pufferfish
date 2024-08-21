@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
-      url = "git+https://github.com/jwpconsulting/projectify.git?ref=main";
+      url = "git+https://github.com/jwpconsulting/projectify.git?tag=2024.8.20";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -159,11 +159,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1723688146,
-        "narHash": "sha256-sqLwJcHYeWLOeP/XoLwAtYjr01TISlkOfz+NG82pbdg=",
+        "lastModified": 1723938990,
+        "narHash": "sha256-9tUadhnZQbWIiYVXH8ncfGXGvkNq3Hag4RCBEMUk7MI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c3d4ac725177c030b1e289015989da2ad9d56af0",
+        "rev": "c42fcfbdfeae23e68fc520f9182dde9f38ad1890",
         "type": "github"
       },
       "original": {
@@ -255,18 +255,17 @@
         "poetry2nix": "poetry2nix_2"
       },
       "locked": {
-        "lastModified": 1723888391,
-        "narHash": "sha256-7DCPENr9h2eezxvpZEN2iBYUMECgRtDoKCz6CxSl7Ds=",
-        "ref": "main",
-        "rev": "89471a87477743337a4f0f78da0caaa5f330c9d4",
-        "revCount": 4881,
+        "lastModified": 1724138381,
+        "narHash": "sha256-U6YKCWfRfcLG2lve/8ZTAKOBNewajkUbgBoGatrQ9D4=",
+        "ref": "refs/heads/main",
+        "rev": "ecd808d31b8c759dc72dd626a59ed328a9d58455",
+        "revCount": 4886,
         "type": "git",
-        "url": "https://github.com/jwpconsulting/projectify.git"
+        "url": "https://github.com/jwpconsulting/projectify.git?tag=2024.8.20"
       },
       "original": {
-        "ref": "main",
         "type": "git",
-        "url": "https://github.com/jwpconsulting/projectify.git"
+        "url": "https://github.com/jwpconsulting/projectify.git?tag=2024.8.20"
       }
     },
     "root": {
