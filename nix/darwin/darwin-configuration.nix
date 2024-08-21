@@ -108,7 +108,7 @@ in
   '';
   nix.settings = {
     auto-optimise-store = true;
-    sandbox = "relaxed";
+    sandbox = false;
   };
 
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
