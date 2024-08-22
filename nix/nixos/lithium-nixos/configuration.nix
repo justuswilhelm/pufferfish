@@ -16,6 +16,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "lithium-nixos"; # Define your hostname.
+  # https://wiki.qemu.org/Documentation/Networking
+  networking.hosts = {
+    "10.0.2.2" = [ "lithium.local" ];
+  };
 
   time.timeZone = "Asia/Tokyo";
 

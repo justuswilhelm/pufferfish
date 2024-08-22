@@ -1,7 +1,7 @@
 { lib, pkgs, config, specialArgs, ... }:
 let
-  paste = if specialArgs.system == "darwin" then "pbpaste" else "wl-paste";
-  copy = if specialArgs.system == "darwin" then "pbcopy" else "wl-copy";
+  paste = if specialArgs.system == "aarch64-darwin" then "pbpaste" else "wl-paste";
+  copy = if specialArgs.system == "aarch64-darwin" then "pbcopy" else "wl-copy";
 in
 {
   programs.tmux =

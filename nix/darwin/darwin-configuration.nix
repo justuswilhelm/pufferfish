@@ -14,6 +14,7 @@ in
     ./anki.nix
     ./attic.nix
     ./projectify.nix
+    ./infosec.nix
   ];
   users.users."${name}" = {
     description = "Justus Perlwitz";
@@ -105,8 +106,10 @@ in
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
-
-  # nix.package = pkgs.nix;
+  nix.settings = {
+    auto-optimise-store = true;
+    sandbox = false;
+  };
 
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:

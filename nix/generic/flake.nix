@@ -8,11 +8,11 @@
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=main&ref=2024.06.23.1";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?tag=2024.8.18";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
-      url = "git+https://github.com/jwpconsulting/projectify.git?ref=main";
+      url = "git+https://github.com/jwpconsulting/projectify.git?tag=2024.8.20";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -63,7 +63,6 @@
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/frugally-consonant-lanky";
                   system = "nixos";
-                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
                 };
               }
             ];
@@ -83,8 +82,7 @@
                 home-manager.users.justusperlwitz = import ../home-manager/nitrogen.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
-                  system = "nixos";
-                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                  inherit system;
                 };
               }
             ];
@@ -102,8 +100,7 @@
 
           extraSpecialArgs = {
             homeDirectory = "/home/justusperlwitz";
-            system = "nixos";
-            pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+            inherit system;
           };
         };
       homeConfigurations."justusperlwitz@helium" =
@@ -118,8 +115,7 @@
 
           extraSpecialArgs = {
             homeDirectory = "/home/justusperlwitz";
-            system = "debian";
-            pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+            inherit system;
           };
         };
       darwinConfigurations."lithium" =
@@ -128,6 +124,9 @@
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
+          specialArgs = {
+            inherit system;
+          };
           modules = [
             { _module.args = inputs; }
             ../darwin/darwin-configuration.nix
@@ -136,11 +135,13 @@
               home-manager.useGlobalPkgs = true;
               home-manager.verbose = true;
               home-manager.useUserPackages = true;
+              home-manager.sharedModules = [
+                { _module.args = inputs; }
+              ];
               home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
               home-manager.extraSpecialArgs = {
                 homeDirectory = "/Users/justusperlwitz";
-                system = "darwin";
-                pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                inherit system;
               };
             }
           ];

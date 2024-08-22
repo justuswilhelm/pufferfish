@@ -1,4 +1,4 @@
-{ lib, pkgs, config, specialArgs, ... }:
+{ pkgs, ... }:
 {
   programs.gpg = {
     enable = true;
@@ -78,9 +78,4 @@
   };
 
   # services.ssh-agent.enable = true;
-  services.gpg-agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-qt;
-    enableSshSupport = true;
-  };
 }

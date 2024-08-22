@@ -9,6 +9,7 @@
     ./gdb.nix
     # Investigate if this fix is needed on NixOS
     ./locale-fix.nix
+    ./gpg-agent.nix
   ];
 
   home.packages = [

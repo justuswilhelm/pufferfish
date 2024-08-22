@@ -4,9 +4,6 @@
     # Databases
     pkgs.sqlite
 
-    # GUIs
-    pkgs.keepassxc
-
     # Build tools
     pkgs.hugo
 
@@ -32,6 +29,7 @@
     (pkgs.aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
     (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
     pkgs.nixpkgs-fmt
+    pkgs.nodePackages.prettier
 
     # Compilers
     pkgs.gcc
@@ -39,13 +37,14 @@
     # Debugger
     pkgs.qemu
 
-    # Interpreters
+    # Interpreters, VMs
     pkgs.asdf-vm
     pkgs.python310
     pkgs.poetry
     pkgs.jq
     pkgs.miller
     pkgs.nodejs_20
+    pkgs.openjdk
 
     # TUIs
     pkgs.htop
@@ -53,7 +52,7 @@
     pkgs.htop
     # Broken,
     # https://github.com/NixOS/nixpkgs/issues/299091
-    pkgs.ncdu
+    # pkgs.ncdu
     pkgs.ncurses
     (
       pkgs.symlinkJoin {

@@ -30,6 +30,7 @@
     defaultEditor = true;
     extraPackages = [
       pkgs.deno
+      pkgs.ruff
       pkgs.ruff-lsp
       pkgs.nodePackages.pyright
     ];
