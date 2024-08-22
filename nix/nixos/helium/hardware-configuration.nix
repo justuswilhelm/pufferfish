@@ -34,13 +34,13 @@
     {
       device = "/dev/mapper/helium--vg-root";
       fsType = "ext4";
-      options = [ "ro "];
+      options = [ "ro " ];
     };
   fileSystems."/debian/home" =
     {
       device = "/dev/mapper/helium--post--boot--vg-home";
       fsType = "ext4";
-      options = [ "ro "];
+      options = [ "ro " ];
     };
 
   # XXX sda1_crypt and sdb1_crypt keyfiles / uuids have been swapped

@@ -9,6 +9,7 @@
     ./foot.nix
     ./gdb.nix
     ./locale-fix.nix
+    ./gpg.nix
   ];
 
   home.packages = [
@@ -30,7 +31,7 @@
       text = ''
         # HiDPI setting
         output * {
-          scale 1.75
+          scale 1.5
         }
       '';
       target = "sway/config.d/helium-nixos";

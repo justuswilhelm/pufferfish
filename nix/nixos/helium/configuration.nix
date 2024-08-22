@@ -10,6 +10,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../sway.nix
+      ../yubikey.nix
       ../avahi.nix
     ];
 
@@ -27,7 +28,6 @@
     efiSupport = true;
     devices = [ "nodev" ];
     enableCryptodisk = true;
-    useOSProber = true;
   };
 
   networking.hostName = "helium-nixos"; # Define your hostname.
