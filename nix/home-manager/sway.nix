@@ -66,8 +66,6 @@ in
                 timeout 21600 'systemctl poweroff'
             # Wayland copy-pasting, part of debian
             wl-paste -t text --watch clipman store --no-persist
-            # Will these two anyway
-            ${firefox-esr}
         }
       '';
       target = "sway/config.d/launchers";
