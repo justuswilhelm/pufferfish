@@ -9,8 +9,8 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../networkd.nix
       ../sway.nix
+      ../avahi.nix
     ];
 
   boot.blacklistedKernelModules = [
