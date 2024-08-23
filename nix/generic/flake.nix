@@ -26,7 +26,7 @@
     , projectify
     }@inputs: {
       nixosConfigurations = {
-        helium-nixos =
+        helium =
           let
             system = "x86_64-linux";
           in
@@ -97,21 +97,6 @@
           inherit pkgs;
 
           modules = [ ../home-manager/nitrogen.nix ];
-
-          extraSpecialArgs = {
-            homeDirectory = "/home/justusperlwitz";
-            inherit system;
-          };
-        };
-      homeConfigurations."justusperlwitz@helium" =
-        let
-          system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [ ../home-manager/helium.nix ];
 
           extraSpecialArgs = {
             homeDirectory = "/home/justusperlwitz";

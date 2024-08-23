@@ -33,7 +33,7 @@
     enableCryptodisk = true;
   };
 
-  networking.hostName = "helium-nixos"; # Define your hostname.
+  networking.hostName = "helium"; # Define your hostname.
   systemd.network.netdevs.wlo1.enable = false;
 
   nix = {
