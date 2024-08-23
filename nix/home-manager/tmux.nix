@@ -1,18 +1,29 @@
-{ lib, pkgs, config, specialArgs, ... }:
+{ lib, pkgs, config, ... }:
 let
-  paste = if specialArgs.system == "aarch64-darwin" then "pbpaste" else "wl-paste";
-  copy = if specialArgs.system == "aarch64-darwin" then "pbcopy" else "wl-copy";
+  cfg = config.programs.tmux;
 in
 {
-  programs.tmux =
+  options.programs.tmux = with lib; {
+    pasteCommand = mkOption {
+      type = types.str;
+      example = "pbpaste";
+      default = "wl-paste";
+    };
+    copyCommand = mkOption {
+      type = types.str;
+      example = "pbcopy";
+      default = "wl-copy";
+    };
+  };
+  config.programs.tmux =
     {
       enable = true;
       extraConfig = ''
         ${builtins.readFile ../../tmux/tmux.conf}
         ${builtins.readFile ../../tmux/vim-tmux-navigator.conf}
         # Copy & paste
-        bind-key ']' run "${paste} | tmux load-buffer - " \; paste-buffer -p
-        bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel '${copy}'
+        bind-key ']' run "${cfg.pasteCommand} | tmux load-buffer - " \; paste-buffer -p
+        bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel '${cfg.copyCommand}'
       '';
       # Set longer scrollback buffer
       historyLimit = 500000;

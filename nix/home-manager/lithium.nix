@@ -12,6 +12,11 @@ in
     ./infosec.nix
   ];
 
+  programs.tmux = {
+    pasteCommand = "pbpaste";
+    copyCommand = "pbcopy";
+  };
+
   programs.fish.loginShellInit =
     let
       # Courtesy of
