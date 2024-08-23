@@ -11,6 +11,7 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
   boot.initrd.luks.devices.nvme0n1p4_crypt.device = "/dev/disk/by-uuid/04d9dabf-c8b0-4589-879b-fdfd1e212a75";
+  boot.kernelModules = [ "dm-raid" ];
 
   fileSystems."/" =
     {
@@ -39,6 +40,11 @@
   fileSystems."/home" =
     {
       device = "/dev/mapper/helium--post--boot--vg-home";
+      fsType = "ext4";
+    };
+  fileSystems."/srv/borgbackup" =
+    {
+      device = "/dev/mapper/helium--post--boot--vg-borgbackup";
       fsType = "ext4";
     };
 
