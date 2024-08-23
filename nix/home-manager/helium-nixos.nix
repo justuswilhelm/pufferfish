@@ -9,6 +9,7 @@
     ./gdb.nix
     ./locale-fix.nix
     ./gpg.nix
+    ./gpg-agent.nix
   ];
 
   home.packages = [
