@@ -2,6 +2,10 @@
 	log {
 		format console
 	}
+	# Prevent Caddy from serving on port :80 and disable certificate
+	# automation.
+	# https://caddyserver.com/docs/caddyfile/options#auto-https
+	auto_https off
 }
 # Attic
 https://lithium.local:10100 {
