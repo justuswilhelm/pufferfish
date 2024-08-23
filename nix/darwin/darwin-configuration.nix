@@ -38,7 +38,6 @@ in
 
     # Media
     # Not sure if I need these on Debian or not
-    pkgs.cmus
     pkgs.ffmpeg
   ];
   environment.shells = [ pkgs.fish ];
