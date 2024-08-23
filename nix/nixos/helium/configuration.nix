@@ -7,11 +7,13 @@
 {
   imports =
     [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
       ../sway.nix
       ../yubikey.nix
       ../networkd.nix
+
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./borgmatic.nix
     ];
 
   boot.blacklistedKernelModules = [
