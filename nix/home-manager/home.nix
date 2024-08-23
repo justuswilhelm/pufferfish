@@ -1,7 +1,4 @@
 { lib, pkgs, config, options, specialArgs, ... }:
-let
-  isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
-in
 {
   imports = [
     ./fish.nix
