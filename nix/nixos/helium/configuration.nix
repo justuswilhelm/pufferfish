@@ -18,6 +18,9 @@
     "iwlwifi"
     "iwlmvm"
   ];
+  networking.hosts = {
+    "10.0.57.235" = [ "lithium.local" ];
+  };
 
   # TODO
   # boot.loader.systemd-boot.enable = true;
