@@ -1,8 +1,11 @@
 # Config needed to use yubikeys
 { config, lib, pkgs, ... }:
 {
+  # For servers
   services.openssh.enable = true;
 
+  #  For clients
+  programs.ssh.startAgent = false;
   services.pcscd.enable = true;
 
   # https://nixos.wiki/wiki/Yubikey

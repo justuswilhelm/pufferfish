@@ -1,5 +1,5 @@
 # Infosec related packages and config
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.packages = [
     # Reverse engineering

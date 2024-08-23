@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./home.nix
@@ -7,6 +7,8 @@
     ./linux-packages.nix
     ./foot.nix
     ./gdb.nix
+    # Investigate if this fix is needed on NixOS
+    ./locale-fix.nix
     ./gpg-agent.nix
   ];
 

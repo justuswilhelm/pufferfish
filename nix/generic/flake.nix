@@ -16,6 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
   outputs =
     { self
     , nix-darwin
@@ -25,6 +26,27 @@
     , projectify
     }@inputs: {
       nixosConfigurations = {
+        helium =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              ../nixos/helium/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.justusperlwitz = import ../home-manager/helium-nixos.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/justusperlwitz";
+                  system = "nixos";
+                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                };
+              }
+            ];
+          };
         lithium-nixos =
           let
             system = "aarch64-linux";
@@ -75,21 +97,6 @@
           inherit pkgs;
 
           modules = [ ../home-manager/nitrogen.nix ];
-
-          extraSpecialArgs = {
-            homeDirectory = "/home/justusperlwitz";
-            inherit system;
-          };
-        };
-      homeConfigurations."justusperlwitz@helium" =
-        let
-          system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [ ../home-manager/helium.nix ];
 
           extraSpecialArgs = {
             homeDirectory = "/home/justusperlwitz";

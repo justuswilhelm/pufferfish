@@ -3,12 +3,12 @@
   imports = [
     ./home.nix
     ./sway.nix
-    ./fish-debian.nix
     ./firefox.nix
     ./linux-packages.nix
     ./foot.nix
     ./gdb.nix
     ./locale-fix.nix
+    ./gpg.nix
     ./gpg-agent.nix
   ];
 
@@ -27,14 +27,14 @@
   };
 
   xdg.configFile = {
-    swayHelium = {
+    swayHeliumNixos = {
       text = ''
         # HiDPI setting
         output * {
           scale 1.5
         }
       '';
-      target = "sway/config.d/helium";
+      target = "sway/config.d/helium-nixos";
     };
   };
 
@@ -50,8 +50,4 @@
       "Xft.dpi" = 163;
     };
   };
-
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
 }

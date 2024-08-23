@@ -1,18 +1,27 @@
 # Contains just sway launcher config now
-{ lib, config, pkgs, specialArgs, osConfig, ... }:
+{ lib, config, pkgs, ... }:
 let
-  isNixOs = specialArgs.system == "nixos";
   # TODO see if we can add wl-paste as a nix package
   foot = "${pkgs.foot}/bin/foot";
   fish = "${pkgs.fish}/bin/fish";
   firefox-esr = "${config.programs.firefox.finalPackage}/bin/firefox-esr";
-  keepassxc = "${pkgs.keepassxc}/bin/keepassxc";
   grim = "${pkgs.grim}/bin/grim";
   slurp = "${pkgs.slurp}/bin/slurp";
   bemenu = "${pkgs.bemenu}/bin/bemenu-run";
   mosh = "${pkgs.mosh}/bin/mosh";
 in
 {
+  programs.fish.loginShellInit = ''
+    # If running from tty1 start sway
+    if [ (tty) = /dev/tty1 ]
+        exec sway
+    end
+  '';
+
+  # We always want to enable wayland in moz, since we start sway through the
+  # terminal
+  home.sessionVariables.MOZ_ENABLE_WAYLAND = 1;
+
   xdg.configFile = {
     sway = {
       source = ../../sway/config;
@@ -26,7 +35,6 @@ in
         # open an url if given in wl clipboard, like example.com
         bindsym $mod+Shift+o exec ${firefox-esr} $(wl-paste)
         # TODO find a new shortcut for this
-        bindsym $mod+Shift+p exec ${keepassxc}
         # Take a screenshot
         bindsym $mod+Shift+b exec ${grim}
         # Take a screenshot of a region
@@ -58,8 +66,6 @@ in
                 timeout 21600 'systemctl poweroff'
             # Wayland copy-pasting, part of debian
             wl-paste -t text --watch clipman store --no-persist
-            # Will these two anyway
-            ${firefox-esr}
         }
       '';
       target = "sway/config.d/launchers";
