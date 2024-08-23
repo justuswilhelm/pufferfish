@@ -3,7 +3,6 @@
   imports = [
     ./home.nix
     ./sway.nix
-    ./fish-debian.nix
     ./firefox.nix
     ./linux-packages.nix
     ./foot.nix
