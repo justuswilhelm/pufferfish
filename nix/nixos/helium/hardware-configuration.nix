@@ -47,6 +47,11 @@
       device = "/dev/mapper/helium--post--boot--vg-borgbackup";
       fsType = "ext4";
     };
+  swapDevices = [
+    {
+      device = "/dev/mapper/helium--vg-swap";
+    }
+  ];
 
   # XXX sda1_crypt and sdb1_crypt keyfiles / uuids have been swapped
   # accidentally during creation
