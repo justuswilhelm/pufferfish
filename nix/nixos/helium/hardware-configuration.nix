@@ -36,11 +36,10 @@
       fsType = "ext4";
       options = [ "ro " ];
     };
-  fileSystems."/debian/home" =
+  fileSystems."/home" =
     {
       device = "/dev/mapper/helium--post--boot--vg-home";
       fsType = "ext4";
-      options = [ "ro " ];
     };
 
   # XXX sda1_crypt and sdb1_crypt keyfiles / uuids have been swapped
