@@ -6,10 +6,6 @@
 
   #  For clients
   programs.ssh.startAgent = false;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
   services.pcscd.enable = true;
 
   # https://nixos.wiki/wiki/Yubikey

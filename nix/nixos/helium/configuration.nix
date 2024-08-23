@@ -18,6 +18,9 @@
     "iwlwifi"
     "iwlmvm"
   ];
+
+  # TODO
+  # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
