@@ -14,6 +14,7 @@ in
     ./selenized.nix
     ./gpg.nix
     ./fish.nix
+    ./asdf.nix
   ];
 
   home.username = "justusperlwitz";

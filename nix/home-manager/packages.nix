@@ -38,7 +38,6 @@
     pkgs.qemu
 
     # Interpreters, VMs
-    pkgs.asdf-vm
     pkgs.python310
     pkgs.poetry
     pkgs.jq
