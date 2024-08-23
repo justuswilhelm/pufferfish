@@ -11,7 +11,7 @@
       ./hardware-configuration.nix
       ../sway.nix
       ../yubikey.nix
-      ../avahi.nix
+      ../networkd.nix
     ];
 
   boot.blacklistedKernelModules = [
