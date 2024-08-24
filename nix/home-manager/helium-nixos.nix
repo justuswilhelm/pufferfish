@@ -50,4 +50,6 @@
       "Xft.dpi" = 163;
     };
   };
+
+  services.opensnitch-ui.enable = true;
 }
