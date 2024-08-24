@@ -46,6 +46,7 @@
     # ============
     pkgs.gobuster
     pkgs.nikto
+    pkgs.xsser
 
     # Cracking
     # ========
