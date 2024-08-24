@@ -10,6 +10,7 @@
     ./locale-fix.nix
     ./gpg.nix
     ./gpg-agent.nix
+    ./infosec.nix
   ];
 
   home.packages = [
