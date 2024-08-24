@@ -10,6 +10,7 @@
       ../sway.nix
       ../yubikey.nix
       ../networkd.nix
+      ../podman.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
