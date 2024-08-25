@@ -33,6 +33,7 @@
     # Networking
     # ==========
     pkgs.netcat-gnu
+    pkgs.socat
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
@@ -46,7 +47,10 @@
     # ============
     pkgs.gobuster
     pkgs.nikto
+    # https://github.com/epsylon/xsser
     pkgs.xsser
+    # https://github.com/hahwul/dalfox
+    pkgs.dalfox
 
     # Cracking
     # ========
