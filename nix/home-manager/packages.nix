@@ -38,7 +38,7 @@
     pkgs.qemu
 
     # Interpreters, VMs
-    pkgs.python310
+    pkgs.python3
     pkgs.poetry
     pkgs.jq
     pkgs.miller
