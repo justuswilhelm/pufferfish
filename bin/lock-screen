@@ -1,6 +1,4 @@
 #!/usr/bin/env fish
-set output_file "$(mktemp).png"
-
 if [ -n "$argv[1]" ]
     set message $argv[1]
 else
@@ -14,15 +12,16 @@ else
     set font_flag
 end
 
-if magick \
-    $font_flag \
-    -size 1024x768 xc:white \
-    -gravity center \
-    -pointsize 24 \
-    -fill black \
-    -annotate +0+0 \
-    $message \
-    $output_file
+if set output_file (mktemp --suffix=.png) && \
+    magick \
+        $font_flag \
+        -size 1024x768 xc:white \
+        -gravity center \
+        -pointsize 24 \
+        -fill black \
+        -annotate +0+0 \
+        $message \
+        $output_file
     set image_flag --image $output_file
 else
     echo "Could not create idle message"
