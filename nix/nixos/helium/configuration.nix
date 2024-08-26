@@ -12,10 +12,10 @@
       ../modules/networkd.nix
       ../modules/podman.nix
       ../modules/openvpn.nix
+      ../modules/borgmatic.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./borgmatic.nix
     ];
 
   boot.blacklistedKernelModules = [
