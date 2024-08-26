@@ -29,9 +29,4 @@ else
     set image_flag --image $output_file
 end
 
-# TODO remove --daemonize flag
-swaylock \
-    --show-failed-attempts \
-    --color ff6e67 \
-    --daemonize \
-    $image_flag
+exec swaylock --show-failed-attempts --color ff6e67 $image_flag
