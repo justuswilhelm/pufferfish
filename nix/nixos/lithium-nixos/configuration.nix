@@ -3,12 +3,12 @@
 {
   imports =
     [
-      ../networkd.nix
-      ../yubikey.nix
-      ../sway.nix
+      ../modules/networkd.nix
+      ../modules/sway.nix
+      ../modules/utm.nix
+      ../modules/yubikey.nix
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./utm.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

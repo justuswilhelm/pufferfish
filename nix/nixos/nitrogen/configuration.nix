@@ -7,11 +7,11 @@
 {
   imports =
     [
+      ../modules/networkd.nix
+      ../modules/sway.nix
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
-      ../networkd.nix
-      ../sway.nix
     ];
 
   nix = {

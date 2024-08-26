@@ -7,10 +7,10 @@
 {
   imports =
     [
-      ../sway.nix
-      ../yubikey.nix
-      ../networkd.nix
-      ../podman.nix
+      ../modules/sway.nix
+      ../modules/yubikey.nix
+      ../modules/networkd.nix
+      ../modules/podman.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -74,6 +74,7 @@
     viAlias = true;
     vimAlias = true;
   };
+  programs.mosh.enable = true;
 
   environment.systemPackages = with pkgs; [
       firefox-esr
