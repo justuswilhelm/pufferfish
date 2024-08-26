@@ -11,6 +11,7 @@
       ../modules/yubikey.nix
       ../modules/networkd.nix
       ../modules/podman.nix
+      ../modules/openvpn.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
