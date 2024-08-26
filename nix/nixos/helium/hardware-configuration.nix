@@ -50,10 +50,7 @@
     };
   swapDevices = [
     {
-      device = "/dev/mapper/helium--vg-swap";
-      options = [
-        "nofail"
-      ];
+      device = "/dev/mapper/helium--nixos--vg-swap";
     }
   ];
 
