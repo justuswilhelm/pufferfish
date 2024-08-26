@@ -14,7 +14,7 @@ else
     set font_flag -font $font
 end
 
-if ! convert \
+if ! magick \
     $font_flag \
     -size 1024x768 xc:white \
     -gravity center \
