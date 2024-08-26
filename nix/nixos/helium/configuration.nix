@@ -8,6 +8,7 @@
       ../modules/podman.nix
       ../modules/openvpn.nix
       ../modules/borgmatic.nix
+      ../modules/ecryptfs.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
