@@ -53,6 +53,8 @@
     # Web scanning
     # ============
     pkgs.gobuster
+    # similar to gobuster, but in rust and has recursive mode
+    pkgs.feroxbuster
     pkgs.nikto
     # https://github.com/epsylon/xsser
     pkgs.xsser
