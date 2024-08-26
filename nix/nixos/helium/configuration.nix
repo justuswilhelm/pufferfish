@@ -76,12 +76,14 @@
     vimAlias = true;
   };
   programs.mosh.enable = true;
+  programs.firefox = {
+     enable = true;
+     package = pkgs.firefox-esr;
+  };
+  programs.tmux.enable = true;
 
-  environment.systemPackages = with pkgs; [
-      firefox-esr
-      tree
-      tmux
-      foot
+  environment.systemPackages = [
+      pkgs.tree
   ];
 
   # Enable the OpenSSH daemon.

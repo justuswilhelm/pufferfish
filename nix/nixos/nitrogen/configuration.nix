@@ -60,7 +60,6 @@
       firefox-esr
       tree
       tmux
-      foot
     ];
   };
 
