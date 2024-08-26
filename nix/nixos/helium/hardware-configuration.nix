@@ -50,6 +50,9 @@
   swapDevices = [
     {
       device = "/dev/mapper/helium--vg-swap";
+      options = [
+        "nofail"
+      ];
     }
   ];
 
