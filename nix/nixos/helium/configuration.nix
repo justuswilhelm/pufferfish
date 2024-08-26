@@ -72,8 +72,6 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
   };
   programs.mosh.enable = true;
   programs.firefox = {
@@ -84,6 +82,7 @@
 
   environment.systemPackages = [
     pkgs.tree
+    pkgs.vim
   ];
 
   # Enable the OpenSSH daemon.
