@@ -32,10 +32,18 @@
 
     # Networking
     # ==========
-    pkgs.netcat-gnu
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
+
+    # Network utils
+    # =============
+    pkgs.socat
+    pkgs.tunnelto
+    pkgs.netcat-gnu
+
+    # DNS
+    # ===
     pkgs.dig
 
     # Packet sniffing
@@ -46,10 +54,14 @@
     # ============
     pkgs.gobuster
     pkgs.nikto
+    # https://github.com/epsylon/xsser
+    pkgs.xsser
+    # https://github.com/hahwul/dalfox
+    pkgs.dalfox
 
     # Cracking
     # ========
-    (pkgs.python311Packages.patator.override {
+    (pkgs.python3Packages.patator.override {
       # odpic causes issues on Darwin
       cx-oracle = null;
     })
@@ -76,5 +88,9 @@
     pkgs.sqlmap
     pkgs.mongosh
     pkgs.postgresql
+
+    # Cryptography
+    # ============
+    pkgs.sageWithDoc
   ];
 }

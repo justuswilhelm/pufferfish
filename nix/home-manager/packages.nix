@@ -38,7 +38,7 @@
     pkgs.qemu
 
     # Interpreters, VMs
-    pkgs.python310
+    pkgs.python3
     pkgs.poetry
     pkgs.jq
     pkgs.miller
@@ -89,12 +89,15 @@
     pkgs.pass
     pkgs.yubikey-manager
 
+    # Archive things
+    pkgs.gnutar
+    pkgs.unzip
+
     # Core tools
     pkgs.silver-searcher
     pkgs.ripgrep
     pkgs.fd
     pkgs.gnused
-    pkgs.gnutar
     pkgs.coreutils
     pkgs.moreutils
 

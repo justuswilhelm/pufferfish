@@ -25,5 +25,7 @@
     # Networking
     # Marked broken
     pkgs.mitmproxy
+
+    pkgs.tigervnc
   ];
 }

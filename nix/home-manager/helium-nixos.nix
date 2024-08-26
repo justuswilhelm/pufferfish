@@ -10,6 +10,7 @@
     ./locale-fix.nix
     ./gpg.nix
     ./gpg-agent.nix
+    ./infosec.nix
   ];
 
   home.packages = [
@@ -50,4 +51,6 @@
       "Xft.dpi" = 163;
     };
   };
+
+  services.opensnitch-ui.enable = true;
 }
