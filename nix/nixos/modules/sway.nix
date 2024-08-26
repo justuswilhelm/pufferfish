@@ -10,6 +10,7 @@
       pkgs.slurp
       pkgs.wl-clipboard
       pkgs.mako
+      pkgs.swaylock
     ];
   };
 }
