@@ -9,26 +9,29 @@ end
 
 if ! set font (fc-match sans file | cut -d= -f2)
     echo "Couldn't find font"
-    set font ""
+    set font_flag ""
+else
+    set font_flag -font $font
 end
 
 if ! convert \
-        -font $font \
-        -size 1024x768 xc:white \
-        -gravity center \
-        -pointsize 24 \
-        -fill black \
-        -annotate +0+0 \
-        $message \
-        $output_file
-    swaylock \
-        --show-failed-attempts \
-        --color ff6e67 \
-        --daemonize
+    $font_flag \
+    -size 1024x768 xc:white \
+    -gravity center \
+    -pointsize 24 \
+    -fill black \
+    -annotate +0+0 \
+    $message \
+    $output_file
+    echo "Could not create idle message"
+    set image_flag ""
 else
-    swaylock \
-        --show-failed-attempts \
-        --color ff6e67 \
-        --daemonize \
-        --image $output_file
+    set image_flag --image $output_file
 end
+
+# TODO remove --daemonize flag
+swaylock \
+    --show-failed-attempts \
+    --color ff6e67 \
+    --daemonize \
+    $image_flag
