@@ -15,6 +15,10 @@
     # Marked broken
     pkgs.mitmproxy
 
+    # Remote desktop
     pkgs.tigervnc
+
+    # Build tools
+    pkgs.gnumake
   ];
 }
