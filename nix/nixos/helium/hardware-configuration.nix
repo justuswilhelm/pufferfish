@@ -11,6 +11,7 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
   boot.initrd.luks.devices.nvme0n1p4_crypt.device = "/dev/disk/by-uuid/04d9dabf-c8b0-4589-879b-fdfd1e212a75";
+  boot.initrd.luks.devices.nvme0n1p3_crypt.device = "/dev/disk/by-uuid/cb8faf69-d547-4511-9916-fff36f9eb475";
   boot.kernelModules = [ "dm-raid" ];
 
   fileSystems."/" =
