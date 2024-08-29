@@ -1,17 +1,6 @@
 { pkgs, ... }:
 {
   home.packages = [
-    # Compositor
-    # This won't load because of some OpenGL issue
-    # pkgs.sway
-    # Swaylock doesn't work well.
-    # pkgs.swaylock
-    # Disabling this just to be safe
-    # pkgs.swayidle
-    pkgs.bemenu
-    pkgs.grim
-    pkgs.slurp
-
     # GUIs
     pkgs.keepassxc
 
@@ -26,6 +15,10 @@
     # Marked broken
     pkgs.mitmproxy
 
+    # Remote desktop
     pkgs.tigervnc
+
+    # Build tools
+    pkgs.gnumake
   ];
 }
