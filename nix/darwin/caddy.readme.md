@@ -9,6 +9,8 @@ Sources:
 Create the certificates needed to serve the Caddy revproxy from
 https://lithium.local
 
+# Root CA certs
+
 Create directory for root cert:
 
 ```bash
@@ -43,6 +45,8 @@ sudo -u lithium-ca openssl req -new \
 sudo -u lithium-ca chmod 400 /etc/lithium-ca/secret/lithium-ca.key
 sudo -u lithium-ca chmod =r /etc/lithium-ca/lithium-ca.crt
 ```
+
+# Caddy certs
 
 Create caddy's cert dirs:
 
@@ -88,6 +92,8 @@ issuerAltName = issuer:copy" | \
 sudo -u lithium-ca tee /etc/lithium-ca/signed/lithium-server.ext
 ```
 
+# CA signed caddy cert
+
 Sign the certificate signing request:
 
 ```bash
@@ -103,6 +109,8 @@ sudo -u lithium-ca openssl x509 \
 sudo -u caddy cp /etc/lithium-ca/signed/lithium-server.crt /etc/caddy/certs/
 sudo chmod =r /etc/caddy/certs/lithium-server.crt
 ```
+
+# Importing the cert
 
 Open certificate in local keychain:
 

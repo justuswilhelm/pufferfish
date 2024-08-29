@@ -25,10 +25,12 @@ in
     isHidden = true;
   };
   users.knownGroups = [
-    "lithium-ca" "caddy"
+    "lithium-ca"
+    "caddy"
   ];
   users.knownUsers = [
-    "lithium-ca" "caddy"
+    "lithium-ca"
+    "caddy"
   ];
   environment.etc.caddyfile = {
     source = ./Caddyfile;
