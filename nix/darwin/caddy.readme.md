@@ -13,19 +13,26 @@ Create directory for root cert:
 
 ```bash
 sudo mkdir -p /etc/lithium-ca
-sudo mkdir -m 700 /etc/lithium-ca/secret
+sudo chown lithium-ca:lithium-ca /etc/lithium-ca
+sudo -u lithium-ca mkdir -m 700 /etc/lithium-ca/secret
+sudo -u lithium-ca mkdir /etc/lithium-ca/signed
+```
+
+Create the root key
+
+```bash
+sudo -u lithium-ca openssl ecparam \
+  -name prime256v1 \
+  -genkey \
+  -noout \
+  -out /etc/lithium-ca/secret/lithium-ca.key
+sudo -u lithium-ca chmod 400 /etc/lithium-ca/secret/lithium-ca.key
 ```
 
 Create the root certificate
 
 ```bash
-sudo openssl ecparam \
-  -name prime256v1 \
-  -genkey \
-  -noout \
-  -out /etc/lithium-ca/secret/lithium-ca.key
-sudo chmod 400 /etc/lithium-ca/secret/lithium-ca.key
-sudo openssl req -new \
+sudo -u lithium-ca openssl req -new \
   -subj "/C=JP/ST=Tokyo/L=Setagaya City/O=JWP Consulting/OU=Com/CN=lithium Root" \
   -x509 \
   -sha256 \
@@ -33,58 +40,68 @@ sudo openssl req -new \
   -nodes \
   -key /etc/lithium-ca/secret/lithium-ca.key \
   -out /etc/lithium-ca/lithium-ca.crt
-sudo chmod 400 /etc/lithium-ca/secret/lithium-ca.key
-sudo chmod =r /etc/lithium-ca/lithium-ca.crt
+sudo -u lithium-ca chmod 400 /etc/lithium-ca/secret/lithium-ca.key
+sudo -u lithium-ca chmod =r /etc/lithium-ca/lithium-ca.crt
+```
+
+Create caddy's cert dirs:
+
+```bash
+sudo mkdir -p /etc/caddy/certs
+sudo chown caddy:caddy /etc/caddy/certs
+sudo -u caddy mkdir -m 700 /etc/caddy/certs/secret
 ```
 
 Create the server certificate key:
 
 ```bash
-sudo mkdir -p /etc/caddy/certs
-sudo mkdir -m 700 /etc/caddy/certs/secret
-sudo chown caddy:caddy /etc/caddy/certs/secret
-sudo openssl ecparam \
+sudo -u caddy openssl ecparam \
   -name prime256v1 \
   -genkey \
   -noout \
   -out /etc/caddy/certs/secret/lithium-server.key
-sudo chown caddy:caddy /etc/caddy/certs/secret/lithium-server.key
-sudo chmod -R 400 /etc/caddy/certs/secret/lithium-server.key
+sudo -u caddy chmod 400 /etc/caddy/certs/secret/lithium-server.key
 ```
 
 Create the caddy server signing request:
 
 ```bash
-sudo openssl req -new \
+sudo -u caddy openssl req -new \
   -subj "/C=JP/ST=Tokyo/L=Setagaya City/O=JWP Consulting/OU=Com/CN=lithium.local" \
   -sha256 \
   -nodes \
   -key /etc/caddy/certs/secret/lithium-server.key \
-  -out /etc/caddy/certs/secret/lithium-server.csr
-sudo chmod -R 400 /etc/caddy/certs/secret/lithium-server.csr
-sudo chown caddy:caddy /etc/caddy/certs/secret/lithium-server.csr
+  -out /etc/caddy/certs/lithium-server.csr
+sudo -u caddy chmod 444 /etc/caddy/certs/lithium-server.csr
 ```
 
-Sign the certificate signing request:
+Create the caddy server certificate extension file:
 
 ```bash
-sudo openssl x509 \
-  -req \
-  -sha256 \
-  -in /etc/caddy/certs/secret/lithium-server.csr \
-  -CA /etc/lithium-ca/lithium-ca.crt \
-  -CAkey /etc/lithium-ca/secret/lithium-ca.key \
-  -CAcreateserial \
-  -extfile (echo "subjectKeyIdentifier = hash
+echo "subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer
 basicConstraints = CA:FALSE
 keyUsage = digitalSignature
 extendedKeyUsage = serverAuth,clientAuth
 subjectAltName = DNS:lithium.local
-issuerAltName = issuer:copy
-" | psub) \
-  -out /etc/caddy/certs/lithium-server.crt
-sudo chmod 444 /etc/caddy/certs/lithium-server.crt
+issuerAltName = issuer:copy" | \
+sudo -u lithium-ca tee /etc/lithium-ca/signed/lithium-server.ext
+```
+
+Sign the certificate signing request:
+
+```bash
+sudo -u lithium-ca openssl x509 \
+  -req \
+  -sha256 \
+  -in /etc/caddy/certs/lithium-server.csr \
+  -CA /etc/lithium-ca/lithium-ca.crt \
+  -CAkey /etc/lithium-ca/secret/lithium-ca.key \
+  -CAcreateserial \
+  -extfile /etc/lithium-ca/signed/lithium-server.ext \
+  -out /etc/lithium-ca/signed/lithium-server.crt
+sudo -u caddy cp /etc/lithium-ca/signed/lithium-server.crt /etc/caddy/certs/
+sudo chmod =r /etc/caddy/certs/lithium-server.crt
 ```
 
 Open certificate in local keychain:

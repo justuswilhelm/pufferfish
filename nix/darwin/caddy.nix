@@ -4,6 +4,16 @@ let
   logPath = "/var/log/caddy";
 in
 {
+  users.groups.lithium-ca = {
+    gid = 1101;
+  };
+  users.users.lithium-ca = {
+    description = "Lithium CA";
+    gid = 1101;
+    uid = 1101;
+    isHidden = true;
+    createHome = false;
+  };
   users.groups.caddy = {
     gid = 602;
   };
@@ -15,10 +25,10 @@ in
     isHidden = true;
   };
   users.knownGroups = [
-    "caddy"
+    "lithium-ca" "caddy"
   ];
   users.knownUsers = [
-    "caddy"
+    "lithium-ca" "caddy"
   ];
   environment.etc.caddyfile = {
     source = ./Caddyfile;
@@ -35,6 +45,7 @@ in
       StandardOutPath = "${logPath}/caddy.stdout.log";
       StandardErrorPath = "${logPath}/caddy.stderr.log";
       UserName = "caddy";
+      GroupName = "caddy";
     };
   };
 
