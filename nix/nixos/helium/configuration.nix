@@ -9,6 +9,7 @@
       ../modules/openvpn.nix
       ../modules/borgmatic.nix
       ../modules/ecryptfs.nix
+      ../modules/infosec.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
