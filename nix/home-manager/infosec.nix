@@ -94,7 +94,7 @@
     # Cryptography
     # ============
     (pkgs.python3.withPackages (
-        python-pkgs: with python-pkgs; [ python-pkgs.scipy ]
+      python-pkgs: with python-pkgs; [ python-pkgs.scipy ]
     ))
   ];
 }
