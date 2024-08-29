@@ -76,10 +76,10 @@
   };
 
   environment.systemPackages = with pkgs; [
-      firefox-esr
-      tree
-      tmux
-      foot
+    firefox-esr
+    tree
+    tmux
+    foot
   ];
 
   # Enable the OpenSSH daemon.
