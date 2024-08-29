@@ -9,7 +9,7 @@
 }
 # Attic
 https://lithium.local:10100 {
-	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
+	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/secret/lithium-server.key
 	reverse_proxy localhost:18080
 	log {
 		format console
@@ -19,7 +19,7 @@ https://lithium.local:10100 {
 
 # Anki
 https://lithium.local:10101 {
-	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
+	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/secrets/lithium-server.key
 	reverse_proxy localhost:18090
 	log {
 		format console
@@ -28,7 +28,7 @@ https://lithium.local:10101 {
 }
 
 https://lithium.local:10102 {
-	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
+	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/secrets/lithium-server.key
 	reverse_proxy http://localhost:18100 {
 		header_up Host localhost:18100
 	}
