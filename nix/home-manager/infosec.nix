@@ -42,6 +42,10 @@
     pkgs.tunnelto
     pkgs.netcat-gnu
 
+    # RPC
+    # ===
+    pkgs.rpcbind
+
     # DNS
     # ===
     pkgs.dig
@@ -70,6 +74,11 @@
     pkgs.thc-hydra
     pkgs.john
     pkgs.hashcat
+
+    # Exploits
+    # =======
+    pkgs.metasploit
+    pkgs.armitage
 
     # Files
     # =====
