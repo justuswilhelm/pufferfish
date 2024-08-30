@@ -24,6 +24,7 @@ in
 
   environment.systemPackages = [
     attic-client
+    attic-server
   ];
   environment.etc = {
     atticd = {
