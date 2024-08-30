@@ -100,6 +100,9 @@
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
-    matchBlocks."*" = { };
+    extraOptionOverrides = {
+      IdentitiesOnly = "yes";
+      IdentityFile = "/dev/null";
+    };
   };
 }
