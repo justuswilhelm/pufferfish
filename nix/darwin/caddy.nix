@@ -54,7 +54,7 @@ in
   # This is a bit flaky, sometimes this cert is not included in
   # /etc/ssl/certs/ca-ceriticates.crt
   security.pki.certificateFiles = [
-    "/etc/lithium-ca/lithium-ca.crt"
+    ../lithium-ca.crt
   ];
   system.activationScripts.postActivation = {
     text = ''
