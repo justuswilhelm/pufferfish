@@ -11,6 +11,7 @@
       pkgs.wl-clipboard
       pkgs.mako
       pkgs.swaylock
+      pkgs.swayidle
     ];
   };
 }
