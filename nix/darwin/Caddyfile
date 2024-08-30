@@ -2,11 +2,22 @@
 	log {
 		format console
 	}
+	# Prevent Caddy from serving on port :80 and disable certificate
+	# automation.
+	# https://caddyserver.com/docs/caddyfile/options#auto-https
+	auto_https off
 }
+
+(certs) {
+	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/secret/lithium-server.key
+}
+
 # Attic
 https://lithium.local:10100 {
-	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
+	import certs
+
 	reverse_proxy localhost:18080
+
 	log {
 		format console
 		output file /var/log/caddy/attic.log
@@ -15,8 +26,10 @@ https://lithium.local:10100 {
 
 # Anki
 https://lithium.local:10101 {
-	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
+	import certs
+
 	reverse_proxy localhost:18090
+
 	log {
 		format console
 		output file /var/log/caddy/anki.log
@@ -24,10 +37,12 @@ https://lithium.local:10101 {
 }
 
 https://lithium.local:10102 {
-	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/lithium-server.key
+	import certs
+
 	reverse_proxy http://localhost:18100 {
 		header_up Host localhost:18100
 	}
+
 	log {
 		format console
 		output file /var/log/caddy/projectify.log

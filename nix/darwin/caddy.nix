@@ -4,6 +4,16 @@ let
   logPath = "/var/log/caddy";
 in
 {
+  users.groups.lithium-ca = {
+    gid = 1101;
+  };
+  users.users.lithium-ca = {
+    description = "Lithium CA";
+    gid = 1101;
+    uid = 1101;
+    isHidden = true;
+    createHome = false;
+  };
   users.groups.caddy = {
     gid = 602;
   };
@@ -15,9 +25,11 @@ in
     isHidden = true;
   };
   users.knownGroups = [
+    "lithium-ca"
     "caddy"
   ];
   users.knownUsers = [
+    "lithium-ca"
     "caddy"
   ];
   environment.etc.caddyfile = {
@@ -35,22 +47,21 @@ in
       StandardOutPath = "${logPath}/caddy.stdout.log";
       StandardErrorPath = "${logPath}/caddy.stderr.log";
       UserName = "caddy";
+      GroupName = "caddy";
     };
   };
 
+  # This is a bit flaky, sometimes this cert is not included in
+  # /etc/ssl/certs/ca-ceriticates.crt
   security.pki.certificateFiles = [
-    "/etc/caddy/certs/lithium-ca.crt"
+    ../lithium-ca.crt
   ];
   system.activationScripts.postActivation = {
     text = ''
       set -e
       set -o pipefail
       mkdir -p /var/log/caddy
-      mkdir -p /etc/caddy/certs
       mkdir -p /var/caddy/home
-      chown -R caddy:caddy /etc/caddy/certs /var/log/caddy /var/caddy/home
-      chmod 0400 /etc/caddy/certs/*
-      chmod 0444 /etc/caddy/certs/lithium-ca.crt
       caddy validate --config /etc/caddy/Caddyfile
     '';
   };

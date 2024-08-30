@@ -46,4 +46,13 @@ in
     source = ../../karabiner/karabiner.json;
     target = "karabiner/karabiner.json";
   };
+
+  programs.ssh = {
+    matchBlocks."*.local" = {
+      identityFile = "~/.ssh/id_rsa";
+    };
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa";
+    };
+  };
 }

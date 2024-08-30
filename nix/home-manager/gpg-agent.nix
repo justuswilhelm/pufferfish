@@ -7,7 +7,7 @@
   };
 
   programs.ssh = {
-    matchBlocks."*" = {
+    matchBlocks."*.local" = {
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
     };
   };

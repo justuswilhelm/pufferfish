@@ -102,6 +102,8 @@
 
     # Cryptography
     # ============
-    pkgs.sageWithDoc
+    (pkgs.python3.withPackages (
+      python-pkgs: with python-pkgs; [ python-pkgs.scipy ]
+    ))
   ];
 }
