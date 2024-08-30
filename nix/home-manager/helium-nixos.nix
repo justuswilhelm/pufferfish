@@ -53,4 +53,7 @@
   };
 
   services.opensnitch-ui.enable = true;
+  systemd.user.services.opensnitch-ui.Install.wantedBy = [
+    "multi-user.target"
+  ];
 }
