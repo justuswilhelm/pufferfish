@@ -90,6 +90,16 @@ vim.keymap.set("v", "<leader>s", ":SlimuxREPLSendSelection<CR>")
 -- TODO investigate if these two commands still work
 -- vim.keymap.set("n", "<leader>a", ":SlimuxShellLast<CR>")
 -- vim.keymap.set("n", "<leader>k", ":SlimuxSendKeysLast<CR>")
+--
+-- vim-tmux-navigator
+-- ==================
+-- Override so that we don't remap <C-\>
+vim.g.tmux_navigator_no_mappings = 1
+vim.keymap.set("n", "<c-h>", ":TmuxNavigateLeft<CR>")
+vim.keymap.set("n", "<c-l>", ":TmuxNavigateRight<CR>")
+vim.keymap.set("n", "<c-j>", ":TmuxNavigateDown<CR>")
+vim.keymap.set("n", "<c-k>", ":TmuxNavigateUp<CR>")
+
 
 -- fzf-lua
 -- =======
