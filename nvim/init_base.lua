@@ -107,10 +107,6 @@ vim.g.maplocalleader = ","
 -- Yank till end
 -- -------------
 vim.keymap.set('n', 'Y', 'y$')
--- Smarter text navigation
--- -----------------------
-vim.keymap.set('n', 'j', 'gj')
-vim.keymap.set('n', 'k', 'gk')
 -- Pinky pain
 -- ----------
 vim.keymap.set('n', ';', ':')
