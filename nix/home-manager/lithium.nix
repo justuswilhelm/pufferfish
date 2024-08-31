@@ -10,7 +10,13 @@ in
     ./timewarrior.nix
     ./pomoglorbo.nix
     ./infosec.nix
+    ./cmus.nix
   ];
+
+  programs.cmus = {
+    enable = true;
+    output_plugin = "coreaudio";
+  };
 
   programs.tmux = {
     pasteCommand = "pbpaste";
