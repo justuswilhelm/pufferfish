@@ -1,6 +1,8 @@
 { pkgs, ... }:
 {
   home.packages = [
+    pkgs.file
+
     # GUIs
     pkgs.keepassxc
 
