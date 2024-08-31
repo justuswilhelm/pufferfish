@@ -10,6 +10,7 @@
       ../modules/borgmatic.nix
       ../modules/ecryptfs.nix
       ../modules/infosec.nix
+      ../modules/cuda.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
