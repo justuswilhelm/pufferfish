@@ -11,6 +11,7 @@
     ./gpg.nix
     ./gpg-agent.nix
     ./infosec.nix
+    ./infosec-linux.nix
   ];
 
   home.packages = [

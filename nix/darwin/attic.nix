@@ -3,6 +3,7 @@ let
   logPath = "/var/log/atticd";
   attic-client = pkgs.attic-client;
   attic-server = pkgs.attic-server;
+  cache-url = "https://lithium.local:10100/lithium-default";
 in
 {
   users.groups.attic = {
@@ -48,14 +49,10 @@ in
   };
 
   # Derived from running attic use lithium-default
-  nix.settings.substituters = [
-    "https://lithium.local:10100/lithium-default"
-  ];
+  nix.settings.substituters = [ cache-url ];
   nix.settings.trusted-public-keys = [
     "lithium-default:12m8tx3dPRBH0y4Gf6t/4eGh7Y8AJ7r2TT0Ug/w9Wvo="
   ];
-  nix.settings.trusted-substituters = [
-    "https://lithium.local:10100/lithium-default"
-  ];
+  nix.settings.trusted-substituters = [ cache-url ];
   nix.settings.netrc-file = "/etc/nix/netrc";
 }
