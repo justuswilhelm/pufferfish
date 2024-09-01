@@ -19,6 +19,13 @@
       device = "/dev/mapper/helium--nixos--vg-nixos--root";
       fsType = "ext4";
     };
+  fileSystems."/nix" =
+    {
+      depends = [ "/" ];
+      device = "/nix";
+      fsType = "none";
+      options = [ "bind" ];
+    };
 
   # From Debian /etc/fstab
   fileSystems."/boot" =
