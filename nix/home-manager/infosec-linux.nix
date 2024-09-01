@@ -13,6 +13,9 @@
 
     # Cracking
     # ========
-    pkgs.python3Packages.patator
+    (pkgs.python3Packages.patator.override {
+      # odpic causes issues on Darwin
+      cx-oracle = null;
+    })
   ];
 }
