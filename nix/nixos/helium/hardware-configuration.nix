@@ -42,6 +42,11 @@
       device = "/dev/mapper/helium--post--boot--vg-borgbackup";
       fsType = "ext4";
     };
+  fileSystems."/var" =
+    {
+      device = "/dev/mapper/helium--nixos--vg-var";
+      fsType = "ext4";
+    };
   swapDevices = [
     {
       device = "/dev/mapper/helium--nixos--vg-swap";
