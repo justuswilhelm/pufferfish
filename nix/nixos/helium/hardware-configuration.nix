@@ -32,12 +32,6 @@
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
-  fileSystems."/debian" =
-    {
-      device = "/dev/mapper/helium--nixos--vg-debian--root";
-      fsType = "ext4";
-      options = [ "ro " ];
-    };
   fileSystems."/home" =
     {
       device = "/dev/mapper/helium--post--boot--vg-home";
