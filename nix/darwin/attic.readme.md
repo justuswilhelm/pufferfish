@@ -50,5 +50,5 @@ attic login lithium https://lithium.local:10100 (
     --configure-cache-retention (hostname)-"*" \
     --destroy-cache (hostname)-"*"
 )
-sed -n -E -e 's/token = "(.+)/machine lithium.local\npassword \1/p' ~/.config/attic/config.toml | sudo tee /etc/nix/netrc
+sed -n -E -e 's/token = "(.+)"/machine lithium.local\npassword \1/p' ~/.config/attic/config.toml | sudo tee /etc/nix/netrc
 ```
