@@ -6,6 +6,7 @@
     ./firefox.nix
     ./linux-packages.nix
     ./infosec.nix
+    ./infosec-linux.nix
     ./foot.nix
     ./gdb.nix
     ./gpg-agent.nix

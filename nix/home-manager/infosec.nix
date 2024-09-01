@@ -42,10 +42,6 @@
     pkgs.tunnelto
     pkgs.netcat-gnu
 
-    # RPC
-    # ===
-    pkgs.rpcbind
-
     # DNS
     # ===
     pkgs.dig
@@ -67,18 +63,9 @@
 
     # Cracking
     # ========
-    (pkgs.python3Packages.patator.override {
-      # odpic causes issues on Darwin
-      cx-oracle = null;
-    })
     pkgs.thc-hydra
     pkgs.john
     pkgs.hashcat
-
-    # Exploits
-    # =======
-    pkgs.metasploit
-    pkgs.armitage
 
     # Files
     # =====
