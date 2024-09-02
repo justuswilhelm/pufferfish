@@ -1,4 +1,3 @@
-set output_plugin=ao
 set lib_sort=genre artist
 
 # https://manpages.ubuntu.com/manpages/trusty/man1/cmus.1.html

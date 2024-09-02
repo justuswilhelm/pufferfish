@@ -46,6 +46,7 @@ Plug("jeffkreeftmeijer/vim-numbertoggle")
 -- Improve general editor behavior
 -- -------------------------------
 Plug("easymotion/vim-easymotion")
+Plug("TobinPalmer/pastify.nvim")
 
 -- tmux interaction
 -- ----------------
@@ -54,7 +55,7 @@ Plug("christoomey/vim-tmux-navigator")
 
 -- Search and file jump
 -- --------------------
-Plug("mileszs/ack.vim")
+Plug("mangelozzi/nvim-rgflow.lua")
 Plug("ibhagwan/fzf-lua", {branch= "main"})
 Plug("rgroli/other.nvim")
 
@@ -234,13 +235,34 @@ lspconfig.tsserver.setup {
     capabilities = capabilities,
     cmd = { 'npm', 'run', 'typescript-language-server', '--', '--stdio' },
 }
+-- Svelte
+-- ------
 lspconfig.svelte.setup {
     capabilities = capabilities,
     cmd = { 'npm', 'run', 'svelteserver', '--', '--stdio' },
+    on_attach = function(client)
+        vim.api.nvim_create_autocmd("BufWritePost", {
+            pattern = { "*.js", "*.ts" },
+            callback = function(ctx)
+                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+            end,
+        })
+    end
 }
+
+-- Pyright
+-- -------
 lspconfig.pyright.setup {
     capabilities = capabilities
 }
+
+-- Ruff
+-- ----
+lspconfig.ruff.setup {}
+
+-- Deno
+-- -----
+require'lspconfig'.denols.setup{}
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -293,6 +315,7 @@ require('nvim-treesitter.configs').setup {
         "markdown",
         "org",
         "ledger",
+        "nix",
     },
 }
 -- Folding
@@ -399,16 +422,33 @@ vim.g.svelte_preprocessor_tags = {
 }
 vim.g.svelte_preprocessors = { "ts", "typescript" }
 
--- ack.vim
+-- rgflow
 -- =======
-if vim.fn.executable("ag") then
-    vim.g.ackprg = "ag --vimgrep"
-end
+require('rgflow').setup(
+    {
+        -- Set the default rip grep flags and options for when running a search via
+        -- RgFlow. Once changed via the UI, the previous search flags are used for
+        -- each subsequent search (until Neovim restarts).
+        cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
+
+        -- Mappings to trigger RgFlow functions
+        default_trigger_mappings = true,
+        -- These mappings are only active when the RgFlow UI (panel) is open
+        default_ui_mappings = true,
+        -- QuickFix window only mapping
+        default_quickfix_mappings = true,
+    }
+)
 -- Search for selected text
-vim.keymap.set('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
-vim.keymap.set('n', '<leader>ag', ":Ack ")
--- Search for the current file
-vim.keymap.set('n', '<leader>af', ":Ack %:t<CR>")
+vim.keymap.set('v', '<leader>ack', require("rgflow").open_cword)
+vim.keymap.set(
+    'n',
+    '<leader>af',
+    function()
+        path = vim.fn.expand("%")
+        require("rgflow").open(path)
+    end
+)
 
 -- EditorConfig
 -- ============
@@ -460,3 +500,14 @@ vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
 -- ==========
 vim.g.ledger_accounts_cmd = "hledger accounts"
 vim.g.ledger_is_hledger = true
+vim.g.ledger_fuzzy_account_completion = 1
+
+-- Pastifiy.nvim
+-- =============
+require('pastify').setup {
+    opts = {
+        local_path = function()
+            return vim.fn.expand("%:r")
+        end,
+    },
+}

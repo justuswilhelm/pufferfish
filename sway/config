@@ -2,11 +2,6 @@
 # Justus 2023-07-27
 set $mod Mod4
 
-# HiDPI setting
-output * {
-    scale 1.5
-}
-
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:Iosevka Fixed 12
@@ -110,15 +105,6 @@ bindsym $mod+r mode "resize"
 focus_on_window_activation none
 # Float open snitch
 for_window [app_id="opensnitch_ui"] floating enable
-for_window [title="Passwords.* - KeePassXC" app_id="org.keepassxc.KeePassXC"] move to workspace 5
-
-
-# Float Ghidra windows, except for big windows
-for_window [class="ghidra-Ghidra"] floating enable
-for_window [title="Ghidra:.*" class="ghidra-Ghidra"] floating disable
-for_window [title="CodeBrowser.*" class="ghidra-Ghidra"] floating disable
-for_window [title="Debugger.*" class="ghidra-Ghidra"] floating disable
-for_window [title="Emulator.*" class="ghidra-Ghidra"] floating disable
 
 # Keyboard / mouse mapping
 # For more specific modification, find the device id using

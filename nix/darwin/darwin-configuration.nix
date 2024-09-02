@@ -4,9 +4,18 @@ let
   home = "/Users/${name}";
   library = "${home}/Library";
 in
-{ user, config, pkgs, ... }:
+{ config, pkgs, projectify, ... }:
 
 {
+  imports = [
+    ./caddy.nix
+    ./borgmatic.nix
+    ./offlineimap.nix
+    ./anki.nix
+    ./attic.nix
+    ./projectify.nix
+    ./infosec.nix
+  ];
   users.users."${name}" = {
     description = "Justus Perlwitz";
     shell = pkgs.fish;
@@ -29,16 +38,7 @@ in
 
     # Media
     # Not sure if I need these on Debian or not
-    pkgs.cmus
     pkgs.ffmpeg
-
-    # File transfers, Backups
-    # Can this be put in the home config?
-    pkgs.borgmatic
-
-    # Mail - runs as a launchagent, so not sure if this makes sense as a home
-    # manager package
-    pkgs.offlineimap
   ];
   environment.shells = [ pkgs.fish ];
   environment.variables = {
@@ -60,66 +60,17 @@ in
   # Other sources say this works:
   # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
   # But unload is deprecated in newer versions of launchd
-  system.activationScripts.disableRcd.text = ''
-    sudo -u ${name} launchctl bootout gui/${uid}/com.apple.rcd
-    sudo -u ${name} launchctl disable gui/${uid}/com.apple.rcd
-  '';
+  system.activationScripts.extraActivation = {
+    text = ''
+      sudo -u ${name} launchctl bootout gui/${builtins.toString uid}/com.apple.rcd || echo "Already booted out"
+      sudo -u ${name} launchctl disable gui/${builtins.toString uid}/com.apple.rcd || echo "Already disabled"
+    '';
+  };
 
   # Use a custom configuration.nix location.
   environment.darwinConfig = "$HOME/.config/nix/darwin/darwin-configuration.nix";
 
   launchd.labelPrefix = "net.jwpconsulting";
-
-  launchd.user.agents = {
-    # TODO
-    # Could this be a systemwide launchd.agents.borgmatic instead?
-    "borgmatic" = {
-      serviceConfig =
-        let
-          logPath = "${library}/Logs/borgmatic";
-          script = pkgs.writeShellApplication {
-            name = "borgmatic-timestamp";
-            runtimeInputs = with pkgs; [ borgmatic moreutils ];
-            text = ''
-              mkdir -p "${logPath}" || exit
-              borgmatic create prune \
-                --log-file-verbosity 1 \
-                --log-file "${logPath}/borgmatic.$(date -Iseconds).log"
-            '';
-          };
-        in
-        {
-          Program = "${script}/bin/borgmatic-timestamp";
-          StartCalendarInterval = [
-            {
-              Minute = 0;
-            }
-          ];
-          TimeOut = 1800;
-        };
-    };
-    "offlineimap" = {
-      serviceConfig =
-        let
-          logPath = "${library}/Logs/offlineimap";
-          script = pkgs.writeShellApplication {
-            name = "offlineimap";
-            runtimeInputs = with pkgs; [ offlineimap coreutils ];
-            text = ''
-              mkdir -p "${logPath}" || exit
-              exec offlineimap -l "${logPath}/offlineimap.$(date -Iseconds).log"
-            '';
-          };
-        in
-        {
-          Program = "${script}/bin/offlineimap";
-          # Every 5 minutes
-          StartInterval = 5 * 60;
-          # Time out after 3 minutes
-          TimeOut = 3 * 60;
-        };
-    };
-  };
 
   services.postgresql = {
     enable = true;
@@ -129,6 +80,7 @@ in
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
+  services.karabiner-elements.enable = true;
   services.skhd = {
     enable = true;
     # https://github.com/koekeishiya/skhd/issues/1
@@ -150,8 +102,13 @@ in
     }
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
-
-  # nix.package = pkgs.nix;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+  nix.settings = {
+    auto-optimise-store = true;
+    sandbox = false;
+  };
 
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:

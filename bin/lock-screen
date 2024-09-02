@@ -1,19 +1,20 @@
 #!/usr/bin/env fish
-set output_file "$(mktemp).png"
-
-if [ -z $argv[1] ]
-    set message "Hello, World!"
-else
+if [ -n "$argv[1]" ]
     set message $argv[1]
+else
+    set message "Hello, World!"
 end
 
-if ! set font (fc-match sans file | cut -d= -f2)
+if set font (fc-match sans file | cut -d= -f2)
+    set font_flag -font $font
+else
     echo "Couldn't find font"
-    set font ""
+    set font_flag
 end
 
-if ! convert \
-        -font $font \
+if set output_file (mktemp --suffix=.png) && \
+    magick \
+        $font_flag \
         -size 1024x768 xc:white \
         -gravity center \
         -pointsize 24 \
@@ -21,14 +22,10 @@ if ! convert \
         -annotate +0+0 \
         $message \
         $output_file
-    swaylock \
-        --show-failed-attempts \
-        --color ff6e67 \
-        --daemonize
+    set image_flag --image $output_file
 else
-    swaylock \
-        --show-failed-attempts \
-        --color ff6e67 \
-        --daemonize \
-        --image $output_file
+    echo "Could not create idle message"
+    set image_flag --color ff6e67
 end
+
+exec swaylock --show-failed-attempts $image_flag

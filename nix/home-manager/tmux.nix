@@ -1,33 +1,39 @@
-{ isDebian, isDarwin, selenized }:
+{ lib, pkgs, config, ... }:
 let
-  darwinKeys = ''
-    # Copy & paste
-    bind-key ']' run "pbpaste | tmux load-buffer - " \; paste-buffer -p
-    bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel 'pbcopy'
-  '';
-  debianKeys = ''
-    # Copy & paste
-    bind-key ']' run "wl-paste | tmux load-buffer - " \; paste-buffer -p
-    bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel 'wl-copy'
-  '';
+  cfg = config.programs.tmux;
 in
 {
-  enable = true;
-  extraConfig = ''
-    ${builtins.readFile ../../tmux/tmux.conf}
-    ${builtins.readFile ../../tmux/vim-tmux-navigator.conf}
-    ${selenized.tmux}
-    ${if isDebian then debianKeys else ""}
-    ${if isDarwin then debianKeys else ""}
-  '';
-  # Set longer scrollback buffer
-  historyLimit = 500000;
-  # Escape time, for vi
-  escapeTime = 10;
-  # Mouse input
-  mouse = true;
-  # vi navigation in tmux screens
-  keyMode = "vi";
-  # Best compability for true color
-  terminal = "screen-256color";
+  options.programs.tmux = with lib; {
+    pasteCommand = mkOption {
+      type = types.str;
+      example = "pbpaste";
+      default = "wl-paste";
+    };
+    copyCommand = mkOption {
+      type = types.str;
+      example = "pbcopy";
+      default = "wl-copy";
+    };
+  };
+  config.programs.tmux =
+    {
+      enable = true;
+      extraConfig = ''
+        ${builtins.readFile ../../tmux/tmux.conf}
+        ${builtins.readFile ../../tmux/vim-tmux-navigator.conf}
+        # Copy & paste
+        bind-key ']' run "${cfg.pasteCommand} | tmux load-buffer - " \; paste-buffer -p
+        bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel '${cfg.copyCommand}'
+      '';
+      # Set longer scrollback buffer
+      historyLimit = 500000;
+      # Escape time, for vi
+      escapeTime = 10;
+      # Mouse input
+      mouse = true;
+      # vi navigation in tmux screens
+      keyMode = "vi";
+      # Best compability for true color
+      terminal = "screen-256color";
+    };
 }

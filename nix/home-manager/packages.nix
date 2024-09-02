@@ -1,201 +1,106 @@
-{ lib, isDebian, isDarwin, pkgs, extraPkgs }:
-let
-  aeroSpace = pkgs.stdenv.mkDerivation {
-    pname = "aerospace";
-    version = "0.8.6-Beta";
-    nativeBuildInputs = [ pkgs.installShellFiles ];
-    buildPhase = "";
-    installPhase = ''
-      mkdir -p $out/bin
-      cp bin/aerospace $out/bin
-      installManPage manpage/*
-    '';
+{ pkgs, ... }:
+{
+  home.packages = [
+    # Databases
+    pkgs.sqlite
 
-    src = pkgs.fetchzip {
-      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.6-Beta/AeroSpace-v0.8.6-Beta.zip";
-      hash = "sha256-AUPaGUqydrMMEnNq6AvZEpdUblTYwS+X3iCygPFWWbQ=";
-    };
-  };
-  debianOnly = lib.lists.optionals isDebian [
-    # Compositor
-    # This won't load because of some OpenGL issue
-    # pkgs.sway
-    # Swaylock doesn't work well.
-    # pkgs.swaylock
-    # Disabling this just to be safe
-    # pkgs.swayidle
-    pkgs.bemenu
-    pkgs.grim
-    pkgs.slurp
+    # Build tools
+    pkgs.hugo
 
-    # GUIs
-    pkgs.keepassxc
-    pkgs.firefox-esr
-    pkgs.tor-browser
+    # File conversion
+    pkgs.pandoc
+    pkgs.texliveTeTeX
+
+    # Media
+    pkgs.imagemagick
+
+    # Networking
+    pkgs.curl
+    pkgs.httperf
+    pkgs.netcat-gnu
+    pkgs.wget
+    pkgs.whois
+
+    # File transfers, Backups
+    pkgs.rsync
+    pkgs.unison
+
+    # Linters, Formatters, Spellcheckers
+    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
+    (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
+    pkgs.nixpkgs-fmt
+    pkgs.nodePackages.prettier
+
+    # Compilers
+    pkgs.gcc
 
     # Debugger
-    pkgs.gdb
+    pkgs.qemu
 
-    # Nix
-    # Not available on Darwin
-    pkgs.cntr
-  ];
-  darwinOnly = lib.lists.optionals isDarwin [
-    aeroSpace
-  ];
-in
-[
-  # Databases
-  pkgs.sqlite
+    # Interpreters, VMs
+    pkgs.poetry
+    pkgs.jq
+    pkgs.miller
+    pkgs.nodejs_20
+    pkgs.openjdk
 
-  # Build tools
-  pkgs.hugo
-
-  # File conversion
-  pkgs.pandoc
-  pkgs.texliveTeTeX
-
-  # Media
-  pkgs.imagemagick
-
-  # Networking
-  pkgs.curl
-  pkgs.httperf
-  pkgs.mitmproxy
-  pkgs.netcat-gnu
-  pkgs.nmap
-  pkgs.wget
-  extraPkgs.whois
-
-  # File transfers, Backups
-  pkgs.rsync
-  pkgs.unison
-
-  # Linters, Formatters, Spellcheckers
-  (pkgs.aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
-  (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
-  pkgs.nixpkgs-fmt
-
-  # Compilers
-  pkgs.gcc
-
-  # Debugger
-  pkgs.qemu
-
-  # Reverse engineering
-  (
-    pkgs.symlinkJoin {
-      name = "ghidra";
-      paths = [ pkgs.ghidra ];
-      buildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/ghidra --set _JAVA_AWT_WM_NONREPARENTING 1
-      '';
-    }
-  )
-  (
-    pkgs.symlinkJoin {
-      name = "radare2";
-      paths = [
-        extraPkgs.radare2
-        pkgs.meson
-        pkgs.ninja
-      ];
-    }
-  )
-  # For hex overflow calc
-  pkgs.programmer-calculator
-
-  # Interpreters
-  pkgs.asdf-vm
-  pkgs.python310
-  pkgs.poetry
-  pkgs.jq
-  pkgs.miller
-  pkgs.nodejs_20
-  # Begrudgingly adding this to stop nvim lspconfig complaining about it
-  # missing. Possible workaround?
-  # https://stackoverflow.com/questions/75397223/can-i-configure-nvim-lspconfig-to-fail-silently-rather-than-print-a-warning/76873612#76873612
-  pkgs.nodePackages.pyright
-
-  # TUIs
-  pkgs.htop
-  pkgs.fzf
-  pkgs.htop
-  # Broken,
-  # https://github.com/NixOS/nixpkgs/issues/299091
-  extraPkgs.ncdu
-  pkgs.ncurses
-  pkgs.neovim
-  (
-    pkgs.symlinkJoin {
-      name = "nnn";
-      paths = [ pkgs.nnn pkgs.gnused ];
-      postBuild = ''
-        cp $out/bin/sed $out/bin/gsed
-      '';
-    }
-  )
-
-  # Business
-  pkgs.hledger
-
-  # Email
-  (
-    pkgs.symlinkJoin {
-      name = "neomutt";
-      paths = [ pkgs.neomutt ];
-      buildInputs = [ pkgs.makeWrapper ];
-      # https://neomutt.org/guide/reference.html#color-directcolor
-      postBuild = ''
-        wrapProgram $out/bin/neomutt --set TERM xterm-direct
-      '';
-    }
-  )
-
-  # Shell
-  pkgs.fish
-  pkgs.tmux
-  pkgs.shellcheck
-  pkgs.alacritty
-
-  # Version control
-  pkgs.git
-  (
-    pkgs.git-annex.overrideAttrs (
-      previous: {
-        # This implicitly strips away bup -- bup breaks the build.
-        buildInputs = builtins.tail previous.buildInputs;
+    # TUIs
+    pkgs.htop
+    pkgs.fzf
+    pkgs.htop
+    # Broken,
+    # https://github.com/NixOS/nixpkgs/issues/299091
+    # pkgs.ncdu
+    pkgs.ncurses
+    (
+      pkgs.symlinkJoin {
+        name = "nnn";
+        paths = [ pkgs.nnn pkgs.gnused ];
+        postBuild = ''
+          cp $out/bin/sed $out/bin/gsed
+        '';
       }
     )
-  )
 
-  # Shell tools
-  pkgs.cloc
-  pkgs.fdupes
-  pkgs.tree
-  pkgs.watch
-  pkgs.hyperfine
-  pkgs.pv
+    # Business
+    pkgs.hledger
 
-  # Time tracking
-  pkgs.timewarrior
-  extraPkgs.pomoglorbo
+    # Shell
+    pkgs.fish
+    pkgs.tmux
+    pkgs.shellcheck
 
-  # Secrets
-  pkgs.gnupg
-  pkgs.pass
+    # Version control
+    pkgs.git
+    pkgs.git-annex
 
-  # Core tools
-  pkgs.silver-searcher
-  pkgs.fd
-  pkgs.gnused
-  pkgs.gnutar
-  pkgs.coreutils
-  pkgs.moreutils
+    # Shell tools
+    pkgs.cloc
+    pkgs.fdupes
+    pkgs.tree
+    pkgs.watch
+    pkgs.hyperfine
+    pkgs.pv
+    pkgs.mosh
 
-  # Nix
-  pkgs.nix-index
-]
-++ debianOnly
-++ darwinOnly
+    # Secrets
+    pkgs.gnupg
+    pkgs.pass
+    pkgs.yubikey-manager
+
+    # Archive things
+    pkgs.gnutar
+    pkgs.unzip
+
+    # Core tools
+    pkgs.silver-searcher
+    pkgs.ripgrep
+    pkgs.fd
+    pkgs.gnused
+    pkgs.coreutils
+    pkgs.moreutils
+
+    # Nix
+    pkgs.nix-index
+  ];
+}

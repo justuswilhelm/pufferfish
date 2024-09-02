@@ -1,10 +1,25 @@
-# Aerospace toml config, returns derivation, not text!
-{ lib, pkgs, homeDirectory }:
+# Contains just sway launcher config now
+{ lib, config, pkgs, specialArgs, osConfig, ... }:
 let
-  source = builtins.fromTOML (builtins.readFile ../../aerospace/aerospace.toml);
+  aerospace = pkgs.stdenv.mkDerivation {
+    pname = "aerospace";
+    version = "0.8.6-Beta";
+    nativeBuildInputs = [ pkgs.installShellFiles ];
+    buildPhase = "";
+    installPhase = ''
+      mkdir -p $out/bin
+      cp bin/aerospace $out/bin
+      installManPage manpage/*
+    '';
+
+    src = pkgs.fetchzip {
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.6-Beta/AeroSpace-v0.8.6-Beta.zip";
+      hash = "sha256-AUPaGUqydrMMEnNq6AvZEpdUblTYwS+X3iCygPFWWbQ=";
+    };
+  };
   # We need to convince macOS to open this as a proper app, not as a child of
   # aerospace
-  alacrittyApp = "${homeDirectory}/Applications/Home Manager Apps/Alacritty.app";
+  alacrittyApp = "${specialArgs.homeDirectory}/Applications/Home Manager Apps/Alacritty.app";
   alacritty = "${alacrittyApp}/Contents/MacOS/alacritty";
   # Hardcoded woops
   firefoxApp = "/Applications/Free/Firefox.app";
@@ -17,32 +32,150 @@ let
   # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
   openAlacritty = cmd: ''exec-and-forget open -n -a '${alacrittyApp}' --args -e ${cmd}'';
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
-  newFinderWindowScript = pkgs.writeText "new-finder-window" ''tell app "Finder" to make new Finder window'';
-  runOsaScript = scriptName: "exec-and-forget osascript ${scriptName}";
-  extra = {
+  # Try copying this to your clipboard: https://www.example.com
+  openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
+  prefix = "cmd-alt";
+  config = {
+    # Reference: https://github.com/i3/i3/blob/next/etc/config
+
+    # Start AeroSpace at login
+    start-at-login = true;
     mode.main.binding = {
-      cmd-alt-enter = openAlacritty fish;
-      cmd-alt-shift-enter = newFirefoxWindow;
-      cmd-alt-shift-n = runOsaScript newFinderWindowScript;
+      # change focus
+      "${prefix}-h" = "focus left";
+      "${prefix}-j" = "focus down";
+      "${prefix}-k" = "focus up";
+      "${prefix}-l" = "focus right";
+
+      # move focused window
+      "${prefix}-shift-h" = "move left";
+      "${prefix}-shift-j" = "move down";
+      "${prefix}-shift-k" = "move up";
+      "${prefix}-shift-l" = "move right";
+
+      # split in horizontal orientation
+      # cmd-alt-b = 'split horizontal'
+
+      # split in vertical orientation
+      # cmd-alt-v = 'split vertical'
+
+      # enter fullscreen mode for the focused container
+      "${prefix}-f" = "fullscreen";
+
+      # change container layout (stacked, tabbed, toggle split)
+      # 'layout stacking' in i3
+      "${prefix}-s" = "layout v_accordion";
+      # 'layout tabbed' in i3
+      "${prefix}-w" = "layout h_accordion";
+      # 'layout toggle split' in i3
+      "${prefix}-e" = "layout tiles horizontal vertical";
+
+      # toggle tiling / floating
+      # 'floating toggle' in i3
+      "${prefix}-shift-space" = "layout floating tiling";
+
+      # Not supported, because this command is redundant in AeroSpace mental model.
+      # See: https://nikitabobko.github.io/AeroSpace/guide.html#floating-windows
+      #alt-space = 'focus toggle_tiling_floating'
+
+      # `focus parent`/`focus child` are not yet supported, and it's not clear whether they
+      # should be supported at all https://github.com/nikitabobko/AeroSpace/issues/5
+      # alt-a = 'focus parent'
+
+      # switch to workspace
+      "${prefix}-1" = "workspace 1";
+      "${prefix}-2" = "workspace 2";
+      "${prefix}-3" = "workspace 3";
+      "${prefix}-4" = "workspace 4";
+      "${prefix}-5" = "workspace 5";
+      "${prefix}-6" = "workspace 6";
+      "${prefix}-7" = "workspace 7";
+      "${prefix}-8" = "workspace 8";
+      "${prefix}-9" = "workspace 9";
+      "${prefix}-0" = "workspace 10";
+
+      # move focused container to workspace
+      "${prefix}-shift-1" = "move-node-to-workspace 1";
+      "${prefix}-shift-2" = "move-node-to-workspace 2";
+      "${prefix}-shift-3" = "move-node-to-workspace 3";
+      "${prefix}-shift-4" = "move-node-to-workspace 4";
+      "${prefix}-shift-5" = "move-node-to-workspace 5";
+      "${prefix}-shift-6" = "move-node-to-workspace 6";
+      "${prefix}-shift-7" = "move-node-to-workspace 7";
+      "${prefix}-shift-8" = "move-node-to-workspace 8";
+      "${prefix}-shift-9" = "move-node-to-workspace 9";
+      "${prefix}-shift-0" = "move-node-to-workspace 10";
+
+      # reload the configuration file
+      "${prefix}-shift-r" = "reload-config";
+
+      # resize window (you can also use the mouse for that)
+      "${prefix}-enter" = openAlacritty fish;
+      "${prefix}-shift-enter" = newFirefoxWindow;
+      "${prefix}-shift-n" = openAlacritty "${fish} -l -c open-in-finder";
       # Dotfiles
-      cmd-alt-shift-m = [
+      "${prefix}-shift-m" = [
         "workspace 4"
         (openAlacritty "${fish} -l -c manage-dotfiles")
         newFirefoxWindow
       ];
       # Time tracking
-      cmd-alt-shift-f = [
+      "${prefix}-shift-f" = [
         "workspace 3"
         (openAlacritty "${fish} -l -c tomato")
       ];
       # Cmus
-      cmd-alt-shift-t = [
+      "${prefix}-shift-t" = [
         "workspace 3"
         (openAlacritty "${fish} -l -c t-cmus")
       ];
+      # Open URL
+      "${prefix}-shift-p" = [
+        openClipboardInFirefox
+      ];
+      "${prefix}-r" = "mode resize";
     };
+    mode.resize.binding = {
+      # These bindings trigger as soon as you enter the resize mode
+      # Pressing left will shrink the window’s width.
+      # Pressing right will grow the window’s width.
+      # Pressing up will shrink the window’s height.
+      # Pressing down will grow the window’s height.
+      h = "resize width -50";
+      j = "resize height +50";
+      k = "resize height -50";
+      l = "resize width +50";
+
+      # back to normal
+      cmd-alt-r = "mode main";
+    };
+    # https://nikitabobko.github.io/AeroSpace/guide#callbacks
+    on-window-detected = [
+      {
+        "if".app-id = "com.apple.mail";
+        run = [ "move-node-to-workspace 5" ];
+      }
+      {
+        "if".app-id = "org.libreoffice.script";
+        run = [ "layout tiling" ];
+      }
+      {
+        "if".app-id = "com.utmapp.UTM";
+        run = [ "layout floating" ];
+      }
+      {
+        "if".app-id = "net.ankiweb.dtop";
+        "if".window-title-regex-substring = ".+ - Anki";
+        run = "layout floating";
+      }
+    ];
   };
-  merged = lib.attrsets.recursiveUpdate source extra;
   tomlFormat = pkgs.formats.toml { };
 in
-tomlFormat.generate "aerospace.toml" merged
+{
+  xdg.configFile.aerospace = {
+    source = tomlFormat.generate "aerospace.toml" config;
+    target = "aerospace/aerospace.toml";
+  };
+  home.packages = [ aerospace ];
+}

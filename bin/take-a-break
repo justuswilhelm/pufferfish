@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+timew start break
+aerospace workspace 3
+pmset displaysleepnow

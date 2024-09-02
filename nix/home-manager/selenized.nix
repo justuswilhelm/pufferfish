@@ -1,3 +1,4 @@
+{ lib, ... }:
 # Selenized light sRGB values from
 # From https://github.com/jan-warchol/selenized/blob/7188d68b6bb5a8be8f83d216c3f42727f0fdacf2/the-values.md
 # Selenized
@@ -55,11 +56,7 @@ let
   # selection 	bg_2
   # selection text 	(none)
   bold = "bold";
-in
-# Test with
-  # nix eval --file $DOTFILES/nix/home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
-{ lib }: {
-  # https://neomutt.org/guide/configuration
+  # Colors
   neomutt =
     let
       pairs = {
@@ -230,4 +227,58 @@ in
     theme.palette.color11 = black on blue
     theme.palette.color12 = black on magenta
   '';
+  alacritty =
+    let
+      color = builtins.replaceStrings [ "#" ] [ "0x" ];
+    in
+    {
+      primary = {
+        background = color bg_0;
+        foreground = color fg_0;
+      };
+      normal = {
+        black = color bg_1;
+        red = color red;
+        green = color green;
+        yellow = color yellow;
+        blue = color blue;
+        magenta = color magenta;
+        cyan = color cyan;
+        white = color dim_0;
+      };
+      bright = {
+        black = color bg_2;
+        red = color br_red;
+        green = color br_green;
+        yellow = color br_yellow;
+        blue = color br_blue;
+        magenta = color br_magenta;
+        cyan = color br_cyan;
+        white = color fg_1;
+      };
+    };
+in
+# Test with
+  # nix eval --file $DOTFILES/nix/home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
+{
+  # https://neomutt.org/guide/configuration
+  xdg.configFile.neomuttColors = {
+    text = neomutt;
+    target = "neomutt/colors";
+  };
+  xdg.configFile.radare2Colors = {
+    text = ''
+      e cfg.fortunes = true
+      e scr.color = 3
+      # selenized colors
+      ${radare2}
+    '';
+    target = "radare2/radare2rc";
+  };
+  xdg.configFile.timewarriorColors = {
+    text = timewarrior;
+    target = "timewarrior/selenized.theme";
+  };
+  programs.alacritty.settings.colors = alacritty;
+  programs.tmux.extraConfig = tmux;
 }

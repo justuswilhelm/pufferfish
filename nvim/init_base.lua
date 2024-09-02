@@ -79,8 +79,6 @@ vim.cmd.syntax("enable")
 -- ------
 vim.cmd.filetype("plugin", "indent", "on")
 vim.opt.expandtab = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
 -- Concealing
 -- ----------
 vim.opt.conceallevel = 0
@@ -109,10 +107,6 @@ vim.g.maplocalleader = ","
 -- Yank till end
 -- -------------
 vim.keymap.set('n', 'Y', 'y$')
--- Smarter text navigation
--- -----------------------
-vim.keymap.set('n', 'j', 'gj')
-vim.keymap.set('n', 'k', 'gk')
 -- Pinky pain
 -- ----------
 vim.keymap.set('n', ';', ':')
@@ -152,7 +146,7 @@ vim.keymap.set(
     function()
         -- Remove newline at end
         date = string.format(
-            "Justus %s",
+            " Justus %s",
             string.sub(vim.fn.system({"date", "-Idate"}), 0, -2)
         )
         vim.api.nvim_put({date}, "", true, true)

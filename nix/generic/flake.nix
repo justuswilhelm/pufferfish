@@ -2,59 +2,134 @@
   description = "Justus' generic system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=main&rev=5ad7b43d0baae086a37c0b92e7aa577041fe458d";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?tag=2024.8.18";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    projectify = {
+      url = "git+https://github.com/jwpconsulting/projectify.git?tag=2024.8.20";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nix-darwin, home-manager, nixpkgs, nixpkgs-unstable, pomoglorbo }: {
-    homeConfigurations."justusperlwitz" =
-      let
-        system = "x86_64-linux";
-        pkgs = nixpkgs.legacyPackages.${system};
-        pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
-      in
-      home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+  outputs =
+    { self
+    , nix-darwin
+    , home-manager
+    , nixpkgs
+    , pomoglorbo
+    , projectify
+    }@inputs: {
+      nixosConfigurations = {
+        helium =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              ../nixos/helium/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.justusperlwitz = import ../home-manager/helium-nixos.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/justusperlwitz";
+                  system = "nixos";
+                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                };
+              }
+            ];
+          };
+        lithium-nixos =
+          let
+            system = "aarch64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              ../nixos/lithium-nixos/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.frugally-consonant-lanky = import ../home-manager/lithium-nixos.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/frugally-consonant-lanky";
+                  system = "nixos";
+                };
+              }
+            ];
+          };
+        nitrogen =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              ../nixos/nitrogen/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.justusperlwitz = import ../home-manager/nitrogen.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/justusperlwitz";
+                  inherit system;
+                };
+              }
+            ];
+          };
+      };
+      homeConfigurations."justusperlwitz@nitrogen" =
+        let
+          system = "x86_64-linux";
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
 
-        modules = [ ../home-manager/home.nix ];
+          modules = [ ../home-manager/nitrogen.nix ];
 
-        extraSpecialArgs = {
-          inherit pkgs-unstable;
-          homeBaseDirectory = "/home";
-          system = "debian";
-          pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+          extraSpecialArgs = {
+            homeDirectory = "/home/justusperlwitz";
+            inherit system;
+          };
         };
-      };
-    darwinConfigurations."lithium" =
-      let
-        system = "aarch64-darwin";
-      in
-      nix-darwin.lib.darwinSystem {
-        inherit system;
-        modules = [
-          ../darwin/darwin-configuration.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.verbose = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.justusperlwitz = import ../home-manager/home.nix;
-            home-manager.extraSpecialArgs = {
-              pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
-              homeBaseDirectory = "/Users";
-              system = "darwin";
-              pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
-            };
-          }
-        ];
-      };
-  };
+      darwinConfigurations."lithium" =
+        let
+          system = "aarch64-darwin";
+        in
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = {
+            inherit system;
+          };
+          modules = [
+            { _module.args = inputs; }
+            ../darwin/darwin-configuration.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.verbose = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [
+                { _module.args = inputs; }
+              ];
+              home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
+              home-manager.extraSpecialArgs = {
+                homeDirectory = "/Users/justusperlwitz";
+                inherit system;
+              };
+            }
+          ];
+        };
+    };
 }
