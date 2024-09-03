@@ -95,6 +95,7 @@
         jupyter
         sympy
         pandas
+        cryptography
       ]
     ))
   ];
