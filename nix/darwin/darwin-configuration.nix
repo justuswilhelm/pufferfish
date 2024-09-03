@@ -8,6 +8,7 @@ in
 
 {
   imports = [
+    ./modules/nagios.nix
     ./caddy.nix
     ./borgmatic.nix
     ./offlineimap.nix
