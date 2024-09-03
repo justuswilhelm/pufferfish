@@ -9,9 +9,10 @@ in
 {
   imports = [
     ./modules/nagios.nix
+    ./modules/offlineimap.nix
+
     ./caddy.nix
     ./borgmatic.nix
-    ./offlineimap.nix
     ./anki.nix
     ./attic.nix
     ./projectify.nix
