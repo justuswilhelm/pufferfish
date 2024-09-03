@@ -26,7 +26,7 @@ with lib;
 let
   cfg = config.services.nagios;
 
-  nagiosState = "/var/lib/nagios";
+  nagiosState = "/var/nagios";
   nagiosLogDir = "/var/log/nagios";
   urlPath = "/nagios";
 
@@ -124,7 +124,10 @@ in
 
       plugins = mkOption {
         type = types.listOf types.package;
-        default = with pkgs; [ monitoring-plugins msmtp mailutils ];
+
+        # XXX won't build on macos:
+        # monitoring-plugins
+        default = with pkgs; [ msmtp mailutils ];
         defaultText = literalExpression "[pkgs.monitoring-plugins pkgs.msmtp pkgs.mailutils]";
         description = ''
           Packages to be added to the Nagios {env}`PATH`.
@@ -201,11 +204,13 @@ in
       uid = 1100;
       home = nagiosState;
       gid = 1100;
+      isHidden = true;
     };
-
+    users.knownUsers = [ "nagios" ];
     users.groups.nagios = {
       gid = 1100;
     };
+    users.knownGroups = [ "nagios" ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
@@ -213,7 +218,6 @@ in
 
     environment.systemPackages = [ pkgs.nagios ];
     launchd.daemons.nagios = {
-      description = "Nagios monitoring daemon";
       path = [ pkgs.nagios ] ++ cfg.plugins;
 
       serviceConfig = {
@@ -223,6 +227,13 @@ in
         StandardOutPath = "${nagiosLogDir}/stdout.log";
         StandardErrorPath = "${nagiosLogDir}/stderr.log";
         WorkingDirectory = nagiosState;
+        # Thx https://github.com/JasonRivers/Docker-Nagios/issues/135
+        SoftResourceLimits = {
+          NumberOfFiles = 32768;
+        };
+        HardResourceLimits = {
+          NumberOfFiles = 32768;
+        };
       };
       command = "${pkgs.nagios}/bin/nagios /etc/nagios.cfg";
     };
