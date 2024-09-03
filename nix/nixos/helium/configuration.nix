@@ -61,6 +61,9 @@
     shell = pkgs.fish;
   };
 
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "justusperlwitz" ];
+
   programs.fish.enable = true;
   programs.git.enable = true;
   programs.neovim = {
