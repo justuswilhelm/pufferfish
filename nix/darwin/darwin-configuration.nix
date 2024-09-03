@@ -8,9 +8,11 @@ in
 
 {
   imports = [
+    ./modules/nagios.nix
+    ./modules/offlineimap.nix
+    ./modules/borgmatic.nix
+
     ./caddy.nix
-    ./borgmatic.nix
-    ./offlineimap.nix
     ./anki.nix
     ./attic.nix
     ./projectify.nix
@@ -79,6 +81,14 @@ in
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
+
+  services.nagios = {
+    enable = true;
+    enableWebInterface = true;
+    objectDefs = [
+      ./lithium/nagios.cfg
+    ];
+  };
 
   services.karabiner-elements.enable = true;
   services.skhd = {
