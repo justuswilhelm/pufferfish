@@ -241,15 +241,13 @@ cmp.setup.filetype(
 -- Capabilities added as per nvim-cmp README
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
     capabilities = capabilities,
-    cmd = { 'npm', 'run', 'typescript-language-server', '--', '--stdio' },
 }
 -- Svelte
 -- ------
 lspconfig.svelte.setup {
     capabilities = capabilities,
-    cmd = { 'npm', 'run', 'svelteserver', '--', '--stdio' },
     on_attach = function(client)
         vim.api.nvim_create_autocmd("BufWritePost", {
             pattern = { "*.js", "*.ts" },
