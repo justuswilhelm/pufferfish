@@ -60,6 +60,7 @@
     pkgs.xsser
     # https://github.com/hahwul/dalfox
     pkgs.dalfox
+    pkgs.whatweb
 
     # Cracking
     # ========
@@ -86,6 +87,7 @@
     pkgs.sqlmap
     pkgs.mongosh
     pkgs.postgresql
+    pkgs.mysql84
 
     # Cryptography
     # ============
