@@ -33,6 +33,8 @@
       pkgs.ruff
       pkgs.ruff-lsp
       pkgs.nodePackages.pyright
+      pkgs.typescript
+      pkgs.nodePackages.typescript-language-server
     ];
     extraPython3Packages = python3Packages: [
       python3Packages.pillow
