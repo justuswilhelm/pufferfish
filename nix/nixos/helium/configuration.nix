@@ -15,11 +15,13 @@
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./virtualisation.nix
     ];
 
   boot.blacklistedKernelModules = [
     "iwlwifi"
     "iwlmvm"
+    "nouveau"
   ];
   networking.hosts = {
     "10.0.57.235" = [ "lithium.local" ];
@@ -56,13 +58,11 @@
 
   users.users.justusperlwitz = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    # Enable sudo, allow using virtd
+    extraGroups = [ "wheel" "libvirtd" ];
     home = "/home/justusperlwitz";
     shell = pkgs.fish;
   };
-
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "justusperlwitz" ];
 
   programs.fish.enable = true;
   programs.git.enable = true;

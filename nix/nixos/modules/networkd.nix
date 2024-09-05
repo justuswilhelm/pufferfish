@@ -6,6 +6,8 @@
     networks = {
       "10-ethernet" = {
         matchConfig = {
+          # Prevent networkd from messing with libvirt bridges
+          Name = "!vnet*";
           Type = "ether";
         };
         networkConfig = {
