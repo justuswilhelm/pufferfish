@@ -513,9 +513,4 @@ vim.g.ledger_fuzzy_account_completion = 1
 -- Pastifiy.nvim
 -- =============
 require('pastify').setup {
-    opts = {
-        local_path = function()
-            return vim.fn.expand("%:r")
-        end,
-    },
 }
