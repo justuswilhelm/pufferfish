@@ -33,6 +33,7 @@
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  # TODO switch to systemd-boot
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
