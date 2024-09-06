@@ -39,4 +39,14 @@ in
       msf /.+ msf
     '';
   };
+  # Thx internet
+  # https://unix.stackexchange.com/a/692227
+  environment.etc."samba/smb.conf".text = ''
+    client min protocol = CORE
+    client max protocol = SMB3
+  '';
+
+  programs.wireshark.enable = true;
+  # If USB sniffing required:
+  # https://discourse.nixos.org/t/using-wireshark-as-an-unprivileged-user-to-analyze-usb-traffic/38011
 }
