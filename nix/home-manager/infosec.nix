@@ -77,6 +77,12 @@
     # =====
     pkgs.samba
     pkgs.python3Packages.impacket
+    pkgs.netexec
+
+    # WebDAV
+    # ======
+    pkgs.davtest
+    pkgs.cadaver
 
     # SSH
     # ===
