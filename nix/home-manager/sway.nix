@@ -53,8 +53,6 @@ in
         bindsym $mod+d exec ${bemenu} -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
 
         exec {
-            # Part of Debian
-            opensnitch-ui
             # TODO migrate ibus to sway, there is no Japanese input right now
             # ibus-daemon -dxr
             # Lock after 2 minutes, suspend after six hours
@@ -66,6 +64,9 @@ in
                 timeout 21600 'systemctl poweroff'
             # Wayland copy-pasting, part of debian
             wl-paste -t text --watch clipman store --no-persist
+
+            # Make sure we have graphical-session.target
+            systemctl start --user sway-session.target
         }
       '';
       target = "sway/config.d/launchers";

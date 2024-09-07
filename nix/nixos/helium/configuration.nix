@@ -8,7 +8,6 @@
       ../modules/podman.nix
       ../modules/openvpn.nix
       ../modules/borgmatic.nix
-      ../modules/ecryptfs.nix
       ../modules/infosec.nix
 
       # TODO set up impermanence
@@ -16,11 +15,13 @@
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./virtualisation.nix
     ];
 
   boot.blacklistedKernelModules = [
     "iwlwifi"
     "iwlmvm"
+    "nouveau"
   ];
   networking.hosts = {
     "10.0.57.235" = [ "lithium.local" ];
@@ -32,6 +33,7 @@
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  # TODO switch to systemd-boot
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
@@ -47,6 +49,11 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    gc = {
+      automatic = true;
+      randomizedDelaySec = "14m";
+      options = "--delete-older-than 10d";
+    };
   };
 
   # Set your time zone.
@@ -57,7 +64,8 @@
 
   users.users.justusperlwitz = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    # Enable sudo, allow using virtd
+    extraGroups = [ "wheel" "libvirtd" ];
     home = "/home/justusperlwitz";
     shell = pkgs.fish;
   };
@@ -83,6 +91,10 @@
   services.openssh.enable = true;
 
   services.opensnitch.enable = true;
+
+  security.pki.certificateFiles = [
+    ../../lithium-ca.crt
+  ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

@@ -60,6 +60,7 @@
     pkgs.xsser
     # https://github.com/hahwul/dalfox
     pkgs.dalfox
+    pkgs.whatweb
 
     # Cracking
     # ========
@@ -77,6 +78,10 @@
     pkgs.samba
     pkgs.python3Packages.impacket
 
+    # WebDAV
+    # ======
+    pkgs.davtest
+
     # SSH
     # ===
     pkgs.sshpass
@@ -86,6 +91,7 @@
     pkgs.sqlmap
     pkgs.mongosh
     pkgs.postgresql
+    pkgs.mysql84
 
     # Cryptography
     # ============
@@ -95,6 +101,7 @@
         jupyter
         sympy
         pandas
+        cryptography
       ]
     ))
   ];

@@ -33,8 +33,12 @@
       pkgs.ruff
       pkgs.ruff-lsp
       pkgs.nodePackages.pyright
+      pkgs.typescript
+      pkgs.nodePackages.typescript-language-server
+      pkgs.nodePackages.svelte-language-server
     ];
     extraPython3Packages = python3Packages: [
+      # Pillow needed for pastify
       python3Packages.pillow
     ];
   };

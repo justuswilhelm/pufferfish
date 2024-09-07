@@ -38,7 +38,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.justusperlwitz = import ../home-manager/helium-nixos.nix;
+                home-manager.users.justusperlwitz = import ../home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
                   system = "nixos";
