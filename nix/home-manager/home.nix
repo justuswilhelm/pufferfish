@@ -12,6 +12,7 @@
     ./gpg.nix
     ./fish.nix
     ./asdf.nix
+    ./passwordstore.nix
   ];
 
   home.username = "justusperlwitz";
@@ -31,7 +32,6 @@
     XDG_STATE_HOME = config.xdg.stateHome;
     XDG_CACHE_HOME = config.xdg.cacheHome;
     NNN_OPENER = "open";
-    PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
