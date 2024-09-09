@@ -157,6 +157,11 @@ let
       }
       {
         "if".app-id = "org.libreoffice.script";
+        "if".window-title-regex-substring = "Delete Contents";
+        run = [ "layout floating" ];
+      }
+      {
+        "if".app-id = "org.libreoffice.script";
         run = [ "layout tiling" ];
       }
       {
