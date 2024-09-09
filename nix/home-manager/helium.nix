@@ -54,4 +54,10 @@
   };
 
   services.opensnitch-ui.enable = true;
+
+  programs.ssh = {
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+    };
+  };
 }
