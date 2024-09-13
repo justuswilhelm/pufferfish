@@ -92,6 +92,18 @@
 
   services.opensnitch.enable = true;
 
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "justusperlwitz" ];
+    ensureUsers = [{
+      name = "justusperlwitz";
+      ensureDBOwnership = true;
+      ensureClauses = {
+        createdb = true;
+      };
+    }];
+  };
+
   security.pki.certificateFiles = [
     ../../lithium-ca.crt
   ];
