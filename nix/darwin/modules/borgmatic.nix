@@ -15,7 +15,7 @@ in
     };
   };
 
-  launchd.agents.borgmatic = {
+  launchd.daemons.borgmatic = {
     command = "${borgmatic}/bin/borgmatic --log-file-verbosity 1 --log-file ${logPath}";
     serviceConfig = {
       # Performance

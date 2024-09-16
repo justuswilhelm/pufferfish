@@ -11,7 +11,13 @@
     # ===
     pkgs.rpcbind
 
-    # Networking, Certs
+    # WebDAV
+    # ======
+    pkgs.cadaver
+
+    # Networking
+    # ==========
+    pkgs.netexec
     pkgs.openssl
 
     # Cracking

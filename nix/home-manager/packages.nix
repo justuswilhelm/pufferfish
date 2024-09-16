@@ -85,7 +85,6 @@
 
     # Secrets
     pkgs.gnupg
-    pkgs.pass
     pkgs.yubikey-manager
 
     # Archive things
