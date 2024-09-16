@@ -16,13 +16,14 @@
     enable = true;
     wrapperFeatures.gtk = true;
     extraPackages = [
+      pkgs.bemenu
       pkgs.foot
       pkgs.grim
-      pkgs.slurp
-      pkgs.wl-clipboard
       pkgs.mako
-      pkgs.swaylock
+      pkgs.slurp
       pkgs.swayidle
+      pkgs.swaylock
+      pkgs.wl-clipboard
     ];
   };
   # From journalctl:

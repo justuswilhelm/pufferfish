@@ -1,13 +1,8 @@
 # Contains just sway launcher config now
 { lib, config, pkgs, ... }:
 let
-  # TODO see if we can add wl-paste as a nix package
-  foot = "${pkgs.foot}/bin/foot";
-  fish = "${pkgs.fish}/bin/fish";
+  fish = "${config.programs.fish.package}/bin/fish";
   firefox-esr = "${config.programs.firefox.finalPackage}/bin/firefox-esr";
-  grim = "${pkgs.grim}/bin/grim";
-  slurp = "${pkgs.slurp}/bin/slurp";
-  bemenu = "${pkgs.bemenu}/bin/bemenu-run";
   mosh = "${pkgs.mosh}/bin/mosh";
 in
 {
@@ -30,27 +25,24 @@ in
     swayLaunchers = {
       text = ''
         # start a terminal
-        bindsym $mod+Return exec ${foot}
+        bindsym $mod+Return exec foot
         bindsym $mod+Shift+Return exec ${firefox-esr}
         # open an url if given in wl clipboard, like example.com
         bindsym $mod+Shift+o exec ${firefox-esr} $(wl-paste)
-        # TODO find a new shortcut for this
-        # Take a screenshot
-        bindsym $mod+Shift+b exec ${grim}
         # Take a screenshot of a region
-        bindsym $mod+Shift+g exec ${grim} -g $(${slurp})
+        bindsym $mod+Shift+g exec slurp | grim -g - - | wl-copy
 
         # Launch my currently used workspace
-        bindsym $mod+m workspace 1, split horizontal, exec ${foot} ${fish} -c projectify
+        bindsym $mod+m workspace 1, split horizontal, exec foot ${fish} -c projectify
         # Launch a view into my dotfiles etc
-        bindsym $mod+Shift+m workspace 4, exec ${foot} ${fish} -c manage-dotfiles, split horizontal, exec ${firefox-esr}
+        bindsym $mod+Shift+m workspace 4, exec foot ${fish} -c manage-dotfiles, split horizontal, exec ${firefox-esr}
 
         # Launch a view into my laptop and do pomodoros
-        bindsym $mod+Shift+f workspace 3, exec ${foot} ${mosh} lithium.local -- fish -c tomato
+        bindsym $mod+Shift+f workspace 3, exec foot ${mosh} lithium.local -- fish -c tomato
         # Cmus on lithium.local
-        bindsym $mod+Shift+t workspace 3, exec ${foot} ${mosh} lithium.local -- fish -c t-cmus
+        bindsym $mod+Shift+t workspace 3, exec foot ${mosh} lithium.local -- fish -c t-cmus
         # start bemenu (a program launcher)
-        bindsym $mod+d exec ${bemenu} -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
+        bindsym $mod+d exec bemenu -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
 
         exec {
             # TODO migrate ibus to sway, there is no Japanese input right now
