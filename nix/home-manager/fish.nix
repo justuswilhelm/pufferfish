@@ -92,6 +92,9 @@
       # Start neovim
       e = "nvim";
     };
+    shellAliases = {
+      rebuild = "sudo nixos-rebuild switch --flake $DOTFILES/nix/generic";
+    };
   };
 
   xdg.configFile = {

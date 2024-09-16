@@ -39,6 +39,13 @@ in
       fish_add_path --move --path ${path}
       set fish_user_paths $fish_user_paths
     '';
+  programs.fish.shellAliases.rebuild = ''
+    alacritty msg create-window \
+      -e $SHELL -c '
+      screen -h 10000 sh -c \
+        "darwin-rebuild switch --flake $DOTFILES/nix/generic
+      read -p \'press enter to quit\'"
+  '';
   programs.git.ignores = [ ".DS_Store" ];
 
   home.file.xbar = {
