@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
@@ -22,6 +23,7 @@
     , nix-darwin
     , home-manager
     , nixpkgs
+    , nixpkgs-unstable
     , pomoglorbo
     , projectify
     }@inputs: {
@@ -29,6 +31,7 @@
         helium =
           let
             system = "x86_64-linux";
+            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           in
           nixpkgs.lib.nixosSystem {
             inherit system;
@@ -36,6 +39,11 @@
               ../nixos/helium/configuration.nix
               home-manager.nixosModules.home-manager
               {
+                nixpkgs.overlays = [
+                  (final: previous: {
+                    john = pkgs-unstable.john;
+                  })
+                ];
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.justusperlwitz = import ../home-manager/helium.nix;
