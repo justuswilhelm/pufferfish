@@ -11,6 +11,9 @@
     # ===
     pkgs.rpcbind
 
+    # Networking, Certs
+    pkgs.openssl
+
     # Cracking
     # ========
     (pkgs.python3Packages.patator.override {
