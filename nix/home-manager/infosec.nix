@@ -61,6 +61,7 @@
     # https://github.com/hahwul/dalfox
     pkgs.dalfox
     pkgs.whatweb
+    pkgs.commix
 
     # Cracking
     # ========
@@ -72,6 +73,10 @@
     # =====
     pkgs.rsync
     pkgs.ncftp
+
+    # Forensics
+    # =========
+    pkgs.exiftool
 
     # Samba
     # =====
