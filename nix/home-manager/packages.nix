@@ -30,6 +30,7 @@
     (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
+    pkgs.ruff
 
     # Compilers
     pkgs.gcc
