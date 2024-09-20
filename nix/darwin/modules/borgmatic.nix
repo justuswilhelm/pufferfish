@@ -16,7 +16,7 @@ in
   };
 
   launchd.daemons.borgmatic = {
-    command = "${borgmatic}/bin/borgmatic --log-file-verbosity 1 --log-file ${logPath}";
+    command = "${borgmatic}/bin/borgmatic --log-file-verbosity 2 --log-file ${logPath}";
     serviceConfig = {
       # Performance
       ProcessType = "Background";
