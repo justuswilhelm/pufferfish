@@ -15,16 +15,19 @@
     ./passwordstore.nix
   ];
 
+  # TODO separate module
   home.username = "justusperlwitz";
   home.homeDirectory = specialArgs.homeDirectory;
 
 
   home.stateVersion = "24.05";
 
+  # TODO separate module
   home.sessionPath = [
     "${config.home.sessionVariables.DOTFILES}/bin"
   ];
 
+  # TODO separate module
   home.sessionVariables = {
     DOTFILES = "${config.home.homeDirectory}/.dotfiles";
     XDG_CONFIG_HOME = config.xdg.configHome;
@@ -37,6 +40,7 @@
     LC_ALL = "en_US.UTF-8";
   };
 
+  # TODO use home manager font config options
   xdg.dataFile = {
     iosevka = {
       source = ../../fonts/iosevka-fixed-regular.ttf;
@@ -44,6 +48,7 @@
     };
   };
 
+  # TODO refactor into separate module
   home.file = {
     pdbrc =
       let
@@ -92,11 +97,13 @@
     };
   };
 
+  # TODO separate module
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
   };
 
+  # TODO separate module
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
