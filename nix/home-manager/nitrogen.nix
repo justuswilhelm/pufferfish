@@ -51,7 +51,7 @@
       target = "sway/config.d/nitrogen";
     };
   };
-  program.i3status.modules."battery 0" = {
+  programs.i3status.modules."battery 0" = {
     settings = {
       format = "%status %percentage %remaining %emptytime";
       format_down = "No battery";

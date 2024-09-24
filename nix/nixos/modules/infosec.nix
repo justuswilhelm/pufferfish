@@ -3,8 +3,12 @@ let
   user = "delighted-negotiate-catchy";
 in
 {
-  # For reverse shell with openvpn
-  networking.firewall.allowedTCPPorts = [ 4444 ];
+  networking.firewall.allowedTCPPorts = [
+    # For reverse shell with openvpn
+    4444
+    # For http server
+    8080
+  ];
 
   users.groups.${user} = { };
   users.users.${user} = {

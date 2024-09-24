@@ -42,7 +42,7 @@ in
         # Cmus on lithium.local
         bindsym $mod+Shift+t workspace 3, exec foot ${mosh} lithium.local -- fish -c t-cmus
         # start bemenu (a program launcher)
-        bindsym $mod+d exec bemenu -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
+        bindsym $mod+d exec bemenu-run -c --hp 10 --fn 'Iosevka Fixed 16' -p 'bemenu%' | swaymsg exec --
 
         exec {
             # TODO migrate ibus to sway, there is no Japanese input right now
