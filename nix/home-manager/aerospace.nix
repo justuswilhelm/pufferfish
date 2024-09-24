@@ -156,6 +156,10 @@ let
         run = [ "move-node-to-workspace 5" ];
       }
       {
+        "if".app-id = "com.apple.iCal";
+        run = [ "move-node-to-workspace 6" ];
+      }
+      {
         "if".app-id = "org.libreoffice.script";
         "if".window-title-regex-substring = "Delete Contents";
         run = [ "layout floating" ];
