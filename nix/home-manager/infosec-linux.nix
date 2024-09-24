@@ -19,6 +19,7 @@
     # ==========
     pkgs.netexec
     pkgs.openssl
+    pkgs.wireshark
 
     # Cracking
     # ========
