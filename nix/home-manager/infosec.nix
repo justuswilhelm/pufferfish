@@ -105,9 +105,14 @@
         scipy
         jupyter
         sympy
+        requests
         pandas
         cryptography
       ]
     ))
+
+    # PHP
+    # ===
+    pkgs.php
   ];
 }
