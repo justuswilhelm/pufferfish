@@ -22,7 +22,6 @@ in
       ProcessType = "Background";
       LowPriorityBackgroundIO = true;
       LowPriorityIO = true;
-      TimeOut = 1800;
 
       # Timing
       StartCalendarInterval = [{ Minute = 0; }];
