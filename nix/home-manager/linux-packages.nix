@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   home.packages = [
+    # Communication
+    # =============
+    pkgs.signal-desktop
     # File management
     # ===============
     pkgs.ncdu
