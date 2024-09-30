@@ -9,17 +9,12 @@
     [
       ../modules/networkd.nix
       ../modules/sway.nix
+      ../modules/nix.nix
+
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
     ];
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
