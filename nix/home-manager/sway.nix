@@ -102,7 +102,7 @@ in
 
       memory = {
         settings = {
-          format = "f: %free a: %available u: %used t: %total";
+          format = "%available / %used";
           threshold_degraded = "10%";
           format_degraded = "MEMORY: %free";
         };
