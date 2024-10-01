@@ -32,7 +32,8 @@
     pkgs.nodePackages.prettier
     pkgs.ruff
 
-    # Compilers
+    # Build tools
+    pkgs.cmake
     pkgs.gcc
 
     # Debugger
@@ -44,6 +45,9 @@
     pkgs.miller
     pkgs.nodejs_20
     pkgs.openjdk
+
+    # Python
+    pkgs.pipx
 
     # TUIs
     pkgs.htop
