@@ -12,6 +12,7 @@
       ../modules/ime.nix
       ../modules/nix.nix
       ../modules/man.nix
+      ../modules/compat.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
