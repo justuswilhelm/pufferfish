@@ -1,5 +1,8 @@
-{ lib, pkgs, osConfig, ... }:
+{ lib, pkgs, config, osConfig, ... }:
 {
+  home.sessionVariables = {
+    BROWSER = "${config.programs.firefox.package}/bin/firefox-esr";
+  };
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-esr;
