@@ -10,6 +10,7 @@
       ../modules/borgmatic.nix
       ../modules/infosec.nix
       ../modules/ime.nix
+      ../modules/nix.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
@@ -44,18 +45,6 @@
 
   networking.hostName = "helium"; # Define your hostname.
   systemd.network.netdevs.wlo1.enable = false;
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-    gc = {
-      automatic = true;
-      randomizedDelaySec = "14m";
-      options = "--delete-older-than 10d";
-    };
-  };
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
