@@ -7,9 +7,13 @@
 {
   imports =
     [
-      ../modules/networkd.nix
       ../modules/sway.nix
+      ../modules/yubikey.nix
+      ../modules/networkd.nix
+      ../modules/openvpn.nix
+      ../modules/infosec.nix
       ../modules/nix.nix
+      ../modules/compat.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
