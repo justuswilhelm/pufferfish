@@ -56,17 +56,27 @@
       target = "sway/config.d/nitrogen";
     };
   };
-  programs.i3status.modules."battery 0" = {
-    settings = {
-      format = "%status %percentage %remaining %emptytime";
-      format_down = "No battery";
-      status_chr = "⚡ CHR";
-      status_bat = "🔋 BAT";
-      status_unk = "? UNK";
-      status_full = "☻ FULL";
-      path = "/sys/class/power_supply/BAT%d/uevent";
-      low_threshold = 10;
+
+  programs.i3status.modules = {
+    "wireless wlp59s0" = {
+      settings = {
+        format_up = "wlp59s0: %ip (%quality)";
+        format_down = "wlp59s0: down";
+      };
+      position = 0;
     };
-    position = 7;
+    "battery 0" = {
+      settings = {
+        format = "%status %percentage %remaining %emptytime";
+        format_down = "No battery";
+        status_chr = "⚡ CHR";
+        status_bat = "🔋 BAT";
+        status_unk = "? UNK";
+        status_full = "☻ FULL";
+        path = "/sys/class/power_supply/BAT%d/uevent";
+        low_threshold = 10;
+      };
+      position = 7;
+    };
   };
 }
