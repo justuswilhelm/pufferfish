@@ -8,4 +8,9 @@
     "@HOME_SSID@".psk = "@HOME_PSK@";
   };
   networking.firewall.enable = true;
+
+  # Hardcode lithium.local ip because mdns does not work... :(
+  networking.hosts = {
+    "10.0.57.235" = [ "lithium.local" ];
+  };
 }
