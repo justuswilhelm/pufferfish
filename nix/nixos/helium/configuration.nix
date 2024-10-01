@@ -11,6 +11,7 @@
       ../modules/infosec.nix
       ../modules/ime.nix
       ../modules/nix.nix
+      ../modules/man.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence

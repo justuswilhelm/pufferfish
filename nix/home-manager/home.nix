@@ -1,6 +1,7 @@
 { lib, pkgs, config, options, specialArgs, ... }:
 {
   imports = [
+    ./modules/man.nix
     ./fish.nix
     ./git.nix
     ./tmux.nix
