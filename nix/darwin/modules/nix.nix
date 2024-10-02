@@ -10,11 +10,11 @@
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
   nix.extraOptions = ''
-    experimental-features = nix-command flakes
+    experimental-features = flakes nix-command
   '';
   nix.settings = {
     auto-optimise-store = true;
-    sandbox = false;
+    trusted-users = [ "root" ];
   };
 
   # Auto upgrade nix package and the daemon service.
