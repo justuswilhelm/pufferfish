@@ -11,6 +11,7 @@ in
     ./modules/nagios.nix
     ./modules/offlineimap.nix
     ./modules/borgmatic.nix
+    ./modules/nix.nix
 
     ./caddy.nix
     ./anki.nix
@@ -69,18 +70,12 @@ in
     '';
   };
 
-  # Use a custom configuration.nix location.
-  environment.darwinConfig = "$HOME/.config/nix/darwin/darwin-configuration.nix";
-
   launchd.labelPrefix = "net.jwpconsulting";
 
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
   };
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
 
   services.nagios = {
     enable = true;
@@ -105,28 +100,11 @@ in
       '';
   };
 
-  nix.nixPath = [
-    {
-      # TODO insert ${home}
-      darwin-config = "$HOME/.config/nix/darwin/darwin-configuration.nix";
-    }
-    "/nix/var/nix/profiles/per-user/root/channels"
-  ];
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-  nix.settings = {
-    auto-optimise-store = true;
-    sandbox = false;
-  };
-
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:
   # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
   security.pam.enableSudoTouchIdAuth = true;
 
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  # programs.zsh.enable = true;  # default shell on catalina
   programs.fish = {
     enable = true;
     useBabelfish = true;
