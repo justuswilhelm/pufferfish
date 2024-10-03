@@ -24,6 +24,7 @@
         ];
       }
     )
+    pkgs.python3Packages.ropper
 
     # Binary
     # ======
