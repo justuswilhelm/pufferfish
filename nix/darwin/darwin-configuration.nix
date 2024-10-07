@@ -8,9 +8,13 @@ in
 
 {
   imports = [
+    ./modules/nagios.nix
+    ./modules/offlineimap.nix
+    ./modules/borgmatic.nix
+    ./modules/nix.nix
+    ./modules/openssh.nix
+
     ./caddy.nix
-    ./borgmatic.nix
-    ./offlineimap.nix
     ./anki.nix
     ./attic.nix
     ./projectify.nix
@@ -38,7 +42,6 @@ in
 
     # Media
     # Not sure if I need these on Debian or not
-    pkgs.cmus
     pkgs.ffmpeg
   ];
   environment.shells = [ pkgs.fish ];
@@ -47,12 +50,6 @@ in
       "${pkgs.ncurses}/share/terminfo"
       "${pkgs.alacritty.terminfo}/share/terminfo"
     ];
-  };
-  environment.etc = {
-    sshd_config = {
-      source = ./sshd_config;
-      target = "ssh/sshd_config";
-    };
   };
 
   # Rid ourselves of Apple Music automatically launching
@@ -68,9 +65,6 @@ in
     '';
   };
 
-  # Use a custom configuration.nix location.
-  environment.darwinConfig = "$HOME/.config/nix/darwin/darwin-configuration.nix";
-
   launchd.labelPrefix = "net.jwpconsulting";
 
   services.postgresql = {
@@ -78,8 +72,13 @@ in
     package = pkgs.postgresql_15;
   };
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  services.nagios = {
+    enable = true;
+    enableWebInterface = true;
+    objectDefs = [
+      ./lithium/nagios.cfg
+    ];
+  };
 
   services.karabiner-elements.enable = true;
   services.skhd = {
@@ -96,26 +95,11 @@ in
       '';
   };
 
-  nix.nixPath = [
-    {
-      # TODO insert ${home}
-      darwin-config = "$HOME/.config/nix/darwin/darwin-configuration.nix";
-    }
-    "/nix/var/nix/profiles/per-user/root/channels"
-  ];
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-
-  # nix.package = pkgs.nix;
-
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:
   # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
   security.pam.enableSudoTouchIdAuth = true;
 
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  # programs.zsh.enable = true;  # default shell on catalina
   programs.fish = {
     enable = true;
     useBabelfish = true;

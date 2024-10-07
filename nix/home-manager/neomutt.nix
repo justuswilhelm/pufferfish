@@ -1,4 +1,4 @@
-{ lib, pkgs, config, specialArgs, ... }:
+{ lib, pkgs, config, ... }:
 let
   # Wrap neomutt to ensure true color support
   package =

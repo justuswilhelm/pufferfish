@@ -20,6 +20,12 @@ vim.opt.clipboard:append({"unnamedplus"})
 vim.opt.history = 1000
 vim.opt.undolevels = 1000
 
+-- EditorConfig
+-- ============
+-- Now default feature in neovim
+-- https://neovim.io/doc/user/editorconfig.html
+vim.g.editorconfig = true
+
 -- Visual
 -- ======
 -- Color scheme
@@ -107,10 +113,6 @@ vim.g.maplocalleader = ","
 -- Yank till end
 -- -------------
 vim.keymap.set('n', 'Y', 'y$')
--- Smarter text navigation
--- -----------------------
-vim.keymap.set('n', 'j', 'gj')
-vim.keymap.set('n', 'k', 'gk')
 -- Pinky pain
 -- ----------
 vim.keymap.set('n', ';', ':')

@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  home.packages = [
+    pkgs.pgpdump
+  ];
+
   programs.gpg = {
     enable = true;
     scdaemonSettings = {

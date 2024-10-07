@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./home.nix
@@ -7,7 +7,12 @@
     ./linux-packages.nix
     ./foot.nix
     ./gdb.nix
+    # Investigate if this fix is needed on NixOS
+    ./locale-fix.nix
+    ./gpg.nix
     ./gpg-agent.nix
+    ./infosec.nix
+    ./infosec-linux.nix
   ];
 
   home.packages = [
@@ -20,6 +25,8 @@
         exec sway
     end
   '';
+
+  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES/nix/generic";
 
   home.file = {
     keyboardLayout = {
@@ -49,7 +56,7 @@
       target = "sway/config.d/nitrogen";
     };
   };
-  program.i3status.modules."battery 0" = {
+  programs.i3status.modules."battery 0" = {
     settings = {
       format = "%status %percentage %remaining %emptytime";
       format_down = "No battery";

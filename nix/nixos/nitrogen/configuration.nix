@@ -7,19 +7,18 @@
 {
   imports =
     [
+      ../modules/sway.nix
+      ../modules/yubikey.nix
+      ../modules/networkd.nix
+      ../modules/openvpn.nix
+      ../modules/infosec.nix
+      ../modules/nix.nix
+      ../modules/compat.nix
+
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
-      ../networkd.nix
-      ../sway.nix
     ];
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -60,15 +59,17 @@
       firefox-esr
       tree
       tmux
-      foot
     ];
   };
-  programs.fish.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-  ];
+  programs.fish.enable = true;
+  programs.git.enable = true;
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -18,8 +18,6 @@ Plug("leafgarland/typescript-vim")
 Plug("othree/html5.vim")
 Plug("pangloss/vim-javascript")
 Plug("nvim-orgmode/orgmode")
--- Read .editorconfig
-Plug("editorconfig/editorconfig-vim")
 -- If this isn't enabled, indentation on the next line is wrong.
 Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
 Plug("ledger/vim-ledger", {["for"] = "ledger"})
@@ -90,6 +88,16 @@ vim.keymap.set("v", "<leader>s", ":SlimuxREPLSendSelection<CR>")
 -- TODO investigate if these two commands still work
 -- vim.keymap.set("n", "<leader>a", ":SlimuxShellLast<CR>")
 -- vim.keymap.set("n", "<leader>k", ":SlimuxSendKeysLast<CR>")
+--
+-- vim-tmux-navigator
+-- ==================
+-- Override so that we don't remap <C-\>
+vim.g.tmux_navigator_no_mappings = 1
+vim.keymap.set("n", "<c-h>", ":TmuxNavigateLeft<CR>")
+vim.keymap.set("n", "<c-l>", ":TmuxNavigateRight<CR>")
+vim.keymap.set("n", "<c-j>", ":TmuxNavigateDown<CR>")
+vim.keymap.set("n", "<c-k>", ":TmuxNavigateUp<CR>")
+
 
 -- fzf-lua
 -- =======
@@ -231,15 +239,13 @@ cmp.setup.filetype(
 -- Capabilities added as per nvim-cmp README
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
     capabilities = capabilities,
-    cmd = { 'npm', 'run', 'typescript-language-server', '--', '--stdio' },
 }
 -- Svelte
 -- ------
 lspconfig.svelte.setup {
     capabilities = capabilities,
-    cmd = { 'npm', 'run', 'svelteserver', '--', '--stdio' },
     on_attach = function(client)
         vim.api.nvim_create_autocmd("BufWritePost", {
             pattern = { "*.js", "*.ts" },
@@ -323,9 +329,9 @@ require('nvim-treesitter.configs').setup {
 -- Use treesitter to do our folding
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = true
-vim.opt.foldclose = all
-vim.opt.foldminlines = 150
+vim.opt.foldenable = false
+-- vim.opt.foldclose = all
+-- vim.opt.foldminlines = 150
 
 -- fold autocommand
 -- ----------------
@@ -450,11 +456,6 @@ vim.keymap.set(
     end
 )
 
--- EditorConfig
--- ============
--- Don't let EditorConfig mess with our configuration
-vim.g.EditorConfig_preserve_formatoptions = 1
-
 -- Clear registers
 vim.api.nvim_create_user_command(
     'WipeReg',
@@ -507,7 +508,7 @@ vim.g.ledger_fuzzy_account_completion = 1
 require('pastify').setup {
     opts = {
         local_path = function()
-            return vim.fn.expand("%:r")
+            return vim.fn.expand("%:h")
         end,
     },
 }

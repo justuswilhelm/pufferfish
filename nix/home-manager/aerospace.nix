@@ -156,12 +156,26 @@ let
         run = [ "move-node-to-workspace 5" ];
       }
       {
+        "if".app-id = "com.apple.iCal";
+        run = [ "move-node-to-workspace 6" ];
+      }
+      {
+        "if".app-id = "org.libreoffice.script";
+        "if".window-title-regex-substring = "Delete Contents";
+        run = [ "layout floating" ];
+      }
+      {
         "if".app-id = "org.libreoffice.script";
         run = [ "layout tiling" ];
       }
       {
         "if".app-id = "com.utmapp.UTM";
         run = [ "layout floating" ];
+      }
+      {
+        "if".app-id = "net.ankiweb.dtop";
+        "if".window-title-regex-substring = ".+ - Anki";
+        run = "layout floating";
       }
     ];
   };

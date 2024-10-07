@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./home.nix
@@ -7,12 +7,18 @@
     ./linux-packages.nix
     ./foot.nix
     ./gdb.nix
+    ./locale-fix.nix
+    ./gpg.nix
     ./gpg-agent.nix
+    ./infosec.nix
+    ./infosec-linux.nix
   ];
 
   home.packages = [
     pkgs.tor-browser
   ];
+
+  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES/nix/generic";
 
   programs.i3status.modules = {
     "ethernet enp7s0" = {
@@ -24,33 +30,36 @@
     };
   };
 
-  programs.fish.loginShellInit = ''
-    # Only need to source this once
-    source /nix/var/nix/profiles/default/etc/profile.d/nix.fish
-
-    # If running from tty1 start sway
-    if [ (tty) = /dev/tty1 ]
-        exec sway
-    end
-  '';
   xdg.configFile = {
-    swayHelium = {
+    swayHeliumNixos = {
       text = ''
-        input type:keyboard {
-          xkb_layout x280
-        }
         # HiDPI setting
         output * {
           scale 1.5
         }
-        exec ${pkgs.keepassxc}/bin/keepassxc
       '';
-      target = "sway/config.d/helium";
+      target = "sway/config.d/helium-nixos";
     };
   };
 
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-  nix.package = pkgs.nix;
+  xresources = {
+    properties = {
+      # Dell U2720qm bought 2022 on Amazon Japan
+      # Has physical width x height
+      # 60.5 cm * 33.4 cm (approx)
+      # and claims 27 inches with 4K resolution (3840 x 2160)
+      # Which if we plug into
+      # https://www.sven.de/dpi/
+      # gives us
+      "Xft.dpi" = 163;
+    };
+  };
+
+  services.opensnitch-ui.enable = true;
+
+  programs.ssh = {
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+    };
+  };
 }

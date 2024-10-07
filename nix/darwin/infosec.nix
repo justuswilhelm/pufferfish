@@ -17,4 +17,13 @@ in
     shell = pkgs.fish;
   };
   users.knownUsers = [ user ];
+
+  # https://unix.stackexchange.com/a/585339
+  environment.etc.smbConf = {
+    text = ''
+      client min protocol = CORE
+      client max protocol = SMB3
+    '';
+    target = "samba/smb.conf";
+  };
 }

@@ -37,7 +37,7 @@ in
     logfile /var/log/projectify/projectify-redis.log
   '';
 
-  launchd.agents.projectify-redis = {
+  launchd.daemons.projectify-redis = {
     command = "${pkgs.redis}/bin/redis-server /etc/projectify/redis.conf";
     serviceConfig = {
       StandardOutPath = "${logPath}/projectify-redis.stdout.log";

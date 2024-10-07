@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
@@ -12,19 +13,48 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
-      url = "git+https://github.com/jwpconsulting/projectify.git?ref=main";
+      url = "git+https://github.com/jwpconsulting/projectify.git?tag=2024.8.20";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
   outputs =
     { self
     , nix-darwin
     , home-manager
     , nixpkgs
+    , nixpkgs-unstable
     , pomoglorbo
     , projectify
     }@inputs: {
       nixosConfigurations = {
+        helium =
+          let
+            system = "x86_64-linux";
+            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              ../nixos/helium/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                nixpkgs.overlays = [
+                  (final: previous: {
+                    john = pkgs-unstable.john;
+                  })
+                ];
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.justusperlwitz = import ../home-manager/helium.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/justusperlwitz";
+                  system = "nixos";
+                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
+                };
+              }
+            ];
+          };
         lithium-nixos =
           let
             system = "aarch64-linux";
@@ -75,21 +105,6 @@
           inherit pkgs;
 
           modules = [ ../home-manager/nitrogen.nix ];
-
-          extraSpecialArgs = {
-            homeDirectory = "/home/justusperlwitz";
-            inherit system;
-          };
-        };
-      homeConfigurations."justusperlwitz@helium" =
-        let
-          system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [ ../home-manager/helium.nix ];
 
           extraSpecialArgs = {
             homeDirectory = "/home/justusperlwitz";

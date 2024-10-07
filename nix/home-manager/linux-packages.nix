@@ -1,29 +1,37 @@
 { pkgs, ... }:
 {
   home.packages = [
-    # Compositor
-    # This won't load because of some OpenGL issue
-    # pkgs.sway
-    # Swaylock doesn't work well.
-    # pkgs.swaylock
-    # Disabling this just to be safe
-    # pkgs.swayidle
-    pkgs.bemenu
-    pkgs.grim
-    pkgs.slurp
+    # Communication
+    # =============
+    pkgs.signal-desktop
+    # File management
+    # ===============
+    pkgs.ncdu
+    pkgs.file
 
     # GUIs
+    # ====
     pkgs.keepassxc
 
     # Debugger
+    # ========
     pkgs.gdb
 
     # Nix
+    # ===
     # Not available on Darwin
     pkgs.cntr
 
     # Networking
-    # Marked broken
+    # ==========
     pkgs.mitmproxy
+
+    # Remote desktop
+    # ==============
+    pkgs.tigervnc
+
+    # Build tools
+    # ===========
+    pkgs.gnumake
   ];
 }

@@ -30,21 +30,24 @@
     (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
+    pkgs.ruff
 
-    # Compilers
+    # Build tools
+    pkgs.cmake
     pkgs.gcc
 
     # Debugger
     pkgs.qemu
 
     # Interpreters, VMs
-    pkgs.asdf-vm
-    pkgs.python310
     pkgs.poetry
     pkgs.jq
     pkgs.miller
     pkgs.nodejs_20
     pkgs.openjdk
+
+    # Python
+    pkgs.pipx
 
     # TUIs
     pkgs.htop
@@ -87,15 +90,17 @@
 
     # Secrets
     pkgs.gnupg
-    pkgs.pass
     pkgs.yubikey-manager
+
+    # Archive things
+    pkgs.gnutar
+    pkgs.unzip
 
     # Core tools
     pkgs.silver-searcher
     pkgs.ripgrep
     pkgs.fd
     pkgs.gnused
-    pkgs.gnutar
     pkgs.coreutils
     pkgs.moreutils
 

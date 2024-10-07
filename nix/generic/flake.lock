@@ -79,11 +79,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1720042825,
-        "narHash": "sha256-A0vrUB6x82/jvf17qPCpxaM+ulJnD8YZwH9Ci0BsAzE=",
+        "lastModified": 1726989464,
+        "narHash": "sha256-Vl+WVTJwutXkimwGprnEtXc/s/s8sMuXzqXaspIGlwM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "e1391fb22e18a36f57e6999c7a9f966dc80ac073",
+        "rev": "2f23fa308a7c067e52dfcc30a0758f47043ec176",
         "type": "github"
       },
       "original": {
@@ -100,11 +100,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723859949,
-        "narHash": "sha256-kiaGz4deGYKMjJPOji/JVvSP/eTefrIA3rAjOnOpXl4=",
+        "lastModified": 1727999297,
+        "narHash": "sha256-LTJuQPCsSItZ/8TieFeP30iY+uaLoD0mT0tAj1gLeyQ=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "076b9a905af8a52b866c8db068d6da475839d97b",
+        "rev": "8c8388ade72e58efdeae71b4cbb79e872c23a56b",
         "type": "github"
       },
       "original": {
@@ -159,16 +159,32 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1723688146,
-        "narHash": "sha256-sqLwJcHYeWLOeP/XoLwAtYjr01TISlkOfz+NG82pbdg=",
+        "lastModified": 1728193676,
+        "narHash": "sha256-PbDWAIjKJdlVg+qQRhzdSor04bAPApDqIv2DofTyynk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c3d4ac725177c030b1e289015989da2ad9d56af0",
+        "rev": "ecbc1ca8ffd6aea8372ad16be9ebbb39889e55b6",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
         "ref": "nixos-24.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1728018373,
+        "narHash": "sha256-NOiTvBbRLIOe5F6RbHaAh6++BNjsb149fGZd1T4+KBg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "bc947f541ae55e999ffdb4013441347d83b00feb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -255,18 +271,17 @@
         "poetry2nix": "poetry2nix_2"
       },
       "locked": {
-        "lastModified": 1723888391,
-        "narHash": "sha256-7DCPENr9h2eezxvpZEN2iBYUMECgRtDoKCz6CxSl7Ds=",
-        "ref": "main",
-        "rev": "89471a87477743337a4f0f78da0caaa5f330c9d4",
-        "revCount": 4881,
+        "lastModified": 1728031329,
+        "narHash": "sha256-NrUXhugG9uru8qCEo5Ich2mhHmwreZt5UKfd6O/ge4w=",
+        "ref": "refs/heads/main",
+        "rev": "3efe9b3cbdff8bc3ea631237806b6d0f5d6be6e0",
+        "revCount": 4891,
         "type": "git",
-        "url": "https://github.com/jwpconsulting/projectify.git"
+        "url": "https://github.com/jwpconsulting/projectify.git?tag=2024.8.20"
       },
       "original": {
-        "ref": "main",
         "type": "git",
-        "url": "https://github.com/jwpconsulting/projectify.git"
+        "url": "https://github.com/jwpconsulting/projectify.git?tag=2024.8.20"
       }
     },
     "root": {
@@ -274,6 +289,7 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-unstable": "nixpkgs-unstable",
         "pomoglorbo": "pomoglorbo",
         "projectify": "projectify"
       }

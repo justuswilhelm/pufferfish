@@ -1,15 +1,4 @@
 { lib, pkgs, config, options, specialArgs, ... }:
-let
-  isLinux = specialArgs.system == "debian" || specialArgs.system == "nixos";
-  homeDirectory = specialArgs.homeDirectory;
-  dotfiles = "${homeDirectory}/.dotfiles";
-  xdgConfigHome = "${homeDirectory}/.config";
-  xdgDataHome = "${homeDirectory}/.local/share";
-  xdgStateHome = "${homeDirectory}/.local/state";
-  xdgCacheHome =
-    if isLinux then
-      "${homeDirectory}/.cache" else "${homeDirectory}/Library/Caches";
-in
 {
   imports = [
     ./fish.nix
@@ -18,37 +7,40 @@ in
     ./cmus.nix
     ./nvim.nix
     ./neomutt.nix
-    ./gpg.nix
-    ./fish.nix
     ./packages.nix
     ./selenized.nix
+    ./gpg.nix
+    ./fish.nix
+    ./asdf.nix
+    ./passwordstore.nix
   ];
+
+  # TODO separate module
+  home.username = "justusperlwitz";
+  home.homeDirectory = specialArgs.homeDirectory;
+
 
   home.stateVersion = "24.05";
 
+  # TODO separate module
   home.sessionPath = [
-    "${dotfiles}/bin"
+    "${config.home.sessionVariables.DOTFILES}/bin"
   ];
 
+  # TODO separate module
   home.sessionVariables = {
-    DOTFILES = dotfiles;
+    DOTFILES = "${config.home.homeDirectory}/.dotfiles";
     XDG_CONFIG_HOME = config.xdg.configHome;
     XDG_DATA_HOME = config.xdg.dataHome;
     XDG_STATE_HOME = config.xdg.stateHome;
     XDG_CACHE_HOME = config.xdg.cacheHome;
     NNN_OPENER = "open";
-    PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
-  } // (lib.attrsets.optionalAttrs isLinux {
-    # Workaround for LANG issue
-    # https://github.com/nix-community/home-manager/issues/354#issuecomment-475803163
-    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-    # We always want to enable wayland in moz, since we start sway through the terminal
-    MOZ_ENABLE_WAYLAND = 1;
-  });
+  };
 
+  # TODO use home manager font config options
   xdg.dataFile = {
     iosevka = {
       source = ../../fonts/iosevka-fixed-regular.ttf;
@@ -56,6 +48,7 @@ in
     };
   };
 
+  # TODO refactor into separate module
   home.file = {
     pdbrc =
       let
@@ -104,27 +97,20 @@ in
     };
   };
 
+  # TODO separate module
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
   };
 
+  # TODO separate module
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
-    matchBlocks."*" = { };
-  };
-
-  xresources = {
-    properties = {
-      # Dell U2720qm bought 2022 on Amazon Japan
-      # Has physical width x height
-      # 60.5 cm * 33.4 cm (approx)
-      # and claims 27 inches with 4K resolution (3840 x 2160)
-      # Which if we plug into
-      # https://www.sven.de/dpi/
-      # gives us
-      "Xft.dpi" = 163;
+    extraOptionOverrides = {
+      IdentitiesOnly = "yes";
+      # This causes some problems on macOS
+      # IdentityFile = "/dev/null";
     };
   };
 }

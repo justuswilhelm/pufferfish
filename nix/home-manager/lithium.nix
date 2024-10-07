@@ -10,7 +10,18 @@ in
     ./timewarrior.nix
     ./pomoglorbo.nix
     ./infosec.nix
+    ./cmus.nix
   ];
+
+  programs.cmus = {
+    enable = true;
+    output_plugin = "coreaudio";
+  };
+
+  programs.tmux = {
+    pasteCommand = "pbpaste";
+    copyCommand = "pbcopy";
+  };
 
   programs.fish.loginShellInit =
     let
@@ -28,6 +39,7 @@ in
       fish_add_path --move --path ${path}
       set fish_user_paths $fish_user_paths
     '';
+  programs.fish.shellAliases.rebuild = "alacritty msg create-window -e $SHELL -c rebuild-nix-darwin";
   programs.git.ignores = [ ".DS_Store" ];
 
   home.file.xbar = {
@@ -40,5 +52,14 @@ in
   xdg.configFile.karabiner = {
     source = ../../karabiner/karabiner.json;
     target = "karabiner/karabiner.json";
+  };
+
+  programs.ssh = {
+    matchBlocks."*.local" = {
+      identityFile = "~/.ssh/id_rsa";
+    };
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa";
+    };
   };
 }
