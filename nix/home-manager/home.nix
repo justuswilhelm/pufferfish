@@ -109,7 +109,8 @@
     addKeysToAgent = "yes";
     extraOptionOverrides = {
       IdentitiesOnly = "yes";
-      IdentityFile = "/dev/null";
+      # This causes some problems on macOS
+      # IdentityFile = "/dev/null";
     };
   };
 }
