@@ -12,6 +12,7 @@ in
     ./modules/offlineimap.nix
     ./modules/borgmatic.nix
     ./modules/nix.nix
+    ./modules/openssh.nix
 
     ./caddy.nix
     ./anki.nix
@@ -49,12 +50,6 @@ in
       "${pkgs.ncurses}/share/terminfo"
       "${pkgs.alacritty.terminfo}/share/terminfo"
     ];
-  };
-  environment.etc = {
-    sshd_config = {
-      source = ./sshd_config;
-      target = "ssh/sshd_config";
-    };
   };
 
   # Rid ourselves of Apple Music automatically launching
