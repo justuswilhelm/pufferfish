@@ -6,4 +6,7 @@
   systemd.services.spice-vdagentd.wantedBy = [
     "multi-user.target"
   ];
+  environment.systemPackages = [
+    pkgs.xorg.xrandr
+  ];
 }
