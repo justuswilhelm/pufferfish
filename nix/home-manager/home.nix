@@ -15,11 +15,6 @@
     ./passwordstore.nix
   ];
 
-  # TODO separate module
-  home.username = "justusperlwitz";
-  home.homeDirectory = specialArgs.homeDirectory;
-
-
   home.stateVersion = "24.05";
 
   # TODO separate module
