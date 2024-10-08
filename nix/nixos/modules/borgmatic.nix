@@ -22,10 +22,6 @@ in
   services.borgmatic = {
     enable = true;
   };
-  environment.etc = {
-    borgmatic_base = {
-      source = yamlFormat.generate "borgmatic_base.yaml" config;
-      target = "borgmatic/base/borgmatic_base.yaml";
-    };
-  };
+  environment.etc."borgmatic/base/borgmatic_base.yaml".source =
+    yamlFormat.generate "borgmatic_base.yaml" config;
 }
