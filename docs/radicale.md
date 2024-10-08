@@ -11,5 +11,5 @@ sudo -u radicale mkdir /var/local/radicale/collections
 Create user account
 
 ```bash
-sudo -u radicale htpasswd /var/local/radicale/users $USER
+sudo -u radicale htpasswd -B -c /var/local/radicale/users $USER
 ```
