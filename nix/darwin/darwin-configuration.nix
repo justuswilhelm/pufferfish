@@ -13,6 +13,7 @@ in
     ./modules/borgmatic.nix
     ./modules/nix.nix
     ./modules/openssh.nix
+    ./modules/radicale.nix
 
     ./caddy.nix
     ./anki.nix
