@@ -108,6 +108,7 @@
         requests
         pandas
         cryptography
+        nclib
       ]
     ))
 
