@@ -18,8 +18,6 @@ Plug("leafgarland/typescript-vim")
 Plug("othree/html5.vim")
 Plug("pangloss/vim-javascript")
 Plug("nvim-orgmode/orgmode")
--- Read .editorconfig
-Plug("editorconfig/editorconfig-vim")
 -- If this isn't enabled, indentation on the next line is wrong.
 Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
 Plug("ledger/vim-ledger", {["for"] = "ledger"})
@@ -457,11 +455,6 @@ vim.keymap.set(
         require("rgflow").open(path)
     end
 )
-
--- EditorConfig
--- ============
--- Don't let EditorConfig mess with our configuration
-vim.g.EditorConfig_preserve_formatoptions = 1
 
 -- Clear registers
 vim.api.nvim_create_user_command(

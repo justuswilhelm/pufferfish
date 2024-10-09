@@ -35,3 +35,15 @@ https://lithium.local:10101 {
 		output file /var/log/caddy/anki.log
 	}
 }
+
+# Radicale
+https://lithium.local:10102 {
+	import certs
+
+	reverse_proxy localhost:18110
+
+	log {
+		format console
+		output file /var/log/caddy/radicale.log
+	}
+}

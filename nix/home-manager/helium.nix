@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, specialArgs, ... }:
 {
   imports = [
     ./home.nix
@@ -13,6 +13,9 @@
     ./infosec.nix
     ./infosec-linux.nix
   ];
+
+  home.username = "justusperlwitz";
+  home.homeDirectory = specialArgs.homeDirectory;
 
   home.packages = [
     pkgs.tor-browser

@@ -3,4 +3,10 @@
 {
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
+  systemd.services.spice-vdagentd.wantedBy = [
+    "multi-user.target"
+  ];
+  environment.systemPackages = [
+    pkgs.xorg.xrandr
+  ];
 }

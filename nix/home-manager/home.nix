@@ -16,11 +16,6 @@
     ./passwordstore.nix
   ];
 
-  # TODO separate module
-  home.username = "justusperlwitz";
-  home.homeDirectory = specialArgs.homeDirectory;
-
-
   home.stateVersion = "24.05";
 
   # TODO separate module
@@ -110,7 +105,8 @@
     addKeysToAgent = "yes";
     extraOptionOverrides = {
       IdentitiesOnly = "yes";
-      IdentityFile = "/dev/null";
+      # This causes some problems on macOS
+      # IdentityFile = "/dev/null";
     };
   };
 }

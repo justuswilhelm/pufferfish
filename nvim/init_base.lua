@@ -20,6 +20,12 @@ vim.opt.clipboard:append({"unnamedplus"})
 vim.opt.history = 1000
 vim.opt.undolevels = 1000
 
+-- EditorConfig
+-- ============
+-- Now default feature in neovim
+-- https://neovim.io/doc/user/editorconfig.html
+vim.g.editorconfig = true
+
 -- Visual
 -- ======
 -- Color scheme
