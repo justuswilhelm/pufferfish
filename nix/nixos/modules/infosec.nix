@@ -6,6 +6,8 @@ in
   networking.firewall.allowedTCPPorts = [
     # For reverse shell with openvpn
     4444
+    # Another rev shell port
+    4445
     # For http server
     8080
   ];
