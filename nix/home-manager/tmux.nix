@@ -22,7 +22,7 @@ in
         ${builtins.readFile ../../tmux/tmux.conf}
         ${builtins.readFile ../../tmux/vim-tmux-navigator.conf}
         # Copy & paste
-        bind-key ']' run "${cfg.pasteCommand} | tmux load-buffer - " \; paste-buffer -p
+        bind-key ']' run "${cfg.pasteCommand} | tmux load-buffer - " \; paste-buffer -p -r
         bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel '${cfg.copyCommand}'
       '';
       # Set longer scrollback buffer
