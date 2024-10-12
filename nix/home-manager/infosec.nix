@@ -45,6 +45,7 @@
     # DNS
     # ===
     pkgs.dig
+    pkgs.dnsrecon
 
     # Packet sniffing
     # ===============
@@ -86,6 +87,11 @@
     # WebDAV
     # ======
     pkgs.davtest
+
+    # Windows Authentication
+    # ======================
+    pkgs.kerbrute
+    pkgs.openldap
 
     # SSH
     # ===
