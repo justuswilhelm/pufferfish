@@ -79,19 +79,21 @@
     # =========
     pkgs.exiftool
 
-    # Samba
+    # Windows (RPC, SMB, LDAP, Kerberos)
     # =====
     pkgs.samba
-    pkgs.python3Packages.impacket
+    # pkgs.python3Packages.impacket
+    pkgs.kerbrute
+    pkgs.openldap
+    pkgs.crackmapexec
+    pkgs.enum4linux
+    pkgs.enum4linux-ng
+    pkgs.responder
+    pkgs.coercer
 
     # WebDAV
     # ======
     pkgs.davtest
-
-    # Windows Authentication
-    # ======================
-    pkgs.kerbrute
-    pkgs.openldap
 
     # SSH
     # ===
@@ -115,6 +117,7 @@
         pandas
         cryptography
         nclib
+        impacket
       ]
     ))
 
