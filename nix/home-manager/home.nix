@@ -20,9 +20,6 @@
     ./passwordstore.nix
   ];
 
-  # TODO separate module
-  home.username = "justusperlwitz";
-
   home.stateVersion = "24.05";
 
   programs.home-manager.enable = true;

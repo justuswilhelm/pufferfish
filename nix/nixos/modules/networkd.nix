@@ -35,6 +35,7 @@
     # For debugging
     tcpdump
     ethtool
+    wireshark
     arp-scan
   ];
 }
