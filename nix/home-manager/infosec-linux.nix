@@ -33,5 +33,7 @@
     # Windows
     # =======
     pkgs.crackmapexec
+    pkgs.bloodhound
+    pkgs.bloodhound-py
   ];
 }
