@@ -27,5 +27,9 @@
       # odpic causes issues on Darwin
       cx-oracle = null;
     })
+
+    # Windows
+    # =======
+    pkgs.crackmapexec
   ];
 }
