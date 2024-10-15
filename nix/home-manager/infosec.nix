@@ -111,6 +111,7 @@
         cryptography
       ]
     ))
+    pkgs.jwt-cli
 
     # PHP
     # ===
