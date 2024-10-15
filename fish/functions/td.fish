@@ -16,7 +16,7 @@ function td -d "Create a new tmux session in a given directory"
     end
 
     if ! grep $rlpath $hist_file
-        echo  >> $hist_file
+        echo $rlpath >> $hist_file
     end
 
     if ! set session_name (basename $dir)
