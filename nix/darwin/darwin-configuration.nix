@@ -128,6 +128,7 @@ in
       wvous-tl-corner = 1;
       wvous-tr-corner = 1;
       mru-spaces = false;
+      autohide = true;
     };
     # Hide desktop, show all extensions
     finder = {
@@ -135,7 +136,18 @@ in
       CreateDesktop = false;
       FXEnableExtensionChangeWarning = false;
     };
+    loginwindow = {
+      GuestEnabled = false;
+    };
+    universalaccess = {
+      reduceMotion = true;
+    };
+    screensaver.askForPassword = true;
+    ".GlobalPreferences" = {
+      "com.apple.mouse.scaling" = -1.0;
+    };
   };
+  system.startup.chime = false;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
