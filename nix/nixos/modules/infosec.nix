@@ -12,6 +12,11 @@ in
     8080
   ];
 
+  # Add overrides
+  networking.hosts = {
+    # Ex. "10.10.10.1" = [ "domain1.tld" "domain2.tld" ];
+  };
+
   # Bloodhound
   environment.systemPackages = [
     pkgs.bloodhound
