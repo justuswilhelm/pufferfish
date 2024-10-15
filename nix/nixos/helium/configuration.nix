@@ -11,6 +11,9 @@
       ../modules/infosec.nix
       ../modules/ime.nix
       ../modules/nix.nix
+      ../modules/man.nix
+      ../modules/compat.nix
+      ../modules/opensnitch.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
@@ -79,8 +82,6 @@
   ];
 
   services.openssh.enable = true;
-
-  services.opensnitch.enable = true;
 
   services.postgresql = {
     enable = true;

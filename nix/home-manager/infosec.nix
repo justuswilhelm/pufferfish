@@ -46,6 +46,7 @@
     # DNS
     # ===
     pkgs.dig
+    pkgs.dnsrecon
 
     # Packet sniffing
     # ===============
@@ -79,10 +80,15 @@
     # =========
     pkgs.exiftool
 
-    # Samba
+    # Windows (RPC, SMB, LDAP, Kerberos)
     # =====
     pkgs.samba
-    pkgs.python3Packages.impacket
+    # pkgs.python3Packages.impacket
+    pkgs.kerbrute
+    pkgs.enum4linux
+    pkgs.enum4linux-ng
+    pkgs.responder
+    pkgs.coercer
 
     # WebDAV
     # ======
@@ -98,6 +104,8 @@
     pkgs.mongosh
     pkgs.postgresql
     pkgs.mysql84
+    pkgs.pysqlrecon
+    pkgs.sqsh
 
     # Cryptography
     # ============
@@ -109,6 +117,8 @@
         requests
         pandas
         cryptography
+        nclib
+        impacket
       ]
     ))
     pkgs.jwt-cli

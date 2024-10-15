@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 let
   user = "delighted-negotiate-catchy";
 in
@@ -6,9 +6,35 @@ in
   networking.firewall.allowedTCPPorts = [
     # For reverse shell with openvpn
     4444
+    # Another rev shell port
+    4445
     # For http server
     8080
   ];
+
+  # Add overrides
+  networking.hosts = {
+    # Ex. "10.10.10.1" = [ "domain1.tld" "domain2.tld" ];
+  };
+
+  # Bloodhound
+  environment.systemPackages = [
+    pkgs.bloodhound
+  ];
+  services.neo4j = {
+    enable = true;
+    http.enable = false;
+    https.enable = false;
+    # This is needed:
+    # extraServerConfig = ''
+    #   dbms.security.auth_enabled=false
+    # '';
+    # Ideally it would just offer domain sockets...
+    bolt = {
+      listenAddress = "127.0.0.1:7687";
+      tlsLevel = "DISABLED";
+    };
+  };
 
   users.groups.${user} = { };
   users.users.${user} = {

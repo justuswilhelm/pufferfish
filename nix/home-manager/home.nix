@@ -5,6 +5,7 @@
     ./modules/fonts.nix
     ./modules/pdb.nix
     ./modules/ssh.nix
+    ./modules/man.nix
 
     ./fish.nix
     ./git.nix

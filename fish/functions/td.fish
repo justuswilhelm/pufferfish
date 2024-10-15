@@ -4,9 +4,19 @@ function td -d "Create a new tmux session in a given directory"
         echo "Couldn't make directory for hist_file $hist_file"
         return 1
     end
-    if ! set dir (fd -t d | fzf --scheme=history --history=$hist_file)
+
+    if ! set dir (begin tac $hist_file; fd -t d -d 4; end | fzf --scheme=history)
         echo "Couldn't determine new tmux session directory"
         return 1
+    end
+
+    if ! set rlpath (realpath $dir)
+        echo "Could not determine directory $dir's realpath"
+        return 1
+    end
+
+    if ! grep $rlpath $hist_file
+        echo  >> $hist_file
     end
 
     if ! set session_name (basename $dir)

@@ -95,6 +95,7 @@
     # Archive things
     pkgs.gnutar
     pkgs.unzip
+    pkgs.p7zip
 
     # Core tools
     pkgs.silver-searcher

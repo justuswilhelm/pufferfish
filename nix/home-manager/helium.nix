@@ -1,6 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, specialArgs, ... }:
 {
   imports = [
+    ./modules/opensnitch.nix
     ./home.nix
     ./sway.nix
     ./firefox.nix
@@ -57,8 +58,6 @@
       "Xft.dpi" = 163;
     };
   };
-
-  services.opensnitch-ui.enable = true;
 
   programs.ssh = {
     matchBlocks."github.com" = {

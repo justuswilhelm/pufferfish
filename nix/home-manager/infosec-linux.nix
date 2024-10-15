@@ -20,6 +20,8 @@
     pkgs.netexec
     pkgs.openssl
     pkgs.wireshark
+    # For clock skews
+    pkgs.libfaketime
 
     # Cracking
     # ========
@@ -27,5 +29,12 @@
       # odpic causes issues on Darwin
       cx-oracle = null;
     })
+
+    # Windows
+    # =======
+    pkgs.crackmapexec
+    pkgs.bloodhound
+    pkgs.bloodhound-py
+    pkgs.openldap
   ];
 }

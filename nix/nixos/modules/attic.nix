@@ -1,5 +1,5 @@
 # Use attic on lithium.local
-{ ... } :
+{ ... }:
 let
   cache-url = "https://lithium.local:10100/lithium-default";
 in
