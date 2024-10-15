@@ -85,7 +85,6 @@
     # pkgs.python3Packages.impacket
     pkgs.kerbrute
     pkgs.openldap
-    pkgs.crackmapexec
     pkgs.enum4linux
     pkgs.enum4linux-ng
     pkgs.responder
