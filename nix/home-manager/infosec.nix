@@ -105,6 +105,8 @@
     pkgs.mongosh
     pkgs.postgresql
     pkgs.mysql84
+    pkgs.pysqlrecon
+    pkgs.sqsh
 
     # Cryptography
     # ============
