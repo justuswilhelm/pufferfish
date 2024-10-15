@@ -5,7 +5,7 @@ function td -d "Create a new tmux session in a given directory"
         return 1
     end
 
-    if ! set dir (begin fd -t d; sort -u $hist_file; end | fzf --tac --scheme=history)
+    if ! set dir (begin tac $hist_file; fd -t d -d 4; end | fzf --scheme=history)
         echo "Couldn't determine new tmux session directory"
         return 1
     end
