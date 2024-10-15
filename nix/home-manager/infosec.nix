@@ -89,6 +89,8 @@
     pkgs.enum4linux-ng
     pkgs.responder
     pkgs.coercer
+    pkgs.bloodhound
+    pkgs.bloodhound-py
 
     # WebDAV
     # ======
