@@ -35,5 +35,6 @@
     pkgs.crackmapexec
     pkgs.bloodhound
     pkgs.bloodhound-py
+    pkgs.openldap
   ];
 }

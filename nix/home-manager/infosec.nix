@@ -84,7 +84,6 @@
     pkgs.samba
     # pkgs.python3Packages.impacket
     pkgs.kerbrute
-    pkgs.openldap
     pkgs.enum4linux
     pkgs.enum4linux-ng
     pkgs.responder
