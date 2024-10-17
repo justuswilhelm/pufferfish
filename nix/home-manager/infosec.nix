@@ -37,6 +37,10 @@
     pkgs.whois
     pkgs.nmap
 
+    # Exploits
+    # ========
+    pkgs.exploitdb
+
     # Network utils
     # =============
     pkgs.socat
