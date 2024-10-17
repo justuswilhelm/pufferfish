@@ -62,23 +62,32 @@ pushd "$tmp" || exit
 
 # phases detection taken from
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/stdenv/generic/setup.sh
+IFS=' '
+read -ra prePhasesArr <<< "$prePhases"
+read -ra preConfigurePhasesArr <<< "$preConfigurePhases"
+read -ra preBuildPhasesArr <<< "$preBuildPhases"
+read -ra preInstallPhasesArr <<< "$preInstallPhases"
+read -ra preFixupPhasesArr <<< "$preFixupPhases"
+read -ra preDistPhasesArr <<< "$preDistPhases"
+read -ra postPhasesArr <<< "$postPhasesArr"
+
 declare -a all_phases=(
-     "${prePhases[@]}"
+     "${prePhasesArr[@]}"
      unpackPhase
      patchPhase
-     "${preConfigurePhases[@]}"
+     "${preConfigurePhasesArr[@]}"
      configurePhase
-     "${preBuildPhases[@]}"
+     "${preBuildPhasesArr[@]}"
      buildPhase
      checkPhase
-     "${preInstallPhases[@]}"
+     "${preInstallPhasesArr[@]}"
      installPhase
-     "${preFixupPhases[@]}"
+     "${preFixupPhasesArr[@]}"
      fixupPhase
      installCheckPhase
-     "${preDistPhases[@]}"
+     "${preDistPhasesArr[@]}"
      distPhase
-     "${postPhases[@]}"
+     "${postPhasesArr[@]}"
 )
 
 shell="$(which bash)"
