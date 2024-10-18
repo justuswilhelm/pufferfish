@@ -74,6 +74,8 @@
     pkgs.thc-hydra
     pkgs.john
     pkgs.hashcat
+    # pw hashing, e.g., nettle-pbkdf2
+    pkgs.nettle
 
     # Files
     # =====
