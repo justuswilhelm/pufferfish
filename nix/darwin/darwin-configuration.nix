@@ -139,9 +139,6 @@ in
     loginwindow = {
       GuestEnabled = false;
     };
-    universalaccess = {
-      reduceMotion = true;
-    };
     screensaver.askForPassword = true;
     ".GlobalPreferences" = {
       "com.apple.mouse.scaling" = -1.0;
