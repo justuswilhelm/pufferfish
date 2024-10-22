@@ -7,7 +7,7 @@
       IdentitiesOnly = "yes";
       IdentityFile = "/dev/null";
       # Avoid leaking our current user name
-      User = "root";
+      # User = "root";
       # Avoid being prompted for password. Re-enable if needed for specific
       # hosts
       PasswordAuthentication = "no";
