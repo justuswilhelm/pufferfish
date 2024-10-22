@@ -2,6 +2,10 @@
 { pkgs, ... }:
 {
   home.packages = [
+    # Reverse engineering
+    # ===================
+    pkgs.python3Packages.ropper
+
     # Exploits
     # =======
     pkgs.metasploit
