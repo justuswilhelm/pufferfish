@@ -126,7 +126,26 @@ let
         Require all granted
       </Directory>
     '';
-
+  overlays = [
+    (final: previous: {
+      monitoring-plugins = (previous.monitoring-plugins.overrideAttrs (
+        final: previous: rec {
+          version = "2.4.0";
+          src = pkgs.fetchFromGitHub {
+            owner = "monitoring-plugins";
+            repo = "monitoring-plugins";
+            rev = "v${version}";
+            sha256 = "sha256-J9fzlxIpujoG7diSRscFhmEV9HpBOxFTJSmGGFjAzcM=";
+          };
+          patches = [ ./monitoring-plugins.patch ];
+          meta.platforms = pkgs.lib.platforms.all;
+        }
+      )).override {
+        lm_sensors = null;
+        net-snmp = null;
+      };
+    })
+  ];
 in
 {
   imports = [
@@ -152,9 +171,7 @@ in
       plugins = mkOption {
         type = types.listOf types.package;
 
-        # XXX won't build on macos:
-        # monitoring-plugins
-        default = with pkgs; [ msmtp mailutils ];
+        default = with pkgs; [ monitoring-plugins msmtp mailutils ];
         defaultText = literalExpression "[pkgs.monitoring-plugins pkgs.msmtp pkgs.mailutils]";
         description = ''
           Packages to be added to the Nagios {env}`PATH`.
@@ -226,6 +243,7 @@ in
 
 
   config = mkIf cfg.enable {
+    nixpkgs.overlays = overlays;
     users.users.nagios = {
       description = "Nagios user";
       uid = 1100;
