@@ -28,6 +28,8 @@ let
 
   nagiosState = "/var/nagios";
   nagiosLogDir = "/var/log/nagios";
+  nagiosHttpdState = "/var/nagios-httpd";
+  nagiosHttpdLogDir = "/var/log/nagios-httpd";
   urlPath = "/nagios";
 
   nagiosObjectDefs = cfg.objectDefs;
@@ -116,7 +118,11 @@ let
     })).override {
     apacheHttpd = httpd;
     apxs2Support = true;
-  }).withExtensions ({ all, ... }: with all; ([]));
+    # available extensions:
+  }).withExtensions ({ all, ... }: with all; ([
+    # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/interpreters/php/8.3.nix
+    filter
+  ]));
 
   # https://github.com/NixOS/nixpkgs/blob/54830391487253422f0ccab55fc557b2e725ace0/nixos/modules/services/web-servers/apache-httpd/default.nix#L319
   phpIni = pkgs.runCommand "php.ini"
@@ -144,14 +150,14 @@ let
 
     AddType application/x-httpd-php    .php .phtml
 
-    PidFile ${nagiosState}/httpd.pid
+    PidFile ${nagiosHttpdState}/httpd.pid
 
     ServerName localhost
     Listen 18120
 
     # Logging
-    ErrorLog "${nagiosLogDir}/httpd.error.log"
-    CustomLog "${nagiosLogDir}/httpd.access.log" common
+    ErrorLog "${nagiosHttpdLogDir}/httpd.error.log"
+    CustomLog "${nagiosHttpdLogDir}/httpd.access.log" common
 
     ScriptAlias ${urlPath}/cgi-bin ${pkgs.nagios}/sbin
 
@@ -294,18 +300,31 @@ in
       gid = 1100;
       isHidden = true;
     };
-    # TODO make separate nagios-httpd user
-    users.knownUsers = [ "nagios" ];
+    # TODO make disable-able
+    users.users.nagios-httpd = {
+      description = "Nagios Httpd user";
+      uid = 1105;
+      home = nagiosHttpdState;
+      gid = 1105;
+      isHidden = true;
+    };
+    users.knownUsers = [ "nagios" "nagios-httpd"];
     users.groups.nagios = {
       gid = 1100;
     };
-    users.knownGroups = [ "nagios" ];
+    users.groups.nagios-httpd = {
+      gid = 1105;
+    };
+    users.knownGroups = [ "nagios" "nagios-httpd" ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
-    environment.etc."nagios.cfg".source = nagiosCfgFile;
-    environment.etc."nagios.httpd.conf".source = httpdConfig;
-    environment.etc."nagios.php.ini".source = phpIni;
+    environment.etc."nagios/nagios.cfg".source = nagiosCfgFile;
+    # TODO make these two optional
+    environment.etc."nagios/httpd.conf".source = httpdConfig;
+    environment.etc."nagios/httpd.conf".enable = cfg.enableWebInterface;
+    environment.etc."nagios/php.ini".source = phpIni;
+    environment.etc."nagios/php.ini".enable = cfg.enableWebInterface;
 
     environment.systemPackages = [ pkgs.nagios ];
     launchd.daemons.nagios = {
@@ -326,31 +345,40 @@ in
           NumberOfFiles = 32768;
         };
       };
-      command = "${pkgs.nagios}/bin/nagios /etc/nagios.cfg";
+      command = "${pkgs.nagios}/bin/nagios /etc/nagios/nagios.cfg";
     };
+
+    environment.launchDaemons.nagios-httpd.enable = cfg.enableWebInterface;
     launchd.daemons.nagios-httpd = {
       path = [ httpd ];
       serviceConfig = {
-        UserName = "nagios";
-        GroupName = "nagios";
+        UserName = "nagios-httpd";
+        GroupName = "nagios-httpd";
         KeepAlive = true;
         EnvironmentVariables = {
-          PHPRC = "/etc/nagios.php.ini";
+          PHPRC = "/etc/nagios/php.ini";
         };
-        StandardOutPath = "${nagiosLogDir}/httpd.stdout.log";
-        StandardErrorPath = "${nagiosLogDir}/httpd.stderr.log";
-        WorkingDirectory = nagiosState;
+        StandardOutPath = "${nagiosHttpdLogDir}/httpd.stdout.log";
+        StandardErrorPath = "${nagiosHttpdLogDir}/httpd.stderr.log";
+        WorkingDirectory = nagiosHttpdState;
       };
-      command = "${httpd}/bin/httpd -D FOREGROUND -f /etc/nagios.httpd.conf";
+      command = "${httpd}/bin/httpd -D FOREGROUND -f /etc/nagios/httpd.conf";
     };
+
+    # TODO make this optional
     system.activationScripts.postActivation = {
       text = ''
         echo "Ensuring nagios directories exist"
-        mkdir -p ${nagiosLogDir}
-        mkdir -p ${nagiosState}
-        chown nagios:nagios ${nagiosLogDir} ${nagiosState}
+        mkdir -vp ${nagiosLogDir}
+        mkdir -vp ${nagiosState}
+        chown -v nagios:nagios ${nagiosLogDir} ${nagiosState}
         echo "Restarting nagios"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios
+
+        echo "Ensuring nagios httpd directories exist"
+        mkdir -vp ${nagiosHttpdState}
+        mkdir -vp ${nagiosHttpdLogDir}
+        chown -v nagios-httpd:nagios-httpd ${nagiosHttpdState} ${nagiosHttpdLogDir}
         echo "Restarting nagios-httpd"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios-httpd
       '';
