@@ -59,7 +59,7 @@ in
   # Other sources say this works:
   # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
   # But unload is deprecated in newer versions of launchd
-  system.activationScripts.extraActivation = {
+  system.activationScripts.postUserActivation = {
     text = ''
       sudo -u ${name} launchctl bootout gui/${builtins.toString uid}/com.apple.rcd || echo "Already booted out"
       sudo -u ${name} launchctl disable gui/${builtins.toString uid}/com.apple.rcd || echo "Already disabled"
