@@ -102,13 +102,20 @@ let
     in
     if cfg.mainConfigFile == null then defaultCfgFile else cfg.mainConfigFile;
 
-  # Plain configuration for the Nagios web-interface with no
-  # authentication.
+  # Plain configuration for the Nagios web-interface with http basic auth
+  # https://docs.redhat.com/en/documentation/red_hat_gluster_storage/3/html/administration_guide/sect-nagios_advanced_configuration
   nagiosCGICfgFile = pkgs.writeText "nagios.cgi.conf"
     ''
       main_config_file=${nagiosCfgFile}
-      use_authentication=0
+      use_authentication=1
       url_html_path=${urlPath}
+      authorized_for_system_information=nagiosadmin
+      authorized_for_configuration_information=nagiosadmin
+      authorized_for_system_commands=nagiosadmin
+      authorized_for_all_services=nagiosadmin
+      authorized_for_all_hosts=nagiosadmin
+      authorized_for_all_service_commands=nagiosadmin
+      authorized_for_all_host_commands=nagiosadmin
     '';
 
   httpd = pkgs.apacheHttpd;
@@ -139,16 +146,23 @@ let
     LoadModule alias_module ${httpd}/modules/mod_alias.so
     LoadModule cgi_module ${httpd}/modules/mod_cgi.so
     LoadModule dir_module ${httpd}/modules/mod_dir.so
+    # This is so that apache can fork?
     LoadModule mpm_prefork_module ${httpd}/modules/mod_mpm_prefork.so
     LoadModule log_config_module ${httpd}/modules/mod_log_config.so
+    # Authentication
+    LoadModule authn_core_module ${httpd}/modules/mod_authn_core.so
+    LoadModule auth_basic_module ${httpd}/modules/mod_auth_basic.so
+    LoadModule authn_file_module ${httpd}/modules/mod_authn_file.so
+    # 'Require' directive
     LoadModule authz_core_module ${httpd}/modules/mod_authz_core.so
+    LoadModule authz_user_module ${httpd}/modules/mod_authz_user.so
+    # Something for file access
     LoadModule unixd_module ${httpd}/modules/mod_unixd.so
-    LoadModule mime_module ${httpd}/modules/mod_mime.so
     # Scary PHP
-
+    LoadModule mime_module ${httpd}/modules/mod_mime.so
     LoadModule php_module ${php}/modules/libphp.so
 
-    AddType application/x-httpd-php    .php .phtml
+    AddType application/x-httpd-php .php
 
     PidFile ${nagiosHttpdState}/httpd.pid
 
@@ -157,14 +171,21 @@ let
 
     # Logging
     ErrorLog "${nagiosHttpdLogDir}/httpd.error.log"
+    LogFormat "%h %l %u %t \"%r\" %>s %b" common
     CustomLog "${nagiosHttpdLogDir}/httpd.access.log" common
 
     ScriptAlias ${urlPath}/cgi-bin ${pkgs.nagios}/sbin
 
+    # This http basic auth config will definitely get me hacked
     <Directory "${pkgs.nagios}/sbin">
       Options ExecCGI
-      Require all granted
       SetEnv NAGIOS_CGI_CONFIG ${cfg.cgiConfigFile}
+      AllowOverride None
+      AuthType Basic
+      AuthName "Nagios Access"
+      AuthBasicProvider file
+      AuthUserFile ${nagiosHttpdState}/htpasswd.users
+      Require valid-user
     </Directory>
 
     Alias ${urlPath} ${pkgs.nagios}/share
@@ -172,7 +193,7 @@ let
     <Directory "${pkgs.nagios}/share">
       Options None
       Require all granted
-        DirectoryIndex index.php
+      DirectoryIndex index.php
     </Directory>
   '';
   overlays = [
@@ -309,13 +330,20 @@ in
       isHidden = true;
     };
     users.knownUsers = [ "nagios" "nagios-httpd"];
+
     users.groups.nagios = {
       gid = 1100;
     };
     users.groups.nagios-httpd = {
       gid = 1105;
     };
-    users.knownGroups = [ "nagios" "nagios-httpd" ];
+    users.groups.nagios-cmd = {
+      gid = 1106;
+      members = [ "nagios" "nagios-httpd" ];
+    };
+    # Allow cgi file to write to nagios.cmd file
+    # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
+    users.knownGroups = [ "nagios" "nagios-httpd" "nagios-cmd" ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
@@ -326,7 +354,7 @@ in
     environment.etc."nagios/php.ini".source = phpIni;
     environment.etc."nagios/php.ini".enable = cfg.enableWebInterface;
 
-    environment.systemPackages = [ pkgs.nagios ];
+    environment.systemPackages = [ pkgs.nagios pkgs.monitoring-plugins ];
     launchd.daemons.nagios = {
       path = [ pkgs.nagios ] ++ cfg.plugins;
 
@@ -366,19 +394,28 @@ in
     };
 
     # TODO make this optional
+    # Create nagiosadmin user with
+    # sudo -u nagios-httpd htpasswd -B /var/nagios-httpd/htpasswd.users nagiosadmin
     system.activationScripts.postActivation = {
       text = ''
         echo "Ensuring nagios directories exist"
         mkdir -vp ${nagiosLogDir}
         mkdir -vp ${nagiosState}
-        chown -v nagios:nagios ${nagiosLogDir} ${nagiosState}
+        chown -v nagios:nagios ${nagiosLogDir}
+        echo "Ensuring nagios-cmd group can access ${nagiosState}"
+        chown -v nagios:nagios-cmd ${nagiosState}
+        chmod -v ug+rwx,g+s,o= ${nagiosState}
+
         echo "Restarting nagios"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios
 
         echo "Ensuring nagios httpd directories exist"
         mkdir -vp ${nagiosHttpdState}
         mkdir -vp ${nagiosHttpdLogDir}
+        chmod -v 700 ${nagiosHttpdState}
         chown -v nagios-httpd:nagios-httpd ${nagiosHttpdState} ${nagiosHttpdLogDir}
+        sudo -u nagios-httpd touch ${nagiosHttpdState}/htpasswd.users
+        chmod -v 600 ${nagiosHttpdState}/htpasswd.users
         echo "Restarting nagios-httpd"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios-httpd
       '';
