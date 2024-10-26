@@ -27,6 +27,8 @@ let
   cfg = config.services.nagios;
 
   nagiosState = "/var/nagios";
+  nagiosRw = "/var/nagios-rw";
+  # TODO create separate directory for nagios-cmd things
   nagiosLogDir = "/var/log/nagios";
   nagiosHttpdState = "/var/nagios-httpd";
   nagiosHttpdLogDir = "/var/log/nagios-httpd";
@@ -52,7 +54,7 @@ let
         state_retention_file = "${nagiosState}/retention.dat";
         query_socket = "${nagiosState}/nagios.qh";
         check_result_path = "${nagiosState}";
-        command_file = "${nagiosState}/nagios.cmd";
+        command_file = "${nagiosRw}/nagios.cmd";
         cfg_dir = "${nagiosObjectDefsDir}";
         nagios_user = "nagios";
         nagios_group = "nagios";
@@ -85,6 +87,7 @@ let
         # ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
         #⠀⠀⠀⠀
         check_for_updates = "0";
+        resource_file=nagiosResourceFile;
       };
       lines = mapAttrsToList (key: value: "${key}=${value}") (default // cfg.extraConfig);
       content = concatStringsSep "\n" lines;
@@ -117,6 +120,10 @@ let
       authorized_for_all_service_commands=nagiosadmin
       authorized_for_all_host_commands=nagiosadmin
     '';
+
+  nagiosResourceFile = pkgs.writeText "resource.cfg" ''
+    $USER1$=${pkgs.monitoring-plugins}/bin
+  '';
 
   httpd = pkgs.apacheHttpd;
   php = ((pkgs.php.overrideAttrs
@@ -399,12 +406,12 @@ in
     system.activationScripts.postActivation = {
       text = ''
         echo "Ensuring nagios directories exist"
-        mkdir -vp ${nagiosLogDir}
-        mkdir -vp ${nagiosState}
+        mkdir -vp ${nagiosLogDir} ${nagiosState} ${nagiosRw}
         chown -v nagios:nagios ${nagiosLogDir}
-        echo "Ensuring nagios-cmd group can access ${nagiosState}"
-        chown -v nagios:nagios-cmd ${nagiosState}
-        chmod -v ug+rwx,g+s,o= ${nagiosState}
+        chown -v nagios:nagios-cmd ${nagiosState} ${nagiosRw}
+        chmod -v u+rwx,g=rx,o= ${nagiosState}
+        echo "Ensuring nagios-cmd group can access ${nagiosRw}"
+        chmod -v ug+rwx,g+s,o= ${nagiosRw}
 
         echo "Restarting nagios"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios

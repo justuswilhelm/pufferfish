@@ -77,7 +77,14 @@ in
     enable = true;
     enableWebInterface = true;
     objectDefs = [
-      ./lithium/nagios.cfg
+      # Template things
+      ./lithium/nagios/commands.cfg
+      ./lithium/nagios/contacts.cfg
+      ./lithium/nagios/templates.cfg
+      ./lithium/nagios/timeperiods.cfg
+      # My config
+      ./lithium/nagios/services.cfg
+      ./lithium/nagios/hosts.cfg
     ];
   };
 
