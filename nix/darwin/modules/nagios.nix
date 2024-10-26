@@ -104,28 +104,71 @@ let
   # authentication.
   nagiosCGICfgFile = pkgs.writeText "nagios.cgi.conf"
     ''
-      main_config_file=${cfg.mainConfigFile}
+      main_config_file=${nagiosCfgFile}
       use_authentication=0
       url_html_path=${urlPath}
     '';
 
-  extraHttpdConfig =
+  httpd = pkgs.apacheHttpd;
+  php = ((pkgs.php.overrideAttrs
+    (previous: {
+      buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
+    })).override {
+    apacheHttpd = httpd;
+    apxs2Support = true;
+  }).withExtensions ({ all, ... }: with all; ([]));
+
+  # https://github.com/NixOS/nixpkgs/blob/54830391487253422f0ccab55fc557b2e725ace0/nixos/modules/services/web-servers/apache-httpd/default.nix#L319
+  phpIni = pkgs.runCommand "php.ini"
+    {
+      preferLocalBuild = true;
+    }
     ''
-      ScriptAlias ${urlPath}/cgi-bin ${pkgs.nagios}/sbin
-
-      <Directory "${pkgs.nagios}/sbin">
-        Options ExecCGI
-        Require all granted
-        SetEnv NAGIOS_CGI_CONFIG ${cfg.cgiConfigFile}
-      </Directory>
-
-      Alias ${urlPath} ${pkgs.nagios}/share
-
-      <Directory "${pkgs.nagios}/share">
-        Options None
-        Require all granted
-      </Directory>
+      cat ${php}/etc/php.ini > $out
+      cat ${php.phpIni} > $out
     '';
+
+  httpdConfig = pkgs.writeText "httpd.conf" ''
+    LoadModule env_module ${httpd}/modules/mod_env.so
+    LoadModule alias_module ${httpd}/modules/mod_alias.so
+    LoadModule cgi_module ${httpd}/modules/mod_cgi.so
+    LoadModule dir_module ${httpd}/modules/mod_dir.so
+    LoadModule mpm_prefork_module ${httpd}/modules/mod_mpm_prefork.so
+    LoadModule log_config_module ${httpd}/modules/mod_log_config.so
+    LoadModule authz_core_module ${httpd}/modules/mod_authz_core.so
+    LoadModule unixd_module ${httpd}/modules/mod_unixd.so
+    LoadModule mime_module ${httpd}/modules/mod_mime.so
+    # Scary PHP
+
+    LoadModule php_module ${php}/modules/libphp.so
+
+    AddType application/x-httpd-php    .php .phtml
+
+    PidFile ${nagiosState}/httpd.pid
+
+    ServerName localhost
+    Listen 18120
+
+    # Logging
+    ErrorLog "${nagiosLogDir}/httpd.error.log"
+    CustomLog "${nagiosLogDir}/httpd.access.log" common
+
+    ScriptAlias ${urlPath}/cgi-bin ${pkgs.nagios}/sbin
+
+    <Directory "${pkgs.nagios}/sbin">
+      Options ExecCGI
+      Require all granted
+      SetEnv NAGIOS_CGI_CONFIG ${cfg.cgiConfigFile}
+    </Directory>
+
+    Alias ${urlPath} ${pkgs.nagios}/share
+
+    <Directory "${pkgs.nagios}/share">
+      Options None
+      Require all granted
+        DirectoryIndex index.php
+    </Directory>
+  '';
   overlays = [
     (final: previous: {
       monitoring-plugins = (previous.monitoring-plugins.overrideAttrs (
@@ -251,6 +294,7 @@ in
       gid = 1100;
       isHidden = true;
     };
+    # TODO make separate nagios-httpd user
     users.knownUsers = [ "nagios" ];
     users.groups.nagios = {
       gid = 1100;
@@ -260,6 +304,8 @@ in
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
     environment.etc."nagios.cfg".source = nagiosCfgFile;
+    environment.etc."nagios.httpd.conf".source = httpdConfig;
+    environment.etc."nagios.php.ini".source = phpIni;
 
     environment.systemPackages = [ pkgs.nagios ];
     launchd.daemons.nagios = {
@@ -281,6 +327,33 @@ in
         };
       };
       command = "${pkgs.nagios}/bin/nagios /etc/nagios.cfg";
+    };
+    launchd.daemons.nagios-httpd = {
+      path = [ httpd ];
+      serviceConfig = {
+        UserName = "nagios";
+        GroupName = "nagios";
+        KeepAlive = true;
+        EnvironmentVariables = {
+          PHPRC = "/etc/nagios.php.ini";
+        };
+        StandardOutPath = "${nagiosLogDir}/httpd.stdout.log";
+        StandardErrorPath = "${nagiosLogDir}/httpd.stderr.log";
+        WorkingDirectory = nagiosState;
+      };
+      command = "${httpd}/bin/httpd -D FOREGROUND -f /etc/nagios.httpd.conf";
+    };
+    system.activationScripts.postActivation = {
+      text = ''
+        echo "Ensuring nagios directories exist"
+        mkdir -p ${nagiosLogDir}
+        mkdir -p ${nagiosState}
+        chown nagios:nagios ${nagiosLogDir} ${nagiosState}
+        echo "Restarting nagios"
+        launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios
+        echo "Restarting nagios-httpd"
+        launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios-httpd
+      '';
     };
   };
 }
