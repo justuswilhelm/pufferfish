@@ -42,13 +42,19 @@ in
   # /etc/ssl/certs/ca-ceriticates.crt
   security.pki.certificateFiles = [ ../lithium-ca.crt ];
 
-  system.activationScripts.postActivation = {
+  system.activationScripts.preActivation = {
     text = ''
-      set -e
-      set -o pipefail
       mkdir -p /var/log/caddy
       mkdir -p /var/caddy/home
       caddy validate --config /etc/caddy/Caddyfile
+    '';
+  };
+
+  # Restart caddy
+  system.activationScripts.postActivation = {
+    text = ''
+      echo "Restarting caddy"
+      launchctl kickstart -k system/${config.launchd.labelPrefix}.caddy
     '';
   };
 }
