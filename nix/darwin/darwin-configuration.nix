@@ -148,7 +148,7 @@ in
     };
     screensaver.askForPassword = true;
     ".GlobalPreferences" = {
-      "com.apple.mouse.scaling" = -1.0;
+      "com.apple.mouse.scaling" = 2.0;
     };
   };
   system.startup.chime = false;
