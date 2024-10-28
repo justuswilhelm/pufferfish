@@ -2,12 +2,30 @@ function jump -a query
     # If we are inside a git repo we want to jump relative to current dir
     if git rev-parse --is-inside-work-tree &>/dev/null
         set where (git rev-parse --show-toplevel)
-    else
-        set where $PWD
+
+        if ! set dest (fd --type d . $where | fzf --scheme=path --query=$query)
+            echo "Must specify destination"
+            return 1
+        end
+
+        cd "$dest"
+        return
     end
-    if ! set dest (fd --type d . $where | fzf --scheme=path --query=$query)
-        echo "Must specify destination"
+
+    set hist_file $XDG_STATE_HOME/pufferfish/jump
+    if ! set dir (begin tac $hist_file; fd -t d -d 5; end | fzf --scheme=history)
+        echo "Must specify destinatino"
         return 1
     end
+
+    if ! set rlpath (realpath $dir)
+        echo "Could not determine directory $dir's realpath"
+        return 1
+    end
+
+    if ! grep $rlpath $hist_file
+        echo $rlpath >> $hist_file
+    end
+
     cd "$dest"
 end
