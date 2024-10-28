@@ -24,10 +24,6 @@ function projectify
     tmux split-window -c "$projectify_path/frontend" -v -t "$session:frontend-serve"
     tmux send-keys -t "$session:frontend-serve" "npm run storybook" C-m
 
-    # Serve stories
-    tmux new-window -c "$projectify_path/stories" -t $session -n frontend-stories
-    tmux send-keys -t "$session:frontend-stories" "npm run storybook" C-m
-
     # Editor for backend
     tmux new-window -c "$projectify_path/backend" -t $session -n backend
     tmux send-keys -t "$session:backend" nvim C-m
