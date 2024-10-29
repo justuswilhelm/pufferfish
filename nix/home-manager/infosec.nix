@@ -1,5 +1,18 @@
 # Infosec related packages and config
 { pkgs, ... }:
+let
+  requestbin = pkgs.buildGoModule rec {
+    name = "requestbin";
+    version = "unreleased";
+    src = pkgs.fetchFromGitHub {
+      owner = "fiatjaf";
+      repo = "requestbin";
+      rev = "47d7554";
+      sha256 = "sha256-Y2eyeiZfdqQjByiesi6TMirHR7GiXVyA8UsNBjEMvrE=";
+    };
+    vendorHash = null;
+  };
+in
 {
   home.packages = [
     # Reverse engineering
@@ -45,6 +58,7 @@
     pkgs.socat
     pkgs.tunnelto
     pkgs.netcat-gnu
+    requestbin
 
     # DNS
     # ===
