@@ -26,12 +26,14 @@ with lib;
 let
   cfg = config.services.nagios;
 
-  nagiosState = "/var/nagios";
-  nagiosRw = "/var/nagios-rw";
+  nagiosState = "/var/lib/nagios";
+  nagiosRw = "/var/lib/nagios-rw";
   # TODO create separate directory for nagios-cmd things
   nagiosLogDir = "/var/log/nagios";
-  nagiosHttpdState = "/var/nagios-httpd";
+  nagiosHttpdState = "/var/lib/nagios-httpd";
   nagiosHttpdLogDir = "/var/log/nagios-httpd";
+  nagiosNscaState = "/var/lib/nagios-nsca";
+  nagiosNscaLogDir = "/var/log/nagios-nsca";
   urlPath = "/nagios";
 
   nagiosObjectDefs = cfg.objectDefs;
@@ -60,6 +62,7 @@ let
         nagios_group = "nagios";
         illegal_macro_output_chars = "`~$&|'\"<>";
         retain_state_information = "1";
+        accept_passive_service_checks = "1";
         # Stop Nagios from phoning home
         #  ⠀⠀.-------------------------------------------.
         #    |⠀ Nagios monitors the world and we         |
@@ -223,6 +226,22 @@ let
       };
     })
   ];
+
+  nsca = (import ./nagios/nsca.nix) {inherit pkgs;};
+# TODO Test
+# echo -e "host-name\nasdasd\n0\n1\n" | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf
+  nscaConfig = pkgs.writeText "nsca.conf" ''
+    pid_file=${nagiosNscaState}/nsca.pid
+    server_port=5667
+    server_address=127.0.0.1
+    nsca_user=nagios-nsca
+    nsca_group=nagios-nsca
+    debug=1
+    command_file=${nagiosRw}/nagios.cmd
+  '';
+  sendNscaConfig = pkgs.writeText "send_nsca.cfg" ''
+
+'';
 in
 {
   imports = [
@@ -299,22 +318,6 @@ in
           enable Apache ({option}`services.httpd.enable`).
         '';
       };
-
-      virtualHost = mkOption {
-        type = types.submodule (import ../web-servers/apache-httpd/vhost-options.nix);
-        example = literalExpression ''
-          { hostName = "example.org";
-            adminAddr = "webmaster@example.org";
-            enableSSL = true;
-            sslServerCert = "/var/lib/acme/example.org/full.pem";
-            sslServerKey = "/var/lib/acme/example.org/key.pem";
-          }
-        '';
-        description = ''
-          Apache configuration can be done by adapting {option}`services.httpd.virtualHosts`.
-          See [](#opt-services.httpd.virtualHosts) for further information.
-        '';
-      };
     };
   };
 
@@ -336,7 +339,14 @@ in
       gid = 1105;
       isHidden = true;
     };
-    users.knownUsers = [ "nagios" "nagios-httpd"];
+    users.users.nagios-nsca = {
+      description = "Nagios NSCA user";
+      uid = 1108;
+      home = nagiosNscaState;
+      gid = 1108;
+      isHidden = true;
+    };
+    users.knownUsers = [ "nagios" "nagios-httpd" "nagios-nsca" ];
 
     users.groups.nagios = {
       gid = 1100;
@@ -346,22 +356,31 @@ in
     };
     users.groups.nagios-cmd = {
       gid = 1106;
-      members = [ "nagios" "nagios-httpd" ];
+      # Allow cgi file to write to nagios.cmd file
+      # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
+      members = [ "nagios" "nagios-httpd" "nagios-nsca" ];
     };
-    # Allow cgi file to write to nagios.cmd file
-    # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
-    users.knownGroups = [ "nagios" "nagios-httpd" "nagios-cmd" ];
+    users.groups.nagios-nsca = {
+      gid = 1108;
+    };
+    users.knownGroups = [ "nagios" "nagios-httpd" "nagios-cmd" "nagios-nsca" ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
     environment.etc."nagios/nagios.cfg".source = nagiosCfgFile;
-    # TODO make these two optional
+
+    # HTTPD
     environment.etc."nagios/httpd.conf".source = httpdConfig;
     environment.etc."nagios/httpd.conf".enable = cfg.enableWebInterface;
     environment.etc."nagios/php.ini".source = phpIni;
     environment.etc."nagios/php.ini".enable = cfg.enableWebInterface;
 
-    environment.systemPackages = [ pkgs.nagios pkgs.monitoring-plugins ];
+    # NSCA
+    # https://github.com/NagiosEnterprises/nsca/blob/master/sample-config/nsca.cfg.in
+    environment.etc."nagios/nsca.conf".source = nscaConfig;
+    environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
+
+    environment.systemPackages = [ pkgs.nagios pkgs.monitoring-plugins nsca ];
     launchd.daemons.nagios = {
       path = [ pkgs.nagios ] ++ cfg.plugins;
 
@@ -400,6 +419,19 @@ in
       command = "${httpd}/bin/httpd -D FOREGROUND -f /etc/nagios/httpd.conf";
     };
 
+    launchd.daemons.nagios-nsca = {
+      path = [ nsca ];
+      serviceConfig = {
+        UserName = "nagios-nsca";
+        GroupName = "nagios-nsca";
+        KeepAlive = true;
+        StandardOutPath = "${nagiosNscaLogDir}/nsca.stdout.log";
+        StandardErrorPath = "${nagiosNscaLogDir}/nsca.stderr.log";
+        WorkingDirectory = nagiosNscaState;
+      };
+      command = "nsca -f -c /etc/nagios/nsca.conf";
+    };
+
     # TODO make this optional
     # Create nagiosadmin user with
     # sudo -u nagios-httpd htpasswd -B /var/nagios-httpd/htpasswd.users nagiosadmin
@@ -425,6 +457,11 @@ in
         chmod -v 600 ${nagiosHttpdState}/htpasswd.users
         echo "Restarting nagios-httpd"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios-httpd
+
+        mkdir -vp ${nagiosNscaState} ${nagiosNscaLogDir}
+        chown -v nagios-nsca:nagios-nsca ${nagiosNscaState} ${nagiosNscaLogDir}
+        echo "Restarting nagios-nsca"
+        launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios-nsca
       '';
     };
   };
