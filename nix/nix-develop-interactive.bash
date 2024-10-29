@@ -53,23 +53,23 @@ tmp="$(mktemp -d)"
 echo "Changing to new temporary directory $tmp"
 pushd "$tmp" || exit
 
-# # Detect and fix outputs to point to above temporary directory
-# for output in $outputs; do
-#     fixed_output="$tmp/$output"
-#     echo "Fixing directory in outputs '$output' to point to $fixed_output"
-#     eval $output=\$fixed_output
-# done
+# Detect and fix outputs to point to above temporary directory
+for output in ${outputs:?}; do
+    fixed_output="$tmp/$output"
+    echo "Fixing directory in outputs '$output' to point to $fixed_output"
+    eval "$output"=\$fixed_output
+done
 
 # phases detection taken from
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/stdenv/generic/setup.sh
 IFS=' '
-read -ra prePhasesArr <<< "$prePhases"
-read -ra preConfigurePhasesArr <<< "$preConfigurePhases"
-read -ra preBuildPhasesArr <<< "$preBuildPhases"
-read -ra preInstallPhasesArr <<< "$preInstallPhases"
-read -ra preFixupPhasesArr <<< "$preFixupPhases"
-read -ra preDistPhasesArr <<< "$preDistPhases"
-read -ra postPhasesArr <<< "$postPhasesArr"
+read -ra prePhasesArr <<< "${prePhases:-}"
+read -ra preConfigurePhasesArr <<< "${preConfigurePhases:-}"
+read -ra preBuildPhasesArr <<< "${preBuildPhases:-}"
+read -ra preInstallPhasesArr <<< "${preInstallPhases:-}"
+read -ra preFixupPhasesArr <<< "${preFixupPhases:-}"
+read -ra preDistPhasesArr <<< "${preDistPhases:-}"
+read -ra postPhasesArr <<< "${postPhasesArr:-}"
 
 declare -a all_phases=(
      "${prePhasesArr[@]}"
