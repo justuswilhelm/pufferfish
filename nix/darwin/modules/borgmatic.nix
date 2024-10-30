@@ -2,7 +2,7 @@
 let
   yamlFormat = pkgs.formats.yaml { };
   config = {
-    source_directories = [ "/etc" "/opt" "/Applications" "/Library" "/Users" ];
+    source_directories = [ "/etc" "/opt" "/Applications" "/Library" "/Users" "/var" ];
     exclude_patterns = [ "/Users/*/.cache" "/Users/*/Library/Caches" "/Users/*/Movies" ];
     encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
     ssh_command = "ssh -i /etc/borgmatic/id_rsa";
