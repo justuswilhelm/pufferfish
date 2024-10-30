@@ -119,7 +119,11 @@ in
 
     # Databases
     # =========
-    pkgs.sqlmap
+    (pkgs.sqlmap.overridePythonAttrs (old: {
+      dependencies = (old.dependencies or [ ]) ++ [
+        pkgs.python3Packages.websocket-client
+      ];
+    }))
     pkgs.mongosh
     pkgs.postgresql
     pkgs.mysql84
