@@ -21,9 +21,6 @@ function projectify
     tmux new-window -c "$projectify_path/frontend" -t $session -n frontend-serve
     tmux send-keys -t "$session:frontend-serve" "npm run dev" C-m
 
-    tmux split-window -c "$projectify_path/frontend" -v -t "$session:frontend-serve"
-    tmux send-keys -t "$session:frontend-serve" "npm run storybook" C-m
-
     # Editor for backend
     tmux new-window -c "$projectify_path/backend" -t $session -n backend
     tmux send-keys -t "$session:backend" nvim C-m
@@ -33,7 +30,7 @@ function projectify
 
     # Serve backend django server
     tmux new-window -c "$projectify_path/backend" -t $session -n backend-serve
-    tmux send-keys -t "$session:backend-serve" "./manage.py runserver" C-m
+    tmux send-keys -t "$session:backend-serve" "poetry run ./manage.py runserver" C-m
 
     # Go to first window
     tmux select-window -t "$session:frontend"
