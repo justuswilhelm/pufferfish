@@ -311,9 +311,9 @@ require('nvim-treesitter.configs').setup {
         },
         -- disable = { "sh" },
     },
-    indent = {
-        enable = true,
-    },
+    -- indent = {
+    --     enable = true,
+    -- },
     ensure_installed = {
         "lua",
         "svelte",
