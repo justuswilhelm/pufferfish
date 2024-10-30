@@ -14,6 +14,7 @@
       ../modules/man.nix
       ../modules/compat.nix
       ../modules/opensnitch.nix
+      ../modules/nagios.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
