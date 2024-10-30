@@ -268,7 +268,7 @@ lspconfig.ruff.setup {}
 
 -- Deno
 -- -----
-require'lspconfig'.denols.setup{}
+-- require'lspconfig'.denols.setup{}
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
