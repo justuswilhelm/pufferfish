@@ -90,7 +90,7 @@ let
         # ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
         #⠀⠀⠀⠀
         check_for_updates = "0";
-        resource_file=nagiosResourceFile;
+        resource_file = nagiosResourceFile;
       };
       lines = mapAttrsToList (key: value: "${key}=${value}") (default // cfg.extraConfig);
       content = concatStringsSep "\n" lines;
@@ -227,9 +227,9 @@ let
     })
   ];
 
-  nsca = (import ./nagios/nsca.nix) {inherit pkgs;};
-# TODO Test
-# echo -e "host-name\nasdasd\n0\n1\n" | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf
+  nsca = (import ./nagios/nsca.nix) { inherit pkgs; };
+  # TODO Test
+  # echo -e "host-name\nasdasd\n0\n1\n" | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf
   nscaConfig = pkgs.writeText "nsca.conf" ''
     pid_file=${nagiosNscaState}/nsca.pid
     server_port=5667
