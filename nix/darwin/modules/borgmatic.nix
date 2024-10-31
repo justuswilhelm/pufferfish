@@ -4,7 +4,14 @@ let
 
   borgmaticConfig = {
     source_directories = [ "/etc" "/opt" "/Applications" "/Library" "/Users" "/var" ];
-    exclude_patterns = [ "/Users/*/.cache" "/Users/*/Library/Caches" "/Users/*/Movies" ];
+    exclude_patterns = [
+      "/Users/*/.cache"
+      "/Users/*/Library/Caches"
+      "/Users/*/Movies"
+      "/Library/Developer"
+      "/Library/Updates"
+      "*/.Trash"
+    ];
     encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
     ssh_command = "ssh -i /etc/borgmatic/id_rsa";
     keep_hourly = 6;
