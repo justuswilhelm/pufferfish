@@ -15,6 +15,7 @@
       ../modules/compat.nix
       ../modules/opensnitch.nix
       ../modules/nagios.nix
+      ../modules/openssh.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
@@ -96,8 +97,6 @@
     pkgs.tree
     pkgs.vim
   ];
-
-  services.openssh.enable = true;
 
   services.postgresql = {
     enable = true;
