@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   borgmatic = pkgs.borgmatic;
 
@@ -19,6 +19,12 @@ let
       { name = "archives"; frequency = "1 month"; }
     ];
     check_last = 10;
+    after_actions = [
+        "echo -e 'lithium.local,borgmatic,0,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
+    ];
+    on_error = [
+        "echo -e 'lithium.local,borgmatic,2,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
+    ];
   };
   borgmaticConfigYaml = let
     yamlFormat = pkgs.formats.yaml { };
@@ -41,7 +47,7 @@ in
   environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
 
   launchd.daemons.borgmatic = {
-    path = [ borgmatic ];
+    path = [ borgmatic config.services.nagios.nsca-package ];
     command = "borgmatic --log-file-verbosity 2 --log-file ${logPath}";
     serviceConfig = {
       # Performance
