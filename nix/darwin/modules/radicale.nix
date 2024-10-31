@@ -1,9 +1,24 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
-  storage-filesystem-folder = "/var/local/radicale/collections";
-  logPath = "/var/local/log/radicale";
+  radicaleState = "/var/lib/radicale";
+  logPath = "/var/log/radicale";
 
   radicale = pkgs.radicale;
+  radicaleConfig = pkgs.writeText "config" (lib.generators.toINI { } {
+    server = {
+      hosts = "127.0.0.1:18110";
+    };
+
+    auth = {
+      type = "htpasswd";
+      htpasswd_filename = "${radicaleState}/users";
+      htpasswd_encryption = "bcrypt";
+    };
+
+    storage = {
+      filesystem_folder = "${radicaleState}/collections";
+    };
+  });
 in
 {
   users.groups.radicale = { gid = 1020; };
@@ -13,9 +28,11 @@ in
     uid = 1020;
     isHidden = true;
   };
-  environment.etc."radicale/config".source = ./radicale.ini;
   users.knownGroups = [ "radicale" ];
   users.knownUsers = [ "radicale" ];
+
+  environment.etc."radicale/config".source = radicaleConfig;
+
   environment.systemPackages = [ radicale ];
   launchd.daemons.radicale = {
     command = "${radicale}/bin/radicale";
@@ -27,4 +44,15 @@ in
       GroupName = "radicale";
     };
   };
+  system.activationScripts.postActivation = {
+    text = ''
+      echo "Ensuring radicale directories exist"
+      sudo mkdir -p ${radicaleState} ${logPath}
+      sudo chown radicale:radicale ${radicaleState} ${logPath}
+      sudo chmod go= ${radicaleState}
+      echo "Restarting radicale"
+      launchctl kickstart -k system/${config.launchd.labelPrefix}.radicale
+    '';
+  };
 }
+
