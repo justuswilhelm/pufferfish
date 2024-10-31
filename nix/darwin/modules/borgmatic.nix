@@ -54,6 +54,8 @@ in
       ProcessType = "Background";
       LowPriorityBackgroundIO = true;
       LowPriorityIO = true;
+      # Let borgmatic run for 2h max
+      TimeOut = 60 * 60 * 2;
 
       # Timing
       StartCalendarInterval = [{ Minute = 0; }];
