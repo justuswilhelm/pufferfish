@@ -11,12 +11,13 @@ let
       "/var"
     ];
     exclude_patterns = [
-      "/Users/*/.cache"
-      "/Users/*/Library/Caches"
-      "/Users/*/Movies"
       "/Library/Developer"
       "/Library/Updates"
-      "*/.Trash"
+      "/Users/*/.Trash"
+      "/Users/*/.cache"
+      "/Users/*/Library/Caches"
+      "/Users/*/Library/Developer/CoreSimulator/Caches/*"
+      "/Users/*/Movies"
     ];
     encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
     ssh_command = "ssh -i /etc/borgmatic/id_rsa";
