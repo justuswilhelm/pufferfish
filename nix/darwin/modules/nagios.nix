@@ -92,8 +92,9 @@ let
         check_for_updates = "0";
         resource_file = nagiosResourceFile;
       };
-      lines = mapAttrsToList (key: value: "${key}=${value}") (default // cfg.extraConfig);
-      content = concatStringsSep "\n" lines;
+      content = lib.generators.toINIWithGlobalSection { } {
+        globalSection = default // cfg.extraConfig;
+      };
       file = pkgs.writeText "nagios.cfg" content;
       validated = pkgs.runCommand "nagios-checked.cfg" { preferLocalBuild = true; } ''
         cp ${file} nagios.cfg
