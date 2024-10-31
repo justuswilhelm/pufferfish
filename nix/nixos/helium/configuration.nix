@@ -64,6 +64,21 @@
     shell = pkgs.fish;
   };
 
+  users.users.lithium-borgbackup = {
+    isSystemUser = true;
+    group = "lithium-borgbackup";
+    shell = pkgs.bash;
+    packages = [ pkgs.borgbackup ];
+    openssh.authorizedKeys = {
+      keys = [
+        ''
+          ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDiGqRXLFyqRD5yByOnqNID+bkex7O8ZcUJ5SRNOu4W6vQ7aLp+MnhblMBYLRqo2JAV6CQtABC8U2wVM1yvdJzLIXgFLKsK0azCJyPl13QaWltVjV+yTl43qA+ugpyDc68SpkqVjdT9gMPMwYXX2QXN0VPdcbbuN8hhKxp95JRTNETyIWTQuCUTeiGO4hRO2YbBv367v2TmkBRDMXZ2ljk3LsecW1sXrd9p45LUiqLOnw2eKYxQar77X4sVjVB+8nPtlU6CBwa1MrlG/r8QkhvXgbB/Pa9QpsveP9+JCD1LRdwFH3mGgdNIghL3ZtTcTz51cYFnQlZeZRit2YiH78rGMeCev3yOk5Ldjm7wAz/AThteDsbKxJTUEvVsUamXz0NCZIeCH6aTXjPTVGZ5DA857+VoHD1+BYgsbr2jmvWbZPkNJv+PqATNFLX16Z/ih9HvsHrDN9vNiMZECKUVNMxky1JD363lcoHaMqfNtxdbqkEDZe2MlpXi093Xdq0dV+k= borgbackup@lithium
+        ''
+      ];
+    };
+  };
+  users.groups.lithium-borgbackup = { };
+
   programs.fish.enable = true;
   programs.git.enable = true;
   programs.neovim = {
