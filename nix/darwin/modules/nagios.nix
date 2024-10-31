@@ -264,6 +264,15 @@ in
         example = literalExpression "[ ./objects.cfg ]";
       };
 
+      package = mkOption {
+        description = "Package to be used for nagios";
+        default = pkgs.nagios;
+      };
+      nsca-package = mkOption {
+        description = "Package to be used for nsca";
+        default = nsca;
+      };
+
       plugins = mkOption {
         type = types.listOf types.package;
 
@@ -380,9 +389,9 @@ in
     environment.etc."nagios/nsca.conf".source = nscaConfig;
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
 
-    environment.systemPackages = [ pkgs.nagios pkgs.monitoring-plugins nsca ];
+    environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca-package ];
     launchd.daemons.nagios = {
-      path = [ pkgs.nagios ] ++ cfg.plugins;
+      path = [ cfg.package ] ++ cfg.plugins;
 
       serviceConfig = {
         UserName = "nagios";
@@ -399,7 +408,7 @@ in
           NumberOfFiles = 32768;
         };
       };
-      command = "${pkgs.nagios}/bin/nagios /etc/nagios/nagios.cfg";
+      command = "nagios /etc/nagios/nagios.cfg";
     };
 
     environment.launchDaemons.nagios-httpd.enable = cfg.enableWebInterface;
@@ -416,11 +425,11 @@ in
         StandardErrorPath = "${nagiosHttpdLogDir}/httpd.stderr.log";
         WorkingDirectory = nagiosHttpdState;
       };
-      command = "${httpd}/bin/httpd -D FOREGROUND -f /etc/nagios/httpd.conf";
+      command = "httpd -D FOREGROUND -f /etc/nagios/httpd.conf";
     };
 
     launchd.daemons.nagios-nsca = {
-      path = [ nsca ];
+      path = [ cfg.nsca-package ];
       serviceConfig = {
         UserName = "nagios-nsca";
         GroupName = "nagios-nsca";

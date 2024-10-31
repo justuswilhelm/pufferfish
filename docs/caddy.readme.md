@@ -28,7 +28,7 @@ sudo -u lithium-ca openssl ecparam \
   -genkey \
   -noout \
   -out /etc/lithium-ca/secret/lithium-ca.key
-sudo -u lithium-ca chmod 400 /etc/lithium-ca/secret/lithium-ca.key
+sudo -u lithium-ca chmod 600 /etc/lithium-ca/secret/lithium-ca.key
 ```
 
 Create the root certificate
