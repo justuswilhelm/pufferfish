@@ -12,7 +12,7 @@ let
     keep_weekly = 4;
     keep_monthly = 6;
     keep_yearly = 1;
-    repositories = [];
+    repositories = [ ];
 
     checks = [
       { name = "repository"; frequency = "1 month"; }
@@ -20,22 +20,24 @@ let
     ];
     check_last = 10;
     after_actions = [
-        "echo -e 'lithium.local,borgmatic,0,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
+      "echo -e 'lithium.local,borgmatic,0,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
     ];
     on_error = [
-        "echo -e 'lithium.local,borgmatic,2,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
+      "echo -e 'lithium.local,borgmatic,2,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
     ];
   };
-  borgmaticConfigYaml = let
-    yamlFormat = pkgs.formats.yaml { };
-    cfg = yamlFormat.generate "borgmatic_base.yaml" borgmaticConfig;
-validated = pkgs.runCommand "borgmatic_base_checked.yml" { preferLocalBuild = true;} ''
-      cp ${cfg} borgmatic_base.yml
-      ${borgmatic}/bin/borgmatic config validate \
-        --config borgmatic_base.yml && cp ${cfg} $out
+  borgmaticConfigYaml =
+    let
+      yamlFormat = pkgs.formats.yaml { };
+      cfg = yamlFormat.generate "borgmatic_base.yaml" borgmaticConfig;
+      validated = pkgs.runCommand "borgmatic_base_checked.yml" { preferLocalBuild = true; } ''
+        cp ${cfg} borgmatic_base.yml
+        ${borgmatic}/bin/borgmatic config validate \
+          --config borgmatic_base.yml && cp ${cfg} $out
 
-    '';
-  in validated;
+      '';
+    in
+    validated;
 
   logPath = "/var/log/borgmatic/borgmatic.log";
 in
