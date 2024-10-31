@@ -3,7 +3,13 @@ let
   borgmatic = pkgs.borgmatic;
 
   borgmaticConfig = {
-    source_directories = [ "/etc" "/opt" "/Applications" "/Library" "/Users" "/var" ];
+    source_directories = [
+      "/etc"
+      "/Applications"
+      "/Library"
+      "/Users"
+      "/var"
+    ];
     exclude_patterns = [
       "/Users/*/.cache"
       "/Users/*/Library/Caches"
