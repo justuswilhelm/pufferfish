@@ -35,14 +35,13 @@
   };
 
   xdg.configFile = {
-    swayHeliumNixos = {
+    swayConfig = {
       text = ''
         # HiDPI setting
         output * {
           scale 1.5
         }
       '';
-      target = "sway/config.d/helium-nixos";
     };
   };
 

@@ -18,12 +18,9 @@ in
   home.sessionVariables.MOZ_ENABLE_WAYLAND = 1;
 
   xdg.configFile = {
-    sway = {
-      source = ../../sway/config;
-      target = "sway/config";
-    };
-    swayLaunchers = {
+    swayConfig = {
       text = ''
+        ${builtins.readFile ../../sway/config}
         # start a terminal
         bindsym $mod+Return exec foot
         bindsym $mod+Shift+Return exec ${firefox-esr}
@@ -61,11 +58,11 @@ in
             systemctl start --user sway-session.target
         }
       '';
-      target = "sway/config.d/launchers";
+      target = "sway/config";
     };
-    swayColors = {
-      source = ../../sway/config.d/colors;
-      target = "sway/config.d/colors";
+    swayConfigD = {
+      source = ../../sway/config.d;
+      target = "sway/config.d";
     };
   };
 
