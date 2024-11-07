@@ -9,7 +9,6 @@
     # Exploits
     # =======
     pkgs.metasploit
-    pkgs.armitage
 
     # RPC
     # ===
