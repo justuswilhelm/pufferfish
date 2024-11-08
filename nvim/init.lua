@@ -108,6 +108,9 @@ require("fzf-lua").setup({
             flip_columns = 200,
         },
     },
+    files = {
+        git_icons = false,
+    },
 })
 vim.keymap.set("n", "<c-P>", require('fzf-lua').files, { silent=true })
 vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, { silent=true })
