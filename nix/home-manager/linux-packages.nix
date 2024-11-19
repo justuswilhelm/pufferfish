@@ -32,6 +32,7 @@
 
     # Build tools
     # ===========
+    pkgs.gcc
     pkgs.gnumake
   ];
 }

@@ -34,7 +34,6 @@
 
     # Build tools
     pkgs.cmake
-    pkgs.gcc
 
     # Debugger
     pkgs.qemu
@@ -48,6 +47,10 @@
 
     # Python
     pkgs.pipx
+
+    # Rust
+    pkgs.cargo
+    pkgs.rustc
 
     # TUIs
     pkgs.htop
