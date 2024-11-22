@@ -172,11 +172,6 @@ let
         "if".app-id = "com.utmapp.UTM";
         run = [ "layout floating" ];
       }
-      {
-        "if".app-id = "net.ankiweb.dtop";
-        "if".window-title-regex-substring = ".+ - Anki";
-        run = "layout floating";
-      }
     ];
   };
   tomlFormat = pkgs.formats.toml { };
