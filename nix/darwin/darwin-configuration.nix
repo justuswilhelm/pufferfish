@@ -88,7 +88,7 @@ in
     ];
   };
 
-  services.karabiner-elements.enable = true;
+  # services.karabiner-elements.enable = true;
   services.skhd = {
     enable = true;
     # https://github.com/koekeishiya/skhd/issues/1
@@ -148,7 +148,7 @@ in
     };
     screensaver.askForPassword = true;
     ".GlobalPreferences" = {
-      "com.apple.mouse.scaling" = 2.0;
+      "com.apple.mouse.scaling" = 0.5;
     };
   };
   system.startup.chime = false;
