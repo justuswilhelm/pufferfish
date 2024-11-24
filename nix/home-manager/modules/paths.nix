@@ -3,6 +3,7 @@
   home.homeDirectory = specialArgs.homeDirectory;
   home.sessionPath = [
     "${config.home.homeDirectory}/.local/bin"
+    "${config.home.homeDirectory}/.cargo/bin"
     "${config.home.sessionVariables.DOTFILES}/bin"
   ];
 

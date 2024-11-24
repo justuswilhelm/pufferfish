@@ -49,8 +49,9 @@
     pkgs.pipx
 
     # Rust
-    pkgs.cargo
-    pkgs.rustc
+    # If pkgs.gcc is in the env as well, bad things happen with libiconv
+    # and other macOS available binaries.
+    pkgs.rustup
 
     # TUIs
     pkgs.htop
