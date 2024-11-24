@@ -9,7 +9,7 @@
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?tag=2024.8.18";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2024.11.22";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {

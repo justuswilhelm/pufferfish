@@ -249,17 +249,18 @@
         "poetry2nix": "poetry2nix"
       },
       "locked": {
-        "lastModified": 1723888380,
-        "narHash": "sha256-5cXIO4uGyILaEVMhQnGe28dpHfaxAH/gyqSTzitPyZQ=",
-        "ref": "refs/heads/main",
-        "rev": "68df92574a4de2ed420eefd28858d92f13fb6f7b",
-        "revCount": 820,
+        "lastModified": 1732235233,
+        "narHash": "sha256-e7iQq4Xz5qouHhOdK5R1VjHC1nVScp0MAVL3+56eYTI=",
+        "ref": "refs/tags/2024.11.22",
+        "rev": "0d9c370d9d3e83ed5af14b7e7e5a3c67309bde06",
+        "revCount": 827,
         "type": "git",
-        "url": "https://codeberg.org/justusw/Pomoglorbo.git?tag=2024.8.18"
+        "url": "https://codeberg.org/justusw/Pomoglorbo.git"
       },
       "original": {
+        "ref": "refs/tags/2024.11.22",
         "type": "git",
-        "url": "https://codeberg.org/justusw/Pomoglorbo.git?tag=2024.8.18"
+        "url": "https://codeberg.org/justusw/Pomoglorbo.git"
       }
     },
     "projectify": {
