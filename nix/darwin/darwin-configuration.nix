@@ -14,6 +14,7 @@ in
     ./modules/nix.nix
     ./modules/openssh.nix
     ./modules/radicale.nix
+    ./modules/ntfy-sh.nix
 
     ./caddy.nix
     ./anki.nix
@@ -87,6 +88,8 @@ in
       ./lithium/nagios/hosts.cfg
     ];
   };
+
+  services.ntfy-sh.enable = true;
 
   # services.karabiner-elements.enable = true;
   services.skhd = {
