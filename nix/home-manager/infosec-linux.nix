@@ -9,7 +9,6 @@
     # Exploits
     # =======
     pkgs.metasploit
-    pkgs.armitage
 
     # RPC
     # ===
@@ -26,6 +25,15 @@
     pkgs.wireshark
     # For clock skews
     pkgs.libfaketime
+
+    # SNMP
+    # ====
+    pkgs.net-snmp
+    pkgs.snmpcheck
+
+    # NTP
+    # ===
+    pkgs.ntp
 
     # Cracking
     # ========

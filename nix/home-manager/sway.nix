@@ -17,13 +17,12 @@ in
   # terminal
   home.sessionVariables.MOZ_ENABLE_WAYLAND = 1;
 
+  home.packages = [ pkgs.phinger-cursors pkgs.clipman ];
+
   xdg.configFile = {
-    sway = {
-      source = ../../sway/config;
-      target = "sway/config";
-    };
-    swayLaunchers = {
+    swayConfig = {
       text = ''
+        ${builtins.readFile ../../sway/config}
         # start a terminal
         bindsym $mod+Return exec foot
         bindsym $mod+Shift+Return exec ${firefox-esr}
@@ -61,11 +60,42 @@ in
             systemctl start --user sway-session.target
         }
       '';
-      target = "sway/config.d/launchers";
+      target = "sway/config";
     };
     swayColors = {
-      source = ../../sway/config.d/colors;
+      text = ''
+        # Maybe use:
+        # https://github.com/jan-warchol/selenized/blob/master/other-apps/i3/i3-selenized-light.conf
+
+        bar {
+            status_command i3status
+            position top
+            bindsym button3 nop
+            bindsym button4 nop
+            bindsym button5 nop
+        }
+      '';
       target = "sway/config.d/colors";
+    };
+    swayGhidra = {
+      text = ''
+        # Float Ghidra windows, except for big windows
+        for_window [class="ghidra-Ghidra"] floating enable
+        for_window [title="Ghidra:.*" class="ghidra-Ghidra"] floating disable
+        for_window [title="CodeBrowser.*" class="ghidra-Ghidra"] floating disable
+        for_window [title="Debugger.*" class="ghidra-Ghidra"] floating disable
+        for_window [title="Emulator.*" class="ghidra-Ghidra"] floating disable
+      '';
+      target = "sway/config.d/ghidra";
+    };
+    swayCursor = {
+      text = ''
+        # omg cursor too small depending on which window it hovers over
+        # https://wiki.archlinux.org/title/Sway#Change_cursor_theme_and_size
+        # https://github.com/swaywm/sway/issues/4610#issuecomment-1310899976
+        seat * xcursor_theme phinger-cursors-dark 32
+      '';
+      target = "sway/config.d/cursor";
     };
   };
 

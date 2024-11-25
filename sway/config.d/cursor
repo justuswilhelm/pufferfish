@@ -1,4 +1,0 @@
-# omg cursor too small depending on which window it hovers over
-# https://wiki.archlinux.org/title/Sway#Change_cursor_theme_and_size
-# https://github.com/swaywm/sway/issues/4610#issuecomment-1310899976
-seat * xcursor_theme default 32

@@ -34,6 +34,7 @@
     "10.0.57.235" = [ "lithium.local" ];
   };
 
+  boot.kernelPackages = pkgs.linuxPackages_6_11;
   # TODO
   # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

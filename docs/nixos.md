@@ -114,3 +114,14 @@ umount /mnt/nixos-root/boot
 umount /mnt/nixos-root
 cryptsetup close nvme0n1p4_crypt
 ```
+
+## Run a VM
+
+A QEMU vm can be launched with
+
+```bash
+nix run "$DOTFILES/nix/generic/".#nixosConfigurations.helium.config.system.build.vm
+```
+
+This will need extra adjustments for the hardware configuration as it expects
+certain volumes to be there that probably do not exist.
