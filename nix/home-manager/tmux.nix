@@ -1,6 +1,13 @@
 { lib, pkgs, config, ... }:
 let
   cfg = config.programs.tmux;
+  strip-trailing-nl = pkgs.writeShellApplication {
+    name = "strip-trailing-nl";
+    runtimeInputs = [ pkgs.gnused ];
+    text = ''
+      sed -Ez '$ s/\n+$//'
+    '';
+  };
 in
 {
   options.programs.tmux = with lib; {
@@ -22,7 +29,7 @@ in
         ${builtins.readFile ../../tmux/tmux.conf}
         ${builtins.readFile ../../tmux/vim-tmux-navigator.conf}
         # Copy & paste
-        bind-key ']' run "${cfg.pasteCommand} | tmux load-buffer - " \; paste-buffer -p
+        bind-key ']' run "${cfg.pasteCommand} | ${strip-trailing-nl}/bin/strip-trailing-nl | tmux load-buffer - " \; paste-buffer -p -r
         bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel '${cfg.copyCommand}'
       '';
       # Set longer scrollback buffer

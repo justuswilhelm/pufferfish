@@ -20,6 +20,12 @@ vim.opt.clipboard:append({"unnamedplus"})
 vim.opt.history = 1000
 vim.opt.undolevels = 1000
 
+-- EditorConfig
+-- ============
+-- Now default feature in neovim
+-- https://neovim.io/doc/user/editorconfig.html
+vim.g.editorconfig = true
+
 -- Visual
 -- ======
 -- Color scheme
@@ -153,10 +159,15 @@ vim.keymap.set(
     end
 )
 
--- Mouse
--- =====
-vim.opt.mouse = "a"
+-- Copy current buffer's path
+-- --------------------------
+-- bufferpath -> bp
+vim.keymap.set("n", "<leader>bp", ':let @+ = expand("%")<CR>')
 
 -- Do math on highlighted text
 -- ---------------------------
 vim.keymap.set("v", "<leader>m", '"ms<C-R>=<C-R>m<CR><ESC>')
+
+-- Mouse
+-- =====
+vim.opt.mouse = "a"

@@ -31,7 +31,7 @@ let
   # I am temporarily changing openAlacritty to just always a new instance instead.
   # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
   openAlacritty = cmd: ''exec-and-forget open -n -a '${alacrittyApp}' --args -e ${cmd}'';
-  newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f Firefox.app; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
+  newFirefoxWindow = ''exec-and-forget if pgrep -U $USER firefox; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
   prefix = "cmd-alt";
@@ -156,17 +156,21 @@ let
         run = [ "move-node-to-workspace 5" ];
       }
       {
+        "if".app-id = "com.apple.iCal";
+        run = [ "move-node-to-workspace 6" ];
+      }
+      {
+        "if".app-id = "org.libreoffice.script";
+        "if".window-title-regex-substring = "Delete Contents";
+        run = [ "layout floating" ];
+      }
+      {
         "if".app-id = "org.libreoffice.script";
         run = [ "layout tiling" ];
       }
       {
         "if".app-id = "com.utmapp.UTM";
         run = [ "layout floating" ];
-      }
-      {
-        "if".app-id = "net.ankiweb.dtop";
-        "if".window-title-regex-substring = ".+ - Anki";
-        run = "layout floating";
       }
     ];
   };

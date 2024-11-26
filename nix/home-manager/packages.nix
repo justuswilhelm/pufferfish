@@ -30,9 +30,10 @@
     (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
+    pkgs.ruff
 
-    # Compilers
-    pkgs.gcc
+    # Build tools
+    pkgs.cmake
 
     # Debugger
     pkgs.qemu
@@ -43,6 +44,14 @@
     pkgs.miller
     pkgs.nodejs_20
     pkgs.openjdk
+
+    # Python
+    pkgs.pipx
+
+    # Rust
+    # If pkgs.gcc is in the env as well, bad things happen with libiconv
+    # and other macOS available binaries.
+    pkgs.rustup
 
     # TUIs
     pkgs.htop
@@ -85,12 +94,12 @@
 
     # Secrets
     pkgs.gnupg
-    pkgs.pass
     pkgs.yubikey-manager
 
     # Archive things
     pkgs.gnutar
     pkgs.unzip
+    pkgs.p7zip
 
     # Core tools
     pkgs.silver-searcher

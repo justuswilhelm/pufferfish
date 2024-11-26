@@ -6,6 +6,8 @@
     networks = {
       "10-ethernet" = {
         matchConfig = {
+          # Prevent networkd from messing with libvirt bridges
+          Name = "!vnet*";
           Type = "ether";
         };
         networkConfig = {
@@ -33,6 +35,7 @@
     # For debugging
     tcpdump
     ethtool
+    wireshark
     arp-scan
   ];
 }

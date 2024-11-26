@@ -2,7 +2,7 @@
 let
   yamlFormat = pkgs.formats.yaml { };
   config = {
-    source_directories = [ "/home" "/etc" ];
+    source_directories = [ "/home" "/etc" "/var" ];
     encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
     ssh_command = "ssh -i /etc/borgmatic/id_rsa";
     keep_hourly = 6;
@@ -22,10 +22,6 @@ in
   services.borgmatic = {
     enable = true;
   };
-  environment.etc = {
-    borgmatic_base = {
-      source = yamlFormat.generate "borgmatic_base.yaml" config;
-      target = "borgmatic/base/borgmatic_base.yaml";
-    };
-  };
+  environment.etc."borgmatic/base/borgmatic_base.yaml".source =
+    yamlFormat.generate "borgmatic_base.yaml" config;
 }

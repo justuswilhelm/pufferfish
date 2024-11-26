@@ -28,7 +28,7 @@ sudo -u lithium-ca openssl ecparam \
   -genkey \
   -noout \
   -out /etc/lithium-ca/secret/lithium-ca.key
-sudo -u lithium-ca chmod 400 /etc/lithium-ca/secret/lithium-ca.key
+sudo -u lithium-ca chmod 600 /etc/lithium-ca/secret/lithium-ca.key
 ```
 
 Create the root certificate
@@ -42,8 +42,7 @@ sudo -u lithium-ca openssl req -new \
   -nodes \
   -key /etc/lithium-ca/secret/lithium-ca.key \
   -out /etc/lithium-ca/lithium-ca.crt
-sudo -u lithium-ca chmod 400 /etc/lithium-ca/secret/lithium-ca.key
-sudo -u lithium-ca chmod =r /etc/lithium-ca/lithium-ca.crt
+sudo -u lithium-ca chmod 644 /etc/lithium-ca/lithium-ca.crt
 ```
 
 # Caddy certs
@@ -64,7 +63,7 @@ sudo -u caddy openssl ecparam \
   -genkey \
   -noout \
   -out /etc/caddy/certs/secret/lithium-server.key
-sudo -u caddy chmod 400 /etc/caddy/certs/secret/lithium-server.key
+sudo -u caddy chmod 600 /etc/caddy/certs/secret/lithium-server.key
 ```
 
 Create the caddy server signing request:
@@ -76,7 +75,7 @@ sudo -u caddy openssl req -new \
   -nodes \
   -key /etc/caddy/certs/secret/lithium-server.key \
   -out /etc/caddy/certs/lithium-server.csr
-sudo -u caddy chmod 444 /etc/caddy/certs/lithium-server.csr
+sudo -u caddy chmod 644 /etc/caddy/certs/lithium-server.csr
 ```
 
 Create the caddy server certificate extension file:
@@ -90,6 +89,7 @@ extendedKeyUsage = serverAuth,clientAuth
 subjectAltName = DNS:lithium.local
 issuerAltName = issuer:copy" | \
 sudo -u lithium-ca tee /etc/lithium-ca/signed/lithium-server.ext
+sudo -u lithium-ca chmod 644 /etc/lithium-ca/signed/lithium-server.ext
 ```
 
 # CA signed caddy cert
@@ -107,7 +107,7 @@ sudo -u lithium-ca openssl x509 \
   -extfile /etc/lithium-ca/signed/lithium-server.ext \
   -out /etc/lithium-ca/signed/lithium-server.crt
 sudo -u caddy cp /etc/lithium-ca/signed/lithium-server.crt /etc/caddy/certs/
-sudo chmod =r /etc/caddy/certs/lithium-server.crt
+sudo chmod 644 /etc/caddy/certs/lithium-server.crt
 ```
 
 # Importing the cert
@@ -116,4 +116,16 @@ Open certificate in local keychain:
 
 ```bash
 open /etc/lithium-ca/lithium-ca.crt
+```
+
+Update `nix/lithium-ca.crt`.
+
+```bash
+install /etc/lithium-ca/lithium-ca.crt $HOME/.dotfiles/nix/lithium-ca.crt
+```
+
+# Restart caddy
+
+```bash
+sudo launchctl kill 15 system/net.jwpconsulting.caddy -k -p
 ```

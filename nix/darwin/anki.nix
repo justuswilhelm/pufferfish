@@ -48,13 +48,11 @@ in
   };
   system.activationScripts.postActivation = {
     text = ''
-      set -e
-      set -o pipefail
-      mkdir -p /var/log/anki-sync-server
-      mkdir -p /var/anki-sync-server
-      mkdir -p /etc/anki-sync-server
+      mkdir -vp /var/log/anki-sync-server
+      mkdir -vp /var/anki-sync-server
+      mkdir -vp /etc/anki-sync-server
       chown -R anki-sync-server:anki-sync-server /var/anki-sync-server /etc/anki-sync-server /var/log/anki-sync-server
-      chmod 0400 /etc/anki-sync-server/sync_user1
+      chmod -v 0400 /etc/anki-sync-server/sync_user1
     '';
   };
 }

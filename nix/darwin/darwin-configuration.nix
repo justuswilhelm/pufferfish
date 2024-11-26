@@ -8,9 +8,15 @@ in
 
 {
   imports = [
+    ./modules/nagios.nix
+    ./modules/offlineimap.nix
+    ./modules/borgmatic.nix
+    ./modules/nix.nix
+    ./modules/openssh.nix
+    ./modules/radicale.nix
+    ./modules/ntfy-sh.nix
+
     ./caddy.nix
-    ./borgmatic.nix
-    ./offlineimap.nix
     ./anki.nix
     ./attic.nix
     ./projectify.nix
@@ -47,12 +53,6 @@ in
       "${pkgs.alacritty.terminfo}/share/terminfo"
     ];
   };
-  environment.etc = {
-    sshd_config = {
-      source = ./sshd_config;
-      target = "ssh/sshd_config";
-    };
-  };
 
   # Rid ourselves of Apple Music automatically launching
   # https://apple.stackexchange.com/questions/372948/how-can-i-prevent-music-app-from-starting-automatically-randomly/373557#373557
@@ -60,15 +60,12 @@ in
   # Other sources say this works:
   # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
   # But unload is deprecated in newer versions of launchd
-  system.activationScripts.extraActivation = {
+  system.activationScripts.postUserActivation = {
     text = ''
       sudo -u ${name} launchctl bootout gui/${builtins.toString uid}/com.apple.rcd || echo "Already booted out"
       sudo -u ${name} launchctl disable gui/${builtins.toString uid}/com.apple.rcd || echo "Already disabled"
     '';
   };
-
-  # Use a custom configuration.nix location.
-  environment.darwinConfig = "$HOME/.config/nix/darwin/darwin-configuration.nix";
 
   launchd.labelPrefix = "net.jwpconsulting";
 
@@ -77,10 +74,24 @@ in
     package = pkgs.postgresql_15;
   };
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  services.nagios = {
+    enable = true;
+    enableWebInterface = true;
+    objectDefs = [
+      # Template things
+      ./lithium/nagios/commands.cfg
+      ./lithium/nagios/contacts.cfg
+      ./lithium/nagios/templates.cfg
+      ./lithium/nagios/timeperiods.cfg
+      # My config
+      ./lithium/nagios/services.cfg
+      ./lithium/nagios/hosts.cfg
+    ];
+  };
 
-  services.karabiner-elements.enable = true;
+  services.ntfy-sh.enable = true;
+
+  # services.karabiner-elements.enable = true;
   services.skhd = {
     enable = true;
     # https://github.com/koekeishiya/skhd/issues/1
@@ -95,28 +106,11 @@ in
       '';
   };
 
-  nix.nixPath = [
-    {
-      # TODO insert ${home}
-      darwin-config = "$HOME/.config/nix/darwin/darwin-configuration.nix";
-    }
-    "/nix/var/nix/profiles/per-user/root/channels"
-  ];
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-  nix.settings = {
-    auto-optimise-store = true;
-    sandbox = false;
-  };
-
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:
   # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
   security.pam.enableSudoTouchIdAuth = true;
 
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  # programs.zsh.enable = true;  # default shell on catalina
   programs.fish = {
     enable = true;
     useBabelfish = true;
@@ -144,6 +138,7 @@ in
       wvous-tl-corner = 1;
       wvous-tr-corner = 1;
       mru-spaces = false;
+      autohide = true;
     };
     # Hide desktop, show all extensions
     finder = {
@@ -151,7 +146,15 @@ in
       CreateDesktop = false;
       FXEnableExtensionChangeWarning = false;
     };
+    loginwindow = {
+      GuestEnabled = false;
+    };
+    screensaver.askForPassword = true;
+    ".GlobalPreferences" = {
+      "com.apple.mouse.scaling" = 0.5;
+    };
   };
+  system.startup.chime = false;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

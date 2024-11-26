@@ -19,6 +19,13 @@
       device = "/dev/mapper/helium--nixos--vg-nixos--root";
       fsType = "ext4";
     };
+  fileSystems."/nix" =
+    {
+      depends = [ "/" ];
+      device = "/nix";
+      fsType = "none";
+      options = [ "bind" ];
+    };
 
   # From Debian /etc/fstab
   fileSystems."/boot" =
@@ -32,12 +39,6 @@
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
-  fileSystems."/debian" =
-    {
-      device = "/dev/mapper/helium--nixos--vg-debian--root";
-      fsType = "ext4";
-      options = [ "ro " ];
-    };
   fileSystems."/home" =
     {
       device = "/dev/mapper/helium--post--boot--vg-home";
@@ -46,6 +47,16 @@
   fileSystems."/srv/borgbackup" =
     {
       device = "/dev/mapper/helium--post--boot--vg-borgbackup";
+      fsType = "ext4";
+    };
+  fileSystems."/etc" =
+    {
+      device = "/dev/mapper/helium--nixos--vg-etc";
+      fsType = "ext4";
+    };
+  fileSystems."/var" =
+    {
+      device = "/dev/mapper/helium--nixos--vg-var";
       fsType = "ext4";
     };
   swapDevices = [

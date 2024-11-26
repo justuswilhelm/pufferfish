@@ -1,5 +1,8 @@
-{ lib, pkgs, osConfig, ... }:
+{ lib, pkgs, config, osConfig, ... }:
 {
+  home.sessionVariables = {
+    BROWSER = "${config.programs.firefox.package}/bin/firefox-esr";
+  };
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-esr;
@@ -15,6 +18,7 @@
           }];
           definedAliases = [ "kagi" ];
         };
+        "DuckDuckGo".metaData.hidden = true;
         "Bing".metaData.hidden = true;
         "Google".metaData.hidden = true;
         "Amazon.co.jp".metaData.hidden = true;

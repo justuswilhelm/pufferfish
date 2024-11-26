@@ -4,9 +4,7 @@ let
   logPath = "/var/log/caddy";
 in
 {
-  users.groups.lithium-ca = {
-    gid = 1101;
-  };
+  users.groups.lithium-ca = { gid = 1101; };
   users.users.lithium-ca = {
     description = "Lithium CA";
     gid = 1101;
@@ -14,9 +12,8 @@ in
     isHidden = true;
     createHome = false;
   };
-  users.groups.caddy = {
-    gid = 602;
-  };
+
+  users.groups.caddy = { gid = 602; };
   users.users.caddy = {
     home = "/var/caddy/home";
     description = "Caddy";
@@ -24,27 +21,17 @@ in
     uid = 52;
     isHidden = true;
   };
-  users.knownGroups = [
-    "lithium-ca"
-    "caddy"
-  ];
-  users.knownUsers = [
-    "lithium-ca"
-    "caddy"
-  ];
-  environment.etc.caddyfile = {
-    source = ./Caddyfile;
-    target = "caddy/Caddyfile";
-  };
-  environment.systemPackages = [
-    caddy
-  ];
+
+  users.knownGroups = [ "lithium-ca" "caddy" ];
+  users.knownUsers = [ "lithium-ca" "caddy" ];
+
+  environment.etc."caddy/Caddyfile".source = ./Caddyfile;
+  environment.systemPackages = [ caddy ];
 
   launchd.daemons.caddy = {
     command = "${caddy}/bin/caddy run --config /etc/caddy/Caddyfile";
     serviceConfig = {
       KeepAlive = true;
-      StandardOutPath = "${logPath}/caddy.stdout.log";
       StandardErrorPath = "${logPath}/caddy.stderr.log";
       UserName = "caddy";
       GroupName = "caddy";
@@ -53,16 +40,21 @@ in
 
   # This is a bit flaky, sometimes this cert is not included in
   # /etc/ssl/certs/ca-ceriticates.crt
-  security.pki.certificateFiles = [
-    ../lithium-ca.crt
-  ];
-  system.activationScripts.postActivation = {
+  security.pki.certificateFiles = [ ../lithium-ca.crt ];
+
+  system.activationScripts.preActivation = {
     text = ''
-      set -e
-      set -o pipefail
       mkdir -p /var/log/caddy
       mkdir -p /var/caddy/home
       caddy validate --config /etc/caddy/Caddyfile
+    '';
+  };
+
+  # Restart caddy
+  system.activationScripts.postActivation = {
+    text = ''
+      echo "Restarting caddy"
+      launchctl kickstart -k system/${config.launchd.labelPrefix}.caddy
     '';
   };
 }

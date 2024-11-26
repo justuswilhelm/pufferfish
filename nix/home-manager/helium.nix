@@ -1,6 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, specialArgs, ... }:
 {
   imports = [
+    ./modules/opensnitch.nix
     ./home.nix
     ./sway.nix
     ./firefox.nix
@@ -14,9 +15,14 @@
     ./infosec-linux.nix
   ];
 
+  home.username = "justusperlwitz";
+  home.homeDirectory = specialArgs.homeDirectory;
+
   home.packages = [
     pkgs.tor-browser
   ];
+
+  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES/nix/generic";
 
   programs.i3status.modules = {
     "ethernet enp7s0" = {
@@ -29,14 +35,13 @@
   };
 
   xdg.configFile = {
-    swayHeliumNixos = {
+    swayConfig = {
       text = ''
         # HiDPI setting
         output * {
           scale 1.5
         }
       '';
-      target = "sway/config.d/helium-nixos";
     };
   };
 
@@ -53,8 +58,9 @@
     };
   };
 
-  services.opensnitch-ui.enable = true;
-  systemd.user.services.opensnitch-ui.Install.wantedBy = [
-    "multi-user.target"
-  ];
+  programs.ssh = {
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+    };
+  };
 }

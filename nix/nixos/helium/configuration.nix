@@ -8,30 +8,40 @@
       ../modules/podman.nix
       ../modules/openvpn.nix
       ../modules/borgmatic.nix
-      ../modules/ecryptfs.nix
       ../modules/infosec.nix
+      ../modules/ime.nix
+      ../modules/nix.nix
+      ../modules/man.nix
+      ../modules/compat.nix
+      ../modules/opensnitch.nix
+      ../modules/nagios.nix
+      ../modules/openssh.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./virtualisation.nix
     ];
 
   boot.blacklistedKernelModules = [
     "iwlwifi"
     "iwlmvm"
+    "nouveau"
   ];
   networking.hosts = {
     "10.0.57.235" = [ "lithium.local" ];
   };
 
+  boot.kernelPackages = pkgs.linuxPackages_6_11;
   # TODO
   # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  # TODO switch to systemd-boot
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
@@ -42,13 +52,6 @@
   networking.hostName = "helium"; # Define your hostname.
   systemd.network.netdevs.wlo1.enable = false;
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
 
@@ -57,10 +60,26 @@
 
   users.users.justusperlwitz = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    # Enable sudo, allow using virtd
+    extraGroups = [ "wheel" "libvirtd" ];
     home = "/home/justusperlwitz";
     shell = pkgs.fish;
   };
+
+  users.users.lithium-borgbackup = {
+    isSystemUser = true;
+    group = "lithium-borgbackup";
+    shell = pkgs.bash;
+    packages = [ pkgs.borgbackup ];
+    openssh.authorizedKeys = {
+      keys = [
+        ''
+          ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDiGqRXLFyqRD5yByOnqNID+bkex7O8ZcUJ5SRNOu4W6vQ7aLp+MnhblMBYLRqo2JAV6CQtABC8U2wVM1yvdJzLIXgFLKsK0azCJyPl13QaWltVjV+yTl43qA+ugpyDc68SpkqVjdT9gMPMwYXX2QXN0VPdcbbuN8hhKxp95JRTNETyIWTQuCUTeiGO4hRO2YbBv367v2TmkBRDMXZ2ljk3LsecW1sXrd9p45LUiqLOnw2eKYxQar77X4sVjVB+8nPtlU6CBwa1MrlG/r8QkhvXgbB/Pa9QpsveP9+JCD1LRdwFH3mGgdNIghL3ZtTcTz51cYFnQlZeZRit2YiH78rGMeCev3yOk5Ldjm7wAz/AThteDsbKxJTUEvVsUamXz0NCZIeCH6aTXjPTVGZ5DA857+VoHD1+BYgsbr2jmvWbZPkNJv+PqATNFLX16Z/ih9HvsHrDN9vNiMZECKUVNMxky1JD363lcoHaMqfNtxdbqkEDZe2MlpXi093Xdq0dV+k= borgbackup@lithium
+        ''
+      ];
+    };
+  };
+  users.groups.lithium-borgbackup = { };
 
   programs.fish.enable = true;
   programs.git.enable = true;
@@ -80,9 +99,21 @@
     pkgs.vim
   ];
 
-  services.openssh.enable = true;
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "justusperlwitz" ];
+    ensureUsers = [{
+      name = "justusperlwitz";
+      ensureDBOwnership = true;
+      ensureClauses = {
+        createdb = true;
+      };
+    }];
+  };
 
-  services.opensnitch.enable = true;
+  security.pki.certificateFiles = [
+    ../../lithium-ca.crt
+  ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

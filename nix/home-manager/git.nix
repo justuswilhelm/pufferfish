@@ -48,6 +48,9 @@
           autocommit = false;
           synccontent = true;
         };
+        http = {
+          version = "HTTP/1.1";
+        };
       };
       includes = [
         {
