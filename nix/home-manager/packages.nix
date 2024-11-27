@@ -74,6 +74,9 @@
     # Business
     pkgs.hledger
 
+    # "Business tools"
+    pkgs.khal
+
     # Shell
     pkgs.fish
     pkgs.tmux

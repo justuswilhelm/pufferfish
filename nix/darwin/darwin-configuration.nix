@@ -15,6 +15,7 @@ in
     ./modules/openssh.nix
     ./modules/radicale.nix
     ./modules/ntfy-sh.nix
+    ./modules/vdirsyncer.nix
 
     ./caddy.nix
     ./anki.nix
