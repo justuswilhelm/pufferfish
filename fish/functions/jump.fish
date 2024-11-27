@@ -8,13 +8,23 @@ function jump -a query
             return 1
         end
 
-        cd "$dest"
+        cd $dest
         return
     end
 
-    set hist_file $XDG_STATE_HOME/pufferfish/jump
+    set hist_file $XDG_STATE_HOME/pufferfish/jump.hist
+
+    if ! mkdir -vp (dirname $hist_file)
+        echo "Couldn't make directory for hist_file $hist_file"
+        return 1
+    end
+
+    if test ! -e $hist_file
+        touch $hist_file
+    end
+
     if ! set dir (begin tac $hist_file; fd -t d -d 5; end | fzf --scheme=history)
-        echo "Must specify destinatino"
+        echo "Must specify destination"
         return 1
     end
 
@@ -27,5 +37,5 @@ function jump -a query
         echo $rlpath >> $hist_file
     end
 
-    cd "$dest"
+    cd $dir
 end

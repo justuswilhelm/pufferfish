@@ -1,8 +1,13 @@
 function td -d "Create a new tmux session in a given directory"
     set hist_file $XDG_STATE_HOME/pufferfish/td.hist
+
     if ! mkdir -vp (dirname $hist_file)
         echo "Couldn't make directory for hist_file $hist_file"
         return 1
+    end
+
+    if test ! -e $hist_file
+        touch $hist_file
     end
 
     if ! set dir (begin cat $hist_file; fd -t d -d 5; end | fzf --scheme=history)
