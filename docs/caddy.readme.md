@@ -9,7 +9,7 @@ Sources:
 Create the certificates needed to serve the Caddy revproxy from
 https://lithium.local
 
-# Root CA certs
+# Root CA secret
 
 Create directory for root cert:
 
@@ -31,14 +31,17 @@ sudo -u lithium-ca openssl ecparam \
 sudo -u lithium-ca chmod 600 /etc/lithium-ca/secret/lithium-ca.key
 ```
 
-Create the root certificate
+# Root CA cert
+
+Create the root certificate. These steps also apply when renewing the `lithium
+Root` certificate.
 
 ```bash
 sudo -u lithium-ca openssl req -new \
   -subj "/C=JP/ST=Tokyo/L=Setagaya City/O=JWP Consulting/OU=Com/CN=lithium Root" \
   -x509 \
   -sha256 \
-  -days 30 \
+  -days 90 \
   -nodes \
   -key /etc/lithium-ca/secret/lithium-ca.key \
   -out /etc/lithium-ca/lithium-ca.crt
@@ -66,12 +69,17 @@ sudo -u caddy openssl ecparam \
 sudo -u caddy chmod 600 /etc/caddy/certs/secret/lithium-server.key
 ```
 
+# Caddy's cert signing request
+
+The following step also applies when renewing caddys' cert after expiration.
+
 Create the caddy server signing request:
 
 ```bash
 sudo -u caddy openssl req -new \
   -subj "/C=JP/ST=Tokyo/L=Setagaya City/O=JWP Consulting/OU=Com/CN=lithium.local" \
   -sha256 \
+  -days 30 \
   -nodes \
   -key /etc/caddy/certs/secret/lithium-server.key \
   -out /etc/caddy/certs/lithium-server.csr
@@ -94,6 +102,8 @@ sudo -u lithium-ca chmod 644 /etc/lithium-ca/signed/lithium-server.ext
 
 # CA signed caddy cert
 
+The following step also applies when renewing the cert.
+
 Sign the certificate signing request:
 
 ```bash
@@ -112,11 +122,17 @@ sudo chmod 644 /etc/caddy/certs/lithium-server.crt
 
 # Importing the cert
 
+The following instructions are also valid if the root cert expired.
+
+On Mac: Open `Keychain Access`. Delete certificate called "lithium Root" if exists.
+
 Open certificate in local keychain:
 
 ```bash
 open /etc/lithium-ca/lithium-ca.crt
 ```
+
+Open certificate in *Default Keychains* > *login*. Under *Trust*, choose "Always Trust" for **Secure Sockets Layer (SSL)**. Close and confirm by entering administration password.
 
 Update `nix/lithium-ca.crt`.
 
@@ -125,6 +141,8 @@ install /etc/lithium-ca/lithium-ca.crt $HOME/.dotfiles/nix/lithium-ca.crt
 ```
 
 # Restart caddy
+
+These steps are also to be used when caddy's cert expires.
 
 ```bash
 sudo launchctl kill 15 system/net.jwpconsulting.caddy -k -p
