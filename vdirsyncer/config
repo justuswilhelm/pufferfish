@@ -1,0 +1,91 @@
+# This is taken from lithium's vdirsyncer config at ~/.config/vdirsyncer/config
+# An example configuration for vdirsyncer.
+#
+# Move it to ~/.vdirsyncer/config or ~/.config/vdirsyncer/config and edit it.
+# Run `vdirsyncer --help` for CLI usage.
+#
+# Optional parameters are commented out.
+# This file doesn't document all available parameters, see
+# http://vdirsyncer.pimutils.org/ for the rest of them.
+
+[general]
+# A folder where vdirsyncer can store some metadata about each pair.
+# EDIT ME
+status_path = "$HOME/.config/vdirsyncer/status/"
+
+# CARDDAV
+# EDIT ME
+[pair $NAME_contacts]
+# A `[pair <name>]` block defines two storages `a` and `b` that should be
+# synchronized. The definition of these storages follows in `[storage <name>]`
+# blocks. This is similar to accounts in OfflineIMAP.
+# EDIT ME
+a = "$NAME_contacts_local"
+# EDIT ME
+b = "$NAME_contacts_remote"
+
+# Synchronize all collections that can be found.
+# You need to run `vdirsyncer discover` if new calendars/addressbooks are added
+# on the server.
+
+collections = ["from a", "from b"]
+
+# Synchronize the "display name" property into a local file (~/.contacts/displayname).
+metadata = ["displayname"]
+
+# To resolve a conflict the following values are possible:
+#   `null` - abort when collisions occur (default)
+#   `"a wins"` - assume a's items to be more up-to-date
+#   `"b wins"` - assume b's items to be more up-to-date
+#conflict_resolution = null
+
+# EDIT ME
+[storage $NAME_contacts_local]
+# A storage references actual data on a remote server or on the local disk.
+# Similar to repositories in OfflineIMAP.
+type = "filesystem"
+# EDIT ME
+path = "$HOME/contacts/"
+fileext = ".vcf"
+
+# EDIT ME
+[storage $NAME_contacts_remote]
+type = "carddav"
+# EDIT ME
+url = "https://$HOST/$USERNAME"
+# EDIT ME
+username = "$USERNAME"
+# The password can also be fetched from the system password storage, netrc or a
+# custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
+# EDIT ME
+password.fetch = ["command", "cat", "$PATH"]
+# using our own root cert here
+verify = "/etc/ssl/certs/ca-certificates.crt"
+
+# CALDAV
+# EDIT ME
+[pair $NAME_calendar]
+# EDIT ME
+a = "$NAME_calendar_local"
+# EDIT ME
+b = "$NAME_calendar_remote"
+collections = ["from a", "from b"]
+
+# Calendars also have a color property
+metadata = ["displayname", "color"]
+
+# EDIT ME
+[storage $NAME_calendar_local]
+type = "filesystem"
+path = "~/calendars/"
+fileext = ".ics"
+
+# EDIT ME
+[storage $NAME_calendar_remote]
+type = "caldav"
+# EDIT ME
+url = "https://$HOST/$USERNAME"
+username = "$USERNAME"
+# EDIT ME
+password.fetch = ["command", "cat", "$PATH"]
+verify = "/etc/ssl/certs/ca-certificates.crt"
