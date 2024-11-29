@@ -76,6 +76,7 @@
 
     # "Business tools"
     pkgs.khal
+    pkgs.khard
 
     # Shell
     pkgs.fish
