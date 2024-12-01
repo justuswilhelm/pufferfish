@@ -55,4 +55,9 @@ in
   ];
   nix.settings.trusted-substituters = [ cache-url ];
   nix.settings.netrc-file = "/etc/nix/netrc";
+
+  # TODO create startup script that
+  # 1. creates run time folders, and assigns them to attic/attic, and chmods
+  #    g,o=
+  # 2. creates secret - if it doesn't exist
 }
