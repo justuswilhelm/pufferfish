@@ -129,6 +129,11 @@ let
         "workspace 3"
         (openAlacritty "${fish} -l -c t-cmus")
       ];
+      # Anki
+      "${prefix}-shift-a" = [
+        "workspace 1"
+        "exec-and-forget open -a Anki.app"
+      ];
       # Open URL
       "${prefix}-shift-p" = [
         openClipboardInFirefox
