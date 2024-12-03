@@ -2,6 +2,7 @@
 {
   home.packages = [
     pkgs.pgpdump
+    pkgs.gpgme
   ];
 
   programs.gpg = {

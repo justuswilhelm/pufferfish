@@ -46,6 +46,9 @@ in
     # Media
     # Not sure if I need these on Debian or not
     pkgs.ffmpeg
+
+    # For thunderbird
+    pkgs.gpgme
   ];
   environment.shells = [ pkgs.fish ];
   environment.variables = {

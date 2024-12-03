@@ -156,6 +156,15 @@ let
         run = [ "move-node-to-workspace 5" ];
       }
       {
+        "if".app-id = "org.mozilla.thunderbird";
+        run = [ "move-node-to-workspace 5" ];
+      }
+      {
+        "if".app-id = "org.mozilla.thunderbird";
+        "if".window-title-regex-substring = "Sending Message";
+        run = [ "layout floating" ];
+      }
+      {
         "if".app-id = "com.apple.iCal";
         run = [ "move-node-to-workspace 6" ];
       }
