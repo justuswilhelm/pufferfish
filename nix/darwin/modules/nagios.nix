@@ -392,7 +392,8 @@ in
 
     environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca-package ];
     launchd.daemons.nagios = {
-      path = [ cfg.package ] ++ cfg.plugins;
+      # Make sure that nagios can use curl to send things to ntfy-sh
+      path = [ pkgs.curl cfg.package ] ++ cfg.plugins;
 
       serviceConfig = {
         UserName = "nagios";

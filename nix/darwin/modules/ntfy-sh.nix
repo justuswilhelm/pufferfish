@@ -61,8 +61,9 @@ in
 
       services.ntfy-sh.settings = {
         auth-file = mkDefault "${statePath}/user.db";
+        auth-default-access = "deny-all";
         base-url = "https://lithium.local:10104";
-        listen-http = mkDefault "127.0.0.1:2586";
+        listen-http = mkDefault "localhost:18130";
         attachment-cache-dir = mkDefault "${statePath}/attachments";
         cache-file = mkDefault "${statePath}/cache-file.db";
       };
@@ -97,6 +98,7 @@ in
         text = ''
           mkdir -vp -m 700 ${statePath} ${logPath}
           chown -R ntfy-sh:ntfy-sh ${statePath} ${logPath}
+          launchctl kickstart -k system/${config.launchd.labelPrefix}.ntfy-sh
         '';
       };
     };

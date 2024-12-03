@@ -47,3 +47,17 @@ https://lithium.local:10102 {
 		output file /var/log/caddy/radicale.log
 	}
 }
+
+# Reserved for nagios, 10103 -> 18120
+
+# ntfy-sh
+https://lithium.local:10104 {
+	import certs
+
+	reverse_proxy localhost:18130
+
+	log {
+		format console
+		output file /var/log/caddy/ntfy-sh.log
+	}
+}
