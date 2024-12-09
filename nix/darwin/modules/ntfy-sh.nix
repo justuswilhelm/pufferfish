@@ -62,6 +62,7 @@ in
       services.ntfy-sh.settings = {
         auth-file = mkDefault "${statePath}/user.db";
         auth-default-access = "deny-all";
+        behind-proxy = true;
         base-url = "https://lithium.local:10104";
         listen-http = mkDefault "localhost:18130";
         attachment-cache-dir = mkDefault "${statePath}/attachments";
