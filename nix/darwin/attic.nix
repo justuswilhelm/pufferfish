@@ -4,12 +4,14 @@ let
   attic-client = pkgs.attic-client;
   attic-server = pkgs.attic-server;
   cache-url = "https://lithium.local:10100/lithium-default";
+  statePath = "/var/lib/attic";
 in
 {
   users.groups.attic = {
     gid = 603;
   };
   users.users.attic = {
+    home = statePath;
     createHome = false;
     description = "attic user";
     gid = 603;
@@ -36,7 +38,7 @@ in
 
   launchd.daemons.attic = {
     script = ''
-      ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="$(cat /etc/attic/secret.base64)"
+      ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="$(cat ${statePath}/secrets/secret.base64)"
       export ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64
       exec ${attic-server}/bin/atticd --config /etc/attic/atticd.toml
     '';
@@ -60,4 +62,17 @@ in
   # 1. creates run time folders, and assigns them to attic/attic, and chmods
   #    g,o=
   # 2. creates secret - if it doesn't exist
+
+  system.activationScripts.preActivation = {
+    text = ''
+      mkdir -p ${logPath} ${statePath}
+      mkdir -p -m700 ${statePath}/secrets
+      chown -R attic:attic ${logPath} ${statePath}
+      chmod -R go= ${statePath}/secrets
+      if [ ! -e ${statePath}/secrets/secret.base64 ]; then
+        echo "This is where a new secret gets generated"
+        # head -c32 /dev/urandom | base64 | sudo tee /var/lib/attic/secrets/secret.base64
+      fi
+    '';
+  };
 }

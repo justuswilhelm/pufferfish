@@ -9,7 +9,7 @@
 }
 
 (certs) {
-	tls /etc/caddy/certs/lithium-server.crt /etc/caddy/certs/secret/lithium-server.key
+	tls /var/lib/caddy/certs/lithium-server.crt /var/lib/caddy/secrets/lithium-server.key
 }
 
 # Attic

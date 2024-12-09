@@ -4,14 +4,14 @@ title: Attic configuration
 Generate a server secret
 
 ```bash
-openssl rand 32 | base64 | sudo tee /etc/attic/secret.base64
+openssl rand 32 | base64 | sudo tee /var/lib/attic/secrets/secret.base64
 ```
 
 How to generate a new JWT token
 
 ```fish
 nix shell nixpkgs#attic-server
-set -x ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64 (sudo cat /etc/attic/secret.base64)
+set -x ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64 (sudo cat /var/lib/attic/secrets/secret.base64)
 set token (
   atticadm make-token \
     --config /etc/attic/atticd.toml \
@@ -39,7 +39,7 @@ set cache_name lithium
 attic login $cache_name https://lithium.local:10100 (
   sudo -u attic \
     ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64=(
-      sudo -u attic cat /etc/attic/secret.base64
+      sudo -u attic cat /var/lib/attic/secrets/secret.base64
     ) \
     atticadm \
     make-token \
