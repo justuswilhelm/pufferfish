@@ -64,6 +64,7 @@ in
         auth-default-access = "deny-all";
         behind-proxy = true;
         base-url = "https://lithium.local:10104";
+        enable-login = true;
         listen-http = mkDefault "localhost:18130";
         attachment-cache-dir = mkDefault "${statePath}/attachments";
         cache-file = mkDefault "${statePath}/cache-file.db";
