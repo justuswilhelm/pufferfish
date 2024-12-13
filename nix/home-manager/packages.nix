@@ -15,11 +15,14 @@
     pkgs.imagemagick
 
     # Networking
-    pkgs.curl
     pkgs.httperf
     pkgs.netcat-gnu
-    pkgs.wget
     pkgs.whois
+
+    # WWW
+    pkgs.httrack
+    pkgs.curl
+    pkgs.wget
 
     # File transfers, Backups
     pkgs.rsync
