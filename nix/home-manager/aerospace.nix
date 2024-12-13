@@ -1,9 +1,9 @@
 # Contains just sway launcher config now
 { lib, config, pkgs, specialArgs, osConfig, ... }:
 let
-  aerospace = pkgs.stdenv.mkDerivation {
+  aerospace = pkgs.stdenv.mkDerivation rec {
     pname = "aerospace";
-    version = "0.8.6-Beta";
+    version = "0.16.2-Beta";
     nativeBuildInputs = [ pkgs.installShellFiles ];
     buildPhase = "";
     installPhase = ''
@@ -13,8 +13,8 @@ let
     '';
 
     src = pkgs.fetchzip {
-      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.6-Beta/AeroSpace-v0.8.6-Beta.zip";
-      hash = "sha256-AUPaGUqydrMMEnNq6AvZEpdUblTYwS+X3iCygPFWWbQ=";
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v${version}/AeroSpace-v${version}.zip";
+      hash = "sha256-F208+EibyHlCImNig9lHuY05jGoXqNHsCRDKfqAR3g4=";
     };
   };
   # We need to convince macOS to open this as a proper app, not as a child of
