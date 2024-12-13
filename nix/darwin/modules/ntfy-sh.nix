@@ -98,7 +98,8 @@ in
       };
       system.activationScripts.postActivation = {
         text = ''
-          mkdir -vp -m 700 ${statePath} ${logPath}
+          mkdir -v -p ${statePath} ${logPath}
+          chmod 700 ${statePath} ${logPath}
           chown -R ntfy-sh:ntfy-sh ${statePath} ${logPath}
           launchctl kickstart -k system/${config.launchd.labelPrefix}.ntfy-sh
         '';

@@ -66,9 +66,9 @@ in
   system.activationScripts.preActivation = {
     text = ''
       mkdir -p ${logPath} ${statePath}
-      mkdir -p -m700 ${statePath}/secrets
+      mkdir -p ${statePath}/secrets
       chown -R attic:attic ${logPath} ${statePath}
-      chmod -R go= ${statePath}/secrets
+      chmod -R go= ${statePath}
       if [ ! -e ${statePath}/secrets/secret.base64 ]; then
         echo "This is where a new secret gets generated"
         # head -c32 /dev/urandom | base64 | sudo tee /var/lib/attic/secrets/secret.base64
