@@ -52,7 +52,7 @@ let
         status_file = "${nagiosState}/status.dat";
         object_cache_file = "${nagiosState}/objects.cache";
         temp_file = "${nagiosState}/nagios.tmp";
-        lock_file = "/run/nagios.lock";
+        lock_file = "${nagiosState}/nagios.lock";
         state_retention_file = "${nagiosState}/retention.dat";
         query_socket = "${nagiosState}/nagios.qh";
         check_result_path = "${nagiosState}";
