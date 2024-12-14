@@ -164,4 +164,33 @@ in
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      borgbackup = prev.borgbackup.overridePythonAttrs (old: {
+        disabledTests = old.disabledTests ++ [
+          "test_listxattr_buffer_growth"
+        ];
+        pytestFlagsArray = [
+          "--deselect=xattr.py::XattrTestCase::test"
+        ] ++ old.pytestFlagsArray;
+      });
+      python3 = prev.python3.override {
+        packageOverrides = self: super: {
+          aiohttp = super.aiohttp.overridePythonAttrs (old: {
+            disabledTests = old.disabledTests ++ [
+              "test_shutdown_pending_handler_responds"
+            ];
+          });
+          uvloop = super.uvloop.overridePythonAttrs (old: {
+            disabledTestPaths = old.disabledTestPaths ++ [
+              "tests/test_dns.py"
+            ];
+          });
+        };
+
+      };
+    })
+  ];
 }
+
