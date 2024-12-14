@@ -16,6 +16,7 @@ in
     ./modules/radicale.nix
     ./modules/ntfy-sh.nix
     ./modules/vdirsyncer.nix
+    ./modules/mdns-fix.nix
 
     ./caddy.nix
     ./anki.nix
