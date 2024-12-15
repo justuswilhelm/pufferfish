@@ -44,5 +44,6 @@ in
       # Best compability for true color
       terminal = "screen-256color";
       sensibleOnTop = false;
+      shell = "${pkgs.fish}/bin/fish";
     };
 }
