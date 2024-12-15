@@ -38,6 +38,7 @@ in
       escapeTime = 10;
       # Mouse input
       mouse = true;
+      clock24 = true;
       # vi navigation in tmux screens
       keyMode = "vi";
       # Best compability for true color
