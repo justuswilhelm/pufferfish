@@ -21,7 +21,7 @@ in
     ./caddy.nix
     ./anki.nix
     ./attic.nix
-    ./projectify.nix
+    # ./projectify.nix
     ./infosec.nix
   ];
   users.users."${name}" = {
