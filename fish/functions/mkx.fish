@@ -7,6 +7,6 @@ function mkx -d "Create an executable at path" -a dest
 # Maybe set -e, -o pipefail or -u
 echo Hello World
 " >$dest
-    chmod -v +x $dest
+    chmod -v u+x $dest
     ls -lh $dest
 end
