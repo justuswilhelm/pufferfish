@@ -2,36 +2,32 @@
 { pkgs, ... }:
 let
   anki-sync-server = pkgs.anki-sync-server;
-  # TODO
-  # homePath = "/var/lib/anki-sync-server";
-  # TODO make this
-  # statePath = "${homePath}/base";
-  statePath = "/var/anki-sync-server";
-  logPath = "/var/log/anki-sync-server";
-  # TODO make this
-  # syncUser1 = "${statePath}/users/sync_user_1";
-  syncUser1 = "/etc/anki-sync-server/sync_user1";
+  username = "anki-sync-server";
+  groupname = "anki-sync-server";
+  home = "/var/lib/${username}";
+  statePath = "${home}/sync-base";
+  usersPath = "${home}/users";
+  syncUser1 = "${usersPath}/sync_user_1";
+  logPath = "/var/log/${username}";
 in
 {
   users.groups.anki-sync-server = {
     gid = 601;
   };
   users.users.anki-sync-server = {
-    # TODO remove createHome and add home path
-    # inherit homePath;
-    createHome = false;
+    inherit home;
     description = "Anki-sync-server user";
     gid = 601;
     uid = 51;
     isHidden = true;
   };
-  users.knownGroups = [ "anki-sync-server" ];
-  users.knownUsers = [ "anki-sync-server" ];
+  users.knownGroups = [ username ];
+  users.knownUsers = [ groupname ];
 
   launchd.daemons.anki-sync-server = {
     path = [ pkgs.coreutils anki-sync-server ];
     script = ''
-      SYNC_USER1="$(cat /etc/anki-sync-server/sync_user1)"
+      SYNC_USER1="$(cat ${syncUser1})"
       export SYNC_USER1
       # https://docs.ankiweb.net/sync-server.html#hashed-passwords
       # TODO
@@ -47,7 +43,7 @@ in
       KeepAlive = true;
       StandardOutPath = "${logPath}/anki-sync-server.stdout.log";
       StandardErrorPath = "${logPath}/anki-sync-server.stderr.log";
-      UserName = "anki-sync-server";
+      UserName = username;
       EnvironmentVariables = {
         SYNC_HOST = "127.0.0.1";
         SYNC_PORT = "18090";
@@ -57,12 +53,10 @@ in
   };
   system.activationScripts.preActivation = {
     text = ''
-      mkdir -vp ${logPath}
-      mkdir -vp ${statePath}
-      chown -R anki-sync-server:anki-sync-server ${statePath} /etc/anki-sync-server ${logPath}
+      mkdir -pv ${home} ${logPath} ${statePath} ${usersPath}
 
-      mkdir -vp /etc/anki-sync-server
-      chmod -v 0400 ${syncUser1}
+      chown -R ${username}:${groupname} ${home}
+      chmod -R go= ${home}
     '';
   };
 }
