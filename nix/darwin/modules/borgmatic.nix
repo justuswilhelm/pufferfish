@@ -19,8 +19,8 @@ let
       "/Users/*/Library/Developer/CoreSimulator/Caches/*"
       "/Users/*/Movies"
     ];
-    encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
-    ssh_command = "ssh -i /etc/borgmatic/id_rsa";
+    encryption_passcommand = "${pkgs.coreutils}/bin/cat /var/root/.borgmatic/passphrase";
+    ssh_command = "ssh -i /var/root/.borgmatic/id_rsa";
     keep_hourly = 6;
     keep_daily = 7;
     keep_weekly = 4;
