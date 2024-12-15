@@ -30,8 +30,7 @@ in
     settings = mkOption {
       type = types.submodule {
         freeformType = settingsFormat.type;
-        options = {
-        };
+        options = { };
       };
 
       default = { };
