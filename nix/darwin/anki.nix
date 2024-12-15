@@ -5,7 +5,7 @@ let
   # TODO
   # homePath = "/var/lib/anki-sync-server";
   # TODO make this
-  # statePath = "${homePath}/sync";
+  # statePath = "${homePath}/base";
   statePath = "/var/anki-sync-server";
   logPath = "/var/log/anki-sync-server";
   # TODO make this
@@ -29,7 +29,7 @@ in
   users.knownUsers = [ "anki-sync-server" ];
 
   launchd.daemons.anki-sync-server = {
-    path = [ anki-sync-server ];
+    path = [ pkgs.coreutils anki-sync-server ];
     script = ''
       SYNC_USER1="$(cat /etc/anki-sync-server/sync_user1)"
       export SYNC_USER1
