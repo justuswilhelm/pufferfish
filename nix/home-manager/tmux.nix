@@ -42,5 +42,6 @@ in
       keyMode = "vi";
       # Best compability for true color
       terminal = "screen-256color";
+      sensibleOnTop = false;
     };
 }
