@@ -19,3 +19,12 @@
 
  EXTRA_DIST = config.rpath \
  	ABOUT-NLS ACKNOWLEDGEMENTS AUTHORS CODING ChangeLog FAQ NEWS \
+--- a/plugins/Makefile.am
++++ b/plugins/Makefile.am
+@@ -27,6 +27,6 @@
+ #AM_CFLAGS = -Wall
+ 
+-libexec_PROGRAMS = check_apt check_cluster check_disk check_dummy check_http check_load \
++libexec_PROGRAMS = check_apt check_cluster check_disk check_dummy check_http \
+ 	check_mrtg check_mrtgtraf check_ntp check_ntp_peer check_nwstat check_overcr check_ping \
+ 	check_real check_smtp check_ssh check_tcp check_time check_ntp_time \

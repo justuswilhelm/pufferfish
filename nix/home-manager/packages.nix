@@ -29,7 +29,8 @@
     pkgs.unison
 
     # Linters, Formatters, Spellcheckers
-    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
+    # Removed en-science because it was marked unfree in nixpkgs 24.11
+    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers ]))
     (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
