@@ -4,14 +4,10 @@
     # Databases
     pkgs.sqlite
 
-    # Build tools
-    pkgs.hugo
-
-    # File conversion
+    # File, media conversion, Graphics stuff
     pkgs.pandoc
     pkgs.texliveTeTeX
-
-    # Media
+    pkgs.graphviz
     pkgs.imagemagick
 
     # Networking
@@ -38,16 +34,18 @@
 
     # Build tools
     pkgs.cmake
+    pkgs.hugo
 
     # Debugger
     pkgs.qemu
 
-    # Interpreters, VMs
+    # Compilers, Interpreters, VMs
     pkgs.poetry
     pkgs.jq
     pkgs.miller
     pkgs.nodejs_20
     pkgs.openjdk
+    pkgs.go
 
     # Python
     pkgs.pipx
