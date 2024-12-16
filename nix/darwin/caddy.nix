@@ -2,11 +2,14 @@
 let
   caddy = pkgs.caddy;
   logPath = "/var/log/caddy";
+  statePath = "/var/lib/caddy";
+  caStatePath = "/var/lib/lithium-ca";
 in
 {
   users.groups.lithium-ca = { gid = 1101; };
   users.users.lithium-ca = {
     description = "Lithium CA";
+    home = caStatePath;
     gid = 1101;
     uid = 1101;
     isHidden = true;
@@ -15,7 +18,7 @@ in
 
   users.groups.caddy = { gid = 602; };
   users.users.caddy = {
-    home = "/var/caddy/home";
+    home = statePath;
     description = "Caddy";
     gid = 602;
     uid = 52;
@@ -44,15 +47,19 @@ in
 
   system.activationScripts.preActivation = {
     text = ''
-      mkdir -p /var/log/caddy
-      mkdir -p /var/caddy/home
-      caddy validate --config /etc/caddy/Caddyfile
+      mkdir -p ${logPath} ${statePath} ${caStatePath} ${caStatePath}/signed
+      mkdir -p ${statePath}/secrets ${caStatePath}/secrets
+      chown -R caddy:caddy ${logPath} ${statePath}
+      chown -R lithium-ca:lithium-ca ${caStatePath}
+      chmod -R go= ${statePath}/secrets ${caStatePath}/secrets
     '';
   };
 
   # Restart caddy
   system.activationScripts.postActivation = {
     text = ''
+      caddy validate --config /etc/caddy/Caddyfile
+
       echo "Restarting caddy"
       launchctl kickstart -k system/${config.launchd.labelPrefix}.caddy
     '';

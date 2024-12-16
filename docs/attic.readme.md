@@ -1,14 +1,17 @@
+---
+title: Attic configuration
+---
 Generate a server secret
 
-```
-openssl rand 32 | base64 | sudo tee /etc/attic/secret.base64
+```bash
+openssl rand 32 | base64 | sudo tee /var/lib/attic/secrets/secret.base64
 ```
 
 How to generate a new JWT token
 
 ```fish
 nix shell nixpkgs#attic-server
-set -x ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64 (sudo cat /etc/attic/secret.base64)
+set -x ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64 (sudo cat /var/lib/attic/secrets/secret.base64)
 set token (
   atticadm make-token \
     --config /etc/attic/atticd.toml \
@@ -32,35 +35,46 @@ attic use lithium-default
 or
 
 ```bash
-attic login lithium https://lithium.local:10100 (
+set cache_name lithium
+attic login $cache_name https://lithium.local:10100 (
   sudo -u attic \
     ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64=(
-      sudo -u attic cat /etc/attic/secret.base64
+      sudo -u attic cat /var/lib/attic/secrets/secret.base64
     ) \
     atticadm \
     make-token \
     --config /etc/attic/atticd.toml \
-    --sub (hostname) \
-    --validity "1 month" \
-    --pull (hostname)-"*" \
-    --push (hostname)-"*" \
-    --delete (hostname)-"*" \
-    --create-cache (hostname)-"*" \
-    --configure-cache (hostname)-"*" \
-    --configure-cache-retention (hostname)-"*" \
-    --destroy-cache (hostname)-"*"
+    --sub $cache_name \
+    --validity "3 month" \
+    --pull $cache_name-"*" \
+    --push $cache_name-"*" \
+    --delete $cache_name-"*" \
+    --create-cache $cache_name-"*" \
+    --configure-cache $cache_name-"*" \
+    --configure-cache-retention $cache_name-"*" \
+    --destroy-cache $cache_name-"*"
 )
-sed -n -E -e 's/token = "(.+)"/machine lithium.local\npassword \1/p' ~/.config/attic/config.toml | sudo tee /etc/nix/netrc ~/.config/nix/netrc
+sed -n -E -e 's/token = "(.+)"/machine lithium.local\npassword \1/p' \
+  ~/.config/attic/config.toml | \
+    sudo tee /etc/nix/netrc ~/.config/nix/netrc
 ```
 
-Test with
+Test using the following:
 
 ```bash
 curl --netrc-file ~/.config/nix/netrc -n \
   https://lithium.local:10100/lithium-default/nix-cache-info
 ```
 
-Ideal response
+Or test as root:
+
+```bash
+sudo curl --cacert /etc/ssl/certs/ca-certificates.crt \
+  --netrc-file /etc/nix/netrc -n \
+  https://lithium.local:10100/lithium-default/nix-cache-info
+```
+
+This is the ideal response, for both of the above curl invocations:
 
 ```
 WantMassQuery: 1

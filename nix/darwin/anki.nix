@@ -1,28 +1,33 @@
+# TODO add password hashing
 { pkgs, ... }:
 let
-  anki-sync-serer = pkgs.anki-sync-server;
-  logPath = "/var/log/anki-sync-server";
+  anki-sync-server = pkgs.anki-sync-server;
+  username = "anki-sync-server";
+  groupname = "anki-sync-server";
+  home = "/var/lib/${username}";
+  statePath = "${home}/sync-base";
+  usersPath = "${home}/users";
+  syncUser1 = "${usersPath}/sync_user_1";
+  logPath = "/var/log/${username}";
 in
 {
   users.groups.anki-sync-server = {
     gid = 601;
   };
   users.users.anki-sync-server = {
-    createHome = false;
+    inherit home;
     description = "Anki-sync-server user";
     gid = 601;
     uid = 51;
     isHidden = true;
   };
-  users.knownGroups = [
-    "anki-sync-server"
-  ];
-  users.knownUsers = [
-    "anki-sync-server"
-  ];
+  users.knownGroups = [ username ];
+  users.knownUsers = [ groupname ];
+
   launchd.daemons.anki-sync-server = {
+    path = [ pkgs.coreutils anki-sync-server ];
     script = ''
-      SYNC_USER1="$(cat /etc/anki-sync-server/sync_user1)"
+      SYNC_USER1="$(cat ${syncUser1})"
       export SYNC_USER1
       # https://docs.ankiweb.net/sync-server.html#hashed-passwords
       # TODO
@@ -32,27 +37,26 @@ in
       # > const pbkdf2 = require("@phc/pbkdf2");
       # console.log(await pbkdf2.hash("password");
       # undefined
-      exec ${anki-sync-serer}/bin/anki-sync-server
+      exec anki-sync-server
     '';
     serviceConfig = {
       KeepAlive = true;
       StandardOutPath = "${logPath}/anki-sync-server.stdout.log";
       StandardErrorPath = "${logPath}/anki-sync-server.stderr.log";
-      UserName = "anki-sync-server";
+      UserName = username;
       EnvironmentVariables = {
         SYNC_HOST = "127.0.0.1";
         SYNC_PORT = "18090";
-        SYNC_BASE = "/var/anki-sync-server";
+        SYNC_BASE = statePath;
       };
     };
   };
-  system.activationScripts.postActivation = {
+  system.activationScripts.preActivation = {
     text = ''
-      mkdir -vp /var/log/anki-sync-server
-      mkdir -vp /var/anki-sync-server
-      mkdir -vp /etc/anki-sync-server
-      chown -R anki-sync-server:anki-sync-server /var/anki-sync-server /etc/anki-sync-server /var/log/anki-sync-server
-      chmod -v 0400 /etc/anki-sync-server/sync_user1
+      mkdir -pv ${home} ${logPath} ${statePath} ${usersPath}
+
+      chown -R ${username}:${groupname} ${home}
+      chmod -R go= ${home}
     '';
   };
 }

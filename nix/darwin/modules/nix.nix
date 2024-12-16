@@ -13,9 +13,9 @@
     experimental-features = flakes nix-command
   '';
   nix.settings = {
-    auto-optimise-store = true;
     trusted-users = [ "root" ];
   };
+  nix.optimise.automatic = true;
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;

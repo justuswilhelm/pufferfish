@@ -7,7 +7,6 @@
     ./modules/ssh.nix
     ./modules/man.nix
 
-    ./fish.nix
     ./git.nix
     ./tmux.nix
     ./cmus.nix

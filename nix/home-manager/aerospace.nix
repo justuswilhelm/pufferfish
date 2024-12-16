@@ -1,9 +1,9 @@
 # Contains just sway launcher config now
 { lib, config, pkgs, specialArgs, osConfig, ... }:
 let
-  aerospace = pkgs.stdenv.mkDerivation {
+  aerospace = pkgs.stdenv.mkDerivation rec {
     pname = "aerospace";
-    version = "0.8.6-Beta";
+    version = "0.16.2-Beta";
     nativeBuildInputs = [ pkgs.installShellFiles ];
     buildPhase = "";
     installPhase = ''
@@ -13,8 +13,8 @@ let
     '';
 
     src = pkgs.fetchzip {
-      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.6-Beta/AeroSpace-v0.8.6-Beta.zip";
-      hash = "sha256-AUPaGUqydrMMEnNq6AvZEpdUblTYwS+X3iCygPFWWbQ=";
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v${version}/AeroSpace-v${version}.zip";
+      hash = "sha256-F208+EibyHlCImNig9lHuY05jGoXqNHsCRDKfqAR3g4=";
     };
   };
   # We need to convince macOS to open this as a proper app, not as a child of
@@ -129,6 +129,11 @@ let
         "workspace 3"
         (openAlacritty "${fish} -l -c t-cmus")
       ];
+      # Anki
+      "${prefix}-shift-a" = [
+        "workspace 1"
+        "exec-and-forget open -a Anki.app"
+      ];
       # Open URL
       "${prefix}-shift-p" = [
         openClipboardInFirefox
@@ -154,6 +159,15 @@ let
       {
         "if".app-id = "com.apple.mail";
         run = [ "move-node-to-workspace 5" ];
+      }
+      {
+        "if".app-id = "org.mozilla.thunderbird";
+        run = [ "move-node-to-workspace 5" ];
+      }
+      {
+        "if".app-id = "org.mozilla.thunderbird";
+        "if".window-title-regex-substring = "Sending Message";
+        run = [ "layout floating" ];
       }
       {
         "if".app-id = "com.apple.iCal";

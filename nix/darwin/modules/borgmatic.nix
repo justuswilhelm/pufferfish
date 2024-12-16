@@ -19,8 +19,8 @@ let
       "/Users/*/Library/Developer/CoreSimulator/Caches/*"
       "/Users/*/Movies"
     ];
-    encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
-    ssh_command = "ssh -i /etc/borgmatic/id_rsa";
+    encryption_passcommand = "${pkgs.coreutils}/bin/cat /var/root/.borgmatic/passphrase";
+    ssh_command = "ssh -i /var/root/.borgmatic/id_rsa";
     keep_hourly = 6;
     keep_daily = 7;
     keep_weekly = 4;
@@ -33,6 +33,7 @@ let
       { name = "archives"; frequency = "1 month"; }
     ];
     check_last = 10;
+    # TODO add individual per-repository checks
     after_actions = [
       "echo -e 'lithium.local,borgmatic,0,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
     ];
@@ -53,7 +54,7 @@ let
     in
     validated;
 
-  logPath = "/var/log/borgmatic/borgmatic.log";
+  logPath = "/var/log/borgmatic";
 in
 {
   environment.systemPackages = [
@@ -64,7 +65,7 @@ in
 
   launchd.daemons.borgmatic = {
     path = [ borgmatic config.services.nagios.nsca-package ];
-    command = "borgmatic --log-file-verbosity 2 --log-file ${logPath}";
+    command = "borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
     serviceConfig = {
       # Performance
       ProcessType = "Background";
@@ -77,4 +78,11 @@ in
       StartCalendarInterval = [{ Minute = 0; }];
     };
   };
+
+  system.activationScripts.preActivation = {
+    text = ''
+      mkdir -p ${logPath}
+    '';
+  };
+
 }

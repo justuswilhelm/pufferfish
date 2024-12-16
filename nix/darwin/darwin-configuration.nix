@@ -15,11 +15,13 @@ in
     ./modules/openssh.nix
     ./modules/radicale.nix
     ./modules/ntfy-sh.nix
+    ./modules/vdirsyncer.nix
+    ./modules/mdns-fix.nix
 
     ./caddy.nix
     ./anki.nix
     ./attic.nix
-    ./projectify.nix
+    # ./projectify.nix
     ./infosec.nix
   ];
   users.users."${name}" = {
@@ -45,6 +47,9 @@ in
     # Media
     # Not sure if I need these on Debian or not
     pkgs.ffmpeg
+
+    # For thunderbird
+    pkgs.gpgme
   ];
   environment.shells = [ pkgs.fish ];
   environment.variables = {

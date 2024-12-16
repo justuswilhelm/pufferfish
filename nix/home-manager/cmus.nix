@@ -5,7 +5,6 @@ let
 in
 {
   options.programs.cmus = {
-    enable = mkEnableOption "cmus";
     output_plugin = mkOption {
       type = types.str;
       default = "pulse";
@@ -15,16 +14,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      pkgs.cmus
-    ];
-
-    xdg.configFile.cmusRc = {
-      text = ''
-        set output_plugin=${cfg.output_plugin}
-        ${builtins.readFile ../../cmus/rc}
-      '';
-      target = "cmus/rc";
-    };
+    programs.cmus.extraConfig = ''
+      set output_plugin=${cfg.output_plugin}
+      ${builtins.readFile ../../cmus/rc}
+    '';
   };
 }
