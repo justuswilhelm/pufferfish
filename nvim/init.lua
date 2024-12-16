@@ -63,7 +63,7 @@ Plug("tpope/vim-fugitive")
 
 -- Autocomplete
 -- ------------
-Plug("hrsh7th/nvim-cmp")
+Plug("hrsh7th/nvim-cmp", {commit="ed31156aa2cc14e3bc066c59357cc91536a2bc01"})
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
