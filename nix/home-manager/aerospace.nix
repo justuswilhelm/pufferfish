@@ -175,7 +175,7 @@ let
       }
       {
         "if".app-id = "org.libreoffice.script";
-        "if".window-title-regex-substring = "Delete Contents";
+        "if".window-title-regex-substring = "Delete Contents|Rename Sheet|Confirmation";
         run = [ "layout floating" ];
       }
       {
@@ -191,9 +191,8 @@ let
   tomlFormat = pkgs.formats.toml { };
 in
 {
-  xdg.configFile.aerospace = {
+  xdg.configFile."aerospace/aerospace.toml" = {
     source = tomlFormat.generate "aerospace.toml" config;
-    target = "aerospace/aerospace.toml";
   };
   home.packages = [ aerospace ];
 }
