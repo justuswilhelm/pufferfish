@@ -112,7 +112,7 @@ let
       # resize window (you can also use the mouse for that)
       "${prefix}-enter" = openAlacritty fish;
       "${prefix}-shift-enter" = newFirefoxWindow;
-      "${prefix}-shift-n" = openAlacritty "${fish} -l -c open-in-finder";
+      "${prefix}-shift-n" = openAlacritty "${fish} -i -c open-in-finder";
       # Dotfiles
       "${prefix}-shift-m" = [
         "workspace 4"
