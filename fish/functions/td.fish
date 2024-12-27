@@ -10,7 +10,15 @@ function td -d "Create a new tmux session in a given directory"
         touch $hist_file
     end
 
-    if ! set dir (begin cat $hist_file; fd -t d -d 5; end | fzf --scheme=history)
+    if ! set dir (
+        begin
+            cat $hist_file
+            fd \
+                --type directory \
+                --max-depth 5 \
+                . $PWD
+        end | fzf --scheme=history
+    )
         echo "Couldn't determine new tmux session directory"
         return 1
     end
