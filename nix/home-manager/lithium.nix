@@ -13,7 +13,6 @@ in
     ./cmus.nix
   ];
 
-  home.username = "justusperlwitz";
   home.homeDirectory = specialArgs.homeDirectory;
 
   programs.cmus = {
