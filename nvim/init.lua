@@ -269,6 +269,10 @@ lspconfig.pyright.setup {
 -- ----
 lspconfig.ruff.setup {}
 
+-- Vale
+-- ----
+lspconfig.vale_ls.setup {}
+
 -- Deno
 -- -----
 -- require'lspconfig'.denols.setup{}

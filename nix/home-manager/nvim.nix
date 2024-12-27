@@ -32,6 +32,7 @@
       pkgs.deno
       pkgs.ruff
       pkgs.ruff-lsp
+      pkgs.vale-ls
       pkgs.pyright
       pkgs.typescript
       pkgs.nodePackages.typescript-language-server
