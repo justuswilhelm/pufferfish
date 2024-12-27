@@ -34,7 +34,7 @@ function jump -a query
     end
 
     if ! grep $rlpath $hist_file
-        echo $rlpath >> $hist_file
+        echo $rlpath >>$hist_file
     end
 
     cd $dir

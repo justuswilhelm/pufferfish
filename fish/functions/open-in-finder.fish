@@ -29,7 +29,7 @@ function open-in-finder
     end
 
     if ! grep $rlpath $hist_file
-        echo $rlpath >> $hist_file
+        echo $rlpath >>$hist_file
     end
 
     open -a Finder $rlpath || return
