@@ -44,16 +44,14 @@ in
   programs.fish.shellAliases.rebuild = "alacritty msg create-window -e $SHELL -c rebuild-nix-darwin";
   programs.git.ignores = [ ".DS_Store" ];
 
-  home.file.xbar = {
+  home.file."${applicationSupport}/xbar" = {
     source = ../../xbar;
-    target = "${applicationSupport}/xbar";
     recursive = true;
   };
   xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
 
-  xdg.configFile.karabiner = {
+  xdg.configFile."karabiner/karabiner.json" = {
     source = ../../karabiner/karabiner.json;
-    target = "karabiner/karabiner.json";
   };
   xdg.configFile."fd/ignore" = {
     # These are all directories that can't be walked through by fd, or cause
