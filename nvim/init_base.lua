@@ -76,6 +76,11 @@ vim.opt.hlsearch = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Indentation
+-- -----------
+-- Indent tab with four spaces
+vim.opt.shiftwidth = 4
+
 -- Syntax settings
 -- ===========================================
 -- Enable syntax, if not done by an ftplugin for us
