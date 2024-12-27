@@ -23,7 +23,7 @@ function td -d "Create a new tmux session in a given directory"
         return 1
     end
 
-    if ! set rlpath (realpath $dir)
+    if ! set rlpath (realpath $dir)/
         echo "Could not determine directory $dir's realpath"
         return 1
     end
