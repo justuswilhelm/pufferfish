@@ -70,6 +70,9 @@ in
       # Performance
       ProcessType = "Background";
       LowPriorityBackgroundIO = true;
+      # Maybe:
+      # NetworkState = true;
+      # So that we don't try to back up when not connected to the network
       LowPriorityIO = true;
       # Let borgmatic run for 2h max
       TimeOut = 60 * 60 * 2;
