@@ -31,6 +31,10 @@
     enable = true;
     domains = [ "~." ];
   };
+  networking.firewall.allowedUDPPorts = [
+    # mDNS
+    5353
+  ];
   environment.systemPackages = with pkgs; [
     # For debugging
     tcpdump
