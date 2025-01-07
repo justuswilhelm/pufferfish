@@ -3,6 +3,7 @@
 {
   imports =
     [
+      ../modules/nix.nix
       ../modules/networkd.nix
       ../modules/sway.nix
       ../modules/utm.nix
@@ -46,13 +47,6 @@
     pciutils
     tcpdump
   ];
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
