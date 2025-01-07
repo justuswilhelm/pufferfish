@@ -44,7 +44,7 @@
 
     # Windows
     # =======
-    pkgs.crackmapexec
+    pkgs.netexec
     pkgs.bloodhound
     pkgs.bloodhound-py
     pkgs.openldap
