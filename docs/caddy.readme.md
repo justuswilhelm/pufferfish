@@ -1,17 +1,30 @@
+---
+title: Certificate management with OpenSSL and Caddy
+author: Justus Perlwitz
+---
+
 Tested with LibreSSL 3.3.6
-
-Sources:
-
-- https://blog.devolutions.net/2020/07/tutorial-how-to-generate-secure-self-signed-server-and-client-certificates-with-openssl/
-- https://gist.github.com/KeithYeh/bb07cadd23645a6a62509b1ec8986bbc
-- https://dev.to/techschoolguru/how-to-create-sign-ssl-tls-certificates-2aai
 
 Create the certificates needed to serve the Caddy revproxy from
 https://lithium.local
 
-# Root CA secret
+# Users
 
-Create directory for root cert:
+Ensure that you have the following two users:
+
+- `lithium-ca`: Manages the root CA certificate
+- `caddy`: Servers the reverse proxy
+
+# Root CA directories
+
+First, create the following three directories:
+
+- `/var/lib/lithium-ca`: Directory where `lithium-ca`
+- `/var/lib/lithium-ca/secrets`: Contain signing data that only `lithium-ca` is allowed to
+access
+- `/var/lib/lithium-ca/signed`: Contain signed certificates, open to public
+
+Run the following commands:
 
 ```bash
 sudo mkdir -p /var/lib/lithium-ca
@@ -20,7 +33,10 @@ sudo -u lithium-ca mkdir -m 700 /var/lib/lithium-ca/secrets
 sudo -u lithium-ca mkdir /var/lib/lithium-ca/signed
 ```
 
-Create the root key
+# Root CA secret
+
+Create the root key using the following command and ensure that only
+`lithium-ca` can read it:
 
 ```bash
 sudo -u lithium-ca openssl ecparam \
@@ -33,7 +49,7 @@ sudo -u lithium-ca chmod 600 /var/lib/lithium-ca/secrets/lithium-ca.key
 
 # Root CA cert
 
-Create the root certificate. These steps also apply when renewing the `lithium
+Create the root certificate. This steps also applies when renewing the `lithium
 Root` certificate.
 
 ```bash
@@ -48,11 +64,18 @@ sudo -u lithium-ca openssl req -new \
 sudo -u lithium-ca chmod 644 /var/lib/lithium-ca/lithium-ca.crt
 ```
 
-# Caddy certs
+# Caddy certificate dirs
 
-Create caddy's cert dirs:
+Next, create the following three directories:
+
+- `/var/lib/caddy`: Contains `caddy` user data
+- `/var/lib/caddy/certs`: Contains `caddy` user certificates. This
+directory is world readable
+- `/var/lib/caddy/secrets`: Contains `caddy` user secrets. The keys in this
+directory are used to sign `caddy`'s certificates. The directory is not world-readable.
 
 ```bash
+sudo mkdir -p /var/lib/caddy
 sudo chown caddy:caddy /var/lib/caddy
 
 sudo mkdir -p /var/lib/caddy/certs
@@ -61,7 +84,11 @@ sudo chmod 755 /var/lib/caddy/certs
 sudo -u caddy mkdir -m 700 /var/lib/caddy/secrets
 ```
 
-Create the server certificate key:
+# Caddy private key
+
+Create the server certificate key `lithium-server.key` and store it in
+`/var/lib/caddy/secrets`. The key has read and write permissions only for
+`caddy`.
 
 ```bash
 sudo -u caddy openssl ecparam \
@@ -72,11 +99,13 @@ sudo -u caddy openssl ecparam \
 sudo -u caddy chmod 600 /var/lib/caddy/secrets/lithium-server.key
 ```
 
-# Caddy's cert signing request
+# Caddy's certificate signing request
 
-The following step also applies when renewing caddys' cert after expiration.
+The following step also applies when renewing `caddy`'s certificate after
+it expires.
 
-Create the caddy server signing request:
+Create the caddy server signing request and place it in `/var/lib/caddy/certs`.
+Make it world readable so that `lithium-ca` can process it. Run the following:
 
 ```bash
 sudo -u caddy openssl req -new \
@@ -89,7 +118,10 @@ sudo -u caddy openssl req -new \
 sudo -u caddy chmod 644 /var/lib/caddy/certs/lithium-server.csr
 ```
 
-Create the caddy server certificate extension file:
+# Certificate extension file
+
+`lithium-ca` now creates a certificate extension file used when signing
+`caddy`'s certificate. Use the following commands:
 
 ```bash
 echo "subjectKeyIdentifier = hash
@@ -103,11 +135,14 @@ sudo -u lithium-ca tee /var/lib/lithium-ca/signed/lithium-server.ext
 sudo -u lithium-ca chmod 644 /var/lib/lithium-ca/signed/lithium-server.ext
 ```
 
-# CA signed caddy cert
+# CA signing `caddy`'s certificate signing request
 
-The following step also applies when renewing the cert.
+The following step also applies when renewing the `caddy` certificate.
 
-Sign the certificate signing request:
+`lithium-ca` now signs the certificate signing request created by `caddy`.
+The resulting certificate `lithium-server.crt` is stored in
+`/var/lib/lithium-ca/signed`. `caddy` then copies this certificate into
+`/var/lib/caddy/certs` and makes it world-readonly.
 
 ```bash
 sudo -u lithium-ca openssl x509 \
@@ -123,13 +158,14 @@ sudo -u caddy cp /var/lib/lithium-ca/signed/lithium-server.crt /var/lib/caddy/ce
 sudo chmod 644 /var/lib/caddy/certs/lithium-server.crt
 ```
 
-# Importing the cert
+# Importing the certificate
 
-The following instructions are also valid if the root cert expired.
+The following instructions are also valid if the root CA certificate expired.
 
-On Mac: Open `Keychain Access`. Delete certificate called "lithium Root" if exists.
+## macOS
 
-Open certificate in local keychain:
+Open `Keychain Access`. Delete certificate called "lithium Root" if
+exists. Then, open certificate in local keychain:
 
 ```bash
 open /var/lib/lithium-ca/lithium-ca.crt
@@ -137,16 +173,26 @@ open /var/lib/lithium-ca/lithium-ca.crt
 
 Open certificate in *Default Keychains* > *login*. Under *Trust*, choose "Always Trust" for **Secure Sockets Layer (SSL)**. Close and confirm by entering administration password.
 
+## Nix and NixOS
+
 Update `nix/lithium-ca.crt`.
 
 ```bash
 install /var/lithium-ca/lithium-ca.crt $HOME/.dotfiles/nix/lithium-ca.crt
 ```
 
+Then, commit and rebuild NixOS and nix home configuration.
+
 # Restart caddy
 
-These steps are also to be used when caddy's cert expires.
+These steps are also to be used when caddy's certificate expires.
 
 ```bash
 sudo launchctl kill 15 system/net.jwpconsulting.caddy -k -p
 ```
+
+# Sources
+
+- https://blog.devolutions.net/2020/07/tutorial-how-to-generate-secure-self-signed-server-and-client-certificates-with-openssl/
+- https://gist.github.com/KeithYeh/bb07cadd23645a6a62509b1ec8986bbc
+- https://dev.to/techschoolguru/how-to-create-sign-ssl-tls-certificates-2aai
