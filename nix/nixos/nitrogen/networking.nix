@@ -5,7 +5,7 @@
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
   networking.wireless.secretsFile = "/etc/wireless-credentials/wireless.env";
   networking.wireless.networks = {
-    "ext:HOME_SSID".pskRaw = "ext:HOME_PSK";
+    "home sweet home".pskRaw = "ext:HOME_PSK";
   };
-  networking.firewall.enable = true;
+  networking.wireless.userControlled.enable = true;
 }
