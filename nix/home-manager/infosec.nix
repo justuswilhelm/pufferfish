@@ -42,12 +42,14 @@ in
     # ======
     pkgs.programmer-calculator
     pkgs.xxd
+    pkgs.binwalk
 
     # Networking
     # ==========
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
+    pkgs.mitmproxy
 
     # Exploits
     # ========
