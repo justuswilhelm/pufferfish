@@ -1,4 +1,4 @@
-function td -d "Create a new tmux session in a given directory"
+function td -d "Create a new tmux session in a given directory" -a query
     set hist_file $XDG_STATE_HOME/pufferfish/td.hist
 
     if ! mkdir -vp (dirname $hist_file)
@@ -17,9 +17,14 @@ function td -d "Create a new tmux session in a given directory"
                 --type directory \
                 --max-depth 5 \
                 . $PWD
-        end | fzf --scheme=history
+        end | fzf --scheme=history --query=$query
     )
         echo "Couldn't determine new tmux session directory"
+        return 1
+    end
+
+    if [ ! -e $dir ]
+        echo "Directory $dir doesn't exist"
         return 1
     end
 

@@ -22,10 +22,6 @@
     # Not available on Darwin
     pkgs.cntr
 
-    # Networking
-    # ==========
-    pkgs.mitmproxy
-
     # Remote desktop
     # ==============
     pkgs.tigervnc
