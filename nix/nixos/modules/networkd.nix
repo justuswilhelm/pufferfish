@@ -22,6 +22,7 @@
         networkConfig = {
           DHCP = "yes";
           MulticastDNS = "yes";
+          LinkLocalAddressing = "no";
         };
       };
     };
