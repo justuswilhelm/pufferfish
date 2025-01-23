@@ -133,6 +133,7 @@ in
     pkgs.gnutar
     pkgs.unzip
     pkgs.p7zip
+    pkgs.xz
 
     # Core tools
     pkgs.silver-searcher
