@@ -14,6 +14,8 @@
   '';
   nix.settings = {
     trusted-users = [ "root" ];
+    sandbox = true;
+    extra-sandbox-paths = [ "/nix/store" ];
   };
   nix.optimise.automatic = true;
 
