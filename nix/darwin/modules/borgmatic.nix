@@ -55,6 +55,8 @@ let
     validated;
 
   logPath = "/var/log/borgmatic";
+  # Let borgmatic run for 2h max
+  timeout = 60 * 60 * 2;
 in
 {
   environment.systemPackages = [
@@ -64,8 +66,8 @@ in
   environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
 
   launchd.daemons.borgmatic = {
-    path = [ borgmatic config.services.nagios.nsca-package ];
-    command = "borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
+    path = [ borgmatic pkgs.coreutils config.services.nagios.nsca-package ];
+    command = "timeout ${toString timeout} borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
     serviceConfig = {
       # Performance
       ProcessType = "Background";
@@ -74,9 +76,6 @@ in
       # NetworkState = true;
       # So that we don't try to back up when not connected to the network
       LowPriorityIO = true;
-      # Let borgmatic run for 2h max
-      ExitTimeOut = 60 * 60 * 2;
-
       # Timing
       StartCalendarInterval = [{ Minute = 0; }];
     };
