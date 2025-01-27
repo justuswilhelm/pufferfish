@@ -26,6 +26,15 @@
     # ==============
     pkgs.tigervnc
 
+    # TTY tools
+    # =========
+    pkgs.tio
+
+    # System tools
+    # ============
+    pkgs.pciutils
+    pkgs.usbutils
+
     # Build tools
     # ===========
     pkgs.gcc
