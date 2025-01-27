@@ -36,6 +36,12 @@ in
     };
   };
 
+  environment.etc."newsyslog.d/attic.conf".text = ''
+    # logfilename               [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/attic.stdout.log                  640  10    *    $D0   J
+    ${logPath}/attic.stderr.log                  640  10    *    $D0   J
+  '';
+
   launchd.daemons.attic = {
     script = ''
       ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="$(cat ${statePath}/secrets/secret.base64)"

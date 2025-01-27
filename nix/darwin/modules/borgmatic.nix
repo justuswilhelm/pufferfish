@@ -64,6 +64,11 @@ in
   ];
 
   environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
+  # Copied from /etc/newsyslog.d/wifi.conf
+  environment.etc."newsyslog.d/borgmatic.conf".text = ''
+    # logfilename            [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/borgmatic.log                  640  10    *    $D0   J
+  '';
 
   launchd.daemons.borgmatic = {
     path = [ borgmatic pkgs.coreutils config.services.nagios.nsca-package ];

@@ -24,6 +24,12 @@ in
   users.knownGroups = [ username ];
   users.knownUsers = [ groupname ];
 
+  environment.etc."newsyslog.d/anki.conf".text = ''
+    # logfilename                          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/anki-sync-server.stdout.log                  640  10    *    $D0   J
+    ${logPath}/anki-sync-server.stderr.log                  640  10    *    $D0   J
+  '';
+
   launchd.daemons.anki-sync-server = {
     path = [ pkgs.coreutils anki-sync-server ];
     script = ''

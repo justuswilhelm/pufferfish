@@ -390,6 +390,16 @@ in
     environment.etc."nagios/nsca.conf".source = nscaConfig;
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
 
+    environment.etc."newsyslog.d/nagios.conf".text = ''
+      # logfilename                          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+      ${nagiosLogDir}/stdout.log                              640  10    *    $D0   J
+      ${nagiosLogDir}/stderr.log                              640  10    *    $D0   J
+      ${nagiosHttpdLogDir}/httpd.stdout.log                   640  10    *    $D0   J
+      ${nagiosHttpdLogDir}/httpd.stderr.log                   640  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stdout.log                     640  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stderr.log                     640  10    *    $D0   J
+    '';
+
     environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca-package ];
     launchd.daemons.nagios = {
       # Make sure that nagios can use curl to send things to ntfy-sh

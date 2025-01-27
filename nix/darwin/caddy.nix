@@ -31,6 +31,12 @@ in
   environment.etc."caddy/Caddyfile".source = ./Caddyfile;
   environment.systemPackages = [ caddy ];
 
+  # Copied from /etc/newsyslog.d/wifi.conf
+  environment.etc."newsyslog.d/caddy.conf".text = ''
+    # logfilename               [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/caddy.stderr.log                  640  10    *    $D0   J
+  '';
+
   launchd.daemons.caddy = {
     command = "${caddy}/bin/caddy run --config /etc/caddy/Caddyfile";
     serviceConfig = {

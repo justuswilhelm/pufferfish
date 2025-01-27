@@ -58,6 +58,12 @@ in
         systemPackages = [ cfg.package ];
       };
 
+      environment.etc."newsyslog.d/ntfy-sh.conf".text = ''
+        # logfilename         [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+        ${logPath}/stdout.log                  640  10    *    $D0   J
+        ${logPath}/stderr.log                  640  10    *    $D0   J
+      '';
+
       services.ntfy-sh.settings = {
         auth-file = mkDefault "${statePath}/user.db";
         auth-default-access = "deny-all";
