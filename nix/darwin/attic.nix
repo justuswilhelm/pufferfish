@@ -7,9 +7,7 @@ let
   statePath = "/var/lib/attic";
 in
 {
-  users.groups.attic = {
-    gid = 603;
-  };
+  users.groups.attic = { gid = 603; };
   users.users.attic = {
     home = statePath;
     createHome = false;
@@ -18,23 +16,11 @@ in
     uid = 53;
     isHidden = true;
   };
-  users.knownGroups = [
-    "attic"
-  ];
-  users.knownUsers = [
-    "attic"
-  ];
+  users.knownGroups = [ "attic" ];
+  users.knownUsers = [ "attic" ];
 
-  environment.systemPackages = [
-    attic-client
-    attic-server
-  ];
-  environment.etc = {
-    atticd = {
-      source = ./atticd.toml;
-      target = "attic/atticd.toml";
-    };
-  };
+  environment.systemPackages = [ attic-client attic-server ];
+  environment.etc."attic/atticd.toml".source = ./atticd.toml;
 
   environment.etc."newsyslog.d/attic.conf".text = ''
     # logfilename               [owner:group]    mode count size when  flags [/pid_file] [sig_num]
