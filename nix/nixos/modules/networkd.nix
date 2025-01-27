@@ -30,8 +30,9 @@
   networking.useNetworkd = true;
   services.resolved = {
     enable = true;
-    domains = [ "~." ];
+    # domains = [ "~." ];
   };
+  networking.firewall.enable = true;
   networking.firewall.allowedUDPPorts = [
     # mDNS
     5353
