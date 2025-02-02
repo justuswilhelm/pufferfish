@@ -30,9 +30,6 @@
     "iwlmvm"
     "nouveau"
   ];
-  networking.hosts = {
-    "10.0.57.235" = [ "lithium.local" ];
-  };
 
   boot.kernelPackages = pkgs.linuxPackages_6_11;
   boot.loader.systemd-boot.enable = true;
