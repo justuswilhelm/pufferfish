@@ -35,19 +35,10 @@
   };
 
   boot.kernelPackages = pkgs.linuxPackages_6_11;
-  # TODO
-  # boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
-  # TODO switch to systemd-boot
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    devices = [ "nodev" ];
-    enableCryptodisk = true;
-  };
 
   networking.hostName = "helium"; # Define your hostname.
   systemd.network.netdevs.wlo1.enable = false;
