@@ -3,6 +3,10 @@
   home.sessionVariables = {
     BROWSER = "${config.programs.firefox.package}/bin/firefox-esr";
   };
+  # https://discourse.nixos.org/t/hm-24-11-firefox-with-passff-host/57108
+  home.file.".mozilla/native-messaging-hosts/passff.json" = {
+    source = "${pkgs.passff-host}/share/passff-host/passff.json";
+  };
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-esr;
