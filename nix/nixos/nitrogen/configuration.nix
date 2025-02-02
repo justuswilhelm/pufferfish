@@ -14,6 +14,7 @@
       ../modules/infosec.nix
       ../modules/nix.nix
       ../modules/compat.nix
+      ../modules/man.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -52,7 +53,15 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.justusperlwitz = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      # Enable ‘sudo’ for the user.
+      "wheel"
+      # For light command
+      "video"
+      # For serial port
+      # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
+      "dialout"
+    ];
     home = "/home/justusperlwitz";
     shell = pkgs.fish;
     packages = with pkgs; [
@@ -70,6 +79,7 @@
     viAlias = true;
     vimAlias = true;
   };
+  programs.light.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -22,6 +22,7 @@
         networkConfig = {
           DHCP = "yes";
           MulticastDNS = "yes";
+          LinkLocalAddressing = "no";
         };
       };
     };
@@ -29,8 +30,13 @@
   networking.useNetworkd = true;
   services.resolved = {
     enable = true;
-    domains = [ "~." ];
+    # domains = [ "~." ];
   };
+  networking.firewall.enable = true;
+  networking.firewall.allowedUDPPorts = [
+    # mDNS
+    5353
+  ];
   environment.systemPackages = with pkgs; [
     # For debugging
     tcpdump

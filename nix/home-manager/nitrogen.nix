@@ -16,7 +16,6 @@
   ];
 
   home.username = "justusperlwitz";
-  home.homeDirectory = specialArgs.homeDirectory;
 
   home.packages = [
     pkgs.tor-browser
@@ -55,6 +54,8 @@
         output * {
           scale 1.25
         }
+        bindsym XF86MonBrightnessUp exec light -A 10
+        bindsym XF86MonBrightnessDown exec light -U 10
       '';
       target = "sway/config.d/nitrogen";
     };
