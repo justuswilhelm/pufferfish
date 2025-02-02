@@ -75,6 +75,7 @@
     };
   };
   users.groups.lithium-borgbackup = { };
+  # TODO add nitrogen-borgbackup
 
   programs.fish.enable = true;
   programs.git.enable = true;
