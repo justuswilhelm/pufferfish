@@ -60,7 +60,7 @@
 
   programs.ssh = {
     matchBlocks."github.com" = {
-      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+      identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };
 }
