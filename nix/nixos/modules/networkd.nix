@@ -14,6 +14,7 @@
         networkConfig = {
           DHCP = "yes";
           MulticastDNS = "yes";
+          LinkLocalAddressing = "no";
         };
       };
       "20-wlan" = {
@@ -29,13 +30,20 @@
       "30-usb-ethernet" = {
         matchConfig = {
           Type = "ether";
-          Path = ["pci-*-usb-*"];
+          Path = [ "pci-*-usb-*" ];
         };
         networkConfig = {
-          DHCP = "yes";
+          DHCP = "no";
           DefaultRouteOnDevice = false;
           MulticastDNS = "no";
+          Address = "10.128.0.10";
         };
+        routes = [
+          {
+            Destination = "10.128.0.1/24";
+            Scope = "link";
+          }
+        ];
       };
     };
   };
