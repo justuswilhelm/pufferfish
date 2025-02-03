@@ -8,4 +8,7 @@
     "home sweet home".pskRaw = "ext:HOME_PSK";
   };
   networking.wireless.userControlled.enable = true;
+
+  networking.firewall.logRefusedPackets = true;
+  networking.firewall.logRefusedConnections = true;
 }
