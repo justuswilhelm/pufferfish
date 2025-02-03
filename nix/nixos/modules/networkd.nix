@@ -7,7 +7,8 @@
       "10-ethernet" = {
         matchConfig = {
           # Prevent networkd from messing with libvirt bridges
-          Name = "!vnet*";
+          # Add more pci paths for other devices
+          Path = "pci-0000:07:00.0";
           Type = "ether";
         };
         networkConfig = {
@@ -23,6 +24,17 @@
           DHCP = "yes";
           MulticastDNS = "yes";
           LinkLocalAddressing = "no";
+        };
+      };
+      "30-usb-ethernet" = {
+        matchConfig = {
+          Type = "ether";
+          Path = ["pci-*-usb-*"];
+        };
+        networkConfig = {
+          DHCP = "yes";
+          DefaultRouteOnDevice = false;
+          MulticastDNS = "no";
         };
       };
     };
