@@ -50,6 +50,7 @@ in
     pkgs.whois
     pkgs.nmap
     pkgs.mitmproxy
+    pkgs.zap
 
     # Exploits
     # ========
