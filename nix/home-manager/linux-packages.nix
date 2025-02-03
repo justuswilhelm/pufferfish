@@ -13,10 +13,6 @@
     # ====
     pkgs.keepassxc
 
-    # Debugger
-    # ========
-    pkgs.gdb
-
     # Nix
     # ===
     # Not available on Darwin
