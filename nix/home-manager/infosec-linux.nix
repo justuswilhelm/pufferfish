@@ -14,9 +14,10 @@
     # ===
     pkgs.rpcbind
 
-    # WebDAV
-    # ======
+    # File transfer
+    # =============
     pkgs.cadaver
+    pkgs.rs-tftpd
 
     # Networking
     # ==========
