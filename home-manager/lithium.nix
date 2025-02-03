@@ -53,7 +53,7 @@ in
   xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
 
   xdg.configFile."karabiner/karabiner.json" = {
-    source = ../../karabiner/karabiner.json;
+    source = ../karabiner/karabiner.json;
   };
   xdg.configFile."fd/ignore" = {
     # These are all directories that can't be walked through by fd, or cause

@@ -17,12 +17,12 @@ in
     enable = true;
     inherit package;
     # TODO
-    # extraConfig = builtins.readFile ../../neomutt/shared;
+    # extraConfig = builtins.readFile ../neomutt/shared;
   };
 
   xdg.configFile = {
     neomuttShared = {
-      source = ../../neomutt/shared;
+      source = ../neomutt/shared;
       target = "neomutt/shared";
     };
     neomuttMailcap = {

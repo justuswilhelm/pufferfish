@@ -22,7 +22,7 @@ in
   xdg.configFile = {
     swayConfig = {
       text = ''
-        ${builtins.readFile ../../sway/config}
+        ${builtins.readFile ../sway/config}
         # start a terminal
         bindsym $mod+Return exec foot
         bindsym $mod+Shift+Return exec ${firefox-esr}

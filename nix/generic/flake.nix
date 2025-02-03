@@ -46,7 +46,7 @@
                 ];
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.justusperlwitz = import ../home-manager/helium.nix;
+                home-manager.users.justusperlwitz = import ../../home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
                   system = "nixos";
@@ -67,7 +67,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.frugally-consonant-lanky = import ../home-manager/lithium-nixos.nix;
+                home-manager.users.frugally-consonant-lanky = import ../../home-manager/lithium-nixos.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/frugally-consonant-lanky";
                   system = "nixos";
@@ -87,7 +87,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.justusperlwitz = import ../home-manager/nitrogen.nix;
+                home-manager.users.justusperlwitz = import ../../home-manager/nitrogen.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
                   inherit system;
@@ -129,7 +129,7 @@
               home-manager.sharedModules = [
                 { _module.args = inputs; }
               ];
-              home-manager.users.justusperlwitz = import ../home-manager/lithium.nix;
+              home-manager.users.justusperlwitz = import ../../home-manager/lithium.nix;
               home-manager.extraSpecialArgs = {
                 homeDirectory = "/Users/justusperlwitz";
                 inherit system;
