@@ -2,6 +2,8 @@
 {
   imports = [
     ./modules/opensnitch.nix
+    ./modules/aider.nix
+
     ./home.nix
     ./sway.nix
     ./firefox.nix

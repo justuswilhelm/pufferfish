@@ -4,6 +4,8 @@ let
 in
 {
   imports = [
+    ./modules/aider.nix
+
     ./home.nix
     ./aerospace.nix
     ./alacritty.nix
@@ -42,7 +44,7 @@ in
       set fish_user_paths $fish_user_paths
     '';
   programs.fish.shellAliases.rebuild = "alacritty msg create-window -e $SHELL -c rebuild-nix-darwin";
-  programs.git.ignores = [ ".DS_Store" ".aider*" ];
+  programs.git.ignores = [ ".DS_Store" ];
 
   home.file."${applicationSupport}/xbar" = {
     source = ../../xbar;
