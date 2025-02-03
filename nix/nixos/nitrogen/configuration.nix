@@ -15,6 +15,7 @@
       ../modules/nix.nix
       ../modules/compat.nix
       ../modules/man.nix
+      ../modules/infosec.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
