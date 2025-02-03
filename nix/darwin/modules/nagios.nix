@@ -391,13 +391,13 @@ in
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
 
     environment.etc."newsyslog.d/nagios.conf".text = ''
-      # logfilename                          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-      ${nagiosLogDir}/stdout.log                              640  10    *    $D0   J
-      ${nagiosLogDir}/stderr.log                              640  10    *    $D0   J
-      ${nagiosHttpdLogDir}/httpd.stdout.log                   640  10    *    $D0   J
-      ${nagiosHttpdLogDir}/httpd.stderr.log                   640  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stdout.log                     640  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stderr.log                     640  10    *    $D0   J
+      # logfilename                         [owner:group]             mode count size when  flags [/pid_file] [sig_num]
+      ${nagiosLogDir}/stdout.log            nagios:nagios             640  10    *    $D0   J
+      ${nagiosLogDir}/stderr.log            nagios:nagios             640  10    *    $D0   J
+      ${nagiosHttpdLogDir}/httpd.stdout.log nagios-httpd:nagios-httpd 640  10    *    $D0   J
+      ${nagiosHttpdLogDir}/httpd.stderr.log nagios-httpd:nagios-httpd 640  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stdout.log   nagios-nsca:nagios-nsca   640  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stderr.log   nagios-nsca:nagios-nsca   640  10    *    $D0   J
     '';
 
     environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca-package ];

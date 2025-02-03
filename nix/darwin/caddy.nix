@@ -33,8 +33,8 @@ in
 
   # Copied from /etc/newsyslog.d/wifi.conf
   environment.etc."newsyslog.d/caddy.conf".text = ''
-    # logfilename               [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/caddy.stderr.log                  640  10    *    $D0   J
+    # logfilename               [owner:group] mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/caddy.stderr.log caddy:caddy   640  10    *    $D0   J
   '';
 
   launchd.daemons.caddy = {

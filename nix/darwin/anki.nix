@@ -25,9 +25,9 @@ in
   users.knownUsers = [ groupname ];
 
   environment.etc."newsyslog.d/anki.conf".text = ''
-    # logfilename                          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/anki-sync-server.stdout.log                  640  10    *    $D0   J
-    ${logPath}/anki-sync-server.stderr.log                  640  10    *    $D0   J
+    # logfilename                          [owner:group]            mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/anki-sync-server.stdout.log ${username}:${groupname} 640  10    *    $D0   J
+    ${logPath}/anki-sync-server.stderr.log ${username}:${groupname} 640  10    *    $D0   J
   '';
 
   launchd.daemons.anki-sync-server = {
@@ -61,7 +61,7 @@ in
     text = ''
       mkdir -pv ${home} ${logPath} ${statePath} ${usersPath}
 
-      chown -R ${username}:${groupname} ${home}
+      chown -R ${username}:${groupname} ${home} ${logPath}
       chmod -R go= ${home}
     '';
   };

@@ -23,9 +23,9 @@ in
   environment.etc."attic/atticd.toml".source = ./atticd.toml;
 
   environment.etc."newsyslog.d/attic.conf".text = ''
-    # logfilename               [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/attic.stdout.log                  640  10    *    $D0   J
-    ${logPath}/attic.stderr.log                  640  10    *    $D0   J
+    # logfilename               [owner:group] mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/attic.stdout.log attic:attic   640  10    *    $D0   J
+    ${logPath}/attic.stderr.log attic:attic   640  10    *    $D0   J
   '';
 
   launchd.daemons.attic = {
