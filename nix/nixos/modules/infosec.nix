@@ -11,6 +11,10 @@ in
     # For http server
     8080
   ];
+  networking.firewall.allowedUDPPorts = [
+    # for tftp
+    4444
+  ];
 
   # Add overrides
   networking.hosts = {
