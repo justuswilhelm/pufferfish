@@ -3,6 +3,7 @@
   imports = [
     ./modules/opensnitch.nix
     ./modules/aider.nix
+    ./modules/mitmproxy.nix
 
     ./home.nix
     ./sway.nix

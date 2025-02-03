@@ -49,7 +49,6 @@ in
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
-    pkgs.mitmproxy
     pkgs.zap
 
     # Exploits
