@@ -358,21 +358,15 @@ in
     };
     users.knownUsers = [ "nagios" "nagios-httpd" "nagios-nsca" ];
 
-    users.groups.nagios = {
-      gid = 1100;
-    };
-    users.groups.nagios-httpd = {
-      gid = 1105;
-    };
+    users.groups.nagios = { gid = 1100; };
+    users.groups.nagios-httpd = { gid = 1105; };
     users.groups.nagios-cmd = {
       gid = 1106;
       # Allow cgi file to write to nagios.cmd file
       # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
       members = [ "nagios" "nagios-httpd" "nagios-nsca" ];
     };
-    users.groups.nagios-nsca = {
-      gid = 1108;
-    };
+    users.groups.nagios-nsca = { gid = 1108; };
     users.knownGroups = [ "nagios" "nagios-httpd" "nagios-cmd" "nagios-nsca" ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
