@@ -49,5 +49,19 @@
     pkgs.bloodhound
     pkgs.bloodhound-py
     pkgs.openldap
+
+    # Debugger
+    # ========
+    (
+      pkgs.symlinkJoin {
+        name = "gdb-with-python-packages";
+        paths = [ pkgs.gdb ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/gdb --set PYTHONPATH ${pkgs.python3}/${pkgs.python3.sitePackages}:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-agent-gdb/pypkg/src:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-rmi-trace/pypkg/src
+
+        '';
+      }
+    )
   ];
 }
