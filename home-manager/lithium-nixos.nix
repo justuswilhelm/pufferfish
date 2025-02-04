@@ -2,6 +2,7 @@
 {
   imports = [
     ./modules/gdb.nix
+    ./modules/foot.nix
 
     ./home.nix
     ./sway.nix
@@ -9,7 +10,6 @@
     ./linux-packages.nix
     ./infosec.nix
     ./infosec-linux.nix
-    ./foot.nix
     ./gpg-agent.nix
   ];
 

@@ -5,12 +5,12 @@
     ./modules/aider.nix
     ./modules/mitmproxy.nix
     ./modules/gdb.nix
+    ./modules/foot.nix
 
     ./home.nix
     ./sway.nix
     ./firefox.nix
     ./linux-packages.nix
-    ./foot.nix
     ./locale-fix.nix
     ./gpg.nix
     ./gpg-agent.nix
