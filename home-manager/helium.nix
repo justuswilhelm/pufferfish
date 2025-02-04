@@ -12,7 +12,6 @@
     ./firefox.nix
     ./linux-packages.nix
     ./locale-fix.nix
-    ./gpg.nix
     ./gpg-agent.nix
     ./infosec.nix
     ./infosec-linux.nix

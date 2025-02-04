@@ -10,7 +10,6 @@
     ./linux-packages.nix
     # Investigate if this fix is needed on NixOS
     ./locale-fix.nix
-    ./gpg.nix
     ./gpg-agent.nix
     ./infosec.nix
     ./infosec-linux.nix

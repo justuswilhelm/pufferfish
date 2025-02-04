@@ -6,6 +6,7 @@
     ./modules/pdb.nix
     ./modules/ssh.nix
     ./modules/man.nix
+    ./modules/gpg.nix
 
     ./git.nix
     ./tmux.nix
@@ -14,7 +15,6 @@
     ./neomutt.nix
     ./packages.nix
     ./selenized.nix
-    ./gpg.nix
     ./fish.nix
     ./asdf.nix
     ./passwordstore.nix
