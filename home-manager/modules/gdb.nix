@@ -1,7 +1,7 @@
 { ... }:
 {
   xdg.configFile.gdb = {
-    source = ../gdb/gdbinit;
+    source = ../../gdb/gdbinit;
     target = "gdb/gdbinit";
   };
 }

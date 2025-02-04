@@ -4,13 +4,13 @@
     ./modules/opensnitch.nix
     ./modules/aider.nix
     ./modules/mitmproxy.nix
+    ./modules/gdb.nix
 
     ./home.nix
     ./sway.nix
     ./firefox.nix
     ./linux-packages.nix
     ./foot.nix
-    ./gdb.nix
     ./locale-fix.nix
     ./gpg.nix
     ./gpg-agent.nix

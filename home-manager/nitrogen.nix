@@ -1,12 +1,13 @@
 { lib, pkgs, ... }:
 {
   imports = [
+    ./modules/gdb.nix
+
     ./home.nix
     ./sway.nix
     ./firefox.nix
     ./linux-packages.nix
     ./foot.nix
-    ./gdb.nix
     # Investigate if this fix is needed on NixOS
     ./locale-fix.nix
     ./gpg.nix

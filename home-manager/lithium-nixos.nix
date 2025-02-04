@@ -1,6 +1,8 @@
 { lib, pkgs, specialArgs, ... }:
 {
   imports = [
+    ./modules/gdb.nix
+
     ./home.nix
     ./sway.nix
     ./firefox.nix
@@ -8,7 +10,6 @@
     ./infosec.nix
     ./infosec-linux.nix
     ./foot.nix
-    ./gdb.nix
     ./gpg-agent.nix
   ];
 
