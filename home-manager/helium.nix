@@ -6,10 +6,10 @@
     ./modules/mitmproxy.nix
     ./modules/gdb.nix
     ./modules/foot.nix
+    ./modules/firefox.nix
 
     ./home.nix
     ./sway.nix
-    ./firefox.nix
     ./linux-packages.nix
     ./locale-fix.nix
     ./gpg-agent.nix

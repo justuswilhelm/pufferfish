@@ -3,10 +3,10 @@
   imports = [
     ./modules/gdb.nix
     ./modules/foot.nix
+    ./modules/firefox.nix
 
     ./home.nix
     ./sway.nix
-    ./firefox.nix
     ./linux-packages.nix
     # Investigate if this fix is needed on NixOS
     ./locale-fix.nix
