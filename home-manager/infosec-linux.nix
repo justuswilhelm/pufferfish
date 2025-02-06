@@ -5,6 +5,31 @@
     # Reverse engineering
     # ===================
     pkgs.python3Packages.ropper
+    (
+      pkgs.symlinkJoin {
+        name = "ghidra";
+        paths = [ pkgs.ghidra ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/ghidra --set _JAVA_AWT_WM_NONREPARENTING 1
+        '';
+      }
+    )
+    (
+      pkgs.symlinkJoin {
+        name = "gdb-with-python-packages";
+        paths = [ pkgs.gdb ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild =
+          let
+            python3 = pkgs.python3.withPackages (p: with p; [ protobuf psutil ]);
+          in
+          ''
+            wrapProgram $out/bin/gdb --set PYTHONPATH ${python3}/${python3.sitePackages}:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-agent-gdb/pypkg/src:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-rmi-trace/pypkg/src
+
+          '';
+      }
+    )
 
     # Exploits
     # =======
@@ -52,16 +77,5 @@
 
     # Debugger
     # ========
-    (
-      pkgs.symlinkJoin {
-        name = "gdb-with-python-packages";
-        paths = [ pkgs.gdb ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          wrapProgram $out/bin/gdb --set PYTHONPATH ${pkgs.python3}/${pkgs.python3.sitePackages}:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-agent-gdb/pypkg/src:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-rmi-trace/pypkg/src
-
-        '';
-      }
-    )
   ];
 }
