@@ -24,7 +24,6 @@
     # ==========
     pkgs.netexec
     pkgs.openssl
-    pkgs.wireshark
     # For clock skews
     pkgs.libfaketime
 

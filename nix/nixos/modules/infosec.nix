@@ -76,7 +76,6 @@ in
     client max protocol = SMB3
   '';
 
-  programs.wireshark.enable = true;
   # If USB sniffing required:
   # https://discourse.nixos.org/t/using-wireshark-as-an-unprivileged-user-to-analyze-usb-traffic/38011
 }

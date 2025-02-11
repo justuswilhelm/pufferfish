@@ -41,7 +41,7 @@
     # For debugging
     tcpdump
     ethtool
-    wireshark
     arp-scan
   ];
+  programs.wireshark.enable = true;
 }

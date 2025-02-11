@@ -62,6 +62,8 @@
       # For serial port
       # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
       "dialout"
+      # For wireshark
+      "wireshark"
     ];
     home = "/home/justusperlwitz";
     shell = pkgs.fish;
