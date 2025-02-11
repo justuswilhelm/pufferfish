@@ -5,6 +5,7 @@
     # Reverse engineering
     # ===================
     pkgs.python3Packages.ropper
+    pkgs.flashrom
 
     # Exploits
     # =======
