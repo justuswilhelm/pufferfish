@@ -28,7 +28,7 @@
     end
   '';
 
-  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES/nix/generic";
+  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
   home.file = {
     keyboardLayout = {

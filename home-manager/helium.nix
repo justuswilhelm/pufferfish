@@ -24,7 +24,7 @@
     pkgs.tor-browser
   ];
 
-  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES/nix/generic";
+  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
   programs.i3status.modules = {
     "ethernet enp7s0" = {

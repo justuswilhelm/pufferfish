@@ -3,7 +3,7 @@ function rebuild-nix-darwin
         -e $SHELL \
         -c "
             screen -h 10000 sh -c '
-                darwin-rebuild switch --flake $DOTFILES/nix/generic
+                darwin-rebuild switch --flake $DOTFILES
                 read -p \"press enter to quit\"
             '
         "
