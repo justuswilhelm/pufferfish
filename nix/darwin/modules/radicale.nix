@@ -34,9 +34,9 @@ in
   environment.etc."radicale/config".source = radicaleConfig;
 
   environment.etc."newsyslog.d/radicale.conf".text = ''
-    # logfilename                  [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/radicale.stdout.log                  640  10    *    $D0   J
-    ${logPath}/radicale.stderr.log                  640  10    *    $D0   J
+    # logfilename                  [owner:group]     mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/radicale.stdout.log radicale:radicale 640  10    *    $D0   J
+    ${logPath}/radicale.stderr.log radicale:radicale 640  10    *    $D0   J
   '';
 
   environment.systemPackages = [ radicale ];

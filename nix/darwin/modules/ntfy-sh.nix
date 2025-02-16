@@ -59,9 +59,9 @@ in
       };
 
       environment.etc."newsyslog.d/ntfy-sh.conf".text = ''
-        # logfilename         [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-        ${logPath}/stdout.log                  640  10    *    $D0   J
-        ${logPath}/stderr.log                  640  10    *    $D0   J
+        # logfilename         [owner:group]            mode count size when  flags [/pid_file] [sig_num]
+        ${logPath}/stdout.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
+        ${logPath}/stderr.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
       '';
 
       services.ntfy-sh.settings = {

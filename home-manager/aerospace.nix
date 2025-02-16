@@ -175,7 +175,7 @@ let
       }
       {
         "if".app-id = "org.libreoffice.script";
-        "if".window-title-regex-substring = "Save Document|Delete Contents|Rename Sheet|Confirmation";
+        "if".window-title-regex-substring = "Save Document|Delete Contents|Rename Sheet|Confirmation|Page Style: .+";
         run = [ "layout floating" ];
       }
       {

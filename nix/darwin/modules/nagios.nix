@@ -358,21 +358,15 @@ in
     };
     users.knownUsers = [ "nagios" "nagios-httpd" "nagios-nsca" ];
 
-    users.groups.nagios = {
-      gid = 1100;
-    };
-    users.groups.nagios-httpd = {
-      gid = 1105;
-    };
+    users.groups.nagios = { gid = 1100; };
+    users.groups.nagios-httpd = { gid = 1105; };
     users.groups.nagios-cmd = {
       gid = 1106;
       # Allow cgi file to write to nagios.cmd file
       # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
       members = [ "nagios" "nagios-httpd" "nagios-nsca" ];
     };
-    users.groups.nagios-nsca = {
-      gid = 1108;
-    };
+    users.groups.nagios-nsca = { gid = 1108; };
     users.knownGroups = [ "nagios" "nagios-httpd" "nagios-cmd" "nagios-nsca" ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
@@ -391,13 +385,13 @@ in
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
 
     environment.etc."newsyslog.d/nagios.conf".text = ''
-      # logfilename                          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-      ${nagiosLogDir}/stdout.log                              640  10    *    $D0   J
-      ${nagiosLogDir}/stderr.log                              640  10    *    $D0   J
-      ${nagiosHttpdLogDir}/httpd.stdout.log                   640  10    *    $D0   J
-      ${nagiosHttpdLogDir}/httpd.stderr.log                   640  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stdout.log                     640  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stderr.log                     640  10    *    $D0   J
+      # logfilename                         [owner:group]             mode count size when  flags [/pid_file] [sig_num]
+      ${nagiosLogDir}/stdout.log            nagios:nagios             640  10    *    $D0   J
+      ${nagiosLogDir}/stderr.log            nagios:nagios             640  10    *    $D0   J
+      ${nagiosHttpdLogDir}/httpd.stdout.log nagios-httpd:nagios-httpd 640  10    *    $D0   J
+      ${nagiosHttpdLogDir}/httpd.stderr.log nagios-httpd:nagios-httpd 640  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stdout.log   nagios-nsca:nagios-nsca   640  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stderr.log   nagios-nsca:nagios-nsca   640  10    *    $D0   J
     '';
 
     environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca-package ];
