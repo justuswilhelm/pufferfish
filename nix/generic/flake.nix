@@ -16,6 +16,7 @@
       url = "git+https://github.com/jwpconsulting/projectify.git?tag=2024.8.20";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    utils.url = "github:numtide/flake-utils";
   };
 
   outputs =
@@ -26,6 +27,7 @@
     , nixpkgs-unstable
     , pomoglorbo
     , projectify
+    , utils
     }@inputs: {
       nixosConfigurations = {
         helium =
@@ -137,5 +139,17 @@
             }
           ];
         };
-    };
+    } // utils.lib.eachDefaultSystem (system:
+    let
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+    {
+      devShell = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          nodePackages.prettier
+          shellcheck
+        ];
+      };
+    }
+    );
 }
