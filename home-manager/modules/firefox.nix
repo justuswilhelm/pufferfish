@@ -166,10 +166,11 @@ in
         # "browser.privatebrowsing.autostart" = true;
         "network.proxy.http" = "localhost";
         "network.proxy.http_port" = "8080";
-        "network.proxy.share_proxy_settings" = "true";
+        "network.proxy.share_proxy_settings" = true;
         "network.proxy.ssl" = "localhost";
         "network.proxy.ssl_port" = "8080";
         "network.proxy.type" = "1";
+        "signon.rememberSignons" = true;
       };
     };
   };
