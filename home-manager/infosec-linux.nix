@@ -34,6 +34,7 @@
     # Exploits
     # =======
     pkgs.metasploit
+    pkgs.radamsa
 
     # RPC
     # ===
