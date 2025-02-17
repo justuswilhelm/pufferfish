@@ -13,6 +13,6 @@ in
   nix.settings.netrc-file = "/etc/nix/netrc";
 
   security.pki.certificateFiles = [
-    ../../lithium-ca.crt
+    ../../nix/lithium-ca.crt
   ];
 }
