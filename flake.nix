@@ -35,7 +35,7 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
-              ./nix/nixos/helium/configuration.nix
+              ./nixos/helium/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -56,7 +56,7 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
-              ./nix/nixos/lithium-nixos/configuration.nix
+              ./nixos/lithium-nixos/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -76,7 +76,7 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
-              ./nix/nixos/nitrogen/configuration.nix
+              ./nixos/nitrogen/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
