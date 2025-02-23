@@ -116,7 +116,7 @@
           };
           modules = [
             { _module.args = inputs; }
-            ./nix/darwin/darwin-configuration.nix
+            ./nix-darwin/darwin-configuration.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useUserPackages = true;
