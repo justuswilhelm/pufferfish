@@ -56,8 +56,7 @@ in
       chown -R caddy:caddy ${logPath} ${statePath} ${statePath}/secrets
       chmod -R go= ${statePath}/secrets
 
-      mkdir -p ${caStatePath}/secrets
-      mkdir -p ${caStatePath} ${caStatePath}/signed
+      mkdir -p ${caStatePath} ${caStatePath}/signed ${caStatePath}/secrets
       chmod -R go= ${caStatePath}/secrets
       chown lithium-ca:lithium-ca ${caStatePath} ${caStatePath}/signed
     '';
