@@ -39,7 +39,6 @@ in
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
-    pkgs.zap
 
     # Exploits
     # ========

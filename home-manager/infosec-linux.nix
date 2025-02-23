@@ -52,6 +52,7 @@
     pkgs.wireshark
     # For clock skews
     pkgs.libfaketime
+    pkgs.zap
 
     # SNMP
     # ====
