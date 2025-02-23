@@ -13,7 +13,6 @@ in
     gid = 1101;
     uid = 1101;
     isHidden = true;
-    createHome = false;
   };
 
   users.groups.caddy = { gid = 602; };

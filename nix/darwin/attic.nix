@@ -10,7 +10,6 @@ in
   users.groups.attic = { gid = 603; };
   users.users.attic = {
     home = statePath;
-    createHome = false;
     description = "attic user";
     gid = 603;
     uid = 53;

@@ -94,8 +94,8 @@ in
       };
       users.users = optionalAttrs (cfg.user == "ntfy-sh") {
         ntfy-sh = {
-          createHome = false;
           description = "ntfy-sh user";
+          home = statePath;
           gid = 605;
           uid = 605;
           isHidden = true;
