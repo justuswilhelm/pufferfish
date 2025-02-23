@@ -88,7 +88,8 @@ in
 
   system.activationScripts.preActivation = {
     text = ''
-      mkdir -p ${logPath}
+      mkdir -p ${logPath} ${statePath}
+      chmod -R go= ${statePath}
     '';
   };
 
