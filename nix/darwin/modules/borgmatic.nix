@@ -1,6 +1,8 @@
 { pkgs, config, ... }:
 let
   borgmatic = pkgs.borgmatic;
+  statePath = "/var/lib/borgmatic";
+  logPath = "/var/log/borgmatic";
 
   borgmaticConfig = {
     source_directories = [
@@ -19,8 +21,13 @@ let
       "/Users/*/Library/Developer/CoreSimulator/Caches/*"
       "/Users/*/Movies"
     ];
-    encryption_passcommand = "${pkgs.coreutils}/bin/cat /var/root/.borgmatic/passphrase";
-    ssh_command = "ssh -i /var/root/.borgmatic/id_rsa";
+    encryption_passcommand = "${pkgs.coreutils}/bin/cat ${statePath}/passphrase";
+    ssh_command = "ssh -o 'UserKnownHostsFile=${statePath}/ssh/known_hosts' -i${statePath}/ssh/id_rsa";
+    borg_base_directory = statePath;
+    borg_config_directory = "${statePath}/config";
+    borg_cache_directory = "${statePath}/cache";
+    borg_security_directory = "${statePath}/security";
+
     keep_hourly = 6;
     keep_daily = 7;
     keep_weekly = 4;
@@ -41,6 +48,7 @@ let
       "echo -e 'lithium.local,borgmatic,2,{repository}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf -d ,"
     ];
   };
+
   borgmaticConfigYaml =
     let
       yamlFormat = pkgs.formats.yaml { };
@@ -54,14 +62,11 @@ let
     in
     validated;
 
-  logPath = "/var/log/borgmatic";
   # Let borgmatic run for 2h max
   timeout = 60 * 60 * 2;
 in
 {
-  environment.systemPackages = [
-    borgmatic
-  ];
+  environment.systemPackages = [ borgmatic ];
 
   environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
   # Copied from /etc/newsyslog.d/wifi.conf
