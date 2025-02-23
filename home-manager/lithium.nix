@@ -47,7 +47,7 @@ in
   programs.git.ignores = [ ".DS_Store" ];
 
   home.file."${applicationSupport}/xbar" = {
-    source = ../../xbar;
+    source = ../xbar;
     recursive = true;
   };
   xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
