@@ -85,6 +85,9 @@
   };
   programs.light.enable = true;
 
+  services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.package = pkgs.mullvad-vpn;
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
