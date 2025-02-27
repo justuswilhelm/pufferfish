@@ -30,24 +30,12 @@
     "iwlmvm"
     "nouveau"
   ];
-  networking.hosts = {
-    "10.0.57.235" = [ "lithium.local" ];
-  };
 
   boot.kernelPackages = pkgs.linuxPackages_6_11;
-  # TODO
-  # boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
-  # TODO switch to systemd-boot
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    devices = [ "nodev" ];
-    enableCryptodisk = true;
-  };
 
   networking.hostName = "helium"; # Define your hostname.
   systemd.network.netdevs.wlo1.enable = false;
@@ -60,8 +48,15 @@
 
   users.users.justusperlwitz = {
     isNormalUser = true;
-    # Enable sudo, allow using virtd
-    extraGroups = [ "wheel" "libvirtd" ];
+    extraGroups = [
+      # Enable sudo
+      "wheel"
+      # allow using virtd
+      "libvirtd"
+      # For serial port
+      # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
+      "dialout"
+    ];
     home = "/home/justusperlwitz";
     shell = pkgs.fish;
   };
@@ -80,6 +75,7 @@
     };
   };
   users.groups.lithium-borgbackup = { };
+  # TODO add nitrogen-borgbackup
 
   programs.fish.enable = true;
   programs.git.enable = true;
