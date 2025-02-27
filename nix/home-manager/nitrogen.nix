@@ -54,6 +54,12 @@
         output * {
           scale 1.25
         }
+
+        output eDP-1 pos 0 0 res 1920x1080
+        # Configure the HDMI-2 output like so:
+        # output HDMI-A-2 pos 1920 0 res 1920x1080
+
+        # Screen brightness
         bindsym XF86MonBrightnessUp exec light -A 10
         bindsym XF86MonBrightnessDown exec light -U 10
 
