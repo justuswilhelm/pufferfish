@@ -56,6 +56,12 @@
         }
         bindsym XF86MonBrightnessUp exec light -A 10
         bindsym XF86MonBrightnessDown exec light -U 10
+
+        # Audio
+        bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+        bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+        bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+        bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
       '';
       target = "sway/config.d/nitrogen";
     };

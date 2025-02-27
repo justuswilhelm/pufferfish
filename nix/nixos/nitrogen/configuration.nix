@@ -16,6 +16,7 @@
       ../modules/compat.nix
       ../modules/man.nix
       ../modules/infosec.nix
+      ../modules/pipewire.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
