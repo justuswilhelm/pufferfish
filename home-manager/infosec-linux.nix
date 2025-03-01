@@ -4,6 +4,7 @@
   home.packages = [
     # Reverse engineering
     # ===================
+    pkgs.nasm
     pkgs.python3Packages.ropper
     pkgs.flashrom
     (
