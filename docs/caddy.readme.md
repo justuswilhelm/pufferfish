@@ -10,12 +10,21 @@ https://lithium.local
 
 # Users
 
+This step applies under the following circumstances:
+
+- You are creating your first root CA certificate
+- You are creating your first Caddy certificate
+
 Ensure that you have the following two users:
 
 - `lithium-ca`: Manages the root CA certificate
 - `caddy`: Servers the reverse proxy
 
-# Root CA directories
+# Create the root CA directories
+
+This step applies under the following circumstances:
+
+- You are creating your first root CA certificate
 
 First, create the following three directories:
 
@@ -33,10 +42,15 @@ sudo -u lithium-ca mkdir -m 700 /var/lib/lithium-ca/secrets
 sudo -u lithium-ca mkdir /var/lib/lithium-ca/signed
 ```
 
-# Root CA secret
+# Create the root CA secret
 
-Create the root key using the following command and ensure that only
-`lithium-ca` can read it:
+This step applies under the following circumstances:
+
+- You are creating your first root CA certificate
+- You are creating a new root CA certificate after the previous certificate expired.
+
+Create the root key `lithium-ca.key` using the following command and ensure that only
+`lithium-ca` can read it using the following commands:
 
 ```bash
 sudo -u lithium-ca openssl ecparam \
@@ -47,14 +61,18 @@ sudo -u lithium-ca openssl ecparam \
 sudo -u lithium-ca chmod 600 /var/lib/lithium-ca/secrets/lithium-ca.key
 ```
 
-# Root CA cert
+# Create the root CA certificate
 
-Create the root certificate. This steps also applies when renewing the `lithium
-Root` certificate.
+This step applies under the following circumstances:
+
+- You are creating your first root CA certificate
+- You are creating a new root CA certificate after the previous certificate expired.
+
+Create the root certificate `lithium-ca.crt` using the following commands:
 
 ```bash
 sudo -u lithium-ca openssl req -new \
-  -subj "/C=JP/ST=Tokyo/L=Setagaya City/O=JWP Consulting/OU=Com/CN=lithium Root" \
+  -subj "/C=JP/ST=Tokyo/L=Setagaya City/O=JWP Consulting/OU=Com/CN=lithium root" \
   -x509 \
   -sha256 \
   -days 90 \
@@ -64,7 +82,11 @@ sudo -u lithium-ca openssl req -new \
 sudo -u lithium-ca chmod 644 /var/lib/lithium-ca/lithium-ca.crt
 ```
 
-# Caddy certificate dirs
+# Create the Caddy certificate directories
+
+This step applies under the following circumstances:
+
+- You are creating your first Caddy certificate.
 
 Next, create the following three directories:
 
@@ -84,11 +106,16 @@ sudo chmod 755 /var/lib/caddy/certs
 sudo -u caddy mkdir -m 700 /var/lib/caddy/secrets
 ```
 
-# Caddy private key
+# Create the Caddy private key
 
-Create the server certificate key `lithium-server.key` and store it in
-`/var/lib/caddy/secrets`. The key has read and write permissions only for
-`caddy`.
+This step applies under the following circumstances:
+
+- You are creating your first Caddy certificate.
+- You are recreating a new Caddy certificate after the previous certificate expired.
+
+Create the private key `lithium-server.key` used for the Caddy certificate and
+store it in `/var/lib/caddy/secrets`. The key has read and write permissions
+only for `caddy`. Run the following commands:
 
 ```bash
 sudo -u caddy openssl ecparam \
@@ -99,10 +126,12 @@ sudo -u caddy openssl ecparam \
 sudo -u caddy chmod 600 /var/lib/caddy/secrets/lithium-server.key
 ```
 
-# Caddy's certificate signing request
+# Create the Caddy certificate signing request
 
-The following step also applies when renewing `caddy`'s certificate after
-it expires.
+This step applies under the following circumstances:
+
+- You are creating your first Caddy certificate.
+- You are recreating a new Caddy certificate after the previous certificate expired.
 
 Create the caddy server signing request and place it in `/var/lib/caddy/certs`.
 Make it world readable so that `lithium-ca` can process it. Run the following:
@@ -118,7 +147,11 @@ sudo -u caddy openssl req -new \
 sudo -u caddy chmod 644 /var/lib/caddy/certs/lithium-server.csr
 ```
 
-# Certificate extension file
+# Create the Caddy certificate extension file
+
+This step applies under the following circumstances:
+
+- You are creating your first Caddy certificate.
 
 `lithium-ca` now creates a certificate extension file used when signing
 `caddy`'s certificate. Use the following commands:
@@ -135,9 +168,12 @@ sudo -u lithium-ca tee /var/lib/lithium-ca/signed/lithium-server.ext
 sudo -u lithium-ca chmod 644 /var/lib/lithium-ca/signed/lithium-server.ext
 ```
 
-# CA signing `caddy`'s certificate signing request
+# Sign the Caddy certificate signing request
 
-The following step also applies when renewing the `caddy` certificate.
+This step applies under the following circumstances:
+
+- You are creating your first Caddy certificate.
+- You are recreating a new Caddy certificate after the previous certificate expired.
 
 `lithium-ca` now signs the certificate signing request created by `caddy`.
 The resulting certificate `lithium-server.crt` is stored in
@@ -158,14 +194,21 @@ sudo -u caddy cp /var/lib/lithium-ca/signed/lithium-server.crt /var/lib/caddy/ce
 sudo chmod 644 /var/lib/caddy/certs/lithium-server.crt
 ```
 
-# Importing the certificate
+# Import the root CA certificate
 
-The following instructions are also valid if the root CA certificate expired.
+This step applies under the following circumstances:
+
+- You are creating your first root CA certificate
+- You are creating a new root CA certificate after the previous certificate expired.
 
 ## macOS
 
-Open `Keychain Access`. Delete certificate called "lithium Root" if
-exists. Then, open certificate in local keychain:
+Open `Keychain Access`. Delete certificate called `lithium root` if
+exists. The certificate is in the `login` keychain under **Default Keychains**.
+
+![Screenshot showing the confirmation dialog when deleting the certificate in Apple Keychain Access](./delete-lithium-root-cert-keychain.png)
+
+Then, open the certificate using the following command run in your terminal:
 
 ```bash
 open /var/lib/lithium-ca/lithium-ca.crt
@@ -173,19 +216,26 @@ open /var/lib/lithium-ca/lithium-ca.crt
 
 Open certificate in *Default Keychains* > *login*. Under *Trust*, choose "Always Trust" for **Secure Sockets Layer (SSL)**. Close and confirm by entering administration password.
 
+![Settings screen showing the required certificate settings in Apple Keychain Access](./lithium-root-cert-trust-settings.png)
+
 ## Nix and NixOS
 
-Update `nix/lithium-ca.crt`.
+Update `nix/lithium-ca.crt` and make a Git commit.
 
 ```bash
-install /var/lithium-ca/lithium-ca.crt $HOME/.dotfiles/nix/lithium-ca.crt
+install /var/lib/lithium-ca/lithium-ca.crt $HOME/.dotfiles/nix/lithium-ca.crt
+git add $HOME/.dotfiles/nix/lithium-ca.crt
+git commit --message "Nix: Update lithium-ca.crt"
 ```
 
 Then, commit and rebuild NixOS and nix home configuration.
 
 # Restart caddy
 
-These steps are also to be used when caddy's certificate expires.
+This step applies under the following circumstances:
+
+- You are creating your first Caddy certificate.
+- You are recreating a new Caddy certificate after the previous certificate expired.
 
 ```bash
 sudo launchctl kill 15 system/net.jwpconsulting.caddy -k -p
