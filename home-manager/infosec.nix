@@ -131,6 +131,7 @@ in
         cryptography
         nclib
         impacket
+        pycrypto
       ]
     ))
     pkgs.jwt-cli
