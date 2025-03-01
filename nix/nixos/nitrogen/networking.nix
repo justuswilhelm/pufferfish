@@ -11,4 +11,5 @@
 
   networking.firewall.logRefusedPackets = true;
   networking.firewall.logRefusedConnections = true;
+  systemd.network.wait-online.enable = false;
 }
