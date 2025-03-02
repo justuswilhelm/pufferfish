@@ -4,6 +4,7 @@
     ./modules/gdb.nix
     ./modules/foot.nix
     ./modules/firefox.nix
+    ./modules/aider.nix
 
     ./home.nix
     ./sway.nix
