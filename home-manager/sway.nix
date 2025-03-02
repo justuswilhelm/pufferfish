@@ -34,7 +34,7 @@ in
         # Launch my currently used workspace
         bindsym $mod+m workspace 1, split horizontal, exec foot ${fish} -c projectify
         # Launch a view into my dotfiles etc
-        bindsym $mod+Shift+m workspace 4, exec foot ${fish} -c manage-dotfiles, split horizontal, exec ${firefox-esr}
+        bindsym $mod+Shift+m workspace 4, exec foot ${fish} -c manage-dotfiles
 
         # Launch a view into my laptop and do pomodoros
         bindsym $mod+Shift+f workspace 3, exec foot ${mosh} lithium.local -- fish -c tomato

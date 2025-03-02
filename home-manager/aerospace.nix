@@ -117,7 +117,6 @@ let
       "${prefix}-shift-m" = [
         "workspace 4"
         (openAlacritty "${fish} -l -c manage-dotfiles")
-        newFirefoxWindow
       ];
       # Time tracking
       "${prefix}-shift-f" = [
