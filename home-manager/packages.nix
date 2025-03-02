@@ -71,7 +71,6 @@ in
     pkgs.jq
     pkgs.miller
     pkgs.nodejs_20
-    pkgs.openjdk
     pkgs.go
 
     # Python
