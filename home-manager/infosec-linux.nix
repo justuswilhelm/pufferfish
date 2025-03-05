@@ -53,7 +53,11 @@
     pkgs.openssl
     # For clock skews
     pkgs.libfaketime
+
+    # Web
+    # ===
     pkgs.zap
+    pkgs.ungoogled-chromium
 
     # SNMP
     # ====
