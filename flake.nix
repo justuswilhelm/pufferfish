@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.11";
@@ -23,6 +24,7 @@
     , nix-darwin
     , home-manager
     , nixpkgs
+    , nixpkgs-unstable
     , pomoglorbo
     , projectify
     , utils
@@ -108,6 +110,7 @@
       darwinConfigurations."lithium" =
         let
           system = "aarch64-darwin";
+          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
@@ -116,6 +119,15 @@
           };
           modules = [
             { _module.args = inputs; }
+            {
+              nixpkgs.overlays = [
+                (final: previous: {
+                  # XXX
+                  # want to use withPlugins, not available in 24.11
+                  caddy = pkgs-unstable.caddy;
+                })
+              ];
+            }
             ./nix-darwin/darwin-configuration.nix
             home-manager.darwinModules.home-manager
             {

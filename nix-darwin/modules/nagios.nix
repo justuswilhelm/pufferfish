@@ -30,8 +30,6 @@ let
   nagiosRw = "/var/lib/nagios-rw";
   # TODO create separate directory for nagios-cmd things
   nagiosLogDir = "/var/log/nagios";
-  nagiosHttpdState = "/var/lib/nagios-httpd";
-  nagiosHttpdLogDir = "/var/log/nagios-httpd";
   nagiosNscaState = "/var/lib/nagios-nsca";
   nagiosNscaLogDir = "/var/log/nagios-nsca";
   urlPath = "/nagios";
@@ -129,84 +127,40 @@ let
     $USER1$=${pkgs.monitoring-plugins}/bin
   '';
 
-  httpd = pkgs.apacheHttpd;
-  php = ((pkgs.php.overrideAttrs
-    (previous: {
-      buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
-    })).override {
-    apacheHttpd = httpd;
-    apxs2Support = true;
-    # available extensions:
-  }).withExtensions ({ all, ... }: with all; ([
-    # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/interpreters/php/8.3.nix
-    filter
-  ]));
+  caddyConfig = ''
+    https://lithium.local:10103 {
+      import certs
 
-  # https://github.com/NixOS/nixpkgs/blob/54830391487253422f0ccab55fc557b2e725ace0/nixos/modules/services/web-servers/apache-httpd/default.nix#L319
-  phpIni = pkgs.runCommand "php.ini"
-    {
-      preferLocalBuild = true;
+      route /auth* {
+        authenticate with myportal
+      }
+
+      route {
+        authorize with admins_policy
+
+        handle_path ${urlPath}/cgi-bin/* {
+          # https://github.com/aksdb/caddy-cgi?tab=readme-ov-file#execute-dynamic-script
+          cgi /*.cgi ${pkgs.nagios}/sbin{path} {
+            env NAGIOS_CGI_CONFIG=${cfg.cgiConfigFile}
+          }
+        }
+
+        handle_path ${urlPath}/* {
+          root * ${pkgs.nagios}/share
+          php_fastcgi unix//${config.services.caddy.phpFpmSock}
+          file_server
+        }
+        redir / /nagios/
+        redir /nagios /nagios/
+      }
+
+      log {
+        format console
+        output file ${config.services.caddy.logPath}/nagios.log
+      }
     }
-    ''
-      cat ${php}/etc/php.ini > $out
-      cat ${php.phpIni} > $out
-    '';
-
-  httpdConfig = pkgs.writeText "httpd.conf" ''
-    LoadModule env_module ${httpd}/modules/mod_env.so
-    LoadModule alias_module ${httpd}/modules/mod_alias.so
-    LoadModule cgi_module ${httpd}/modules/mod_cgi.so
-    LoadModule dir_module ${httpd}/modules/mod_dir.so
-    # This is so that apache can fork?
-    LoadModule mpm_prefork_module ${httpd}/modules/mod_mpm_prefork.so
-    LoadModule log_config_module ${httpd}/modules/mod_log_config.so
-    # Authentication
-    LoadModule authn_core_module ${httpd}/modules/mod_authn_core.so
-    LoadModule auth_basic_module ${httpd}/modules/mod_auth_basic.so
-    LoadModule authn_file_module ${httpd}/modules/mod_authn_file.so
-    # 'Require' directive
-    LoadModule authz_core_module ${httpd}/modules/mod_authz_core.so
-    LoadModule authz_user_module ${httpd}/modules/mod_authz_user.so
-    # Something for file access
-    LoadModule unixd_module ${httpd}/modules/mod_unixd.so
-    # Scary PHP
-    LoadModule mime_module ${httpd}/modules/mod_mime.so
-    LoadModule php_module ${php}/modules/libphp.so
-
-    AddType application/x-httpd-php .php
-
-    PidFile ${nagiosHttpdState}/httpd.pid
-
-    ServerName localhost
-    Listen 18120
-
-    # Logging
-    ErrorLog "${nagiosHttpdLogDir}/httpd.error.log"
-    LogFormat "%h %l %u %t \"%r\" %>s %b" common
-    CustomLog "${nagiosHttpdLogDir}/httpd.access.log" common
-
-    ScriptAlias ${urlPath}/cgi-bin ${pkgs.nagios}/sbin
-
-    # This http basic auth config will definitely get me hacked
-    <Directory "${pkgs.nagios}/sbin">
-      Options ExecCGI
-      SetEnv NAGIOS_CGI_CONFIG ${cfg.cgiConfigFile}
-      AllowOverride None
-      AuthType Basic
-      AuthName "Nagios Access"
-      AuthBasicProvider file
-      AuthUserFile ${nagiosHttpdState}/htpasswd.users
-      Require valid-user
-    </Directory>
-
-    Alias ${urlPath} ${pkgs.nagios}/share
-
-    <Directory "${pkgs.nagios}/share">
-      Options None
-      Require all granted
-      DirectoryIndex index.php
-    </Directory>
   '';
+
   overlays = [
     (final: previous: {
       monitoring-plugins = (previous.monitoring-plugins.overrideAttrs (
@@ -341,14 +295,6 @@ in
       gid = 1100;
       isHidden = true;
     };
-    # TODO make disable-able
-    users.users.nagios-httpd = {
-      description = "Nagios Httpd user";
-      uid = 1105;
-      home = nagiosHttpdState;
-      gid = 1105;
-      isHidden = true;
-    };
     users.users.nagios-nsca = {
       description = "Nagios NSCA user";
       uid = 1108;
@@ -356,28 +302,21 @@ in
       gid = 1108;
       isHidden = true;
     };
-    users.knownUsers = [ "nagios" "nagios-httpd" "nagios-nsca" ];
+    users.knownUsers = [ "nagios" "nagios-nsca" ];
 
     users.groups.nagios = { gid = 1100; };
-    users.groups.nagios-httpd = { gid = 1105; };
     users.groups.nagios-cmd = {
       gid = 1106;
       # Allow cgi file to write to nagios.cmd file
       # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
-      members = [ "nagios" "nagios-httpd" "nagios-nsca" ];
+      members = [ "nagios" "caddy" "nagios-nsca" ];
     };
     users.groups.nagios-nsca = { gid = 1108; };
-    users.knownGroups = [ "nagios" "nagios-httpd" "nagios-cmd" "nagios-nsca" ];
+    users.knownGroups = [ "nagios" "nagios-cmd" "nagios-nsca" ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
     environment.etc."nagios/nagios.cfg".source = nagiosCfgFile;
-
-    # HTTPD
-    environment.etc."nagios/httpd.conf".source = httpdConfig;
-    environment.etc."nagios/httpd.conf".enable = cfg.enableWebInterface;
-    environment.etc."nagios/php.ini".source = phpIni;
-    environment.etc."nagios/php.ini".enable = cfg.enableWebInterface;
 
     # NSCA
     # https://github.com/NagiosEnterprises/nsca/blob/master/sample-config/nsca.cfg.in
@@ -386,13 +325,14 @@ in
 
     environment.etc."newsyslog.d/nagios.conf".text = ''
       # logfilename                         [owner:group]             mode count size when  flags [/pid_file] [sig_num]
-      ${nagiosLogDir}/stdout.log            nagios:nagios             640  10    *    $D0   J
-      ${nagiosLogDir}/stderr.log            nagios:nagios             640  10    *    $D0   J
-      ${nagiosHttpdLogDir}/httpd.stdout.log nagios-httpd:nagios-httpd 640  10    *    $D0   J
-      ${nagiosHttpdLogDir}/httpd.stderr.log nagios-httpd:nagios-httpd 640  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stdout.log   nagios-nsca:nagios-nsca   640  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stderr.log   nagios-nsca:nagios-nsca   640  10    *    $D0   J
+      ${nagiosLogDir}/stdout.log            nagios:nagios             600  10    *    $D0   J
+      ${nagiosLogDir}/stderr.log            nagios:nagios             600  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stdout.log   nagios-nsca:nagios-nsca   600  10    *    $D0   J
+      ${nagiosNscaLogDir}/nsca.stderr.log   nagios-nsca:nagios-nsca   600  10    *    $D0   J
     '';
+
+    services.caddy.enablePhp = mkIf cfg.enableWebInterface true;
+    services.caddy.extraConfig = caddyConfig;
 
     environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca-package ];
     launchd.daemons.nagios = {
@@ -417,22 +357,6 @@ in
       command = "nagios /etc/nagios/nagios.cfg";
     };
 
-    environment.launchDaemons.nagios-httpd.enable = cfg.enableWebInterface;
-    launchd.daemons.nagios-httpd = {
-      path = [ httpd ];
-      serviceConfig = {
-        UserName = "nagios-httpd";
-        GroupName = "nagios-httpd";
-        KeepAlive = true;
-        EnvironmentVariables = {
-          PHPRC = "/etc/nagios/php.ini";
-        };
-        StandardOutPath = "${nagiosHttpdLogDir}/httpd.stdout.log";
-        StandardErrorPath = "${nagiosHttpdLogDir}/httpd.stderr.log";
-        WorkingDirectory = nagiosHttpdState;
-      };
-      command = "httpd -D FOREGROUND -f /etc/nagios/httpd.conf";
-    };
 
     launchd.daemons.nagios-nsca = {
       path = [ cfg.nsca-package ];
@@ -447,9 +371,6 @@ in
       command = "nsca -f -c /etc/nagios/nsca.conf";
     };
 
-    # TODO make this optional
-    # Create nagiosadmin user with
-    # sudo -u nagios-httpd htpasswd -B /var/nagios-httpd/htpasswd.users nagiosadmin
     system.activationScripts.postActivation = {
       text = ''
         echo "Ensuring nagios directories exist"
@@ -462,16 +383,6 @@ in
 
         echo "Restarting nagios"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios
-
-        echo "Ensuring nagios httpd directories exist"
-        mkdir -vp ${nagiosHttpdState}
-        mkdir -vp ${nagiosHttpdLogDir}
-        chmod -v 700 ${nagiosHttpdState}
-        chown -v nagios-httpd:nagios-httpd ${nagiosHttpdState} ${nagiosHttpdLogDir}
-        sudo -u nagios-httpd touch ${nagiosHttpdState}/htpasswd.users
-        chmod -v 600 ${nagiosHttpdState}/htpasswd.users
-        echo "Restarting nagios-httpd"
-        launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios-httpd
 
         mkdir -vp ${nagiosNscaState} ${nagiosNscaLogDir}
         chown -v nagios-nsca:nagios-nsca ${nagiosNscaState} ${nagiosNscaLogDir}
