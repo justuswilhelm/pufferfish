@@ -146,7 +146,7 @@ in
 {
   options = {
     services.caddy.extraConfig = mkOption {
-      type = types.str;
+      type = types.lines;
       default = "";
     };
     services.caddy.enablePhp = mkOption {
