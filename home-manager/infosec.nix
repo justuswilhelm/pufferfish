@@ -33,6 +33,7 @@ in
     pkgs.programmer-calculator
     pkgs.xxd
     pkgs.binwalk
+    pkgs.nasm
 
     # Networking
     # ==========
