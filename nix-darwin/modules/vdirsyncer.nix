@@ -1,10 +1,7 @@
-{ config, pkgs, ... }:
+{ config, specialArgs, pkgs, ... }:
 let
   vdirsyncer = pkgs.vdirsyncer;
-  name = "justusperlwitz";
-  home = "/Users/${name}";
-  library = "${home}/Library";
-  logPath = "${library}/Logs/vdirsyncer";
+  logPath = "/Users/${specialArgs.name}/Library/Logs/offlineimap";
 in
 {
   environment.systemPackages = [
