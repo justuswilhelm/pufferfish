@@ -32,9 +32,9 @@ let
 
 
   caddy = pkgs.caddy.withPlugins {
-    # v2.2.6 relies on go 1.24.0
-    # v2.2.5 works with go 1.23.6
     plugins = [
+      # caddy-cgi v2.2.6 relies on go 1.24.0
+      # caddy-cgi v2.2.5 works with go 1.23.6
       "github.com/aksdb/caddy-cgi/v2@v2.2.5"
       "github.com/greenpau/caddy-security@v1.1.29"
     ];
@@ -55,12 +55,6 @@ let
         local identity store localdb {
           realm local
           path {$HOME}/.local/caddy/users.json
-          # user foo {
-          #   name Foo
-          #   email foo@lithium.local
-          #   password "barbarbar1234"
-          #   roles authp/admin authp/user
-          # }
         }
 
         authentication portal myportal {
@@ -68,9 +62,16 @@ let
         }
         authorization policy admins_policy {
           set auth url https://lithium.local:10103/auth
-          allow roles authp/admin authp/user
+
+          allow roles authp/admin
+
+          set user identity subject
+
+          enable strip token
+          inject header "REMOTE_USER" from subject
+
           acl rule {
-            comment allow users
+            comment allow admins
             match role authp/admin
             allow stop log info
           }
