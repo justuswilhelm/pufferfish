@@ -2,13 +2,12 @@
 let
   frontend = projectify.outputs.packages.${specialArgs.system}.projectify-frontend-node;
   backend = projectify.outputs.packages.${specialArgs.system}.projectify-backend;
-  revproxy = projectify.outputs.packages.${specialArgs.system}.projectify-revproxy;
   logPath = "/var/log/projectify";
-  revproxyPort = "18100";
   frontendPort = "18101";
   backendPort = "18102";
   redisPort = "18103";
   hostname = "localhost";
+  revproxyPort = "10105";
 in
 {
   users.groups.projectify = {
@@ -77,7 +76,7 @@ in
         StandardOutPath = "${logPath}/projectify-backend.stdout.log";
         StandardErrorPath = "${logPath}/projectify-backend.stderr.log";
         EnvironmentVariables = {
-          FRONTEND_URL = "http://${hostname}:${revproxyPort}";
+          FRONTEND_URL = "https://${hostname}:${revproxyPort}";
           ALLOWED_HOSTS = hostname;
           REDIS_URL = "redis://${hostname}:${redisPort}";
           DJANGO_SETTINGS_MODULE = "projectify.settings.production";
@@ -89,23 +88,78 @@ in
       };
   };
 
-  launchd.daemons.projectify-revproxy = {
-    command = "${revproxy}/bin/projectify-revproxy";
-    serviceConfig =
-      {
-        KeepAlive = true;
-        StandardOutPath = "${logPath}/projectify-revproxy.stdout.log";
-        StandardErrorPath = "${logPath}/projectify-revproxy.stderr.log";
-        EnvironmentVariables = {
-          HOST = "http://${hostname}";
-          PORT = revproxyPort;
-          FRONTEND_HOST = "http://${hostname}";
-          FRONTEND_PORT = frontendPort;
-          BACKEND_HOST = "http://${hostname}";
-          BACKEND_PORT = backendPort;
-        };
-        UserName = "projectify";
-      };
-  };
+  services.caddy.extraConfig = ''
+    # SPDX-License-Identifier: AGPL-3.0-or-later
+    # SPDX-FileCopyrightText: 2024 JWP Consulting GK
+    # Helpful links for Caddy security headers
+    # https://github.com/jpcaparas/caddy-csp/blob/f241472610a5a4e4f8d74e0976120bbb2cca84cc/Caddyfile
+    # https://paulbradley.dev/caddyfile-web-security-headers/
+    (frontend_headers) {
+      # We need to relax the CSP a bit, since Svelte has some inline js.
+      # Compared to backend_headers, we removed default-src and script-src
+      # Furthermore, we have to make sure we don't override any CSP headers
+      # Should SvelteKit with adapter-node decide to return a header itself
+      # We have to relax style-src here as well, in case of a page transition
+      # from landing (prerendered) to dashboard (ssr/csr)
+      # Refer to
+      # See https://github.com/sveltejs/kit/issues/11747 and
+      # https://kit.svelte.dev/docs/configuration
+      header ?Content-Security-Policy "
+        style-src 'self' 'unsafe-inline';
+        font-src 'self';
+        img-src 'self' blob: res.cloudinary.com;
+        form-action 'self';
+        connect-src 'self';
+        frame-ancestors 'none';
+        object-src 'self';
+        base-uri 'self';
+      "
+    }
+    (backend_headers) {
+      # The backend is locked down more
+      header {
+        Content-Security-Policy "
+          default-src 'self';
+          style-src 'self';
+          script-src 'self';
+          font-src 'self';
+          img-src 'self' res.cloudinary.com;
+          form-action 'self';
+          connect-src 'self';
+          frame-ancestors 'none';
+          object-src 'self';
+          base-uri 'self';
+        "
+        # TODO add default-src 'none', at least as a report directive
+      }
+    }
 
+    https://lithium.local:${revproxyPort} {
+      header {
+        X-Frame-Options DENY
+        Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
+        X-Content-Type-Options nosniff
+      }
+      handle /admin/* {
+        import backend_headers
+        reverse_proxy ${hostname}}:${backendPort}
+      }
+      handle /static/django/* {
+        import backend_headers
+        reverse_proxy ${hostname}:${backendPort}
+      }
+      handle /ws/* {
+        import backend_headers
+        reverse_proxy ${hostname}:${backendPort}
+      }
+      handle_path /api/* {
+        import backend_headers
+        reverse_proxy ${hostname}:${backendPort}
+      }
+      handle /* {
+        import frontend_headers
+        reverse_proxy ${hostname}:${frontendPort}
+      }
+    }
+  '';
 }
