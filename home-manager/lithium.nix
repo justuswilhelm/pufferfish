@@ -15,9 +15,6 @@ in
     ./cmus.nix
   ];
 
-  home.homeDirectory = "/Users/debian";
-  home.username = "debian";
-
   programs.cmus = {
     enable = true;
     output_plugin = "coreaudio";

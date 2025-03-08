@@ -111,11 +111,12 @@
         let
           system = "aarch64-darwin";
           pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+          name = "debian";
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
           specialArgs = {
-            inherit system;
+            inherit system name;
           };
           modules = [
             { _module.args = inputs; }

@@ -1,11 +1,8 @@
+{ specialArgs, config, pkgs, projectify, ... }:
 let
-  name = "debian";
   uid = 501;
-  home = "/Users/${name}";
-  library = "${home}/Library";
+  name = specialArgs.name;
 in
-{ config, pkgs, projectify, ... }:
-
 {
   imports = [
     ./modules/nagios.nix
@@ -25,9 +22,10 @@ in
     ./infosec.nix
   ];
   users.users."${name}" = {
-    description = "debian";
+    description = name;
     shell = pkgs.fish;
-    inherit uid home name;
+    home = "/Users/${name}";
+    inherit uid;
   };
 
   # List packages installed in system profile. To search by name, run:
