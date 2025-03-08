@@ -1,5 +1,5 @@
 let
-  name = "justusperlwitz";
+  name = "debian";
   uid = 501;
   home = "/Users/${name}";
   library = "${home}/Library";
@@ -25,7 +25,7 @@ in
     ./infosec.nix
   ];
   users.users."${name}" = {
-    description = "Justus Perlwitz";
+    description = "debian";
     shell = pkgs.fish;
     inherit uid home name;
   };

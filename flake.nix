@@ -135,9 +135,9 @@
               home-manager.sharedModules = [
                 { _module.args = inputs; }
               ];
-              home-manager.users.justusperlwitz = import ./home-manager/lithium.nix;
+              home-manager.users.debian = import ./home-manager/lithium.nix;
               home-manager.extraSpecialArgs = {
-                homeDirectory = "/Users/justusperlwitz";
+                homeDirectory = "/Users/debian";
                 inherit system;
               };
             }
