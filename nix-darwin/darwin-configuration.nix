@@ -153,11 +153,15 @@ in
       GuestEnabled = false;
     };
     screensaver.askForPassword = true;
+    screensaver.askForPasswordDelay = null;
     ".GlobalPreferences" = {
       "com.apple.mouse.scaling" = 0.5;
     };
   };
   system.startup.chime = false;
+
+  power.sleep.computer = 2;
+  power.sleep.display = 2;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
