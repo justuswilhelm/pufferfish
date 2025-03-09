@@ -14,7 +14,7 @@
   ];
 
   programs.i3status.modules = {
-    "ethernet enp0s5u3c2" = {
+    "ethernet enp0s1" = {
       settings = {
         format_up = "eth: %ip (%speed)";
         format_down = "eth: down";
