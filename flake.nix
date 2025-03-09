@@ -31,11 +31,8 @@
     }@inputs: {
       nixosConfigurations = {
         helium =
-          let
-            system = "x86_64-linux";
-          in
           nixpkgs.lib.nixosSystem {
-            inherit system;
+            system = "x86_64-linux";
             modules = [
               ./nix/nixos/helium/configuration.nix
               home-manager.nixosModules.home-manager
@@ -45,19 +42,16 @@
                 home-manager.users.justusperlwitz = import ./home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
-                  system = "nixos";
-                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
                 };
               }
             ];
           };
         lithium-nixos =
           let
-            system = "aarch64-linux";
             name = "debian";
           in
           nixpkgs.lib.nixosSystem {
-            inherit system;
+            system = "aarch64-linux";
             specialArgs = { inherit name; };
             modules = [
               ./nix/nixos/lithium-nixos/configuration.nix
@@ -68,18 +62,16 @@
                 home-manager.users."${name}" = import ./home-manager/lithium-nixos.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                  system = "nixos";
                 };
               }
             ];
           };
         nitrogen =
           let
-            system = "x86_64-linux";
             name = "debian";
           in
           nixpkgs.lib.nixosSystem {
-            inherit system;
+            system = "x86_64-linux";
             specialArgs = { inherit name; };
             modules = [
               ./nix/nixos/nitrogen/configuration.nix
@@ -114,6 +106,7 @@
                   # XXX
                   # want to use withPlugins, not available in 24.11
                   caddy = pkgs-unstable.caddy;
+                  # Add projectify and pomoglorbo as overlay
                 })
               ];
             }
