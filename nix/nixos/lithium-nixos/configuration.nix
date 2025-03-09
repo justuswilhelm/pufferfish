@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, specialArgs, pkgs, ... }:
 
 {
   imports =
@@ -26,7 +26,7 @@
   time.timeZone = "Asia/Tokyo";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.frugally-consonant-lanky = {
+  users.users."${specialArgs.name}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.fish;

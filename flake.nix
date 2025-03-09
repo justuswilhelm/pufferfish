@@ -54,18 +54,20 @@
         lithium-nixos =
           let
             system = "aarch64-linux";
+            name = "debian";
           in
           nixpkgs.lib.nixosSystem {
             inherit system;
+            specialArgs = { inherit name; };
             modules = [
               ./nix/nixos/lithium-nixos/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.frugally-consonant-lanky = import ./home-manager/lithium-nixos.nix;
+                home-manager.users."${name}" = import ./home-manager/lithium-nixos.nix;
                 home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/frugally-consonant-lanky";
+                  homeDirectory = "/home/${name}";
                   system = "nixos";
                 };
               }
