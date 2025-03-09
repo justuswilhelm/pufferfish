@@ -7,6 +7,9 @@
     ./modules/gdb.nix
     ./modules/ssh.nix
 
+    # TODO enable
+    # ./modules/opensnitch.nix
+
     ./home.nix
     ./sway.nix
     ./linux-packages.nix
