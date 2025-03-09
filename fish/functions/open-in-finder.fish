@@ -10,18 +10,26 @@ function open-in-finder
         touch $hist_file
     end
 
-    if ! set dir (begin cat $hist_file; fd -t d -d 5; end | fzf --scheme=history)
+    if ! set dir (
+        begin
+            cat $hist_file
+            fd \
+                --type directory \
+                --max-depth 5 \
+                . $HOME
+        end | fzf --scheme=history
+    )
         echo "Couldn't determine directory to open"
         return 1
     end
 
-    if ! set rlpath (realpath $dir)
+    if ! set rlpath (realpath $dir)/
         echo "Could not determine directory $dir's realpath"
         return 1
     end
 
     if ! grep $rlpath $hist_file
-        echo $rlpath >> $hist_file
+        echo $rlpath >>$hist_file
     end
 
     open -a Finder $rlpath || return

@@ -3,14 +3,12 @@
   networking.hostName = "nitrogen"; # Define your hostname.
   # Pick only one of the below networking options.
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.environmentFile = "/etc/wireless-credentials/wireless.env";
+  networking.wireless.secretsFile = "/etc/wireless-credentials/wireless.env";
   networking.wireless.networks = {
-    "@HOME_SSID@".psk = "@HOME_PSK@";
+    "home sweet home".pskRaw = "ext:HOME_PSK";
   };
-  networking.firewall.enable = true;
+  networking.wireless.userControlled.enable = true;
 
-  # Hardcode lithium.local ip because mdns does not work... :(
-  networking.hosts = {
-    "10.0.57.235" = [ "lithium.local" ];
-  };
+  networking.firewall.logRefusedPackets = true;
+  networking.firewall.logRefusedConnections = true;
 }

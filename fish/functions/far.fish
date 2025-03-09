@@ -8,7 +8,7 @@ function far -d "Replace all occurences of a word with another recursively in a 
 
     if [ -z $search ]
         set search_file (mktemp)
-        echo "Replace with search regex" > $search_file
+        echo "Replace with search regex" >$search_file
         command $EDITOR $search_file
         set search (cat $search_file)
     end
@@ -25,7 +25,7 @@ function far -d "Replace all occurences of a word with another recursively in a 
 
     if [ -z $with ]
         set with_file (mktemp)
-        echo $search > $with_file
+        echo $search >$with_file
         command $EDITOR $with_file
         set with (cat $with_file)
     end

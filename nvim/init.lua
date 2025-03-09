@@ -269,6 +269,10 @@ lspconfig.pyright.setup {
 -- ----
 lspconfig.ruff.setup {}
 
+-- Vale
+-- ----
+lspconfig.vale_ls.setup {}
+
 -- Deno
 -- -----
 -- require'lspconfig'.denols.setup{}
@@ -322,7 +326,6 @@ require('nvim-treesitter.configs').setup {
         "svelte",
         "typescript",
         "markdown",
-        "org",
         "ledger",
         "nix",
     },

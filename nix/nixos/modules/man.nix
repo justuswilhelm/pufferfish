@@ -6,7 +6,7 @@
       enable = true;
       man-db.enable = false;
       mandoc.enable = true;
-      generateCaches = false;
+      generateCaches = lib.mkForce false;
     };
     nixos.includeAllModules = true;
   };

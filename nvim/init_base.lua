@@ -76,6 +76,11 @@ vim.opt.hlsearch = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Indentation
+-- -----------
+-- Indent tab with four spaces
+vim.opt.shiftwidth = 4
+
 -- Syntax settings
 -- ===========================================
 -- Enable syntax, if not done by an ftplugin for us
@@ -167,6 +172,10 @@ vim.keymap.set("n", "<leader>bp", ':let @+ = expand("%")<CR>')
 -- Do math on highlighted text
 -- ---------------------------
 vim.keymap.set("v", "<leader>m", '"ms<C-R>=<C-R>m<CR><ESC>')
+
+-- Jump to next error in quickfix list
+-- -----------------------------------
+vim.keymap.set("n", "<leader>cne", ':cnext<CR>')
 
 -- Mouse
 -- =====

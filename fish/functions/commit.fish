@@ -16,7 +16,7 @@ function commit -d "Suggest git commit messages based on previous commit message
 # ---------------------------
 #"
         git log --pretty=%s -- $git_root/$files | head -n10 | sed -e 's/^/# /' || return 1
-    end > $commit_template
+    end >$commit_template
     if [ $status -ne 0 ]
         echo "Couldn't get log for these files:
 $files"

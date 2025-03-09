@@ -19,7 +19,7 @@ Initial installation:
 
 ```
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-darwin-rebuild switch --flake "$HOME/.dotfiles/nix/generic"
+darwin-rebuild switch --flake "$HOME/.dotfiles"
 ```
 
 Rebuild:
@@ -48,7 +48,7 @@ Initial installation:
 
 ```
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-home-manager --extra-experimental-features flakes --extra-experimental-features nix-command switch --flake $HOME/.dotfiles/nix/generic
+home-manager --extra-experimental-features flakes --extra-experimental-features nix-command switch --flake $HOME/.dotfiles
 ```
 
 Rebuild:

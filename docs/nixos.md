@@ -103,7 +103,7 @@ Highlights:
 ```bash
 nixos-install \
   --root /mnt/nixos-root/ \
-  --flake /home/justusperlwitz/.dotfiles/nix/generic#helium-nixos
+  --flake /home/debian/.dotfiles#helium-nixos
 ```
 
 ## Clean up
@@ -120,7 +120,7 @@ cryptsetup close nvme0n1p4_crypt
 A QEMU vm can be launched with
 
 ```bash
-nix run "$DOTFILES/nix/generic/".#nixosConfigurations.helium.config.system.build.vm
+nix run "$DOTFILES/".#nixosConfigurations.helium.config.system.build.vm
 ```
 
 This will need extra adjustments for the hardware configuration as it expects
