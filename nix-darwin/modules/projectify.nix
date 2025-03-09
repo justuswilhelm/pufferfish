@@ -6,7 +6,7 @@ let
   frontendPort = "18101";
   backendPort = "18102";
   redisPort = "18103";
-  hostname = "localhost";
+  hostname = "lithium.local";
   revproxyPort = "10105";
 in
 {
@@ -134,7 +134,7 @@ in
       }
     }
 
-    https://lithium.local:${revproxyPort} {
+    https://${hostname}:${revproxyPort} {
       header {
         X-Frame-Options DENY
         Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
@@ -142,7 +142,7 @@ in
       }
       handle /admin/* {
         import backend_headers
-        reverse_proxy ${hostname}}:${backendPort}
+        reverse_proxy ${hostname}:${backendPort}
       }
       handle /static/django/* {
         import backend_headers
@@ -162,4 +162,8 @@ in
       }
     }
   '';
+
+  nix.settings = {
+    extra-sandbox-paths = [ "/usr/share" "/private/var/db" ];
+  };
 }
