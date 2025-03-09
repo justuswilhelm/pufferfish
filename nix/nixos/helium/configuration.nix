@@ -2,20 +2,20 @@
 {
   imports =
     [
+      ../modules/borgmatic.nix
+      ../modules/compat.nix
+      ../modules/ime.nix
+      ../modules/infosec.nix
+      ../modules/man.nix
+      ../modules/nagios.nix
+      ../modules/networkd.nix
+      ../modules/nix.nix
+      ../modules/opensnitch.nix
+      ../modules/openssh.nix
+      ../modules/openvpn.nix
+      ../modules/podman.nix
       ../modules/sway.nix
       ../modules/yubikey.nix
-      ../modules/networkd.nix
-      ../modules/podman.nix
-      ../modules/openvpn.nix
-      ../modules/borgmatic.nix
-      ../modules/infosec.nix
-      ../modules/ime.nix
-      ../modules/nix.nix
-      ../modules/man.nix
-      ../modules/compat.nix
-      ../modules/opensnitch.nix
-      ../modules/nagios.nix
-      ../modules/openssh.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
