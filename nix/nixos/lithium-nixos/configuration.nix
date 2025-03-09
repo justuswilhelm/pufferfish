@@ -4,8 +4,12 @@
   imports =
     [
       ../modules/attic.nix
+      ../modules/compat.nix
+      ../modules/infosec.nix
+      ../modules/man.nix
       ../modules/networkd.nix
       ../modules/nix.nix
+      ../modules/openssh.nix
       ../modules/sway.nix
       ../modules/utm.nix
       ../modules/yubikey.nix
