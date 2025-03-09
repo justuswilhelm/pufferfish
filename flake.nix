@@ -76,19 +76,20 @@
         nitrogen =
           let
             system = "x86_64-linux";
+            name = "debian";
           in
           nixpkgs.lib.nixosSystem {
             inherit system;
+            specialArgs = { inherit name; };
             modules = [
               ./nix/nixos/nitrogen/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.justusperlwitz = import ./home-manager/nitrogen.nix;
+                home-manager.users."${name}" = import ./home-manager/nitrogen.nix;
                 home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/justusperlwitz";
-                  inherit system;
+                  homeDirectory = "/home/${name}";
                 };
               }
             ];

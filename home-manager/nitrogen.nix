@@ -16,8 +16,6 @@
     ./infosec-linux.nix
   ];
 
-  home.username = "justusperlwitz";
-
   home.packages = [
     pkgs.tor-browser
   ];

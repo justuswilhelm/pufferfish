@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, specialArgs, ... }:
 
 {
   imports =
@@ -54,7 +54,7 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.justusperlwitz = {
+  users.users."${specialArgs.name}" = {
     isNormalUser = true;
     extraGroups = [
       # Enable ‘sudo’ for the user.
@@ -67,7 +67,6 @@
       # For wireshark
       "wireshark"
     ];
-    home = "/home/justusperlwitz";
     shell = pkgs.fish;
     packages = with pkgs; [
       firefox-esr
