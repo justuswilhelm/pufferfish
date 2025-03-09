@@ -1,10 +1,11 @@
 { lib, pkgs, ... }:
 {
   imports = [
-    ./modules/gdb.nix
-    ./modules/foot.nix
-    ./modules/firefox.nix
     ./modules/aider.nix
+    ./modules/firefox.nix
+    ./modules/foot.nix
+    ./modules/gdb.nix
+    ./modules/ssh.nix
 
     ./home.nix
     ./sway.nix
