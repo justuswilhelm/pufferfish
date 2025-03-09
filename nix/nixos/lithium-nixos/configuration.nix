@@ -3,12 +3,12 @@
 {
   imports =
     [
-      ../modules/nix.nix
+      ../modules/attic.nix
       ../modules/networkd.nix
+      ../modules/nix.nix
       ../modules/sway.nix
       ../modules/utm.nix
       ../modules/yubikey.nix
-      ../modules/attic.nix
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
