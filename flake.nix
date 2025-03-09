@@ -95,21 +95,6 @@
             ];
           };
       };
-      homeConfigurations."justusperlwitz@nitrogen" =
-        let
-          system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [ ./home-manager/nitrogen.nix ];
-
-          extraSpecialArgs = {
-            homeDirectory = "/home/justusperlwitz";
-            inherit system;
-          };
-        };
       darwinConfigurations."lithium" =
         let
           system = "aarch64-darwin";
