@@ -1,6 +1,12 @@
 --- /etc/ssh/sshd_config
 +++ /etc/ssh/sshd_config
 @@ -27,12 +27,12 @@
+ # Logging
+-#SyslogFacility AUTH
+-#LogLevel INFO
++SyslogFacility AUTH
++LogLevel INFO
+ 
  # Authentication:
  
  #LoginGraceTime 2m
