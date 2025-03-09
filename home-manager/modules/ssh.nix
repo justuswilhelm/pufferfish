@@ -4,6 +4,7 @@
     enable = true;
     addKeysToAgent = "yes";
     extraOptionOverrides = {
+      ConnectTimeout = "5";
       IdentitiesOnly = "yes";
       # Avoid leaking our current user name
       # User = "root";

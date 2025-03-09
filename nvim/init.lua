@@ -326,7 +326,6 @@ require('nvim-treesitter.configs').setup {
         "svelte",
         "typescript",
         "markdown",
-        "org",
         "ledger",
         "nix",
     },

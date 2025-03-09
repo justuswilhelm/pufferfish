@@ -1,19 +1,10 @@
 { config, pkgs, ... }:
 {
-  environment.darwinConfig = "$HOME/.config/nix-darwin/darwin-configuration.nix";
-
-  nix.nixPath = [
-    {
-      # TODO insert ${home}
-      darwin-config = "$HOME/.config/nix-darwin/darwin-configuration.nix";
-    }
-    "/nix/var/nix/profiles/per-user/root/channels"
-  ];
+  nix.nixPath = [ "/nix/var/nix/profiles/per-user/root/channels" ];
   nix.extraOptions = ''
     experimental-features = flakes nix-command
   '';
   nix.settings = {
-    trusted-users = [ "root" ];
     sandbox = true;
     extra-sandbox-paths = [ "/nix/store" ];
   };

@@ -35,7 +35,6 @@
 
     # Exploits
     # =======
-    pkgs.metasploit
     pkgs.radamsa
 
     # RPC
@@ -78,8 +77,6 @@
     # Windows
     # =======
     pkgs.netexec
-    pkgs.bloodhound
-    pkgs.bloodhound-py
     pkgs.openldap
 
     # Debugger

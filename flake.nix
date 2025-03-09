@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.11";
@@ -12,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
-      url = "git+https://github.com/jwpconsulting/projectify.git?tag=2024.8.20";
+      url = "git+https://github.com/jwpconsulting/projectify.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     utils.url = "github:numtide/flake-utils";
@@ -23,6 +24,7 @@
     , nix-darwin
     , home-manager
     , nixpkgs
+    , nixpkgs-unstable
     , pomoglorbo
     , projectify
     , utils
@@ -52,18 +54,20 @@
         lithium-nixos =
           let
             system = "aarch64-linux";
+            name = "debian";
           in
           nixpkgs.lib.nixosSystem {
             inherit system;
+            specialArgs = { inherit name; };
             modules = [
               ./nix/nixos/lithium-nixos/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.frugally-consonant-lanky = import ./home-manager/lithium-nixos.nix;
+                home-manager.users."${name}" = import ./home-manager/lithium-nixos.nix;
                 home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/frugally-consonant-lanky";
+                  homeDirectory = "/home/${name}";
                   system = "nixos";
                 };
               }
@@ -108,14 +112,25 @@
       darwinConfigurations."lithium" =
         let
           system = "aarch64-darwin";
+          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+          name = "debian";
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
           specialArgs = {
-            inherit system;
+            inherit system name;
           };
           modules = [
             { _module.args = inputs; }
+            {
+              nixpkgs.overlays = [
+                (final: previous: {
+                  # XXX
+                  # want to use withPlugins, not available in 24.11
+                  caddy = pkgs-unstable.caddy;
+                })
+              ];
+            }
             ./nix-darwin/darwin-configuration.nix
             home-manager.darwinModules.home-manager
             {
@@ -123,9 +138,9 @@
               home-manager.sharedModules = [
                 { _module.args = inputs; }
               ];
-              home-manager.users.justusperlwitz = import ./home-manager/lithium.nix;
+              home-manager.users.debian = import ./home-manager/lithium.nix;
               home-manager.extraSpecialArgs = {
-                homeDirectory = "/Users/justusperlwitz";
+                homeDirectory = "/Users/debian";
                 inherit system;
               };
             }

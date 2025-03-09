@@ -15,8 +15,6 @@ in
     ./cmus.nix
   ];
 
-  home.homeDirectory = specialArgs.homeDirectory;
-
   programs.cmus = {
     enable = true;
     output_plugin = "coreaudio";
