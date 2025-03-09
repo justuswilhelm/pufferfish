@@ -18,6 +18,7 @@ in
 
   launchd.user.agents = {
     "offlineimap" = {
+      path = [ pkgs.coreutils offlineimap nsca ];
       script = ''
         if timeout --signal INT ${toString timeout} ${offlineimap} -l ${logPath}
         then
