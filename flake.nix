@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
-      url = "git+https://github.com/jwpconsulting/projectify.git?tag=2024.8.20";
+      url = "git+https://github.com/jwpconsulting/projectify.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     utils.url = "github:numtide/flake-utils";

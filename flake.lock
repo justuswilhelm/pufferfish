@@ -273,17 +273,17 @@
         "poetry2nix": "poetry2nix_2"
       },
       "locked": {
-        "lastModified": 1737625523,
-        "narHash": "sha256-N6E27/ZUAVk31Urqyd8WhpxVrAeKsYXSIUaIVDa1Eqw=",
+        "lastModified": 1741234475,
+        "narHash": "sha256-zwqD1UD8kX3TX/N9nGDXaZ5EIo+0v/pppTvqvuccSh8=",
         "ref": "refs/heads/main",
-        "rev": "f60e767fa09e56170c91eb96e77add4628b1290d",
-        "revCount": 5147,
+        "rev": "25eb121b0cab7da729225c6707d42d60a40dda51",
+        "revCount": 5161,
         "type": "git",
-        "url": "https://github.com/jwpconsulting/projectify.git?tag=2024.8.20"
+        "url": "https://github.com/jwpconsulting/projectify.git"
       },
       "original": {
         "type": "git",
-        "url": "https://github.com/jwpconsulting/projectify.git?tag=2024.8.20"
+        "url": "https://github.com/jwpconsulting/projectify.git"
       }
     },
     "root": {
