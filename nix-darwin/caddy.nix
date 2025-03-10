@@ -121,18 +121,6 @@ let
       }
     }
 
-    # Radicale
-    https://lithium.local:10102 {
-      import certs
-
-      reverse_proxy localhost:18110
-
-      log {
-        format console
-        output file ${logPath}/radicale.log
-      }
-    }
-
     # ntfy-sh
     https://lithium.local:10104 {
       import certs
