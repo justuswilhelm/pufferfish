@@ -18,8 +18,14 @@ in
 
   launchd.user.agents = {
     "offlineimap" = {
-      path = [ pkgs.coreutils offlineimap nsca ];
+      path = [ pkgs.coreutils ];
       script = ''
+        if ! /sbin/ping -q -c 1 example.com
+        then
+          echo "Offline?"
+          echo -e 'lithium.local,offlineimap,3,offline_maybe' | ${send_nsca} ${nsca_host} -p ${nsca_port} -c ${nsca_config} -d ,
+          exit 0
+        fi
         if timeout --signal INT ${toString timeout} ${offlineimap} -l ${logPath}
         then
           echo -e 'lithium.local,offlineimap,0,success' | ${send_nsca} ${nsca_host} -p ${nsca_port} -c ${nsca_config} -d ,
