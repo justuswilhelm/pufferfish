@@ -54,7 +54,7 @@ let
       security {
         local identity store localdb {
           realm local
-          path {$HOME}/.local/caddy/users.json
+          path ${statePath}/secrets/users.json
         }
 
         authentication portal myportal {
