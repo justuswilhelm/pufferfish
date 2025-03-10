@@ -111,7 +111,7 @@ let
   # https://docs.redhat.com/en/documentation/red_hat_gluster_storage/3/html/administration_guide/sect-nagios_advanced_configuration
   nagiosCGICfgFile = pkgs.writeText "nagios.cgi.conf"
     ''
-      main_config_file=${nagiosCfgFile}
+      main_config_file=/etc/nagios/nagios.cfg
       use_authentication=1
       url_html_path=${urlPath}
       authorized_for_system_information=nagiosadmin
@@ -144,8 +144,7 @@ let
           # temp_ptr = getenv("REMOTE_USER");
           # https://github.com/aksdb/caddy-cgi?tab=readme-ov-file#execute-dynamic-script
           cgi /*.cgi ${pkgs.nagios}/sbin{path} {
-            env NAGIOS_CGI_CONFIG=${cfg.cgiConfigFile}
-            env REMOTE_USER=nagiosadmin
+            env NAGIOS_CGI_CONFIG=/etc/nagios/nagios.cgi.conf REMOTE_USER=nagiosadmin
           }
         }
 
@@ -326,6 +325,7 @@ in
     # https://github.com/NagiosEnterprises/nsca/blob/master/sample-config/nsca.cfg.in
     environment.etc."nagios/nsca.conf".source = nscaConfig;
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
+    environment.etc."nagios/nagios.cgi.conf".source = cfg.cgiConfigFile;
 
     environment.etc."newsyslog.d/nagios.conf".text = ''
       # logfilename                         [owner:group]             mode count size when  flags [/pid_file] [sig_num]
