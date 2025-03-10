@@ -78,7 +78,6 @@ let
           set user identity subject
 
           enable strip token
-          inject header "REMOTE_USER" from subject
 
           acl rule {
             comment allow admins

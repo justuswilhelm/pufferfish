@@ -139,9 +139,13 @@ let
         authorize with admins_policy
 
         handle_path ${urlPath}/cgi-bin/* {
+          # nagios looks for REMOTE_USER header
+          # https://github.com/NagiosEnterprises/nagioscore/blob/2706fa7a451afe48bd4dc240d72d23fdcec0d9ef/cgi/cgiauth.c#L38
+          # temp_ptr = getenv("REMOTE_USER");
           # https://github.com/aksdb/caddy-cgi?tab=readme-ov-file#execute-dynamic-script
           cgi /*.cgi ${pkgs.nagios}/sbin{path} {
             env NAGIOS_CGI_CONFIG=${cfg.cgiConfigFile}
+            env REMOTE_USER=nagiosadmin
           }
         }
 
