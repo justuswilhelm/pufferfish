@@ -95,7 +95,7 @@ let
     }
 
     (certs) {
-      tls /var/lib/caddy/certs/lithium-server.crt /var/lib/caddy/secrets/lithium-server.key
+      tls ${statePath}/certs/lithium-server.crt ${statePath}/secrets/lithium-server.key
     }
 
     # Attic
@@ -106,7 +106,7 @@ let
 
       log {
         format console
-        output file /var/log/caddy/attic.log
+        output file ${logPath}/attic.log
       }
     }
 
@@ -118,7 +118,7 @@ let
 
       log {
         format console
-        output file /var/log/caddy/anki.log
+        output file ${logPath}/anki.log
       }
     }
 
@@ -130,7 +130,7 @@ let
 
       log {
         format console
-        output file /var/log/caddy/radicale.log
+        output file ${logPath}/radicale.log
       }
     }
 
@@ -142,7 +142,7 @@ let
 
       log {
         format console
-        output file /var/log/caddy/ntfy-sh.log
+        output file ${logPath}/ntfy-sh.log
       }
     }
   '' + cfg.extraConfig);
