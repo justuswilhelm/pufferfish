@@ -1,9 +1,14 @@
 { lib, pkgs, ... }:
 {
   imports = [
-    ./modules/gdb.nix
-    ./modules/foot.nix
+    ./modules/aider.nix
     ./modules/firefox.nix
+    ./modules/foot.nix
+    ./modules/gdb.nix
+    ./modules/ssh.nix
+
+    # TODO enable
+    # ./modules/opensnitch.nix
 
     ./home.nix
     ./sway.nix
@@ -14,8 +19,6 @@
     ./infosec.nix
     ./infosec-linux.nix
   ];
-
-  home.username = "justusperlwitz";
 
   home.packages = [
     pkgs.tor-browser
@@ -54,8 +57,20 @@
         output * {
           scale 1.25
         }
+
+        output eDP-1 pos 0 0 res 1920x1080
+        # Configure the HDMI-2 output like so:
+        # output HDMI-A-2 pos 1920 0 res 1920x1080
+
+        # Screen brightness
         bindsym XF86MonBrightnessUp exec light -A 10
         bindsym XF86MonBrightnessDown exec light -U 10
+
+        # Audio
+        bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+        bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+        bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+        bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
       '';
       target = "sway/config.d/nitrogen";
     };

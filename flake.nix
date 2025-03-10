@@ -31,11 +31,8 @@
     }@inputs: {
       nixosConfigurations = {
         helium =
-          let
-            system = "x86_64-linux";
-          in
           nixpkgs.lib.nixosSystem {
-            inherit system;
+            system = "x86_64-linux";
             modules = [
               ./nix/nixos/helium/configuration.nix
               home-manager.nixosModules.home-manager
@@ -45,19 +42,16 @@
                 home-manager.users.justusperlwitz = import ./home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
-                  system = "nixos";
-                  pomoglorbo = pomoglorbo.packages.${system}.pomoglorbo;
                 };
               }
             ];
           };
         lithium-nixos =
           let
-            system = "aarch64-linux";
             name = "debian";
           in
           nixpkgs.lib.nixosSystem {
-            inherit system;
+            system = "aarch64-linux";
             specialArgs = { inherit name; };
             modules = [
               ./nix/nixos/lithium-nixos/configuration.nix
@@ -68,47 +62,31 @@
                 home-manager.users."${name}" = import ./home-manager/lithium-nixos.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                  system = "nixos";
                 };
               }
             ];
           };
         nitrogen =
           let
-            system = "x86_64-linux";
+            name = "debian";
           in
           nixpkgs.lib.nixosSystem {
-            inherit system;
+            system = "x86_64-linux";
+            specialArgs = { inherit name; };
             modules = [
               ./nix/nixos/nitrogen/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.justusperlwitz = import ./home-manager/nitrogen.nix;
+                home-manager.users."${name}" = import ./home-manager/nitrogen.nix;
                 home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/justusperlwitz";
-                  inherit system;
+                  homeDirectory = "/home/${name}";
                 };
               }
             ];
           };
       };
-      homeConfigurations."justusperlwitz@nitrogen" =
-        let
-          system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [ ./home-manager/nitrogen.nix ];
-
-          extraSpecialArgs = {
-            homeDirectory = "/home/justusperlwitz";
-            inherit system;
-          };
-        };
       darwinConfigurations."lithium" =
         let
           system = "aarch64-darwin";
@@ -128,6 +106,7 @@
                   # XXX
                   # want to use withPlugins, not available in 24.11
                   caddy = pkgs-unstable.caddy;
+                  # Add projectify and pomoglorbo as overlay
                 })
               ];
             }
