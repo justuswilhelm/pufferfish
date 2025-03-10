@@ -40,6 +40,7 @@ let
     ];
     hash = "sha256-Bzqu6GDMNgYV4F1TJGCYEmjDaD6vlm7LpoH4MuJLL8U=";
   };
+  caddyCookieLifetime = 60 * 60 * 24 * 3;
   caddyConfig = pkgs.writeText "Caddyfile" (''
     {
       log {
@@ -54,21 +55,29 @@ let
       security {
         local identity store localdb {
           realm local
-          path {$HOME}/.local/caddy/users.json
+          path ${statePath}/secrets/users.json
         }
 
         authentication portal myportal {
           enable identity store localdb
+
+          # The cookie should stay valid longer than the auth token
+          # to redirect to the log in page if needed
+          cookie lifetime ${toString (caddyCookieLifetime * 2)}
+
+          crypto default token lifetime ${toString caddyCookieLifetime}
+          crypto key sign-verify {env.JWT_SHARED_KEY}
         }
         authorization policy admins_policy {
           set auth url https://lithium.local:10103/auth
+
+          crypto key verify {env.JWT_SHARED_KEY}
 
           allow roles authp/admin
 
           set user identity subject
 
           enable strip token
-          inject header "REMOTE_USER" from subject
 
           acl rule {
             comment allow admins
@@ -85,7 +94,7 @@ let
     }
 
     (certs) {
-      tls /var/lib/caddy/certs/lithium-server.crt /var/lib/caddy/secrets/lithium-server.key
+      tls ${statePath}/certs/lithium-server.crt ${statePath}/secrets/lithium-server.key
     }
 
     # Attic
@@ -96,7 +105,7 @@ let
 
       log {
         format console
-        output file /var/log/caddy/attic.log
+        output file ${logPath}/attic.log
       }
     }
 
@@ -108,19 +117,7 @@ let
 
       log {
         format console
-        output file /var/log/caddy/anki.log
-      }
-    }
-
-    # Radicale
-    https://lithium.local:10102 {
-      import certs
-
-      reverse_proxy localhost:18110
-
-      log {
-        format console
-        output file /var/log/caddy/radicale.log
+        output file ${logPath}/anki.log
       }
     }
 
@@ -132,7 +129,7 @@ let
 
       log {
         format console
-        output file /var/log/caddy/ntfy-sh.log
+        output file ${logPath}/ntfy-sh.log
       }
     }
   '' + cfg.extraConfig);
@@ -213,7 +210,14 @@ in
     environment.systemPackages = [ caddy ];
 
     launchd.daemons.caddy = {
-      command = "${caddy}/bin/caddy run --config /etc/caddy/Caddyfile";
+      script = ''
+        if [ ! -e ${statePath}/secrets/jwt_shared_key ] ; then
+          openssl rand -hex 16 | tr -d '\n' > ${statePath}/secrets/jwt_shared_key
+        fi
+        JWT_SHARED_KEY=$(cat ${statePath}/secrets/jwt_shared_key)
+        export JWT_SHARED_KEY
+        exec ${caddy}/bin/caddy run --config /etc/caddy/Caddyfile
+      '';
       serviceConfig = {
         KeepAlive = true;
         StandardErrorPath = "${logPath}/caddy.stderr.log";

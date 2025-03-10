@@ -1,12 +1,12 @@
 { lib, pkgs, specialArgs, ... }:
 {
   imports = [
-    ./modules/opensnitch.nix
     ./modules/aider.nix
-    ./modules/mitmproxy.nix
-    ./modules/gdb.nix
-    ./modules/foot.nix
     ./modules/firefox.nix
+    ./modules/foot.nix
+    ./modules/gdb.nix
+    ./modules/mitmproxy.nix
+    ./modules/opensnitch.nix
 
     ./home.nix
     ./sway.nix

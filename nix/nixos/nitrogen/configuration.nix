@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, specialArgs, ... }:
 
 {
   imports =
@@ -16,10 +16,12 @@
       ../modules/compat.nix
       ../modules/man.nix
       ../modules/infosec.nix
+      ../modules/pipewire.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
+      ./fluentd.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -52,7 +54,7 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.justusperlwitz = {
+  users.users."${specialArgs.name}" = {
     isNormalUser = true;
     extraGroups = [
       # Enable ‘sudo’ for the user.
@@ -62,8 +64,9 @@
       # For serial port
       # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
       "dialout"
+      # For wireshark
+      "wireshark"
     ];
-    home = "/home/justusperlwitz";
     shell = pkgs.fish;
     packages = with pkgs; [
       firefox-esr
@@ -81,6 +84,15 @@
     vimAlias = true;
   };
   programs.light.enable = true;
+
+  programs.steam.enable = true;
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "steam"
+    "steam-unwrapped"
+  ];
+
+  services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

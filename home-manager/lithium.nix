@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./modules/aider.nix
+    ./modules/pipx.nix
 
     ./home.nix
     ./aerospace.nix

@@ -4,7 +4,9 @@
   home.packages = [
     # Reverse engineering
     # ===================
+    pkgs.nasm
     pkgs.python3Packages.ropper
+    pkgs.flashrom
     (
       pkgs.symlinkJoin {
         name = "ghidra";
@@ -48,10 +50,13 @@
     # ==========
     pkgs.netexec
     pkgs.openssl
-    pkgs.wireshark
     # For clock skews
     pkgs.libfaketime
+
+    # Web
+    # ===
     pkgs.zap
+    pkgs.ungoogled-chromium
 
     # SNMP
     # ====

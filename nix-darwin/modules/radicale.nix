@@ -19,6 +19,20 @@ let
       filesystem_folder = "${radicaleState}/collections";
     };
   });
+
+  caddyConfig = ''
+    # Radicale
+    https://lithium.local:10102 {
+      import certs
+
+      reverse_proxy localhost:18110
+
+      log {
+        format console
+        output file ${config.services.caddy.logPath}/radicale.log
+      }
+    }
+  '';
 in
 {
   users.groups.radicale = { gid = 1020; };
@@ -38,6 +52,8 @@ in
     ${logPath}/radicale.stdout.log radicale:radicale 640  10    *    $D0   J
     ${logPath}/radicale.stderr.log radicale:radicale 640  10    *    $D0   J
   '';
+
+  services.caddy.extraConfig = caddyConfig;
 
   environment.systemPackages = [ radicale ];
   launchd.daemons.radicale = {

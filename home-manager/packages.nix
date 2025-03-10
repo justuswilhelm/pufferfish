@@ -71,11 +71,8 @@ in
     pkgs.jq
     pkgs.miller
     pkgs.nodejs_20
-    pkgs.openjdk
     pkgs.go
-
-    # Python
-    pkgs.pipx
+    pkgs.j
 
     # Rust
     # If pkgs.gcc is in the env as well, bad things happen with libiconv
