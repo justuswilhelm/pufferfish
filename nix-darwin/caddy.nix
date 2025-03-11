@@ -97,17 +97,6 @@ let
       tls ${statePath}/certs/lithium-server.crt ${statePath}/secrets/lithium-server.key
     }
 
-    # ntfy-sh
-    https://lithium.local:10104 {
-      import certs
-
-      reverse_proxy localhost:18130
-
-      log {
-        format console
-        output file ${logPath}/ntfy-sh.log
-      }
-    }
   '' + cfg.extraConfig);
   caddyConfigValidated = pkgs.runCommand "Caddyfile" { preferLocalBuild = true; } ''
     ${caddy}/bin/caddy fmt - < ${caddyConfig} > Caddyfile
