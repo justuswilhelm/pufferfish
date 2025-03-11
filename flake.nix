@@ -113,6 +113,9 @@
                   inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
                   inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
+                (final: previous: {
+                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
+                })
               ];
             }
             ./nix-darwin/darwin-configuration.nix
