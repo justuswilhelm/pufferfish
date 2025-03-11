@@ -19,6 +19,7 @@ let
   };
   # We need to convince macOS to open this as a proper app, not as a child of
   # aerospace
+  # TODO use cfg.home.homeDirectory
   alacrittyApp = "${specialArgs.homeDirectory}/Applications/Home Manager Apps/Alacritty.app";
   alacritty = "${alacrittyApp}/Contents/MacOS/alacritty";
   # Hardcoded woops

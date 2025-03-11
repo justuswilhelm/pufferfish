@@ -39,6 +39,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                # TODO migrate user
                 home-manager.users.justusperlwitz = import ./home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
@@ -94,8 +95,10 @@
           name = "debian";
         in
         nix-darwin.lib.darwinSystem {
+          # TODO move system definition here
           inherit system;
           specialArgs = {
+            # TODO remove system
             inherit system name;
           };
           modules = [
@@ -123,6 +126,7 @@
               home-manager.users."${name}" = import ./home-manager/lithium.nix;
               home-manager.extraSpecialArgs = {
                 homeDirectory = "/Users/${name}";
+                # TODO remove
                 inherit system;
               };
             }

@@ -50,6 +50,7 @@ in
     source = ../xbar;
     recursive = true;
   };
+  # TODO config.home.homeDirectory
   xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
 
   xdg.configFile."karabiner/karabiner.json" = {
