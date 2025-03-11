@@ -136,7 +136,6 @@ in
       ]
     ))
     pkgs.jwt-cli
-    pkgs.sage
 
     # PHP
     # ===
