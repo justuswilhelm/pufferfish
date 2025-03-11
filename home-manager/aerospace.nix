@@ -133,6 +133,11 @@ let
         "workspace 1"
         "exec-and-forget open -a Anki.app"
       ];
+      # Blog
+      "${prefix}-shift-b" = [
+        "workspace 1"
+        (openAlacritty "${fish} -l -c blog")
+      ];
       # Open URL
       "${prefix}-shift-p" = [
         openClipboardInFirefox
