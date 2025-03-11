@@ -30,7 +30,7 @@ let
     #
     # This _must_ be configured for production use. If unconfigured or the
     # list is empty, all `Host` headers are allowed.
-    allowed-hosts = [];
+    allowed-hosts = [ ];
 
     # The canonical API endpoint of this server
     #
@@ -122,16 +122,16 @@ let
       #
       # If 0, chunking is disabled entirely for newly-uploaded NARs.
       # If 1, all NARs are chunked.
-      nar-size-threshold = 65536;  # chunk files that are 64 KiB or larger
+      nar-size-threshold = 65536; # chunk files that are 64 KiB or larger
 
       # The preferred minimum size of a chunk, in bytes
-      min-size = 16384;            # 16 KiB
+      min-size = 16384; # 16 KiB
 
       # The preferred average size of a chunk, in bytes
-      avg-size = 65536;            # 64 KiB
+      avg-size = 65536; # 64 KiB
 
       # The preferred maximum size of a chunk, in bytes
-      max-size = 262144;           # 256 KiB
+      max-size = 262144; # 256 KiB
     };
     # Compression
     compression = {
