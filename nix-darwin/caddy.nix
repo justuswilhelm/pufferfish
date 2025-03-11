@@ -109,18 +109,6 @@ let
       }
     }
 
-    # Anki
-    https://lithium.local:10101 {
-      import certs
-
-      reverse_proxy localhost:18090
-
-      log {
-        format console
-        output file ${logPath}/anki.log
-      }
-    }
-
     # ntfy-sh
     https://lithium.local:10104 {
       import certs
