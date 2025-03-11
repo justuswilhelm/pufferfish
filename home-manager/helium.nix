@@ -17,6 +17,7 @@
     ./infosec-linux.nix
   ];
 
+  # TODO remove
   home.username = "justusperlwitz";
   home.homeDirectory = specialArgs.homeDirectory;
 
