@@ -106,13 +106,16 @@
                   # XXX
                   # want to use withPlugins, not available in 24.11
                   caddy = pkgs-unstable.caddy;
-                  # Add projectify and pomoglorbo as overlay
+
+                  inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
+                  inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
               ];
             }
             ./nix-darwin/darwin-configuration.nix
             home-manager.darwinModules.home-manager
             {
+              home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.sharedModules = [
                 { _module.args = inputs; }
