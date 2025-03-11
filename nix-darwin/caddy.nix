@@ -7,30 +7,6 @@ let
   statePath = "/var/lib/caddy";
   caStatePath = "/var/lib/lithium-ca";
 
-  php = ((pkgs.php.overrideAttrs
-    (previous: {
-      buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
-    })).override {
-    apxs2Support = true;
-    # available extensions:
-  }).withExtensions ({ all, ... }: with all; ([
-    # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/interpreters/php/8.3.nix
-    filter
-  ]));
-
-  # https://github.com/NixOS/nixpkgs/blob/54830391487253422f0ccab55fc557b2e725ace0/nixos/modules/services/web-servers/apache-httpd/default.nix#L319
-  phpIni = pkgs.runCommand "php.ini"
-    {
-      preferLocalBuild = true;
-    }
-    ''
-      cat ${php}/etc/php.ini > $out
-      cat ${php.phpIni} > $out
-    '';
-
-  phpFpmSock = "${statePath}/php.sock";
-
-
   caddy = pkgs.caddy.withPlugins {
     plugins = [
       # caddy-cgi v2.2.6 relies on go 1.24.0
@@ -104,6 +80,45 @@ let
     # ${caddy}/bin/caddy validate --config Caddyfile
     mv Caddyfile $out
   '';
+
+  php = ((pkgs.php.overrideAttrs
+    (previous: {
+      buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
+    })).override {
+    apxs2Support = true;
+    # available extensions:
+  }).withExtensions ({ all, ... }: with all; ([
+    # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/interpreters/php/8.3.nix
+    filter
+  ]));
+
+  # https://github.com/NixOS/nixpkgs/blob/54830391487253422f0ccab55fc557b2e725ace0/nixos/modules/services/web-servers/apache-httpd/default.nix#L319
+  phpIni = pkgs.runCommand "php.ini"
+    {
+      preferLocalBuild = true;
+    }
+    ''
+      cat ${php}/etc/php.ini > $out
+      cat ${php.phpIni} > $out
+    '';
+
+  phpFpmCfg = lib.generators.toINIWithGlobalSection { } {
+    globalSection = {
+      error_log = "${logPath}/phpfpm.error.log";
+      daemonize = "no";
+    };
+    sections = {
+      php = {
+        listen = cfg.phpFpmSock;
+        "php_admin_value[disable_functions]" = "exec,passthru,shell_exec,system";
+        "php_admin_flag[allow_url_fopen]" = "off";
+        # Choose how the process manager will control the number of child processes.
+        pm = "static";
+        "pm.max_children" = 1;
+        slowlog = "${logPath}/phpfpm.slowlog.log";
+      };
+    };
+  };
 in
 {
   options = {
@@ -118,7 +133,7 @@ in
     };
     services.caddy.phpFpmSock = mkOption {
       type = types.uniq types.str;
-      default = phpFpmSock;
+      default = "${statePath}/php.sock";
       description = "Socket path for php-fpm";
     };
     services.caddy.logPath = mkOption {
@@ -153,17 +168,7 @@ in
 
     environment.etc."caddy/php.ini".source = phpIni;
     environment.etc."caddy/php.ini".enable = cfg.enablePhp;
-    environment.etc."caddy/php-fpm.cfg".text = ''
-      error_log = ${logPath}/phpfpm.error.log
-      [php]
-      listen = ${phpFpmSock}
-      php_admin_value[disable_functions] = exec,passthru,shell_exec,system
-      php_admin_flag[allow_url_fopen] = off
-      ; Choose how the process manager will control the number of child processes.
-      pm = static
-      pm.max_children = 1
-      slowlog = ${logPath}/phpfpm.slowlog.log
-    '';
+    environment.etc."caddy/php-fpm.cfg".text = phpFpmCfg;
     environment.etc."caddy/php-fpm.cfg".enable = cfg.enablePhp;
 
     # Copied from /etc/newsyslog.d/wifi.conf
@@ -190,7 +195,7 @@ in
         GroupName = "caddy";
       };
     };
-    launchd.daemons.phpfpm = {
+    launchd.daemons.phpfpm = mkIf cfg.enablePhp {
       path = [ php ];
       serviceConfig = {
         UserName = "caddy";
