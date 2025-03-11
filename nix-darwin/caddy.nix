@@ -97,18 +97,6 @@ let
       tls ${statePath}/certs/lithium-server.crt ${statePath}/secrets/lithium-server.key
     }
 
-    # Attic
-    https://lithium.local:10100 {
-      import certs
-
-      reverse_proxy localhost:18080
-
-      log {
-        format console
-        output file ${logPath}/attic.log
-      }
-    }
-
     # ntfy-sh
     https://lithium.local:10104 {
       import certs
