@@ -30,7 +30,7 @@ let
     #
     # This _must_ be configured for production use. If unconfigured or the
     # list is empty, all `Host` headers are allowed.
-    allowed-hosts = [ ];
+    allowed-hosts = [ "127.0.0.1" "lithium.local" ];
 
     # The canonical API endpoint of this server
     #
