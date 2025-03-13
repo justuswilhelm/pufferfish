@@ -7,6 +7,7 @@
     ./modules/gdb.nix
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
+    ./modules/pipx.nix
 
     ./home.nix
     ./sway.nix
