@@ -16,6 +16,7 @@
       ../modules/podman.nix
       ../modules/sway.nix
       ../modules/yubikey.nix
+      ../modules/metasploit.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence

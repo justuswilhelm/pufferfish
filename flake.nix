@@ -33,14 +33,14 @@
         helium =
           let
             name = "debian";
+            system = "x86_64-linux";
+            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           in
           nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {
-              inherit name;
-            };
+            specialArgs = { inherit system name pkgs-unstable; };
             modules = [
               ./nixos/helium/configuration.nix
+              ./nixos/overlays.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
