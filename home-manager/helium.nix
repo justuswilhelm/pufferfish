@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./modules/aider.nix
@@ -16,10 +16,6 @@
     ./infosec.nix
     ./infosec-linux.nix
   ];
-
-  # TODO remove
-  home.username = "justusperlwitz";
-  home.homeDirectory = specialArgs.homeDirectory;
 
   home.packages = [
     pkgs.tor-browser

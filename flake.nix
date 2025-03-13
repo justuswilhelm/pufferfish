@@ -31,8 +31,14 @@
     }@inputs: {
       nixosConfigurations = {
         helium =
+          let
+            name = "debian";
+          in
           nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
+            specialArgs = {
+              inherit name;
+            };
             modules = [
               ./nixos/helium/configuration.nix
               home-manager.nixosModules.home-manager
@@ -40,9 +46,9 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 # TODO migrate user
-                home-manager.users.justusperlwitz = import ./home-manager/helium.nix;
+                home-manager.users."${name}" = import ./home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/justusperlwitz";
+                  homeDirectory = "/home/${name}";
                 };
               }
             ];

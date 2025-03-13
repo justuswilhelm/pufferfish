@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, specialArgs, lib, pkgs, ... }:
 {
   imports =
     [
@@ -46,7 +46,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  users.users.justusperlwitz = {
+  users.users.${specialArgs.name} = {
     isNormalUser = true;
     extraGroups = [
       # Enable sudo
@@ -57,7 +57,7 @@
       # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
       "dialout"
     ];
-    home = "/home/justusperlwitz";
+    home = "/home/${specialArgs.name}";
     shell = pkgs.fish;
   };
 
@@ -97,9 +97,9 @@
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "justusperlwitz" ];
+    ensureDatabases = [ specialArgs.name ];
     ensureUsers = [{
-      name = "justusperlwitz";
+      name = specialArgs.name;
       ensureDBOwnership = true;
       ensureClauses = {
         createdb = true;
