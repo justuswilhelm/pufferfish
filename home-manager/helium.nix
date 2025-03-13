@@ -44,6 +44,11 @@
         output * {
           scale 1.5
         }
+        # Slow down my cheap logitech mouse (logicool here in JP)
+        input "1133:49271:Logitech_USB_Optical_Mouse" {
+          accel_profile "flat"
+          pointer_accel 0.0
+        }
       '';
     };
   };
