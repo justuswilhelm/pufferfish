@@ -1,3 +1,5 @@
+* TODO remote repo init
+  add command to create a bare repo in remote and push with git annex sync
 * TODO Configure macOS /etc/sshd using nix-darwin
 * TODO Add a way to have local git settings (email / name)
   So far we have just added email and name and checked it into the repo. On the
