@@ -1,8 +1,5 @@
 { ... }:
 {
-  system.patches = [
-    ./sshd_config.patch
-  ];
   # This file
   # https://github.com/LnL7/nix-darwin/blob/8c8388ade72e58efdeae71b4cbb79e872c23a56b/modules/programs/ssh/default.nix#L92
   # causes an issue when other devices connect and I want to use my own authorized
@@ -13,4 +10,25 @@
   #   environment.etc."ssh/sshd_config.d/keys".text = ''
   #     AuthorizedKeysFile /Users/%u/.ssh/authorized_keys
   #   '';
+  environment.etc."ssh/sshd_config.d/200-harden.conf".text = ''
+    PermitRootLogin no
+
+    # Only let users log in with ssh key
+    PubkeyAuthentication yes
+    PasswordAuthentication no
+    # And no password
+    PermitEmptyPasswords no
+    KbdInteractiveAuthentication no
+
+    # Use PAM to populate user env
+    UsePAM yes
+
+    # Disable sftp
+    # https://serverfault.com/a/817482
+    Subsystem sftp /bin/false
+  '';
+  environment.etc."ssh/sshd_config.d/300-log.conf".text = ''
+    SyslogFacility AUTH
+    LogLevel INFO
+  '';
 }

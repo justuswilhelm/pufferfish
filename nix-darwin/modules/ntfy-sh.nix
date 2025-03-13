@@ -8,6 +8,19 @@ let
   logPath = "/var/log/ntfy-sh";
 
   settingsFormat = pkgs.formats.yaml { };
+  caddyConfig = ''
+    # ntfy-sh
+    ${cfg.ntfy-sh.settings.base-url} {
+      import certs
+
+      reverse_proxy ${cfg.ntfy-sh.settings.listen-http}
+
+      log {
+        format console
+        output file ${config.services.caddy.logPath}/ntfy-sh.log
+      }
+    }
+  '';
 in
 {
   options.services.ntfy-sh = {
@@ -94,8 +107,8 @@ in
       };
       users.users = optionalAttrs (cfg.user == "ntfy-sh") {
         ntfy-sh = {
-          createHome = false;
           description = "ntfy-sh user";
+          home = statePath;
           gid = 605;
           uid = 605;
           isHidden = true;

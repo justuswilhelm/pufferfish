@@ -8,7 +8,7 @@
         matchConfig = {
           # Prevent networkd from messing with libvirt bridges
           # Add more pci paths for other devices
-          Path = "pci-0000:07:00.0";
+          Path = "pci-0000:0?:0?.0";
           Type = "ether";
         };
         networkConfig = {
@@ -61,7 +61,9 @@
     # For debugging
     tcpdump
     ethtool
-    wireshark
     arp-scan
+    # Just enabling wireshark wasn't enough
+    wireshark
   ];
+  programs.wireshark.enable = true;
 }

@@ -1,10 +1,12 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
+  # TODO use cfg.home.homeDirectory
   applicationSupport = "${specialArgs.homeDirectory}/Library/Application Support";
 in
 {
   imports = [
     ./modules/aider.nix
+    ./modules/pipx.nix
 
     ./home.nix
     ./aerospace.nix
@@ -14,8 +16,6 @@ in
     ./infosec.nix
     ./cmus.nix
   ];
-
-  home.homeDirectory = specialArgs.homeDirectory;
 
   programs.cmus = {
     enable = true;
@@ -47,9 +47,10 @@ in
   programs.git.ignores = [ ".DS_Store" ];
 
   home.file."${applicationSupport}/xbar" = {
-    source = ../../xbar;
+    source = ../xbar;
     recursive = true;
   };
+  # TODO config.home.homeDirectory
   xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
 
   xdg.configFile."karabiner/karabiner.json" = {

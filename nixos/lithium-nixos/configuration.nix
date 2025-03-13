@@ -1,14 +1,18 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, specialArgs, pkgs, ... }:
 
 {
   imports =
     [
-      ../modules/nix.nix
+      ../modules/attic.nix
+      ../modules/compat.nix
+      ../modules/infosec.nix
+      ../modules/man.nix
       ../modules/networkd.nix
+      ../modules/nix.nix
+      ../modules/openssh.nix
       ../modules/sway.nix
       ../modules/utm.nix
       ../modules/yubikey.nix
-      ../modules/attic.nix
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
@@ -19,14 +23,11 @@
 
   networking.hostName = "lithium-nixos"; # Define your hostname.
   # https://wiki.qemu.org/Documentation/Networking
-  networking.hosts = {
-    "10.0.2.2" = [ "lithium.local" ];
-  };
 
   time.timeZone = "Asia/Tokyo";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.frugally-consonant-lanky = {
+  users.users."${specialArgs.name}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.fish;

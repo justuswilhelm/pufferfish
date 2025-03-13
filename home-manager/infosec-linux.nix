@@ -4,7 +4,9 @@
   home.packages = [
     # Reverse engineering
     # ===================
+    pkgs.nasm
     pkgs.python3Packages.ropper
+    pkgs.flashrom
     (
       pkgs.symlinkJoin {
         name = "ghidra";
@@ -33,7 +35,6 @@
 
     # Exploits
     # =======
-    pkgs.metasploit
     pkgs.radamsa
 
     # RPC
@@ -49,9 +50,13 @@
     # ==========
     pkgs.netexec
     pkgs.openssl
-    pkgs.wireshark
     # For clock skews
     pkgs.libfaketime
+
+    # Web
+    # ===
+    pkgs.zap
+    pkgs.ungoogled-chromium
 
     # SNMP
     # ====
@@ -69,11 +74,14 @@
       cx-oracle = null;
     })
 
+    # Cryptography
+    # ============
+    # Broken on darwin 2025-03-11
+    pkgs.sage
+
     # Windows
     # =======
     pkgs.netexec
-    pkgs.bloodhound
-    pkgs.bloodhound-py
     pkgs.openldap
 
     # Debugger

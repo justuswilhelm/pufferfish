@@ -33,13 +33,14 @@ in
     pkgs.programmer-calculator
     pkgs.xxd
     pkgs.binwalk
+    pkgs.nasm
 
     # Networking
     # ==========
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
-    pkgs.zap
+    pkgs.arp-scan
 
     # Exploits
     # ========
@@ -132,6 +133,7 @@ in
         cryptography
         nclib
         impacket
+        pycrypto
       ]
     ))
     pkgs.jwt-cli

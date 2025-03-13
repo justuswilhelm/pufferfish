@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./modules/gdb.nix
@@ -14,7 +14,7 @@
   ];
 
   programs.i3status.modules = {
-    "ethernet enp0s5u3c2" = {
+    "ethernet enp0s1" = {
       settings = {
         format_up = "eth: %ip (%speed)";
         format_down = "eth: down";
@@ -22,6 +22,8 @@
       position = 0;
     };
   };
+
+  programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
   programs.fish.loginShellInit = ''
     # If running from tty1 start sway

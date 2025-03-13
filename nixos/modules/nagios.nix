@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  nsca = (import ../../nix/darwin/modules/nagios/nsca.nix) { inherit pkgs; };
+  nsca = (import ../../nix-darwin/modules/nagios/nsca.nix) { inherit pkgs; };
   sendNscaConfig = pkgs.writeText "send_nsca.cfg" ''
 
 '';

@@ -1,11 +1,8 @@
+{ specialArgs, config, pkgs, projectify, ... }:
 let
-  name = "justusperlwitz";
   uid = 501;
-  home = "/Users/${name}";
-  library = "${home}/Library";
+  name = specialArgs.name;
 in
-{ config, pkgs, projectify, ... }:
-
 {
   imports = [
     ./modules/nagios.nix
@@ -17,17 +14,18 @@ in
     ./modules/ntfy-sh.nix
     ./modules/vdirsyncer.nix
     ./modules/mdns-fix.nix
+    ./modules/projectify.nix
 
     ./caddy.nix
     ./anki.nix
     ./attic.nix
-    # ./projectify.nix
     ./infosec.nix
   ];
   users.users."${name}" = {
-    description = "Justus Perlwitz";
+    description = name;
     shell = pkgs.fish;
-    inherit uid home name;
+    home = "/Users/${name}";
+    inherit uid;
   };
 
   # List packages installed in system profile. To search by name, run:
@@ -155,11 +153,15 @@ in
       GuestEnabled = false;
     };
     screensaver.askForPassword = true;
+    screensaver.askForPasswordDelay = null;
     ".GlobalPreferences" = {
       "com.apple.mouse.scaling" = 0.5;
     };
   };
   system.startup.chime = false;
+
+  power.sleep.computer = 2;
+  power.sleep.display = 2;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
