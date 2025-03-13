@@ -77,4 +77,11 @@
     wireshark
   ];
   programs.wireshark.enable = true;
+  programs.tcpdump.enable = true;
+  users.users.${specialArgs.name}.extraGroups = [
+    # For tcpdump
+    "pcap"
+    # For wireshark
+    "dumpcap"
+  ];
 }
