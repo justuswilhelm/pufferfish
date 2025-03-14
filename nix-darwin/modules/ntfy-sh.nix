@@ -8,6 +8,19 @@ let
   logPath = "/var/log/ntfy-sh";
 
   settingsFormat = pkgs.formats.yaml { };
+  caddyConfig = ''
+    # ntfy-sh
+    ${cfg.ntfy-sh.settings.base-url} {
+      import certs
+
+      reverse_proxy ${cfg.ntfy-sh.settings.listen-http}
+
+      log {
+        format console
+        output file ${config.services.caddy.logPath}/ntfy-sh.log
+      }
+    }
+  '';
 in
 {
   options.services.ntfy-sh = {

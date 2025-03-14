@@ -1,5 +1,6 @@
 { lib, pkgs, config, options, specialArgs, ... }:
 {
+  # TODO safe to delete the next line?
   home.homeDirectory = specialArgs.homeDirectory;
   home.sessionPath = [
     "${config.home.homeDirectory}/.local/bin"

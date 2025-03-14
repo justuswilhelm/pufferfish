@@ -4,7 +4,9 @@
   home.packages = [
     # Reverse engineering
     # ===================
+    pkgs.nasm
     pkgs.python3Packages.ropper
+    pkgs.flashrom
     (
       pkgs.symlinkJoin {
         name = "ghidra";
@@ -51,9 +53,14 @@
     pkgs.tshark
     pkgs.aircrack-ng
 
-    # For clock skews
+    # Clock faking
+    # ============
     pkgs.libfaketime
+
+    # Web
+    # ===
     pkgs.zap
+    pkgs.ungoogled-chromium
 
     # SNMP
     # ====
@@ -70,6 +77,11 @@
       # odpic causes issues on Darwin
       cx-oracle = null;
     })
+
+    # Cryptography
+    # ============
+    # Broken on darwin 2025-03-11
+    pkgs.sage
 
     # Windows
     # =======

@@ -1,4 +1,4 @@
-{ lib, pkgs, config, specialArgs, ... }:
+{ lib, pkgs, config, ... }:
 {
   xdg.configFile = {
     nvimAfter = {

@@ -1,8 +1,6 @@
-{ pomoglorbo, specialArgs, ... }:
+{ pkgs, ... }:
 {
-  home.packages = [
-    pomoglorbo.outputs.packages.${specialArgs.system}.pomoglorbo
-  ];
+  home.packages = [ pkgs.pomoglorbo ];
   xdg.configFile.pomoglorbo = {
     source = ../pomoglorbo/config.ini;
     target = "pomoglorbo/config.ini";

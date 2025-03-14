@@ -7,6 +7,80 @@ let
   statePath = "/var/lib/caddy";
   caStatePath = "/var/lib/lithium-ca";
 
+  caddy = pkgs.caddy.withPlugins {
+    plugins = [
+      # caddy-cgi v2.2.6 relies on go 1.24.0
+      # caddy-cgi v2.2.5 works with go 1.23.6
+      "github.com/aksdb/caddy-cgi/v2@v2.2.5"
+      "github.com/greenpau/caddy-security@v1.1.29"
+    ];
+    hash = "sha256-Bzqu6GDMNgYV4F1TJGCYEmjDaD6vlm7LpoH4MuJLL8U=";
+  };
+  caddyCookieLifetime = 60 * 60 * 24 * 3;
+  caddyConfig = pkgs.writeText "Caddyfile" (''
+    {
+      log {
+        format console
+      }
+      # Prevent Caddy from serving on port :80 and disable certificate
+      # automation.
+      # https://caddyserver.com/docs/caddyfile/options#auto-https
+      auto_https off
+
+      # https://docs.authcrunch.com/docs/authenticate/local/local
+      security {
+        local identity store localdb {
+          realm local
+          path ${statePath}/secrets/users.json
+        }
+
+        authentication portal myportal {
+          enable identity store localdb
+
+          # The cookie should stay valid longer than the auth token
+          # to redirect to the log in page if needed
+          cookie lifetime ${toString (caddyCookieLifetime * 2)}
+
+          crypto default token lifetime ${toString caddyCookieLifetime}
+          crypto key sign-verify {env.JWT_SHARED_KEY}
+        }
+        authorization policy admins_policy {
+          set auth url https://lithium.local:10103/auth
+
+          crypto key verify {env.JWT_SHARED_KEY}
+
+          allow roles authp/admin
+
+          set user identity subject
+
+          enable strip token
+
+          acl rule {
+            comment allow admins
+            match role authp/admin
+            allow stop log info
+          }
+          acl rule {
+            comment default deny
+            match any
+            deny log warn
+          }
+        }
+      }
+    }
+
+    (certs) {
+      tls ${statePath}/certs/lithium-server.crt ${statePath}/secrets/lithium-server.key
+    }
+
+  '' + cfg.extraConfig);
+  caddyConfigValidated = pkgs.runCommand "Caddyfile" { preferLocalBuild = true; } ''
+    ${caddy}/bin/caddy fmt - < ${caddyConfig} > Caddyfile
+    # Broken
+    # ${caddy}/bin/caddy validate --config Caddyfile
+    mv Caddyfile $out
+  '';
+
   php = ((pkgs.php.overrideAttrs
     (previous: {
       buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
@@ -28,120 +102,23 @@ let
       cat ${php.phpIni} > $out
     '';
 
-  phpFpmSock = "${statePath}/php.sock";
-
-
-  caddy = pkgs.caddy.withPlugins {
-    plugins = [
-      # caddy-cgi v2.2.6 relies on go 1.24.0
-      # caddy-cgi v2.2.5 works with go 1.23.6
-      "github.com/aksdb/caddy-cgi/v2@v2.2.5"
-      "github.com/greenpau/caddy-security@v1.1.29"
-    ];
-    hash = "sha256-Bzqu6GDMNgYV4F1TJGCYEmjDaD6vlm7LpoH4MuJLL8U=";
+  phpFpmCfg = lib.generators.toINIWithGlobalSection { } {
+    globalSection = {
+      error_log = "${logPath}/phpfpm.error.log";
+      daemonize = "no";
+    };
+    sections = {
+      php = {
+        listen = cfg.phpFpmSock;
+        "php_admin_value[disable_functions]" = "exec,passthru,shell_exec,system";
+        "php_admin_flag[allow_url_fopen]" = "off";
+        # Choose how the process manager will control the number of child processes.
+        pm = "static";
+        "pm.max_children" = 1;
+        slowlog = "${logPath}/phpfpm.slowlog.log";
+      };
+    };
   };
-  caddyConfig = pkgs.writeText "Caddyfile" (''
-    {
-      log {
-        format console
-      }
-      # Prevent Caddy from serving on port :80 and disable certificate
-      # automation.
-      # https://caddyserver.com/docs/caddyfile/options#auto-https
-      auto_https off
-
-      # https://docs.authcrunch.com/docs/authenticate/local/local
-      security {
-        local identity store localdb {
-          realm local
-          path {$HOME}/.local/caddy/users.json
-        }
-
-        authentication portal myportal {
-          enable identity store localdb
-        }
-        authorization policy admins_policy {
-          set auth url https://lithium.local:10103/auth
-
-          allow roles authp/admin
-
-          set user identity subject
-
-          enable strip token
-          inject header "REMOTE_USER" from subject
-
-          acl rule {
-            comment allow admins
-            match role authp/admin
-            allow stop log info
-          }
-          acl rule {
-            comment default deny
-            match any
-            deny log warn
-          }
-        }
-      }
-    }
-
-    (certs) {
-      tls /var/lib/caddy/certs/lithium-server.crt /var/lib/caddy/secrets/lithium-server.key
-    }
-
-    # Attic
-    https://lithium.local:10100 {
-      import certs
-
-      reverse_proxy localhost:18080
-
-      log {
-        format console
-        output file /var/log/caddy/attic.log
-      }
-    }
-
-    # Anki
-    https://lithium.local:10101 {
-      import certs
-
-      reverse_proxy localhost:18090
-
-      log {
-        format console
-        output file /var/log/caddy/anki.log
-      }
-    }
-
-    # Radicale
-    https://lithium.local:10102 {
-      import certs
-
-      reverse_proxy localhost:18110
-
-      log {
-        format console
-        output file /var/log/caddy/radicale.log
-      }
-    }
-
-    # ntfy-sh
-    https://lithium.local:10104 {
-      import certs
-
-      reverse_proxy localhost:18130
-
-      log {
-        format console
-        output file /var/log/caddy/ntfy-sh.log
-      }
-    }
-  '' + cfg.extraConfig);
-  caddyConfigValidated = pkgs.runCommand "Caddyfile" { preferLocalBuild = true; } ''
-    ${caddy}/bin/caddy fmt - < ${caddyConfig} > Caddyfile
-    # Broken
-    # ${caddy}/bin/caddy validate --config Caddyfile
-    mv Caddyfile $out
-  '';
 in
 {
   options = {
@@ -156,7 +133,7 @@ in
     };
     services.caddy.phpFpmSock = mkOption {
       type = types.uniq types.str;
-      default = phpFpmSock;
+      default = "${statePath}/php.sock";
       description = "Socket path for php-fpm";
     };
     services.caddy.logPath = mkOption {
@@ -191,17 +168,7 @@ in
 
     environment.etc."caddy/php.ini".source = phpIni;
     environment.etc."caddy/php.ini".enable = cfg.enablePhp;
-    environment.etc."caddy/php-fpm.cfg".text = ''
-      error_log = ${logPath}/phpfpm.error.log
-      [php]
-      listen = ${phpFpmSock}
-      php_admin_value[disable_functions] = exec,passthru,shell_exec,system
-      php_admin_flag[allow_url_fopen] = off
-      ; Choose how the process manager will control the number of child processes.
-      pm = static
-      pm.max_children = 1
-      slowlog = ${logPath}/phpfpm.slowlog.log
-    '';
+    environment.etc."caddy/php-fpm.cfg".text = phpFpmCfg;
     environment.etc."caddy/php-fpm.cfg".enable = cfg.enablePhp;
 
     # Copied from /etc/newsyslog.d/wifi.conf
@@ -213,7 +180,14 @@ in
     environment.systemPackages = [ caddy ];
 
     launchd.daemons.caddy = {
-      command = "${caddy}/bin/caddy run --config /etc/caddy/Caddyfile";
+      script = ''
+        if [ ! -e ${statePath}/secrets/jwt_shared_key ] ; then
+          openssl rand -hex 16 | tr -d '\n' > ${statePath}/secrets/jwt_shared_key
+        fi
+        JWT_SHARED_KEY=$(cat ${statePath}/secrets/jwt_shared_key)
+        export JWT_SHARED_KEY
+        exec ${caddy}/bin/caddy run --config /etc/caddy/Caddyfile
+      '';
       serviceConfig = {
         KeepAlive = true;
         StandardErrorPath = "${logPath}/caddy.stderr.log";
@@ -221,7 +195,7 @@ in
         GroupName = "caddy";
       };
     };
-    launchd.daemons.phpfpm = {
+    launchd.daemons.phpfpm = mkIf cfg.enablePhp {
       path = [ php ];
       serviceConfig = {
         UserName = "caddy";
