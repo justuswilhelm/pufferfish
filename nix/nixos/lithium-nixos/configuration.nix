@@ -13,6 +13,8 @@
       ../modules/sway.nix
       ../modules/utm.nix
       ../modules/yubikey.nix
+      ../modules/wlan.nix
+
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
