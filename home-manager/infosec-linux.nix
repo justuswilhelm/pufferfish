@@ -48,7 +48,9 @@
     # ==========
     pkgs.netexec
     pkgs.openssl
-    pkgs.wireshark
+    pkgs.tshark
+    pkgs.aircrack-ng
+
     # For clock skews
     pkgs.libfaketime
     pkgs.zap
