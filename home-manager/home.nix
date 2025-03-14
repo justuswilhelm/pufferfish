@@ -7,9 +7,10 @@
     ./modules/ssh.nix
     ./modules/man.nix
     ./modules/gpg.nix
-    ./module/direnv.nix
-    ./module/poetry.nix
+    ./modules/direnv.nix
+    ./modules/poetry.nix
 
+    # TODO these should be in ./module
     ./git.nix
     ./tmux.nix
     ./cmus.nix
