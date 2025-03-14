@@ -8,6 +8,7 @@
     ./modules/man.nix
     ./modules/gpg.nix
     ./module/direnv.nix
+    ./module/poetry.nix
 
     ./git.nix
     ./tmux.nix
@@ -24,11 +25,4 @@
   home.stateVersion = "24.05";
 
   programs.home-manager.enable = true;
-
-  programs.poetry = {
-    enable = true;
-    settings = {
-      cache-dir = "${config.xdg.cacheHome}/pypoetry";
-    };
-  };
 }
