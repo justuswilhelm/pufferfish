@@ -46,4 +46,6 @@
       target = "sway/config.d/sway-lithium-nixos";
     };
   };
+
+  home.stateVersion = "24.05";
 }

@@ -66,4 +66,6 @@
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };
+
+  home.stateVersion = "24.05";
 }

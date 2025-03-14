@@ -98,4 +98,6 @@
       position = 7;
     };
   };
+
+  home.stateVersion = "24.05";
 }

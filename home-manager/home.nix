@@ -21,6 +21,4 @@
     ./asdf.nix
     ./passwordstore.nix
   ];
-
-  home.stateVersion = "24.05";
 }
