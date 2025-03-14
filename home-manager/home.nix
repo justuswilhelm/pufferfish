@@ -7,6 +7,7 @@
     ./modules/ssh.nix
     ./modules/man.nix
     ./modules/gpg.nix
+    ./module/direnv.nix
 
     ./git.nix
     ./tmux.nix
@@ -29,11 +30,5 @@
     settings = {
       cache-dir = "${config.xdg.cacheHome}/pypoetry";
     };
-  };
-
-  # TODO separate module
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
   };
 }
