@@ -3,10 +3,12 @@ let
   logPath = "/var/log/atticd";
   attic-client = pkgs.attic-client;
   attic-server = pkgs.attic-server;
-  cache-base-url = "https://lithium.local:10100";
+  publicHost = "lithium.local";
+  publicPort = 10100;
+  cache-base-url = "https://${publicHost}:${toString 10100}";
   cache-url = "${cache-base-url}/lithium-default";
   statePath = "/var/lib/attic";
-  host = "127.0.0.1";
+  host = "localhost";
   port = 18080;
   caddyConfig = ''
     # Attic
@@ -24,13 +26,16 @@ let
   tomlFormat = pkgs.formats.toml { };
   atticConfig = {
     # Socket address to listen on
-    listen = "${host}:${toString port}";
+    listen = "127.0.0.1:${toString port}";
 
     # Allowed `Host` headers
     #
     # This _must_ be configured for production use. If unconfigured or the
     # list is empty, all `Host` headers are allowed.
-    allowed-hosts = [ "127.0.0.1" "lithium.local" ];
+    allowed-hosts = [
+      "${host}:${toString port}"
+      "${publicHost}:${toString publicPort}"
+    ];
 
     # The canonical API endpoint of this server
     #
@@ -42,7 +47,7 @@ let
     #
     # The API endpoint _must_ end with a slash (e.g., `https://domain.tld/attic/`
     # not `https://domain.tld/attic`).
-    #api-endpoint = "https://your.domain.tld/";
+    api-endpoint = "https://${publicHost}:${toString publicPort}/";
 
     # Whether to soft-delete caches
     #
