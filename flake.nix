@@ -95,12 +95,8 @@
           name = "debian";
         in
         nix-darwin.lib.darwinSystem {
-          # TODO move system definition here
           inherit system;
-          specialArgs = {
-            # TODO remove system
-            inherit system name;
-          };
+          specialArgs = { inherit name; };
           modules = [
             { _module.args = inputs; }
             {
