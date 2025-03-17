@@ -1,26 +1,10 @@
 # Contains just sway launcher config now
 { lib, config, pkgs, specialArgs, osConfig, ... }:
 let
-  aerospace = pkgs.stdenv.mkDerivation rec {
-    pname = "aerospace";
-    version = "0.16.2-Beta";
-    nativeBuildInputs = [ pkgs.installShellFiles ];
-    buildPhase = "";
-    installPhase = ''
-      mkdir -p $out/bin
-      cp bin/aerospace $out/bin
-      installManPage manpage/*
-    '';
-
-    src = pkgs.fetchzip {
-      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v${version}/AeroSpace-v${version}.zip";
-      hash = "sha256-F208+EibyHlCImNig9lHuY05jGoXqNHsCRDKfqAR3g4=";
-    };
-  };
   # We need to convince macOS to open this as a proper app, not as a child of
   # aerospace
   # TODO use cfg.home.homeDirectory
-  alacrittyApp = "${specialArgs.homeDirectory}/Applications/Home Manager Apps/Alacritty.app";
+  alacrittyApp = "/Users/${specialArgs.name}/Applications/Home Manager Apps/Alacritty.app";
   alacritty = "${alacrittyApp}/Contents/MacOS/alacritty";
   # Hardcoded woops
   firefoxApp = "/Applications/Free/Firefox.app";
@@ -38,9 +22,6 @@ let
   prefix = "cmd-alt";
   config = {
     # Reference: https://github.com/i3/i3/blob/next/etc/config
-
-    # Start AeroSpace at login
-    start-at-login = true;
     mode.main.binding = {
       # change focus
       "${prefix}-h" = "focus left";
@@ -193,11 +174,8 @@ let
       }
     ];
   };
-  tomlFormat = pkgs.formats.toml { };
 in
 {
-  xdg.configFile."aerospace/aerospace.toml" = {
-    source = tomlFormat.generate "aerospace.toml" config;
-  };
-  home.packages = [ aerospace ];
+  services.aerospace.enable = true;
+  services.aerospace.settings = config;
 }

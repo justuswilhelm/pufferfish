@@ -9,7 +9,6 @@ in
     ./modules/pipx.nix
 
     ./home.nix
-    ./aerospace.nix
     ./alacritty.nix
     ./timewarrior.nix
     ./pomoglorbo.nix
