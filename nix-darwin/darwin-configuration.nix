@@ -15,6 +15,7 @@ in
     ./modules/vdirsyncer.nix
     ./modules/mdns-fix.nix
     ./modules/projectify.nix
+    ./modules/aerospace.nix
 
     ./caddy.nix
     ./anki.nix
