@@ -127,9 +127,6 @@
                 { _module.args = inputs; }
               ];
               home-manager.users."${name}" = import ./home-manager/lithium.nix;
-              home-manager.extraSpecialArgs = {
-                homeDirectory = "/Users/${name}";
-              };
             }
           ];
         };

@@ -1,7 +1,7 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
   # TODO use cfg.home.homeDirectory
-  applicationSupport = "${specialArgs.homeDirectory}/Library/Application Support";
+  applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
 in
 {
   imports = [
@@ -49,8 +49,7 @@ in
     source = ../xbar;
     recursive = true;
   };
-  # TODO config.home.homeDirectory
-  xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
+  xdg.cacheHome = "${config.home.homeDirectory}/Library/Caches";
 
   xdg.configFile."karabiner/karabiner.json" = {
     source = ../karabiner/karabiner.json;
