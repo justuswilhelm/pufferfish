@@ -95,12 +95,8 @@
           name = "debian";
         in
         nix-darwin.lib.darwinSystem {
-          # TODO move system definition here
           inherit system;
-          specialArgs = {
-            # TODO remove system
-            inherit system name;
-          };
+          specialArgs = { inherit name; };
           modules = [
             { _module.args = inputs; }
             {
@@ -127,11 +123,6 @@
                 { _module.args = inputs; }
               ];
               home-manager.users."${name}" = import ./home-manager/lithium.nix;
-              home-manager.extraSpecialArgs = {
-                homeDirectory = "/Users/${name}";
-                # TODO remove
-                inherit system;
-              };
             }
           ];
         };

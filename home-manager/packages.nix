@@ -132,11 +132,14 @@ in
     pkgs.p7zip
     pkgs.xz
 
-    # Core tools
+    # Text tools
     pkgs.silver-searcher
     pkgs.ripgrep
     pkgs.fd
     pkgs.gnused
+    pkgs.lnav
+
+    # Core tools
     pkgs.coreutils
     pkgs.moreutils
 
