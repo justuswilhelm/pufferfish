@@ -1,4 +1,4 @@
-{ ... } : {
+{ config, ... } : {
   programs.poetry = {
     enable = true;
     settings = {
