@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./modules/aider.nix
@@ -7,6 +7,7 @@
     ./modules/gdb.nix
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
+    ./modules/pipx.nix
 
     ./home.nix
     ./sway.nix
@@ -16,10 +17,6 @@
     ./infosec.nix
     ./infosec-linux.nix
   ];
-
-  # TODO remove
-  home.username = "justusperlwitz";
-  home.homeDirectory = specialArgs.homeDirectory;
 
   home.packages = [
     pkgs.tor-browser
@@ -43,6 +40,11 @@
         # HiDPI setting
         output * {
           scale 1.5
+        }
+        # Slow down my cheap logitech mouse (logicool here in JP)
+        input "1133:49271:Logitech_USB_Optical_Mouse" {
+          accel_profile "flat"
+          pointer_accel 0.0
         }
       '';
     };

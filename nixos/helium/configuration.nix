@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, specialArgs, lib, pkgs, ... }:
 {
   imports =
     [
@@ -16,6 +16,7 @@
       ../modules/podman.nix
       ../modules/sway.nix
       ../modules/yubikey.nix
+      ../modules/metasploit.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
@@ -46,7 +47,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  users.users.justusperlwitz = {
+  users.users.${specialArgs.name} = {
     isNormalUser = true;
     extraGroups = [
       # Enable sudo
@@ -57,7 +58,7 @@
       # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
       "dialout"
     ];
-    home = "/home/justusperlwitz";
+    home = "/home/${specialArgs.name}";
     shell = pkgs.fish;
   };
 
@@ -97,9 +98,9 @@
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "justusperlwitz" ];
+    ensureDatabases = [ specialArgs.name ];
     ensureUsers = [{
-      name = "justusperlwitz";
+      name = specialArgs.name;
       ensureDBOwnership = true;
       ensureClauses = {
         createdb = true;
@@ -108,7 +109,7 @@
   };
 
   security.pki.certificateFiles = [
-    ../../lithium-ca.crt
+    ../../nix/lithium-ca.crt
   ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,

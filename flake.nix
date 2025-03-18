@@ -31,18 +31,24 @@
     }@inputs: {
       nixosConfigurations = {
         helium =
-          nixpkgs.lib.nixosSystem {
+          let
+            name = "debian";
             system = "x86_64-linux";
+            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+          in
+          nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit system name pkgs-unstable; };
             modules = [
-              ./nix/nixos/helium/configuration.nix
+              ./nixos/helium/configuration.nix
+              ./nixos/overlays.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 # TODO migrate user
-                home-manager.users.justusperlwitz = import ./home-manager/helium.nix;
+                home-manager.users."${name}" = import ./home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/justusperlwitz";
+                  homeDirectory = "/home/${name}";
                 };
               }
             ];
@@ -55,7 +61,7 @@
             system = "aarch64-linux";
             specialArgs = { inherit name; };
             modules = [
-              ./nix/nixos/lithium-nixos/configuration.nix
+              ./nixos/lithium-nixos/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -75,7 +81,7 @@
             system = "x86_64-linux";
             specialArgs = { inherit name; };
             modules = [
-              ./nix/nixos/nitrogen/configuration.nix
+              ./nixos/nitrogen/configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;

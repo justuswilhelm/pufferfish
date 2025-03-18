@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, specialArgs, ... }:
 {
   # systemd networkd and resolved config
   systemd.network = {
@@ -36,11 +36,22 @@
           DHCP = "no";
           DefaultRouteOnDevice = false;
           MulticastDNS = "no";
-          Address = "10.128.0.10";
+          Address = [
+            "192.168.11.10/24"
+            "10.128.0.10/24"
+          ];
         };
         routes = [
           {
+            Source = "10.128.0.10/24";
             Destination = "10.128.0.1/24";
+            # Gateway = "10.128.0.1";
+            Scope = "link";
+          }
+          {
+            Source = "192.168.11.10/24";
+            # Gateway="192.168.11.1";
+            Destination = "192.168.11.1/24";
             Scope = "link";
           }
         ];
@@ -66,4 +77,11 @@
     wireshark
   ];
   programs.wireshark.enable = true;
+  programs.tcpdump.enable = true;
+  users.users.${specialArgs.name}.extraGroups = [
+    # For tcpdump
+    "pcap"
+    # For wireshark
+    "dumpcap"
+  ];
 }
