@@ -1,25 +1,25 @@
 { lib, pkgs, config, options, ... }:
 {
   imports = [
-    ./modules/paths.nix
-    ./modules/fonts.nix
-    ./modules/pdb.nix
-    ./modules/ssh.nix
-    ./modules/man.nix
-    ./modules/gpg.nix
     ./modules/direnv.nix
+    ./modules/fonts.nix
+    ./modules/gpg.nix
+    ./modules/man.nix
+    ./modules/paths.nix
+    ./modules/pdb.nix
     ./modules/poetry.nix
+    ./modules/ssh.nix
 
     # TODO these should be in ./module
-    ./git.nix
-    ./tmux.nix
-    ./cmus.nix
-    ./nvim.nix
-    ./neomutt.nix
-    ./packages.nix
-    ./selenized.nix
-    ./fish.nix
     ./asdf.nix
+    ./cmus.nix
+    ./fish.nix
+    ./git.nix
+    ./neomutt.nix
+    ./nvim.nix
+    ./packages.nix
     ./passwordstore.nix
+    ./selenized.nix
+    ./tmux.nix
   ];
 }
