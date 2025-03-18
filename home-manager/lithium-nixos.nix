@@ -1,16 +1,28 @@
 { lib, pkgs, ... }:
 {
   imports = [
-    ./modules/gdb.nix
-    ./modules/foot.nix
+    ./modules/direnv.nix
     ./modules/firefox.nix
+    ./modules/fonts.nix
+    ./modules/gpg.nix
+    ./modules/man.nix
+    ./modules/paths.nix
+    ./modules/pdb.nix
+    ./modules/poetry.nix
+    ./modules/ssh.nix
 
-    ./home.nix
-    ./sway.nix
-    ./linux-packages.nix
-    ./infosec.nix
-    ./infosec-linux.nix
+    ./fish.nix
+    ./git.nix
     ./gpg-agent.nix
+    # ./infosec-linux.nix
+    # ./infosec.nix
+    ./linux-packages.nix
+    ./nvim.nix
+    ./packages.nix
+    ./passwordstore.nix
+    ./selenized.nix
+    ./sway.nix
+    ./tmux.nix
   ];
 
   programs.i3status.modules = {
