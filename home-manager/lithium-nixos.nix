@@ -4,6 +4,7 @@
     ./modules/direnv.nix
     ./modules/firefox.nix
     ./modules/fonts.nix
+    ./modules/foot.nix
     ./modules/gpg.nix
     ./modules/man.nix
     ./modules/paths.nix
