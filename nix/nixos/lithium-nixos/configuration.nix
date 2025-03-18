@@ -3,7 +3,6 @@
 {
   imports =
     [
-      ../modules/attic.nix
       ../modules/compat.nix
       ../modules/infosec.nix
       ../modules/man.nix
