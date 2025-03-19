@@ -14,10 +14,11 @@ function hugo_session -a cwd
 
     tmux new-window -c $cwd -t $session -n hugo_preview
     tmux send-keys -t $session:hugo_preview 'hugo server -D --destination (mktemp -d)' C-m
-    open http://localhost:1313
 
     # Go to first window
     tmux select-window -t $session:editor
+
+    open http://localhost:1313
 
     tsa $session
 end
