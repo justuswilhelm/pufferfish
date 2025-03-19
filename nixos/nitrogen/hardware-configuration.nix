@@ -20,6 +20,13 @@
       device = "/dev/mapper/nitrogen_vg-root";
       fsType = "ext4";
     };
+  fileSystems."/nix" =
+    {
+      depends = [ "/" ];
+      device = "/nix";
+      fsType = "none";
+      options = [ "bind" ];
+    };
 
   fileSystems."/boot" =
     {
