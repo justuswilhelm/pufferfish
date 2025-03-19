@@ -10,14 +10,14 @@
     # TODO enable
     # ./modules/opensnitch.nix
 
-    ./home.nix
-    ./sway.nix
-    ./linux-packages.nix
-    # Investigate if this fix is needed on NixOS
-    ./locale-fix.nix
     ./gpg-agent.nix
-    ./infosec.nix
+    ./home.nix
     ./infosec-linux.nix
+    ./infosec.nix
+    ./linux-packages.nix
+    ./sway.nix
+    # TODO Investigate if this fix is needed on NixOS
+    ./locale-fix.nix
   ];
 
   home.packages = [
