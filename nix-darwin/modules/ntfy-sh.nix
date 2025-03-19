@@ -10,10 +10,10 @@ let
   settingsFormat = pkgs.formats.yaml { };
   caddyConfig = ''
     # ntfy-sh
-    ${cfg.ntfy-sh.settings.base-url} {
+    ${cfg.settings.base-url} {
       import certs
 
-      reverse_proxy ${cfg.ntfy-sh.settings.listen-http}
+      reverse_proxy ${cfg.settings.listen-http}
 
       log {
         format console
@@ -76,6 +76,8 @@ in
         ${logPath}/stdout.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
         ${logPath}/stderr.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
       '';
+
+      services.caddy.extraConfig = caddyConfig;
 
       services.ntfy-sh.settings = {
         auth-file = mkDefault "${statePath}/user.db";
