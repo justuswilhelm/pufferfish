@@ -2,6 +2,7 @@
 {
   imports = [
     ./modules/aider.nix
+    ./modules/design.nix
     ./modules/firefox.nix
     ./modules/foot.nix
     ./modules/gdb.nix
