@@ -43,7 +43,7 @@
                 name = "crypted";
                 extraOpenArgs = [ ];
                 settings = {
-                  keyFile = "/var/lib/carbon-secrets/luks.password";
+                  keyFile = "/var/lib/${config.networking.hostName}-secrets/luks.password";
                   allowDiscards = true;
                 };
                 content = {
