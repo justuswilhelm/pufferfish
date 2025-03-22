@@ -14,8 +14,8 @@
     ./modules/tmux.nix
     ./modules/man.nix
     ./modules/gpg.nix
+    ./modules/packages.nix
 
-    ./packages.nix
     ./passwordstore.nix
   ];
 

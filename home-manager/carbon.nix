@@ -16,6 +16,7 @@
     ./modules/sway.nix
     # TODO
     # ./modules/linux-packages.nix
+    # ./modules/packages.nix
 
     ./nvim.nix
     ./selenized.nix
@@ -23,7 +24,6 @@
 
     # TODO
     # ./home.nix
-    # ./packages.nix
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
