@@ -26,15 +26,13 @@
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
-  xdg.configFile = {
-    "sway/config.d/${osConfig.networking.hostName}".text = ''
-      # HiDPI setting
-      output * {
-        scale 1
-      }
-      exec spice-vdagent
-    '';
-  };
+  xdg.configFile."sway/config.d/${osConfig.networking.hostName}".text = ''
+    # HiDPI setting
+    output * {
+      scale 1
+    }
+    exec spice-vdagent
+  '';
 
   home.stateVersion = "24.05";
 }
