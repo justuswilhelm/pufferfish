@@ -9,13 +9,13 @@
     ./modules/neomutt.nix
     ./modules/nvim.nix
     ./modules/pdb.nix
+    ./modules/selenized.nix
     ./modules/ssh.nix
     ./modules/tmux.nix
     ./modules/man.nix
     ./modules/gpg.nix
 
     ./packages.nix
-    ./selenized.nix
     ./passwordstore.nix
   ];
 
