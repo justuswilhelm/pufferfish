@@ -104,6 +104,8 @@
             system = "x86_64-linux";
             specialArgs = { inherit name; };
             modules = [
+              disko.nixosModules.disko
+
               ./nixos/carbon/configuration.nix
               home-manager.nixosModules.home-manager
               {
@@ -166,6 +168,7 @@
           shellcheck
         ];
       };
+      packages.disko-install = disko.outputs.packages.${system}.disko-install;
     }
     );
 }

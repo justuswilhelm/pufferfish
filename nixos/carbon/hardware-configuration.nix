@@ -16,35 +16,81 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    {
-      device = "/dev/mapper/${config.networking.hostName}_vg-root";
-      fsType = "ext4";
+  disko.devices = {
+    disk = {
+      main = {
+        device = "/dev/sda";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            ESP = {
+              label = "boot";
+              size = "500M";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = [ "fmask=0077" "umask=0077" ];
+              };
+            };
+            # https://github.com/nix-community/disko/blob/master/example/luks-lvm.nix
+            luks = {
+              size = "100%";
+              content = {
+                type = "luks";
+                name = "crypted";
+                extraOpenArgs = [ ];
+                settings = {
+                  keyFile = "/var/lib/carbon-secrets/luks.password";
+                  allowDiscards = true;
+                };
+                content = {
+                  type = "lvm_pv";
+                  vg = "${config.networking.hostName}-vg";
+                };
+              };
+            };
+          };
+        };
+      };
     };
-  fileSystems."/nix" =
-    {
-      depends = [ "/" ];
-      device = "/nix";
-      fsType = "none";
-      options = [ "bind" ];
+    # https://github.com/nix-community/disko/blob/master/example/lvm-raid.nix
+    lvm_vg = {
+      "${config.networking.hostName}-vg" = {
+        type = "lvm_vg";
+        lvs = {
+          root = {
+            size = "8G";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/";
+              mountOptions = [ "defaults" ];
+            };
+          };
+          home = {
+            size = "100%";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/home";
+            };
+          };
+          # https://github.com/nix-community/disko/blob/master/example/swap.nix
+          swap = {
+            size = "1G";
+            content = {
+              type = "swap";
+              discardPolicy = "both";
+              resumeDevice = true; # resume from hiberation from this device
+            };
+          };
+        };
+      };
     };
-
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/C0D1-C397";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
-
-  fileSystems."/home" =
-    {
-      device = "/dev/mapper/${config.networking.hostName}_vg-home";
-      fsType = "ext4";
-    };
-
-
-  swapDevices =
-    [{ device = "/dev/mapper/${config.networking.hostName}_vg-swap"; }];
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
