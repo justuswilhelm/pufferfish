@@ -7,17 +7,17 @@
 {
   imports =
     [
+      ../modules/compat.nix
+      ../modules/infosec.nix
+      ../modules/infosec.nix
+      ../modules/man.nix
+      ../modules/network-debug.nix
+      ../modules/networkd.nix
+      ../modules/nix.nix
+      ../modules/openvpn.nix
+      ../modules/pipewire.nix
       ../modules/sway.nix
       ../modules/yubikey.nix
-      ../modules/networkd.nix
-      ../modules/network-debug.nix
-      ../modules/openvpn.nix
-      ../modules/infosec.nix
-      ../modules/nix.nix
-      ../modules/compat.nix
-      ../modules/man.nix
-      ../modules/infosec.nix
-      ../modules/pipewire.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
