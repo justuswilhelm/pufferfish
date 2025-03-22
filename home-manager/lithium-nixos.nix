@@ -6,11 +6,11 @@
     ./modules/firefox.nix
     ./modules/gpg-agent.nix
     ./modules/infosec.nix
+    ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
 
     ./home.nix
     ./sway.nix
-    ./infosec-linux.nix
   ];
 
   programs.i3status.modules = {
