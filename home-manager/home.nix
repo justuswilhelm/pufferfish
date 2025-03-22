@@ -8,10 +8,10 @@
     ./modules/neomutt.nix
     ./modules/pdb.nix
     ./modules/ssh.nix
+    ./modules/tmux.nix
     ./modules/man.nix
     ./modules/gpg.nix
 
-    ./tmux.nix
     ./cmus.nix
     ./nvim.nix
     ./packages.nix
