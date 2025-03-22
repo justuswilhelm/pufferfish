@@ -16,7 +16,7 @@
 
   fileSystems."/" =
     {
-      device = "/dev/mapper/helium--nixos--vg-nixos--root";
+      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-nixos--root";
       fsType = "ext4";
     };
   fileSystems."/nix" =
@@ -41,27 +41,27 @@
     };
   fileSystems."/home" =
     {
-      device = "/dev/mapper/helium--post--boot--vg-home";
+      device = "/dev/mapper/${config.networking.hostName}--post--boot--vg-home";
       fsType = "ext4";
     };
   fileSystems."/srv/borgbackup" =
     {
-      device = "/dev/mapper/helium--post--boot--vg-borgbackup";
+      device = "/dev/mapper/${config.networking.hostName}--post--boot--vg-borgbackup";
       fsType = "ext4";
     };
   fileSystems."/etc" =
     {
-      device = "/dev/mapper/helium--nixos--vg-etc";
+      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-etc";
       fsType = "ext4";
     };
   fileSystems."/var" =
     {
-      device = "/dev/mapper/helium--nixos--vg-var";
+      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-var";
       fsType = "ext4";
     };
   swapDevices = [
     {
-      device = "/dev/mapper/helium--nixos--vg-swap";
+      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-swap";
     }
   ];
 
