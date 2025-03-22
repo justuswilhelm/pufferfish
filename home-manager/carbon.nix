@@ -1,4 +1,7 @@
 { lib, osConfig, pkgs, ... }:
+let
+  modelName = "x220";
+in
 {
   imports = [
     ./modules/firefox.nix
@@ -28,18 +31,18 @@
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
-  home.file.".xkb/symbols/x280".text = ''
+  home.file.".xkb/symbols/${modelName}".text = ''
     default partial alphanumeric_keys
     xkb_symbols "basic" {
       include "us(basic)"
 
-      name[Group1] = "X220 keyboard";
+      name[Group1] = "${modelName} keyboard";
       key <CAPS>  {[ Return      ]       };
     };
   '';
   xdg.configFile."sway/config.d/${osConfig.networking.hostName}".text = ''
     input type:keyboard {
-      xkb_layout x280
+      xkb_layout ${modelName}
     }
     # HiDPI setting
     output * {
