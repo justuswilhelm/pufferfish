@@ -4,12 +4,25 @@
     ./modules/firefox.nix
     ./modules/foot.nix
     ./modules/ssh.nix
+    ./modules/paths.nix
+    ./modules/fonts.nix
+    ./modules/ssh.nix
+    ./modules/man.nix
+    ./modules/gpg.nix
+
+    ./git.nix
+    ./tmux.nix
+    ./nvim.nix
+    ./selenized.nix
+    ./fish.nix
+    ./passwordstore.nix
 
     ./gpg-agent.nix
     ./sway.nix
     # TODO
     # ./home.nix
     # ./linux-packages.nix
+    # ./packages.nix
   ];
 
   programs.fish.loginShellInit = ''
@@ -86,4 +99,6 @@
       position = 7;
     };
   };
+
+  home.stateVersion = "24.11";
 }
