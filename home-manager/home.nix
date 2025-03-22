@@ -2,6 +2,7 @@
 {
   imports = [
     ./modules/cmus.nix
+    ./modules/direnv.nix
     ./modules/paths.nix
     ./modules/fish.nix
     ./modules/fonts.nix
@@ -27,11 +28,5 @@
     settings = {
       cache-dir = "${config.xdg.cacheHome}/pypoetry";
     };
-  };
-
-  # TODO separate module
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
   };
 }
