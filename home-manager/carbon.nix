@@ -25,13 +25,6 @@
     # ./packages.nix
   ];
 
-  programs.fish.loginShellInit = ''
-    # If running from tty1 start sway
-    if [ (tty) = /dev/tty1 ]
-        exec sway
-    end
-  '';
-
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
   home.file = {
