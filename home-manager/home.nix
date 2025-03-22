@@ -7,13 +7,13 @@
     ./modules/fonts.nix
     ./modules/git.nix
     ./modules/neomutt.nix
+    ./modules/nvim.nix
     ./modules/pdb.nix
     ./modules/ssh.nix
     ./modules/tmux.nix
     ./modules/man.nix
     ./modules/gpg.nix
 
-    ./nvim.nix
     ./packages.nix
     ./selenized.nix
     ./passwordstore.nix

@@ -2,23 +2,23 @@
 {
   xdg.configFile = {
     nvimAfter = {
-      source = ../nvim/after;
+      source = ../../nvim/after;
       target = "nvim/after";
     };
     nvimSelenized = {
-      source = ../nvim/colors/selenized.vim;
+      source = ../../nvim/colors/selenized.vim;
       target = "nvim/colors/selenized.vim";
     };
     nvimInitBase = {
-      source = ../nvim/init_base.lua;
+      source = ../../nvim/init_base.lua;
       target = "nvim/init_base.lua";
     };
     nvimPlug = {
-      source = ../nvim/autoload/plug.vim;
+      source = ../../nvim/autoload/plug.vim;
       target = "nvim/autoload/plug.vim";
     };
     nvimSnippets = {
-      source = ../nvim/snippets;
+      source = ../../nvim/snippets;
       target = "nvim/snippets";
       recursive = true;
     };
@@ -26,7 +26,7 @@
 
   programs.neovim = {
     enable = true;
-    extraLuaConfig = builtins.readFile ../nvim/init.lua;
+    extraLuaConfig = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
     extraPackages = [
       pkgs.deno
