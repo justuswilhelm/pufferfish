@@ -6,10 +6,10 @@
     ./modules/firefox.nix
     ./modules/gpg-agent.nix
     ./modules/infosec.nix
+    ./modules/linux-packages.nix
 
     ./home.nix
     ./sway.nix
-    ./linux-packages.nix
     ./infosec-linux.nix
   ];
 

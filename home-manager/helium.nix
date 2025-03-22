@@ -7,13 +7,13 @@
     ./modules/gdb.nix
     ./modules/gpg-agent.nix
     ./modules/infosec.nix
+    ./modules/linux-packages.nix
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
     ./modules/pipx.nix
 
     ./home.nix
     ./sway.nix
-    ./linux-packages.nix
     ./locale-fix.nix
     ./infosec-linux.nix
   ];

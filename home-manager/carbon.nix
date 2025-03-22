@@ -13,6 +13,8 @@
     ./modules/tmux.nix
     ./modules/man.nix
     ./modules/gpg.nix
+    # TODO
+    # ./modules/linux-packages.nix
 
     ./nvim.nix
     ./selenized.nix
@@ -21,7 +23,6 @@
     ./sway.nix
     # TODO
     # ./home.nix
-    # ./linux-packages.nix
     # ./packages.nix
   ];
 

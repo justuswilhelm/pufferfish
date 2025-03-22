@@ -8,6 +8,7 @@
     ./modules/gdb.nix
     ./modules/gpg-agent.nix
     ./modules/infosec.nix
+    ./modules/linux-packages.nix
     ./modules/ssh.nix
 
     # TODO enable
@@ -15,7 +16,6 @@
 
     ./home.nix
     ./infosec-linux.nix
-    ./linux-packages.nix
     ./sway.nix
     # TODO Investigate if this fix is needed on NixOS
     ./locale-fix.nix
