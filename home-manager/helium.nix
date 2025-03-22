@@ -8,13 +8,14 @@
     ./modules/gpg-agent.nix
     ./modules/infosec.nix
     ./modules/linux-packages.nix
+    # TODO Investigate if this fix is needed on NixOS
+    ./modules/locale-fix.nix
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
     ./modules/pipx.nix
 
     ./home.nix
     ./sway.nix
-    ./locale-fix.nix
     ./infosec-linux.nix
   ];
 
