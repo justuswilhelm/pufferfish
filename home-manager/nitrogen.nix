@@ -6,12 +6,12 @@
     ./modules/firefox.nix
     ./modules/foot.nix
     ./modules/gdb.nix
+    ./modules/gpg-agent.nix
     ./modules/ssh.nix
 
     # TODO enable
     # ./modules/opensnitch.nix
 
-    ./gpg-agent.nix
     ./home.nix
     ./infosec-linux.nix
     ./infosec.nix

@@ -8,6 +8,7 @@
     ./modules/fish.nix
     ./modules/fonts.nix
     ./modules/git.nix
+    ./modules/gpg-agent.nix
     ./modules/ssh.nix
     ./modules/tmux.nix
     ./modules/man.nix
@@ -17,7 +18,6 @@
     ./selenized.nix
     ./passwordstore.nix
 
-    ./gpg-agent.nix
     ./sway.nix
     # TODO
     # ./home.nix

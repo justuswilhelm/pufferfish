@@ -4,13 +4,13 @@
     ./modules/gdb.nix
     ./modules/foot.nix
     ./modules/firefox.nix
+    ./modules/gpg-agent.nix
 
     ./home.nix
     ./sway.nix
     ./linux-packages.nix
     ./infosec.nix
     ./infosec-linux.nix
-    ./gpg-agent.nix
   ];
 
   programs.i3status.modules = {
