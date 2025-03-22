@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   xdg.configFile.timewarrior = {
-    source = ../timewarrior/timewarrior.cfg;
+    source = ../../timewarrior/timewarrior.cfg;
     target = "timewarrior/timewarrior.cfg";
   };
   home.packages = [
