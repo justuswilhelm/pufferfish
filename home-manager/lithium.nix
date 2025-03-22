@@ -8,11 +8,11 @@ in
     ./modules/aider.nix
     ./modules/alacritty.nix
     ./modules/pipx.nix
+    ./modules/pomoglorbo.nix
     ./modules/cmus.nix
 
     ./home.nix
     ./timewarrior.nix
-    ./pomoglorbo.nix
     ./infosec.nix
   ];
 
