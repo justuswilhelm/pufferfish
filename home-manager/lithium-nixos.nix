@@ -26,15 +26,12 @@
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
   xdg.configFile = {
-    swayLithiumNixOs = {
-      text = ''
-        # HiDPI setting
-        output * {
-          scale 1
-        }
-        exec spice-vdagent
-      '';
-      target = "sway/config.d/sway-lithium-nixos";
-    };
+    "sway/config.d/${osConfig.networking.hostName}".text = ''
+      # HiDPI setting
+      output * {
+        scale 1
+      }
+      exec spice-vdagent
+    '';
   };
 }
