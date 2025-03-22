@@ -10,6 +10,7 @@
       ../modules/sway.nix
       ../modules/yubikey.nix
       ../modules/networkd.nix
+      ../modules/network-debug.nix
       ../modules/openvpn.nix
       ../modules/infosec.nix
       ../modules/nix.nix
