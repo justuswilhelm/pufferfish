@@ -5,6 +5,7 @@
     ./modules/foot.nix
     ./modules/ssh.nix
     ./modules/paths.nix
+    ./modules/fish.nix
     ./modules/fonts.nix
     ./modules/ssh.nix
     ./modules/man.nix
@@ -14,7 +15,6 @@
     ./tmux.nix
     ./nvim.nix
     ./selenized.nix
-    ./fish.nix
     ./passwordstore.nix
 
     ./gpg-agent.nix

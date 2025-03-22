@@ -2,6 +2,7 @@
 {
   imports = [
     ./modules/paths.nix
+    ./modules/fish.nix
     ./modules/fonts.nix
     ./modules/neomutt.nix
     ./modules/pdb.nix
@@ -15,7 +16,6 @@
     ./nvim.nix
     ./packages.nix
     ./selenized.nix
-    ./fish.nix
     ./asdf.nix
     ./passwordstore.nix
   ];
