@@ -16,7 +16,6 @@
     ./nvim.nix
     ./packages.nix
     ./selenized.nix
-    ./asdf.nix
     ./passwordstore.nix
   ];
 
