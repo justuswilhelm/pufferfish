@@ -93,6 +93,26 @@
               }
             ];
           };
+        carbon =
+          let
+            name = "debian";
+          in
+          nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit name; };
+            modules = [
+              ./nixos/carbon/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users."${name}" = import ./home-manager/carbon.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/${name}";
+                };
+              }
+            ];
+          };
       };
       darwinConfigurations."lithium" =
         let
