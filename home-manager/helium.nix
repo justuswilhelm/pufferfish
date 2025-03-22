@@ -14,9 +14,9 @@
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
     ./modules/pipx.nix
+    ./modules/sway.nix
 
     ./home.nix
-    ./sway.nix
   ];
 
   home.packages = [

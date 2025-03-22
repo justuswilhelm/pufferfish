@@ -8,9 +8,9 @@
     ./modules/infosec.nix
     ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
+    ./modules/sway.nix
 
     ./home.nix
-    ./sway.nix
   ];
 
   programs.i3status.modules = {

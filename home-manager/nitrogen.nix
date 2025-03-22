@@ -13,12 +13,12 @@
     # TODO Investigate if this fix is needed on NixOS
     ./modules/locale-fix.nix
     ./modules/ssh.nix
+    ./modules/sway.nix
 
     # TODO enable
     # ./modules/opensnitch.nix
 
     ./home.nix
-    ./sway.nix
   ];
 
   home.packages = [
