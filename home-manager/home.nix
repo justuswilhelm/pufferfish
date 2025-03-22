@@ -1,13 +1,11 @@
 { lib, pkgs, config, options, ... }:
 {
   imports = [
-    ./modules/cmus.nix
     ./modules/direnv.nix
     ./modules/paths.nix
     ./modules/fish.nix
     ./modules/fonts.nix
     ./modules/git.nix
-    ./modules/neomutt.nix
     ./modules/nvim.nix
     ./modules/pdb.nix
     ./modules/selenized.nix
