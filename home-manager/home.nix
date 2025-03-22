@@ -15,8 +15,7 @@
     ./modules/man.nix
     ./modules/gpg.nix
     ./modules/packages.nix
-
-    ./passwordstore.nix
+    ./modules/passwordstore.nix
   ];
 
   home.stateVersion = "24.05";

@@ -13,6 +13,7 @@
     ./modules/tmux.nix
     ./modules/man.nix
     ./modules/gpg.nix
+    ./modules/passwordstore.nix
     ./modules/sway.nix
     # TODO
     # ./modules/linux-packages.nix
@@ -20,7 +21,6 @@
 
     ./nvim.nix
     ./selenized.nix
-    ./passwordstore.nix
 
     # TODO
     # ./home.nix
