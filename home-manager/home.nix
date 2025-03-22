@@ -3,6 +3,7 @@
   imports = [
     ./modules/paths.nix
     ./modules/fonts.nix
+    ./modules/neomutt.nix
     ./modules/pdb.nix
     ./modules/ssh.nix
     ./modules/man.nix
@@ -12,7 +13,6 @@
     ./tmux.nix
     ./cmus.nix
     ./nvim.nix
-    ./neomutt.nix
     ./packages.nix
     ./selenized.nix
     ./fish.nix

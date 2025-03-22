@@ -22,7 +22,7 @@ in
 
   xdg.configFile = {
     neomuttShared = {
-      source = ../neomutt/shared;
+      source = ../../neomutt/shared;
       target = "neomutt/shared";
     };
     neomuttMailcap = {
