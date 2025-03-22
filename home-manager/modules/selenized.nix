@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 # Selenized light sRGB values from
 # From https://github.com/jan-warchol/selenized/blob/7188d68b6bb5a8be8f83d216c3f42727f0fdacf2/the-values.md
 # Selenized
@@ -262,19 +262,13 @@ in
   # nix eval --file $DOTFILES/nix/home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
 {
   # https://neomutt.org/guide/configuration
-  xdg.configFile.neomuttColors = {
-    text = neomutt;
-    target = "neomutt/colors";
-  };
-  xdg.configFile.radare2Colors = {
-    text = ''
-      e cfg.fortunes = true
-      e scr.color = 3
-      # selenized colors
-      ${radare2}
-    '';
-    target = "radare2/radare2rc";
-  };
+  xdg.configFile."neomutt/colors".text = lib.mkIf config.programs.neomutt.enable neomutt;
+  xdg.configFile."radare2/radare2rc".text = ''
+    e cfg.fortunes = true
+    e scr.color = 3
+    # selenized colors
+    ${radare2}
+  '';
   xdg.configFile.timewarriorColors = {
     text = timewarrior;
     target = "timewarrior/selenized.theme";
