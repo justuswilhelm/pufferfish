@@ -19,6 +19,4 @@
     ./modules/passwordstore.nix
     ./modules/poetry.nix
   ];
-
-  home.stateVersion = "24.05";
 }

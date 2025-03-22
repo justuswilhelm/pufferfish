@@ -34,4 +34,6 @@
       exec spice-vdagent
     '';
   };
+
+  home.stateVersion = "24.05";
 }

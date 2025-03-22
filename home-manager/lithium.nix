@@ -116,4 +116,6 @@ in
       identityFile = "~/.ssh/id_rsa";
     };
   };
+
+  home.stateVersion = "24.05";
 }
