@@ -10,9 +10,9 @@ in
     ./modules/pipx.nix
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix
+    ./modules/timewarrior.nix
 
     ./home.nix
-    ./timewarrior.nix
     ./infosec.nix
   ];
 
