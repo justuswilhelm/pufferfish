@@ -8,6 +8,8 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko/master";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
     pomoglorbo = {
       url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2024.11.22";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,6 +30,7 @@
     , pomoglorbo
     , projectify
     , utils
+    , disko
     }@inputs: {
       nixosConfigurations = {
         helium =
