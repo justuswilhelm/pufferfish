@@ -7,11 +7,11 @@
     ./modules/paths.nix
     ./modules/fish.nix
     ./modules/fonts.nix
+    ./modules/git.nix
     ./modules/ssh.nix
     ./modules/man.nix
     ./modules/gpg.nix
 
-    ./git.nix
     ./tmux.nix
     ./nvim.nix
     ./selenized.nix

@@ -4,13 +4,13 @@
     ./modules/paths.nix
     ./modules/fish.nix
     ./modules/fonts.nix
+    ./modules/git.nix
     ./modules/neomutt.nix
     ./modules/pdb.nix
     ./modules/ssh.nix
     ./modules/man.nix
     ./modules/gpg.nix
 
-    ./git.nix
     ./tmux.nix
     ./cmus.nix
     ./nvim.nix
