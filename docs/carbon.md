@@ -25,4 +25,6 @@ Test the usb stick:
 
 ```bash
 sudo qemu-kvm -enable-kvm -hda /dev/sdb
+# If it doesn't work because of a gtk initialization error, try
+sudo -E qemu-kvm -enable-kvm -hda /dev/sdb
 ```
