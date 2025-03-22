@@ -19,8 +19,8 @@
     # ./modules/linux-packages.nix
     # ./modules/packages.nix
 
-    ./nvim.nix
-    ./selenized.nix
+    ./modules/nvim.nix
+    ./modules/selenized.nix
 
     # TODO
     # ./home.nix
