@@ -17,16 +17,10 @@
     ./modules/gpg.nix
     ./modules/packages.nix
     ./modules/passwordstore.nix
+    ./modules/poetry.nix
   ];
 
   home.stateVersion = "24.05";
 
   programs.home-manager.enable = true;
-
-  programs.poetry = {
-    enable = true;
-    settings = {
-      cache-dir = "${config.xdg.cacheHome}/pypoetry";
-    };
-  };
 }
