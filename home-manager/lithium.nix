@@ -6,11 +6,11 @@ in
 {
   imports = [
     ./modules/aider.nix
+    ./modules/alacritty.nix
     ./modules/pipx.nix
     ./modules/cmus.nix
 
     ./home.nix
-    ./alacritty.nix
     ./timewarrior.nix
     ./pomoglorbo.nix
     ./infosec.nix
