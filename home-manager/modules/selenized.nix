@@ -270,10 +270,7 @@ in
     # selenized colors
     ${radare2}
   '';
-  xdg.configFile.timewarriorColors = {
-    text = timewarrior;
-    target = "timewarrior/selenized.theme";
-  };
+  xdg.configFile."timewarrior/selenized.theme".text = timewarrior;
   programs.alacritty.settings.colors = alacritty;
   programs.tmux.extraConfig = tmux;
 }
