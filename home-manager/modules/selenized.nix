@@ -262,7 +262,8 @@ in
   # nix eval --file $DOTFILES/nix/home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
 {
   # https://neomutt.org/guide/configuration
-  xdg.configFile."neomutt/colors".text = lib.mkIf config.programs.neomutt.enable neomutt;
+  xdg.configFile."neomutt/colors".text = neomutt;
+  xdg.configFile."neomutt/colors".enable = config.programs.neomutt.enable;
   xdg.configFile."radare2/radare2rc".text = ''
     e cfg.fortunes = true
     e scr.color = 3
