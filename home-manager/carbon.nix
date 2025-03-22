@@ -28,45 +28,38 @@
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
-  home.file = {
-    keyboardLayout = {
-      text = ''
-        default partial alphanumeric_keys
-        xkb_symbols "basic" {
-          include "us(basic)"
+  home.file.".xkb/symbols/x280".text = ''
+    default partial alphanumeric_keys
+    xkb_symbols "basic" {
+      include "us(basic)"
 
-          name[Group1] = "X220 keyboard";
-          key <CAPS>  {[ Return      ]       };
-        };
-      '';
-      target = ".xkb/symbols/x280";
+      name[Group1] = "X220 keyboard";
+      key <CAPS>  {[ Return      ]       };
     };
-  };
-  xdg.configFile = {
-    "sway/config.d/${osConfig.networking.hostName}".text = ''
-      input type:keyboard {
-        xkb_layout x280
-      }
-      # HiDPI setting
-      output * {
-        scale 1.25
-      }
+  '';
+  xdg.configFile."sway/config.d/${osConfig.networking.hostName}".text = ''
+    input type:keyboard {
+      xkb_layout x280
+    }
+    # HiDPI setting
+    output * {
+      scale 1.25
+    }
 
-      # output eDP-1 pos 0 0 res 1920x1080
-      # Configure the HDMI-2 output like so:
-      # output HDMI-A-2 pos 1920 0 res 1920x1080
+    # output eDP-1 pos 0 0 res 1920x1080
+    # Configure the HDMI-2 output like so:
+    # output HDMI-A-2 pos 1920 0 res 1920x1080
 
-      # Screen brightness
-      bindsym XF86MonBrightnessUp exec light -A 10
-      bindsym XF86MonBrightnessDown exec light -U 10
+    # Screen brightness
+    bindsym XF86MonBrightnessUp exec light -A 10
+    bindsym XF86MonBrightnessDown exec light -U 10
 
-      # Audio
-      bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
-      bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-      bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-      bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-    '';
-  };
+    # Audio
+    bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+    bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+    bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+  '';
 
   programs.i3status.modules = {
     # "wireless wlp59s0" = {
