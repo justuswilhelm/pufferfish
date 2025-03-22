@@ -7,13 +7,13 @@ in
   imports = [
     ./modules/aider.nix
     ./modules/pipx.nix
+    ./modules/cmus.nix
 
     ./home.nix
     ./alacritty.nix
     ./timewarrior.nix
     ./pomoglorbo.nix
     ./infosec.nix
-    ./cmus.nix
   ];
 
   programs.cmus = {

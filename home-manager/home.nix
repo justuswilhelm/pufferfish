@@ -1,6 +1,7 @@
 { lib, pkgs, config, options, ... }:
 {
   imports = [
+    ./modules/cmus.nix
     ./modules/paths.nix
     ./modules/fish.nix
     ./modules/fonts.nix
@@ -12,7 +13,6 @@
     ./modules/man.nix
     ./modules/gpg.nix
 
-    ./cmus.nix
     ./nvim.nix
     ./packages.nix
     ./selenized.nix
