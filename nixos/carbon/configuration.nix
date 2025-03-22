@@ -31,14 +31,10 @@
       "video"
     ];
     shell = pkgs.fish;
-    packages = with pkgs; [
-      firefox-esr
-      tree
-      tmux
-    ];
   };
 
   programs.fish.enable = true;
+  programs.tmux.enable = true;
   programs.git.enable = true;
   programs.neovim = {
     enable = true;
