@@ -6,6 +6,7 @@
     ./modules/foot.nix
     ./modules/gdb.nix
     ./modules/gpg-agent.nix
+    ./modules/infosec.nix
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
     ./modules/pipx.nix
@@ -14,7 +15,6 @@
     ./sway.nix
     ./linux-packages.nix
     ./locale-fix.nix
-    ./infosec.nix
     ./infosec-linux.nix
   ];
 

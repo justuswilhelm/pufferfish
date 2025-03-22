@@ -7,6 +7,7 @@
     ./modules/foot.nix
     ./modules/gdb.nix
     ./modules/gpg-agent.nix
+    ./modules/infosec.nix
     ./modules/ssh.nix
 
     # TODO enable
@@ -14,7 +15,6 @@
 
     ./home.nix
     ./infosec-linux.nix
-    ./infosec.nix
     ./linux-packages.nix
     ./sway.nix
     # TODO Investigate if this fix is needed on NixOS
