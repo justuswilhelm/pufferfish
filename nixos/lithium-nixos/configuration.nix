@@ -21,7 +21,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "lithium-nixos"; # Define your hostname.
   # https://wiki.qemu.org/Documentation/Networking
 
   time.timeZone = "Asia/Tokyo";
