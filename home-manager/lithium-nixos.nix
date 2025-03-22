@@ -8,6 +8,7 @@
     ./modules/infosec.nix
     ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
+    ./modules/packages.nix
     ./modules/sway.nix
 
     ./home.nix
