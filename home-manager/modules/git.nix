@@ -1,5 +1,8 @@
 { lib, pkgs, config, ... }:
 {
+  home.packages = [
+    pkgs.git-annex
+  ];
   programs.git =
     {
       enable = true;

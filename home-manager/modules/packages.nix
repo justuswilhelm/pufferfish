@@ -109,10 +109,6 @@ in
     pkgs.tmux
     pkgs.shellcheck
 
-    # Version control
-    pkgs.git
-    pkgs.git-annex
-
     # Shell tools
     pkgs.cloc
     pkgs.fdupes
