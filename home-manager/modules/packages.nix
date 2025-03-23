@@ -123,7 +123,6 @@ in
     pkgs.mosh
 
     # Secrets
-    pkgs.gnupg
     pkgs.yubikey-manager
 
     # Archive things
