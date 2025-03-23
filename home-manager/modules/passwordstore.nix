@@ -8,5 +8,6 @@
   };
   home.packages = [
     pkgs.pass
+    pkgs.diceware
   ];
 }

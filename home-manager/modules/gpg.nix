@@ -3,6 +3,9 @@
   home.packages = [
     pkgs.pgpdump
     pkgs.gpgme
+    # TODO
+    # May not be needed
+    pkgs.gnupg
   ];
 
   programs.gpg = {
