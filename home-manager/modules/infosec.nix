@@ -134,7 +134,6 @@ in
         nclib
         impacket
         pycrypto
-        pyshark
       ]
     ))
     pkgs.jwt-cli
