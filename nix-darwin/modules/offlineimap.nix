@@ -27,7 +27,8 @@ in
           echo -e 'lithium.local,offlineimap,3,offline_maybe' | ${send_nsca} ${nsca_host} -p ${nsca_port} -c ${nsca_config} -d ,
           exit 0
         fi
-        if timeout --signal INT ${toString timeout} ${offlineimap} -l ${logPath}
+        # Kill after 120 seconds of not reacting
+        if timeout --kill-after=120 --signal=INT ${toString timeout} ${offlineimap} -l ${logPath}
         then
           echo -e 'lithium.local,offlineimap,0,success' | ${send_nsca} ${nsca_host} -p ${nsca_port} -c ${nsca_config} -d ,
         else

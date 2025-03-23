@@ -77,7 +77,8 @@ in
 
   launchd.daemons.borgmatic = {
     path = [ borgmatic pkgs.coreutils config.services.nagios.nsca-package ];
-    command = "timeout --signal INT ${toString timeout} borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
+    # Kill after 120 seconds of not reacting to SIGINT
+    command = "timeout --kill-after=120 --signal INT ${toString timeout} borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
     serviceConfig = {
       # Performance
       ProcessType = "Background";
