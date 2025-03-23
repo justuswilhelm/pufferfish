@@ -151,7 +151,7 @@ in
 
     # Core tools
     pkgs.coreutils
-    pkgs.moreutils
+    # pkgs.moreutils
 
     # Nix
     pkgs.nix-index

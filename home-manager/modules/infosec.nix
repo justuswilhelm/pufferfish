@@ -134,6 +134,7 @@ in
         nclib
         impacket
         pycrypto
+        pwntools
       ]
     ))
     pkgs.jwt-cli
