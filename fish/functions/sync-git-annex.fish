@@ -1,11 +1,16 @@
 function sync-git-annex
-    if ! set -q GIT_ANNEX_PATHS
-        echo "Must define GIT_ANNEX_PATHS"
-        return 1
+    if not set paths (
+        fd --exclude "$HOME/.cache" \
+            --exclude $HOME/Library \
+            --prune \
+            --hidden --full-path $HOME'/.*/.git/annex$' $HOME
+    )
+        echo "Couldn't retrieve git annex paths"
     end
-    for annex in $GIT_ANNEX_PATHS
+    for annex_sub_dir in $paths
+        set annex (dirname (dirname $annex_sub_dir))
         echo "Sync $annex"
-        fish -c "cd $annex && git annex sync --content"
+        fish -c "cd $annex && git annex sync --content --no-commit"
         or return
     end
 end

@@ -1,7 +1,8 @@
 { config, specialArgs, pkgs, ... }:
 let
+  inherit (specialArgs) name;
   offlineimap = "${pkgs.offlineimap}/bin/offlineimap";
-  logPath = "/Users/${specialArgs.name}/Library/Logs/offlineimap/offlineimap.log";
+  logPath = "/Users/${name}/Library/Logs/offlineimap/offlineimap.log";
   timeout = 3 * 60;
   send_nsca = "${config.services.nagios.nsca-package}/bin/send_nsca";
   # TODO pull this value in from nsca config nix
@@ -12,8 +13,8 @@ in
 {
   # Copied from /etc/newsyslog.d/wifi.conf
   environment.etc."newsyslog.d/borgmatic.conf".text = ''
-    # logfilename            [owner:group]        mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}               ${specialArgs.name}  600  10    *    $D0   J
+    # logfilename            [owner:group] mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}               ${name}       600  10    *    $D0   J
   '';
 
   launchd.user.agents = {

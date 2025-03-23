@@ -39,6 +39,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                # TODO migrate user
                 home-manager.users.justusperlwitz = import ./home-manager/helium.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/justusperlwitz";
@@ -95,9 +96,7 @@
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = {
-            inherit system name;
-          };
+          specialArgs = { inherit name; };
           modules = [
             { _module.args = inputs; }
             {
@@ -106,22 +105,24 @@
                   # XXX
                   # want to use withPlugins, not available in 24.11
                   caddy = pkgs-unstable.caddy;
-                  # Add projectify and pomoglorbo as overlay
+
+                  inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
+                  inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
+                })
+                (final: previous: {
+                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
                 })
               ];
             }
             ./nix-darwin/darwin-configuration.nix
             home-manager.darwinModules.home-manager
             {
+              home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.sharedModules = [
                 { _module.args = inputs; }
               ];
-              home-manager.users.debian = import ./home-manager/lithium.nix;
-              home-manager.extraSpecialArgs = {
-                homeDirectory = "/Users/debian";
-                inherit system;
-              };
+              home-manager.users."${name}" = import ./home-manager/lithium.nix;
             }
           ];
         };

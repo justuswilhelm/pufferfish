@@ -8,6 +8,19 @@ let
   logPath = "/var/log/ntfy-sh";
 
   settingsFormat = pkgs.formats.yaml { };
+  caddyConfig = ''
+    # ntfy-sh
+    ${cfg.settings.base-url} {
+      import certs
+
+      reverse_proxy ${cfg.settings.listen-http}
+
+      log {
+        format console
+        output file ${config.services.caddy.logPath}/ntfy-sh.log
+      }
+    }
+  '';
 in
 {
   options.services.ntfy-sh = {
@@ -63,6 +76,8 @@ in
         ${logPath}/stdout.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
         ${logPath}/stderr.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
       '';
+
+      services.caddy.extraConfig = caddyConfig;
 
       services.ntfy-sh.settings = {
         auth-file = mkDefault "${statePath}/user.db";

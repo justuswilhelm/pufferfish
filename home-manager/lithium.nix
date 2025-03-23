@@ -1,6 +1,7 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
-  applicationSupport = "${specialArgs.homeDirectory}/Library/Application Support";
+  # TODO use cfg.home.homeDirectory
+  applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
 in
 {
   imports = [
@@ -8,7 +9,6 @@ in
     ./modules/pipx.nix
 
     ./home.nix
-    ./aerospace.nix
     ./alacritty.nix
     ./timewarrior.nix
     ./pomoglorbo.nix
@@ -49,7 +49,7 @@ in
     source = ../xbar;
     recursive = true;
   };
-  xdg.cacheHome = "${specialArgs.homeDirectory}/Library/Caches";
+  xdg.cacheHome = "${config.home.homeDirectory}/Library/Caches";
 
   xdg.configFile."karabiner/karabiner.json" = {
     source = ../karabiner/karabiner.json;

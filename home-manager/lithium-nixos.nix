@@ -1,4 +1,4 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./modules/gdb.nix

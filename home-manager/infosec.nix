@@ -40,6 +40,7 @@ in
     pkgs.inetutils
     pkgs.whois
     pkgs.nmap
+    pkgs.arp-scan
 
     # Exploits
     # ========
@@ -136,7 +137,6 @@ in
       ]
     ))
     pkgs.jwt-cli
-    pkgs.sage
 
     # PHP
     # ===
