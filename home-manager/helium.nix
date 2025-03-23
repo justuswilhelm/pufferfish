@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, osConfig, ... }:
 {
   imports = [
     ./modules/aider.nix
