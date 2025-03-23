@@ -2,10 +2,11 @@
 { specialArgs, pkgs, ... } :
 {
   environment.systemPackages = with pkgs; [
-    # For debugging
     tcpdump
     ethtool
     arp-scan
+    traceroute
+    conntrack-tools
     # Just enabling wireshark wasn't enough
     wireshark
   ];

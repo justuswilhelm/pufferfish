@@ -50,7 +50,11 @@
     # ==========
     pkgs.netexec
     pkgs.openssl
-    # For clock skews
+    pkgs.tshark
+    pkgs.aircrack-ng
+
+    # Clock faking
+    # ============
     pkgs.libfaketime
 
     # Web

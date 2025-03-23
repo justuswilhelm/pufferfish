@@ -3,7 +3,6 @@
 {
   imports =
     [
-      ../modules/attic.nix
       ../modules/compat.nix
       ../modules/infosec.nix
       ../modules/man.nix
@@ -13,8 +12,12 @@
       ../modules/sway.nix
       ../modules/utm.nix
       ../modules/yubikey.nix
+      ../modules/wlan.nix
+
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
+      ./wireguard.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
