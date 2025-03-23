@@ -5,17 +5,19 @@
     ./modules/firefox.nix
     ./modules/foot.nix
     ./modules/gdb.nix
+    ./modules/gpg-agent.nix
+    ./modules/infosec.nix
+    ./modules/infosec-linux.nix
+    ./modules/linux-packages.nix
+    # TODO Investigate if this fix is needed on NixOS
+    ./modules/locale-fix.nix
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
+    ./modules/packages.nix
     ./modules/pipx.nix
+    ./modules/sway.nix
 
     ./home.nix
-    ./sway.nix
-    ./linux-packages.nix
-    ./locale-fix.nix
-    ./gpg-agent.nix
-    ./infosec.nix
-    ./infosec-linux.nix
   ];
 
   home.packages = [
@@ -34,21 +36,17 @@
     };
   };
 
-  xdg.configFile = {
-    swayConfig = {
-      text = ''
-        # HiDPI setting
-        output * {
-          scale 1.5
-        }
-        # Slow down my cheap logitech mouse (logicool here in JP)
-        input "1133:49271:Logitech_USB_Optical_Mouse" {
-          accel_profile "flat"
-          pointer_accel 0.0
-        }
-      '';
-    };
-  };
+  xdg.configFile."sway/config.d/${osConfig.networking.hostName}".text = ''
+    # HiDPI setting
+    output * {
+      scale 1.5
+    }
+    # Slow down my cheap logitech mouse (logicool here in JP)
+    input "1133:49271:Logitech_USB_Optical_Mouse" {
+      accel_profile "flat"
+      pointer_accel 0.0
+    }
+  '';
 
   xresources = {
     properties = {
@@ -68,4 +66,6 @@
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };
+
+  home.stateVersion = "24.05";
 }

@@ -38,7 +38,6 @@
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  networking.hostName = "helium"; # Define your hostname.
   systemd.network.netdevs.wlo1.enable = false;
 
   # Set your time zone.

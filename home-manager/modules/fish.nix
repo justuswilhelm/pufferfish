@@ -95,14 +95,12 @@
   };
 
   xdg.configFile = {
-    fishFunctions = {
-      target = "fish/functions";
-      source = ../fish/functions;
+    "fish/functions" = {
+      source = ../../fish/functions;
       recursive = true;
     };
-    fishCompletions = {
-      target = "fish/completions";
-      source = ../fish/completions;
+    "fish/completions" = {
+      source = ../../fish/completions;
       recursive = true;
     };
   };

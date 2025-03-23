@@ -1,32 +1,32 @@
-{ lib, pkgs, osConfig, ... }:
+{ lib, osConfig, pkgs, ... }:
 let
-  modelName = "x280";
+  modelName = "x220";
 in
 {
   imports = [
-    ./modules/aider.nix
-    ./modules/design.nix
     ./modules/firefox.nix
     ./modules/foot.nix
-    ./modules/gdb.nix
-    ./modules/gpg-agent.nix
-    ./modules/infosec.nix
-    ./modules/infosec-linux.nix
-    ./modules/linux-packages.nix
-    # TODO Investigate if this fix is needed on NixOS
-    ./modules/locale-fix.nix
-    ./modules/packages.nix
     ./modules/ssh.nix
+    ./modules/paths.nix
+    ./modules/fish.nix
+    ./modules/fonts.nix
+    ./modules/git.nix
+    ./modules/gpg-agent.nix
+    ./modules/ssh.nix
+    ./modules/tmux.nix
+    ./modules/man.nix
+    ./modules/gpg.nix
+    ./modules/passwordstore.nix
     ./modules/sway.nix
+    # TODO
+    # ./modules/linux-packages.nix
+    # ./modules/packages.nix
 
-    # TODO enable
-    # ./modules/opensnitch.nix
+    ./modules/nvim.nix
+    ./modules/selenized.nix
 
-    ./home.nix
-  ];
-
-  home.packages = [
-    pkgs.tor-browser
+    # TODO
+    # ./home.nix
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
@@ -49,7 +49,7 @@ in
       scale 1.25
     }
 
-    output eDP-1 pos 0 0 res 1920x1080
+    # output eDP-1 pos 0 0 res 1920x1080
     # Configure the HDMI-2 output like so:
     # output HDMI-A-2 pos 1920 0 res 1920x1080
 
@@ -65,13 +65,13 @@ in
   '';
 
   programs.i3status.modules = {
-    "wireless wlp59s0" = {
-      settings = {
-        format_up = "wlp59s0: %ip (%quality)";
-        format_down = "wlp59s0: down";
-      };
-      position = 0;
-    };
+    # "wireless wlp59s0" = {
+    #   settings = {
+    #     format_up = "wlp59s0: %ip (%quality)";
+    #     format_down = "wlp59s0: down";
+    #   };
+    #   position = 0;
+    # };
     "battery 0" = {
       settings = {
         format = "%status %percentage %remaining %emptytime";
@@ -87,5 +87,5 @@ in
     };
   };
 
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
 }

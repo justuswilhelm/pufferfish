@@ -1,55 +1,48 @@
-{ config, lib, specialArgs, pkgs, ... }:
-
+{ config, lib, pkgs, specialArgs, ... }:
 {
   imports =
     [
-      ../modules/compat.nix
-      ../modules/infosec.nix
-      ../modules/man.nix
+      ../modules/sway.nix
       ../modules/networkd.nix
       ../modules/nix.nix
-      ../modules/openssh.nix
-      ../modules/sway.nix
-      ../modules/utm.nix
-      ../modules/yubikey.nix
-      ../modules/wlan.nix
+      ../modules/compat.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-
-      ./wireguard.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # https://wiki.qemu.org/Documentation/Networking
-
+  # Set your time zone.
   time.timeZone = "Asia/Tokyo";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."${specialArgs.name}" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      # Enable ‘sudo’ for the user.
+      "wheel"
+      # For light command
+      "video"
+    ];
     shell = pkgs.fish;
   };
 
-  environment.shells = [ pkgs.fish ];
-
-  programs.fish = {
+  programs.fish.enable = true;
+  programs.tmux.enable = true;
+  programs.git.enable = true;
+  programs.neovim = {
     enable = true;
-    useBabelfish = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
   };
-
-  environment.systemPackages = with pkgs; [
-    git
-    neovim
-    nnn
-    i3status
-    pciutils
-    tcpdump
-  ];
+  programs.light.enable = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
@@ -68,7 +61,6 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
 }
-

@@ -15,11 +15,12 @@
       pkgs.wl-clipboard
     ];
   };
+  # TODO move this to pipewire.nix module
   # From journalctl:
   # xdg-desktop-portal-wlr[4497]: 2024/08/31 07:36:18 [ERROR] - pipewire: couldn't connect to context
-  services.pipewire = {
-    enable = true;
-    wireplumber.enable = true;
-  };
-  xdg.portal.wlr.enable = true;
+  # services.pipewire = {
+  #   enable = true;
+  #   wireplumber.enable = true;
+  # };
+  # xdg.portal.wlr.enable = true;
 }

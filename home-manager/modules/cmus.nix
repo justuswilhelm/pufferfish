@@ -16,7 +16,7 @@ in
   config = mkIf cfg.enable {
     programs.cmus.extraConfig = ''
       set output_plugin=${cfg.output_plugin}
-      ${builtins.readFile ../cmus/rc}
+      ${builtins.readFile ../../cmus/rc}
     '';
   };
 }

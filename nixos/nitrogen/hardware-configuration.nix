@@ -17,8 +17,15 @@
 
   fileSystems."/" =
     {
-      device = "/dev/mapper/nitrogen_vg-root";
+      device = "/dev/mapper/${config.networking.hostName}_vg-root";
       fsType = "ext4";
+    };
+  fileSystems."/nix" =
+    {
+      depends = [ "/" ];
+      device = "/nix";
+      fsType = "none";
+      options = [ "bind" ];
     };
 
   fileSystems."/boot" =
@@ -30,13 +37,13 @@
 
   fileSystems."/home" =
     {
-      device = "/dev/mapper/nitrogen_vg-home";
+      device = "/dev/mapper/${config.networking.hostName}_vg-home";
       fsType = "ext4";
     };
 
 
   swapDevices =
-    [{ device = "/dev/mapper/nitrogen_vg-swap"; }];
+    [{ device = "/dev/mapper/${config.networking.hostName}_vg-swap"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

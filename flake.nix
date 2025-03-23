@@ -8,6 +8,8 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko/master";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
     pomoglorbo = {
       url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2024.11.22";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,6 +30,7 @@
     , pomoglorbo
     , projectify
     , utils
+    , disko
     }@inputs: {
       nixosConfigurations = {
         helium =
@@ -35,18 +38,20 @@
             name = "debian";
             system = "x86_64-linux";
             pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+            hostName = "helium";
           in
           nixpkgs.lib.nixosSystem {
             specialArgs = { inherit system name pkgs-unstable; };
             modules = [
-              ./nixos/helium/configuration.nix
               ./nixos/overlays.nix
+              ./nixos/${hostName}/configuration.nix
+              { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 # TODO migrate user
-                home-manager.users."${name}" = import ./home-manager/helium.nix;
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
                 };
@@ -56,17 +61,19 @@
         lithium-nixos =
           let
             name = "debian";
+            hostName = "lithium-nixos";
           in
           nixpkgs.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = { inherit name; };
             modules = [
-              ./nixos/lithium-nixos/configuration.nix
+              ./nixos/${hostName}/configuration.nix
+              { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/lithium-nixos.nix;
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
                 };
@@ -76,17 +83,42 @@
         nitrogen =
           let
             name = "debian";
+            hostName = "nitrogen";
           in
           nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit name; };
             modules = [
-              ./nixos/nitrogen/configuration.nix
+              ./nixos/${hostName}/configuration.nix
+              { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/nitrogen.nix;
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/${name}";
+                };
+              }
+            ];
+          };
+        carbon =
+          let
+            name = "debian";
+            hostName = "carbon";
+          in
+          nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit name; };
+            modules = [
+              disko.nixosModules.disko
+              ./nixos/${hostName}/configuration.nix
+              { networking = { inherit hostName; }; }
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
                 };
@@ -99,12 +131,14 @@
           system = "aarch64-darwin";
           pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           name = "debian";
+          hostName = "lithium";
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
           specialArgs = { inherit name; };
           modules = [
             { _module.args = inputs; }
+            { networking = { inherit hostName; }; }
             {
               nixpkgs.overlays = [
                 (final: previous: {
@@ -128,7 +162,7 @@
               home-manager.sharedModules = [
                 { _module.args = inputs; }
               ];
-              home-manager.users."${name}" = import ./home-manager/lithium.nix;
+              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
             }
           ];
         };
@@ -143,6 +177,7 @@
           shellcheck
         ];
       };
+      packages.disko-install = disko.outputs.packages.${system}.disko-install;
     }
     );
 }
