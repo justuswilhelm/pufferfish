@@ -85,6 +85,15 @@ in
     seat * xcursor_theme phinger-cursors-dark 32
   '';
 
+  # Run nix run nixpkgs#dconf -- dump /org/gnome/ | nix run nixpkgs#dconf2nix
+  # Generated via dconf2nix: https://github.com/gvolpe/dconf2nix
+  dconf.settings = with lib.hm.gvariant; {
+    "desktop/interface" = {
+      cursor-size = 32;
+      cursor-theme = "phinger-cursors-dark";
+    };
+  };
+
   programs.i3status = {
     enable = true;
     enableDefault = false;
