@@ -8,6 +8,6 @@
   };
   home.packages = [
     pkgs.pass
-    pkgs.rusty-diceware
+    pkgs.diceware
   ];
 }
