@@ -30,6 +30,7 @@ in
     # Databases
     pkgs.sqlite
 
+    # TODO create modules/writing.nix
     # File, media conversion, Graphics stuff
     pkgs.pandoc
     pkgs.texliveTeTeX
@@ -48,6 +49,7 @@ in
 
     # File transfers, Backups
     pkgs.rsync
+    # TODO unison still needed?
     pkgs.unison
 
     # Linters, Formatters, Spellcheckers
@@ -57,6 +59,7 @@ in
     valeWithStyles
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
+    # TODO move into modules/python.nix
     pkgs.ruff
 
     # Build tools
@@ -67,13 +70,17 @@ in
     pkgs.qemu
 
     # Compilers, Interpreters, VMs
+    # TODO this is already part of modules/poetry.nix
     pkgs.poetry
+    # TODO this could be part of modules/text-proc.nix
     pkgs.jq
+    # TODO this could be part of modules/text-proc.nix
     pkgs.miller
     pkgs.nodejs_20
     pkgs.go
     pkgs.j
 
+    # TODO move to modules/rust.nix
     # Rust
     # If pkgs.gcc is in the env as well, bad things happen with libiconv
     # and other macOS available binaries.
@@ -97,15 +104,21 @@ in
       }
     )
 
+    # TODO move to modules/business.nix
     # Business
     pkgs.hledger
 
+    # TODO unify with vdirsyncer config
     # "Business tools"
     pkgs.khal
     pkgs.khard
 
     # Shell
+    # TODO might not be needed because we have
+    # modules/fish.nix
     pkgs.fish
+    # TODO might not be needed because we have
+    # modules/tmux.nix
     pkgs.tmux
     pkgs.shellcheck
 
@@ -116,6 +129,7 @@ in
     pkgs.watch
     pkgs.hyperfine
     pkgs.pv
+    # TODO make this part of modules/ssh.nix
     pkgs.mosh
 
     # Secrets
@@ -127,6 +141,7 @@ in
     pkgs.p7zip
     pkgs.xz
 
+    # TODO this could be part of modules/text-proc.nix
     # Text tools
     pkgs.silver-searcher
     pkgs.ripgrep
