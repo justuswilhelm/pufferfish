@@ -64,6 +64,8 @@ let
 
   # Let borgmatic run for 2h max
   timeout = 60 * 60 * 2;
+  # Kill after not responding to SIGINT
+  killAfter = 2 * 60;
 in
 {
   environment.systemPackages = [ borgmatic ];
@@ -78,7 +80,7 @@ in
   launchd.daemons.borgmatic = {
     path = [ borgmatic pkgs.coreutils config.services.nagios.nsca-package ];
     # Kill after 120 seconds of not reacting to SIGINT
-    command = "timeout --kill-after=120 --signal INT ${toString timeout} borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
+    command = "timeout --kill-after=${toString killAfter}s --signal INT ${toString timeout}s borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
     serviceConfig = {
       # Performance
       ProcessType = "Background";

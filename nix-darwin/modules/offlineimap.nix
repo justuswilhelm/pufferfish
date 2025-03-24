@@ -4,6 +4,8 @@ let
   offlineimap = "${pkgs.offlineimap}/bin/offlineimap";
   logPath = "/Users/${name}/Library/Logs/offlineimap/offlineimap.log";
   timeout = 3 * 60;
+  # Kill after not responding to SIGINT
+  killAfter = 2 * 60;
   send_nsca = "${config.services.nagios.nsca-package}/bin/send_nsca";
   # TODO pull this value in from nsca config nix
   nsca_config = "/etc/nagios/send_nsca.conf";
@@ -28,7 +30,7 @@ in
           exit 0
         fi
         # Kill after 120 seconds of not reacting
-        if timeout --kill-after=120 --signal=INT ${toString timeout} ${offlineimap} -l ${logPath}
+        if timeout --kill-after=${toString killAfter}s --signal=INT ${toString timeout}s ${offlineimap} -l ${logPath}
         then
           echo -e 'lithium.local,offlineimap,0,success' | ${send_nsca} ${nsca_host} -p ${nsca_port} -c ${nsca_config} -d ,
         else
