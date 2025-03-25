@@ -13,8 +13,10 @@ let
   nsca_port = toString 5667;
 in
 {
+  environment.systemPackages = [ pkgs.offlineimap ];
+
   # Copied from /etc/newsyslog.d/wifi.conf
-  environment.etc."newsyslog.d/borgmatic.conf".text = ''
+  environment.etc."newsyslog.d/offlineimap.conf".text = ''
     # logfilename            [owner:group] mode count size when  flags [/pid_file] [sig_num]
     ${logPath}               ${name}       600  10    *    $D0   J
   '';
