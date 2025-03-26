@@ -15,12 +15,22 @@ in
 {
   environment.systemPackages = [ pkgs.offlineimap ];
 
-  # Copied from /etc/newsyslog.d/wifi.conf
-  environment.etc."newsyslog.d/offlineimap.conf".text = ''
-    # logfilename                     [owner:group] mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/offlineimap.stdout.log ${name}       600  10    *    $D0   J
-    ${logPath}/offlineimap.stderr.log ${name}       600  10    *    $D0   J
-  '';
+  services.newsyslog.modules.offlineimap = {
+    "${logPath}/offlineimap.stdout.log" = {
+      owner = name;
+      mode = "600";
+      count = 10;
+      when = "$D0";
+      flags = "J";
+    };
+    "${logPath}/offlineimap.stderr.log" = {
+      owner = name;
+      mode = "600";
+      count = 10;
+      when = "$D0";
+      flags = "J";
+    };
+  };
 
   launchd.user.agents = {
     "offlineimap" = {
