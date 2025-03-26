@@ -16,6 +16,7 @@ in
     ./modules/mdns-fix.nix
     ./modules/projectify.nix
     ./modules/aerospace.nix
+    ./modules/newsyslog.nix
 
     ./caddy.nix
     ./anki.nix
