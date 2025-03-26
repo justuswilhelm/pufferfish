@@ -182,11 +182,26 @@ in
   environment.systemPackages = [ attic-client attic-server ];
   environment.etc."attic/atticd.toml".source = tomlFormat.generate "atticd.toml" atticConfig;
 
-  environment.etc."newsyslog.d/attic.conf".text = ''
-    # logfilename               [owner:group] mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/attic.stdout.log attic:attic   640  10    *    $D0   J
-    ${logPath}/attic.stderr.log attic:attic   640  10    *    $D0   J
-  '';
+  services.newsyslog.modules.attic = {
+    "${logPath}/attic.stdout.log" = {
+      owner = "attic";
+      group = "attic";
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+    "${logPath}/attic.stderr.log" = {
+      owner = "attic";
+      group = "attic";
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+  };
 
   services.caddy.extraConfig = caddyConfig;
 
