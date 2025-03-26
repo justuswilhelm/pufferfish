@@ -162,6 +162,8 @@ let
       {
         "if".app-id = "org.libreoffice.script";
         "if".window-title-regex-substring = builtins.concatStringsSep "|" [
+          "Format Cells"
+          "Hyperlink"
           "Save Document"
           "Delete Contents"
           "Rename Sheet"
