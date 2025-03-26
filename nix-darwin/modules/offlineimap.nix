@@ -2,7 +2,7 @@
 let
   inherit (specialArgs) name;
   offlineimap = "${pkgs.offlineimap}/bin/offlineimap";
-  logPath = "/Users/${name}/Library/Logs/offlineimap/offlineimap.log";
+  logPath = "/Users/${name}/Library/Logs/offlineimap";
   timeout = 3 * 60;
   # Kill after not responding to SIGINT
   killAfter = 2 * 60;
@@ -17,8 +17,9 @@ in
 
   # Copied from /etc/newsyslog.d/wifi.conf
   environment.etc."newsyslog.d/offlineimap.conf".text = ''
-    # logfilename            [owner:group] mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}               ${name}       600  10    *    $D0   J
+    # logfilename                     [owner:group] mode count size when  flags [/pid_file] [sig_num]
+    ${logPath}/offlineimap.stdout.log ${name}       600  10    *    $D0   J
+    ${logPath}/offlineimap.stderr.log ${name}       600  10    *    $D0   J
   '';
 
   launchd.user.agents = {
@@ -44,6 +45,9 @@ in
         ProcessType = "Background";
         LowPriorityBackgroundIO = true;
         LowPriorityIO = true;
+        # We log everything, in case timeout or send_nsca encounter errors
+        StandardOutPath = "${logPath}/offlineimap.stdout.log";
+        StandardErrorPath = "${logPath}/offlineimap.stderr.log";
         # Every 5 minutes
         StartInterval = 5 * 60;
       };
