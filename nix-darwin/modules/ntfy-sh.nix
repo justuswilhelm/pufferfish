@@ -71,11 +71,26 @@ in
         systemPackages = [ cfg.package ];
       };
 
-      environment.etc."newsyslog.d/ntfy-sh.conf".text = ''
-        # logfilename         [owner:group]            mode count size when  flags [/pid_file] [sig_num]
-        ${logPath}/stdout.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
-        ${logPath}/stderr.log ${cfg.user}:${cfg.group} 640  10    *    $D0   J
-      '';
+      services.newsyslog.modules.ntfy-sh = {
+        "${logPath}/stdout.log" = {
+          owner = cfg.user;
+          group = cfg.group;
+          mode = "640";
+          count = 10;
+          size = "*";
+          when = "$D0";
+          flags = "J";
+        };
+        "${logPath}/stderr.log" = {
+          owner = cfg.user;
+          group = cfg.group;
+          mode = "640";
+          count = 10;
+          size = "*";
+          when = "$D0";
+          flags = "J";
+        };
+      };
 
       services.caddy.extraConfig = caddyConfig;
 

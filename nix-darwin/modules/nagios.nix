@@ -327,13 +327,44 @@ in
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
     environment.etc."nagios/nagios.cgi.conf".source = cfg.cgiConfigFile;
 
-    environment.etc."newsyslog.d/nagios.conf".text = ''
-      # logfilename                         [owner:group]             mode count size when  flags [/pid_file] [sig_num]
-      ${nagiosLogDir}/stdout.log            nagios:nagios             600  10    *    $D0   J
-      ${nagiosLogDir}/stderr.log            nagios:nagios             600  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stdout.log   nagios-nsca:nagios-nsca   600  10    *    $D0   J
-      ${nagiosNscaLogDir}/nsca.stderr.log   nagios-nsca:nagios-nsca   600  10    *    $D0   J
-    '';
+    services.newsyslog.modules.nagios = {
+      "${nagiosLogDir}/stdout.log" = {
+        owner = "nagios";
+        group = "nagios";
+        mode = "600";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${nagiosLogDir}/stderr.log" = {
+        owner = "nagios";
+        group = "nagios";
+        mode = "600";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${nagiosNscaLogDir}/nsca.stdout.log" = {
+        owner = "nagios-nsca";
+        group = "nagios-nsca";
+        mode = "600";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${nagiosNscaLogDir}/nsca.stderr.log" = {
+        owner = "nagios-nsca";
+        group = "nagios-nsca";
+        mode = "600";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+    };
 
     services.caddy.enablePhp = mkIf cfg.enableWebInterface true;
     services.caddy.extraConfig = caddyConfig;

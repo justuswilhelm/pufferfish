@@ -1,5 +1,5 @@
 # Modules used to debug networking
-{ specialArgs, pkgs, ... } :
+{ specialArgs, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     tcpdump

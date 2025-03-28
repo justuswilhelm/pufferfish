@@ -2,8 +2,10 @@
 let
   inherit (specialArgs) name;
   offlineimap = "${pkgs.offlineimap}/bin/offlineimap";
-  logPath = "/Users/${name}/Library/Logs/offlineimap/offlineimap.log";
+  logPath = "/Users/${name}/Library/Logs/offlineimap";
   timeout = 3 * 60;
+  # Kill after not responding to SIGINT
+  killAfter = 2 * 60;
   send_nsca = "${config.services.nagios.nsca-package}/bin/send_nsca";
   # TODO pull this value in from nsca config nix
   nsca_config = "/etc/nagios/send_nsca.conf";
@@ -11,11 +13,24 @@ let
   nsca_port = toString 5667;
 in
 {
-  # Copied from /etc/newsyslog.d/wifi.conf
-  environment.etc."newsyslog.d/borgmatic.conf".text = ''
-    # logfilename            [owner:group] mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}               ${name}       600  10    *    $D0   J
-  '';
+  environment.systemPackages = [ pkgs.offlineimap ];
+
+  services.newsyslog.modules.offlineimap = {
+    "${logPath}/offlineimap.stdout.log" = {
+      owner = name;
+      mode = "600";
+      count = 10;
+      when = "$D0";
+      flags = "J";
+    };
+    "${logPath}/offlineimap.stderr.log" = {
+      owner = name;
+      mode = "600";
+      count = 10;
+      when = "$D0";
+      flags = "J";
+    };
+  };
 
   launchd.user.agents = {
     "offlineimap" = {
@@ -28,7 +43,7 @@ in
           exit 0
         fi
         # Kill after 120 seconds of not reacting
-        if timeout --kill-after=120 --signal=INT ${toString timeout} ${offlineimap} -l ${logPath}
+        if timeout --kill-after=${toString killAfter}s --signal=INT ${toString timeout}s ${offlineimap} -l ${logPath}
         then
           echo -e 'lithium.local,offlineimap,0,success' | ${send_nsca} ${nsca_host} -p ${nsca_port} -c ${nsca_config} -d ,
         else
@@ -40,6 +55,9 @@ in
         ProcessType = "Background";
         LowPriorityBackgroundIO = true;
         LowPriorityIO = true;
+        # We log everything, in case timeout or send_nsca encounter errors
+        StandardOutPath = "${logPath}/offlineimap.stdout.log";
+        StandardErrorPath = "${logPath}/offlineimap.stderr.log";
         # Every 5 minutes
         StartInterval = 5 * 60;
       };
