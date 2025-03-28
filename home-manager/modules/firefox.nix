@@ -173,5 +173,17 @@ in
         "signon.rememberSignons" = true;
       };
     };
+    profiles.claude = {
+      id = 2;
+      name = "claude";
+      search.default = "DuckDuckGo";
+      search.force = true;
+      search.engines = {
+        "Bing".metaData.hidden = true;
+        "Google".metaData.hidden = true;
+        "Amazon.co.jp".metaData.hidden = true;
+        "Wikipedia (en)".metaData.hidden = true;
+      };
+    };
   };
 }
