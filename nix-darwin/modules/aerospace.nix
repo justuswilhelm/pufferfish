@@ -169,6 +169,7 @@ let
           "Rename Sheet"
           "Confirmation"
           "Page Style: .+"
+          "Chart Type"
         ];
         run = [ "layout floating" ];
       }
