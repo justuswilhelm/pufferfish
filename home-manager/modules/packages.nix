@@ -80,12 +80,6 @@ in
     pkgs.go
     pkgs.j
 
-    # TODO move to modules/rust.nix
-    # Rust
-    # If pkgs.gcc is in the env as well, bad things happen with libiconv
-    # and other macOS available binaries.
-    pkgs.rustup
-
     # TUIs
     pkgs.htop
     pkgs.fzf
