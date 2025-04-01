@@ -1,7 +1,6 @@
 { lib, pkgs, config, options, specialArgs, ... }:
 {
   home.sessionPath = [
-    "${config.home.homeDirectory}/.local/bin"
     "${config.home.sessionVariables.DOTFILES}/bin"
   ];
 
