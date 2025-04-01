@@ -161,16 +161,25 @@ let
       }
       {
         "if".app-id = "org.libreoffice.script";
-        "if".window-title-regex-substring = builtins.concatStringsSep "|" [
-          "Format Cells"
-          "Hyperlink"
-          "Save Document"
-          "Delete Contents"
-          "Rename Sheet"
-          "Confirmation"
-          "Page Style: .+"
-          "Chart Type"
-        ];
+        "if".window-title-regex-substring = lib.strings.concatMapStringsSep
+          "|"
+          (s: "(${s})")
+          [
+            "(Format|Insert) Cells"
+            "Hyperlink"
+            "Save Document"
+            "Delete Contents"
+            "Rename Sheet"
+            "Confirmation"
+            "Page Style: .+"
+            "Chart (Area|Type|Wall)"
+            "Data (Table|Ranges)"
+            "(X|Y) Axis"
+            "Axes"
+            "Legend"
+            "Titles"
+            "Find And Replace"
+          ];
         run = [ "layout floating" ];
       }
       {
