@@ -24,7 +24,7 @@ in
   };
   config = {
     home.sessionVariables = {
-      TMUXP_CONFIGDIR = "${config.home.xdg.configHome}/tmuxp";
+      TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmuxp";
     };
     programs.tmux = {
       enable = true;
