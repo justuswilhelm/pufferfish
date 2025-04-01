@@ -88,15 +88,6 @@ in
     # https://github.com/NixOS/nixpkgs/issues/299091
     # pkgs.ncdu
     pkgs.ncurses
-    (
-      pkgs.symlinkJoin {
-        name = "nnn";
-        paths = [ pkgs.nnn pkgs.gnused ];
-        postBuild = ''
-          cp $out/bin/sed $out/bin/gsed
-        '';
-      }
-    )
 
     # TODO move to modules/business.nix
     # Business
