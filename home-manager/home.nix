@@ -7,6 +7,7 @@
     ./modules/git.nix
     ./modules/gpg.nix
     ./modules/man.nix
+    ./modules/nnn.nix
     ./modules/nvim.nix
     ./modules/passwordstore.nix
     ./modules/paths.nix

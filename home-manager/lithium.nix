@@ -14,6 +14,7 @@ in
     ./modules/packages.nix
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix
+    ./modules/rust.nix
     ./modules/timewarrior.nix
 
     ./home.nix
