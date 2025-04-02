@@ -27,6 +27,7 @@ in
 
   home.packages = [
     pkgs.tor-browser
+    pkgs.powertop
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
