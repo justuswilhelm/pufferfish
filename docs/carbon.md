@@ -9,22 +9,10 @@ date: 2025-03-22
 nix run .#nixosConfigurations.carbon.config.system.build.vm
 ```
 
-# Disko
-
-Refer to:
-
-<https://github.com/nix-community/disko/blob/master/docs/disko-install.md>
+# Installer ISO
 
 Install on USB stick at `/dev/sdb`
 
 ```bash
-sudo nix run .#disko-install -- --flake $PWD#carbon --disk main /dev/sdb
-```
-
-Test the usb stick:
-
-```bash
-sudo qemu-kvm -enable-kvm -hda /dev/sdb
-# If it doesn't work because of a gtk initialization error, try
-sudo -E qemu-kvm -enable-kvm -hda /dev/sdb
+nixos-generate --flake .#carbon --format iso -o result
 ```

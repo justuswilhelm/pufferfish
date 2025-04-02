@@ -44,6 +44,10 @@
   };
   programs.light.enable = true;
 
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCXBdOyd39mbxF+KdoKF2DvRVtAydzldUZnRXdpS0fdG33fiicqBYRH5wwRDL9cnWFrST7qlBJJ1H/1x6tk8WMTGK6k1V369ZCmf3VYQ28+GXGh0MUiueRq7wwFCKdnrbiR2BTegFgHpm0w71g4vVLkm12cQfduBAzmBG1gG1RYVk1JsMXzeImzK1A1yP/k6abo5Gu2YR2O1a/2D2RUiGlqBaGXMYiT+FhpsM/KobDGLXkjOaPj1FhbSFjzogKZcyKmtVCcSVSe617nub5DhdSd4ywF+sCszlrfR3Va08OpjKHAFQCkEF9QpZzYULjdURakvl8xH5lZVQqRhzb5s0ndYOxzt+j4rhX8dk+4BuVFOOKBbkdytSi1ni7K8FNtzqS+X12wNuJe9dFI6tPaZ1D18SeQslOoGawMhqMPItHhWPEs3nH34RM8yYQM/fiEPW1E8g4+HVjja4a7OSehOwYKohrDo266x1nTzMQULdcdEKOWK0jM/G+m1tuWPmB/L00= justus@jwpconsulting.net"
+  ];
+
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #
