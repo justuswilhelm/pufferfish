@@ -22,8 +22,8 @@ in
       default = "wl-copy";
     };
   };
-  home.sessionVariables = {
-    TMUXP_CONFIGDIR = "${config.home.xdgConfigHome}/tmuxp";
+  config.home.sessionVariables = {
+    TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmuxp";
   };
   config.programs.tmux = {
     enable = true;
