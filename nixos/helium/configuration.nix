@@ -32,7 +32,6 @@
     "nouveau"
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_6_11;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
