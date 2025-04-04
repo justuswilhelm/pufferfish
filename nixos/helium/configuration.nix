@@ -7,6 +7,7 @@
       ../modules/ime.nix
       ../modules/infosec.nix
       ../modules/man.nix
+      ../modules/metasploit.nix
       ../modules/nagios.nix
       ../modules/networkd.nix
       ../modules/nix.nix
@@ -16,7 +17,6 @@
       ../modules/podman.nix
       ../modules/sway.nix
       ../modules/yubikey.nix
-      ../modules/metasploit.nix
 
       # TODO set up impermanence
       # https://github.com/nix-community/impermanence
