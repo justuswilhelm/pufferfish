@@ -6,6 +6,7 @@
       ../modules/networkd.nix
       ../modules/nix.nix
       ../modules/compat.nix
+      ../modules/openssh.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix

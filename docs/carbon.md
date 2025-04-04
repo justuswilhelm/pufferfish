@@ -14,7 +14,7 @@ nix run .#nixosConfigurations.carbon.config.system.build.vm
 Install on USB stick at `/dev/sdb`
 
 ```bash
-nixos-generate --flake .#carbon --format iso -o result
+nixos-generate --format iso -o result
 ```
 
 Verify build:
@@ -27,16 +27,41 @@ result/iso/nixos.iso: ISO 9660 CD-ROM filesystem data (DOS/MBR boot sector) 'nix
 Copy to USB stick:
 
 ```bash
-pv result/iso/nixos.iso | sudo tee /dev/sdb > /dev/null
+pv result/iso/nixos.iso | sudo tee /dev/sdd > /dev/null
 ```
 
-Then boot on Carbon and run this on other machine:
+Create LUKS secrets for carbon:
 
 ```bash
-read target_user
+sudo mkdir -p /var/lib/carbon-secrets
+sudo chmod 700 /var/lib/carbon-secrets
+diceware -n5 -d'-' --no-caps | sudo tee /var/lib/carbon-secrets/luks.password
+```
+
+Then boot Carbon with USB stick:
+
+```bash
+systemctl start sshd.service
+passwd root
+# Enter pw used for installation
+```
+
+Run this on other machine:
+
+```bash
 read target_ip
-nixos-anywhere --ssh-option IdentityFile=$HOME/.ssh/id_rsa_yubikey.pub \
+# Test connectivity
+ssh -o PasswordAuthentication=yes root@$target_ip
+# Run installation
+nixos-anywhere --ssh-option PasswordAuthentication=yes \
   --flake .#carbon \
   --target-host root@$target_ip
 ```
-nixos-anywhere --ssh-option IdentityFile=$HOME/.ssh/id_rsa_yubikey.pub --flake .#carbon --target-host root@$target_ip
+
+After nixos-anywhere boots into kernel, run the following, in case the IP
+address it not retrieved correctly:
+
+```bash
+ip address change dev enps0s25 $ip/24
+```
+
