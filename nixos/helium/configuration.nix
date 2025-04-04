@@ -9,6 +9,7 @@
       ../modules/man.nix
       ../modules/metasploit.nix
       ../modules/nagios.nix
+      ../modules/network-debug.nix
       ../modules/networkd.nix
       ../modules/nix.nix
       ../modules/opensnitch.nix
