@@ -36,7 +36,6 @@ Then boot on Carbon and run this on other machine:
 read target_user
 read target_ip
 nixos-anywhere --ssh-option IdentityFile=$HOME/.ssh/id_rsa_yubikey.pub \
-  --generate-hardware-config nixos-generate-config nixos/carbon/hardware-configuration.nix \
   --flake .#carbon \
   --target-host root@$target_ip
 ```
