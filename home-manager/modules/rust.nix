@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home.sessionPath = [
     "${config.home.homeDirectory}/.cargo/bin"
