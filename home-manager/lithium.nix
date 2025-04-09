@@ -5,7 +5,6 @@ let
 in
 {
   imports = [
-    ./modules/aider.nix
     ./modules/alacritty.nix
     ./modules/cmus.nix
     ./modules/neomutt.nix
