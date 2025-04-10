@@ -43,7 +43,7 @@ in
           exit 0
         fi
         # Kill after 120 seconds of not reacting
-        if timeout --kill-after=${toString killAfter}s --signal=INT ${toString timeout}s ${offlineimap} -l ${logPath}
+        if timeout --kill-after=${toString killAfter}s --signal=INT ${toString timeout}s ${offlineimap}
         then
           echo -e 'lithium.local,offlineimap,0,success' | ${send_nsca} ${nsca_host} -p ${nsca_port} -c ${nsca_config} -d ,
         else
