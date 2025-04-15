@@ -3,13 +3,14 @@ let
   yamlFormat = pkgs.formats.yaml { };
   config = {
     # https://aider.chat/docs/leaderboards/
-    model = "anthropic/claude-3-7-sonnet-20250219";
+    model = "openrouter/anthropic/claude-3.7-sonnet";
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
     # https://aider.chat/HISTORY.html#aider-v0760
     # Fixed Git identity retrieval to respect global configuration, by Akira Komamura.
     git = true;
+    analytics = false;
   };
 in
 {
@@ -20,7 +21,11 @@ in
     pkgs.pipx
     (pkgs.writeShellApplication {
       name = "aid";
-      runtimeInputs = [ pkgs.stdenv.cc.cc.lib pkgs.glibc pkgs.ungoogled-chromium ];
+      runtimeInputs = [
+        pkgs.stdenv.cc.cc.lib
+        pkgs.glibc
+        pkgs.ungoogled-chromium
+      ];
       text = ''
         #!/usr/bin/env bash
         export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:''${LD_LIBRARY_PATH:-}"
