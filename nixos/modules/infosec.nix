@@ -11,6 +11,8 @@ in
     # For http server
     8080
   ];
+  networking.firewall.logRefusedPackets = true;
+  networking.firewall.logRefusedConnections = true;
   networking.firewall.allowedUDPPorts = [
     # For tftp
     4444
