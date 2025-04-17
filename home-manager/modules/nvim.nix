@@ -37,4 +37,11 @@
       --headless \
       +"PlugUpdate --sync" +qa
   '';
+
+  programs.fish.shellAbbrs = {
+      # Neovim abbreviations
+      # --------------------
+      # Start neovim
+      e = "nvim";
+  };
 }

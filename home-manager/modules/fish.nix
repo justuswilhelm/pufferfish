@@ -2,24 +2,15 @@
 {
   programs.fish = {
     enable = true;
+    # TODO selenized
     interactiveShellInit = ''
       fish_config theme choose "Solarized Light"
     '';
     shellAbbrs = {
-      # Fish abbreviations
-      # ------------------
       # Reload fish session. Useful if config.fish has changed.
       reload = "exec fish";
-
-      # File abbreviations
-      # ------------------
       # Ls shortcut with color, humanized, list-based output
       l = "ls -lhaG";
-
-      # Neovim abbreviations
-      # --------------------
-      # Start neovim
-      e = "nvim";
     };
   };
 
