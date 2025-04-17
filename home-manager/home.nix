@@ -13,6 +13,7 @@
     ./modules/paths.nix
     ./modules/pdb.nix
     ./modules/poetry.nix
+    ./modules/radare.nix
     ./modules/selenized.nix
     ./modules/ssh.nix
     ./modules/tmux.nix

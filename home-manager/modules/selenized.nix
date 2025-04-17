@@ -264,12 +264,14 @@ in
   # https://neomutt.org/guide/configuration
   xdg.configFile."neomutt/colors".text = neomutt;
   xdg.configFile."neomutt/colors".enable = config.programs.neomutt.enable;
-  xdg.configFile."radare2/radare2rc".text = ''
-    e cfg.fortunes = true
-    e scr.color = 3
-    # selenized colors
-    ${radare2}
-  '';
+  xdg.configFile."radare2/radare2rc" = lib.mkIf config.programs.radare2.enable {
+      text = ''
+      e cfg.fortunes = true
+      e scr.color = 3
+      # selenized colors
+      ${radare2}
+    '';
+  };
   xdg.configFile."timewarrior/selenized.theme".text = timewarrior;
   programs.alacritty.settings.colors = alacritty;
   programs.tmux.extraConfig = tmux;
