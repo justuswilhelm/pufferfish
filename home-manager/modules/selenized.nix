@@ -262,15 +262,20 @@ in
   # nix eval --file $DOTFILES/nix/home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
 {
   # https://neomutt.org/guide/configuration
-  xdg.configFile."neomutt/colors".text = neomutt;
-  xdg.configFile."neomutt/colors".enable = config.programs.neomutt.enable;
-  xdg.configFile."radare2/radare2rc".text = ''
-    e cfg.fortunes = true
-    e scr.color = 3
-    # selenized colors
-    ${radare2}
-  '';
+  xdg.configFile."neomutt/colors" = lib.mkIf config.programs.neomutt.enable {
+    text = neomutt;
+  };
+  # TODO detect if radare is installed
+  xdg.configFile."radare2/radare2rc" = lib.mkIf config.programs.radare2.enable {
+      text = ''
+      e cfg.fortunes = true
+      e scr.color = 3
+      # selenized colors
+      ${radare2}
+    '';
+  };
   xdg.configFile."timewarrior/selenized.theme".text = timewarrior;
-  programs.alacritty.settings.colors = alacritty;
-  programs.tmux.extraConfig = tmux;
+  programs.alacritty.settings.colors = lib.mkIf config.programs.alacritty.enable alacritty;
+  programs.tmux.extraConfig = lib.mkIf config.programs.tmux.enable tmux;
+  # TODO fish colors
 }

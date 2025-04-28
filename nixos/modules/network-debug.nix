@@ -16,6 +16,6 @@
     # For tcpdump
     "pcap"
     # For wireshark
-    "dumpcap"
+    "wireshark"
   ];
 }

@@ -15,19 +15,6 @@ let
 in
 {
   home.packages = [
-    # Reverse engineering
-    # ===================
-    (
-      pkgs.symlinkJoin {
-        name = "radare2";
-        paths = [
-          pkgs.radare2
-          pkgs.meson
-          pkgs.ninja
-        ];
-      }
-    )
-
     # Binary
     # ======
     pkgs.programmer-calculator
