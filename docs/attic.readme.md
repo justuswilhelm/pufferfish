@@ -81,3 +81,12 @@ WantMassQuery: 1
 StoreDir: /nix/store
 Priority: 41
 ```
+
+# Troubleshooting
+
+Cache offline and you can't build? On darwin, run the following:
+
+```
+nix build .#darwinConfigurations.lithium.system --option substitute false
+rebuild
+```

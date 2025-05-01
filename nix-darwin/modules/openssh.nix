@@ -28,7 +28,7 @@
     Subsystem sftp /bin/false
   '';
   environment.etc."ssh/sshd_config.d/300-log.conf".text = ''
-     SyslogFacility AUTH
-     LogLevel INFO
+    SyslogFacility AUTH
+    LogLevel INFO
   '';
 }

@@ -1,9 +1,6 @@
 { lib, pkgs, config, options, specialArgs, ... }:
 {
-  home.homeDirectory = specialArgs.homeDirectory;
   home.sessionPath = [
-    "${config.home.homeDirectory}/.local/bin"
-    "${config.home.homeDirectory}/.cargo/bin"
     "${config.home.sessionVariables.DOTFILES}/bin"
   ];
 
@@ -14,7 +11,6 @@
     XDG_DATA_HOME = config.xdg.dataHome;
     XDG_STATE_HOME = config.xdg.stateHome;
     XDG_CACHE_HOME = config.xdg.cacheHome;
-    NNN_OPENER = "less";
     # XXX Still needed?
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";

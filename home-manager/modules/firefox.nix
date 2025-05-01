@@ -143,7 +143,7 @@ in
           }];
           definedAliases = [ "kagi" ];
         };
-        "DuckDuckGo".metaData.hidden = true;
+        "DuckDuckGo".metaData.hidden = false;
         "Bing".metaData.hidden = true;
         "Google".metaData.hidden = true;
         "Amazon.co.jp".metaData.hidden = true;
@@ -171,6 +171,18 @@ in
         "network.proxy.ssl_port" = "8080";
         "network.proxy.type" = "1";
         "signon.rememberSignons" = true;
+      };
+    };
+    profiles.claude = {
+      id = 2;
+      name = "claude";
+      search.default = "DuckDuckGo";
+      search.force = true;
+      search.engines = {
+        "Bing".metaData.hidden = true;
+        "Google".metaData.hidden = true;
+        "Amazon.co.jp".metaData.hidden = true;
+        "Wikipedia (en)".metaData.hidden = true;
       };
     };
   };

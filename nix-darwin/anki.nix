@@ -1,5 +1,5 @@
 # TODO add password hashing
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   anki-sync-server = pkgs.anki-sync-server;
   username = "anki-sync-server";
@@ -9,6 +9,21 @@ let
   usersPath = "${home}/users";
   syncUser1 = "${usersPath}/sync_user_1";
   logPath = "/var/log/${username}";
+  host = "127.0.0.1";
+  port = 18090;
+  caddyConfig = ''
+    # Anki
+    https://lithium.local:10101 {
+      import certs
+
+      reverse_proxy ${host}:${toString port}
+
+      log {
+        format console
+        output file ${config.services.caddy.logPath}/anki.log
+      }
+    }
+  '';
 in
 {
   users.groups.anki-sync-server = {
@@ -24,15 +39,35 @@ in
   users.knownGroups = [ username ];
   users.knownUsers = [ groupname ];
 
-  environment.etc."newsyslog.d/anki.conf".text = ''
-    # logfilename                          [owner:group]            mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/anki-sync-server.stdout.log ${username}:${groupname} 640  10    *    $D0   J
-    ${logPath}/anki-sync-server.stderr.log ${username}:${groupname} 640  10    *    $D0   J
-  '';
+  services.newsyslog.modules.anki = {
+    "${logPath}/anki-sync-server.stdout.log" = {
+      owner = username;
+      group = groupname;
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+    "${logPath}/anki-sync-server.stderr.log" = {
+      owner = username;
+      group = groupname;
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+  };
+
+  services.caddy.extraConfig = caddyConfig;
 
   launchd.daemons.anki-sync-server = {
     path = [ pkgs.coreutils anki-sync-server ];
     script = ''
+      mkdir -p ${statePath}
+      mkdir -p ${usersPath}
+
       SYNC_USER1="$(cat ${syncUser1})"
       export SYNC_USER1
       # https://docs.ankiweb.net/sync-server.html#hashed-passwords
@@ -51,15 +86,15 @@ in
       StandardErrorPath = "${logPath}/anki-sync-server.stderr.log";
       UserName = username;
       EnvironmentVariables = {
-        SYNC_HOST = "127.0.0.1";
-        SYNC_PORT = "18090";
+        SYNC_HOST = host;
+        SYNC_PORT = toString port;
         SYNC_BASE = statePath;
       };
     };
   };
   system.activationScripts.preActivation = {
     text = ''
-      mkdir -pv ${home} ${logPath} ${statePath} ${usersPath}
+      mkdir -pv ${home} ${logPath}
 
       chown -R ${username}:${groupname} ${home} ${logPath}
       chmod -R go= ${home}

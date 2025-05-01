@@ -1,4 +1,4 @@
-{ lib, pkgs, config, options, specialArgs, ... }:
+{ lib, pkgs, config, options, ... }:
 {
   manual.html.enable = true;
 }

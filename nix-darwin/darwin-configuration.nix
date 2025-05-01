@@ -15,6 +15,8 @@ in
     ./modules/vdirsyncer.nix
     ./modules/mdns-fix.nix
     ./modules/projectify.nix
+    ./modules/aerospace.nix
+    ./modules/newsyslog.nix
 
     ./caddy.nix
     ./anki.nix
@@ -160,8 +162,8 @@ in
   };
   system.startup.chime = false;
 
-  power.sleep.computer = 2;
-  power.sleep.display = 2;
+  power.sleep.computer = 3;
+  power.sleep.display = 3;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

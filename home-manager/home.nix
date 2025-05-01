@@ -1,39 +1,21 @@
 { lib, pkgs, config, options, ... }:
 {
   imports = [
-    ./modules/paths.nix
+    ./modules/direnv.nix
+    ./modules/fish.nix
     ./modules/fonts.nix
-    ./modules/pdb.nix
-    ./modules/ssh.nix
-    ./modules/man.nix
+    ./modules/git.nix
     ./modules/gpg.nix
-
-    ./git.nix
-    ./tmux.nix
-    ./cmus.nix
-    ./nvim.nix
-    ./neomutt.nix
-    ./packages.nix
-    ./selenized.nix
-    ./fish.nix
-    ./asdf.nix
-    ./passwordstore.nix
+    ./modules/man.nix
+    ./modules/nnn.nix
+    ./modules/nvim.nix
+    ./modules/passwordstore.nix
+    ./modules/paths.nix
+    ./modules/pdb.nix
+    ./modules/poetry.nix
+    ./modules/radare.nix
+    ./modules/selenized.nix
+    ./modules/ssh.nix
+    ./modules/tmux.nix
   ];
-
-  home.stateVersion = "24.05";
-
-  programs.home-manager.enable = true;
-
-  programs.poetry = {
-    enable = true;
-    settings = {
-      cache-dir = "${config.xdg.cacheHome}/pypoetry";
-    };
-  };
-
-  # TODO separate module
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
 }

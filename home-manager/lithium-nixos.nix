@@ -1,16 +1,28 @@
-{ lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
-    ./modules/gdb.nix
-    ./modules/foot.nix
+    # ./infosec-linux.nix
+    # ./infosec.nix
+    ./modules/direnv.nix
     ./modules/firefox.nix
-
-    ./home.nix
-    ./sway.nix
-    ./linux-packages.nix
-    ./infosec.nix
-    ./infosec-linux.nix
-    ./gpg-agent.nix
+    ./modules/fish.nix
+    ./modules/fonts.nix
+    ./modules/foot.nix
+    ./modules/git.nix
+    ./modules/gpg-agent.nix
+    ./modules/gpg.nix
+    ./modules/linux-packages.nix
+    ./modules/man.nix
+    ./modules/nvim.nix
+    ./modules/packages.nix
+    ./modules/passwordstore.nix
+    ./modules/paths.nix
+    ./modules/pdb.nix
+    ./modules/poetry.nix
+    ./modules/selenized.nix
+    ./modules/ssh.nix
+    ./modules/sway.nix
+    ./modules/tmux.nix
   ];
 
   programs.i3status.modules = {
@@ -25,25 +37,13 @@
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
 
-  programs.fish.loginShellInit = ''
-    # If running from tty1 start sway
-    if [ (tty) = /dev/tty1 ]
-        exec sway
-    end
-    gpg-connect-agent /bye
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  xdg.configFile."sway/config.d/${osConfig.networking.hostName}".text = ''
+    # HiDPI setting
+    output * {
+      scale 1
+    }
+    exec spice-vdagent
   '';
 
-  xdg.configFile = {
-    swayLithiumNixOs = {
-      text = ''
-        # HiDPI setting
-        output * {
-          scale 1
-        }
-        exec spice-vdagent
-      '';
-      target = "sway/config.d/sway-lithium-nixos";
-    };
-  };
+  home.stateVersion = "24.05";
 }

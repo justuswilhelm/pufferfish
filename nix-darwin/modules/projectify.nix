@@ -1,7 +1,7 @@
-{ pkgs, projectify, specialArgs, ... }:
+{ pkgs, ... }:
 let
-  frontend = projectify.outputs.packages.${specialArgs.system}.projectify-frontend-node;
-  backend = projectify.outputs.packages.${specialArgs.system}.projectify-backend;
+  frontend = pkgs.projectify-frontend-node;
+  backend = pkgs.projectify-backend;
   logPath = "/var/log/projectify";
   frontendPort = "18101";
   backendPort = "18102";
