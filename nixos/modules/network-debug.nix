@@ -6,6 +6,7 @@
     tcpdump
     ethtool
     arp-scan
+    socat
     # Just enabling wireshark wasn't enough
     wireshark
   ];

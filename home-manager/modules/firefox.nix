@@ -143,7 +143,7 @@ in
           }];
           definedAliases = [ "kagi" ];
         };
-        "DuckDuckGo".metaData.hidden = true;
+        "DuckDuckGo".metaData.hidden = false;
         "Bing".metaData.hidden = true;
         "Google".metaData.hidden = true;
         "Amazon.co.jp".metaData.hidden = true;

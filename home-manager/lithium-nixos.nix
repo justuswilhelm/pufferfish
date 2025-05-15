@@ -1,18 +1,18 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, osConfig, ... }:
 {
   imports = [
-    ./modules/gdb.nix
-    ./modules/foot.nix
+    ./modules/direnv.nix
     ./modules/firefox.nix
     ./modules/gpg-agent.nix
-    ./modules/infosec.nix
     ./modules/infosec-linux.nix
+    ./modules/infosec.nix
     ./modules/linux-packages.nix
     ./modules/packages.nix
+    ./modules/selenized.nix
     ./modules/sway.nix
 
     ./home.nix
-  ];
+    ];
 
   programs.i3status.modules = {
     "ethernet enp0s1" = {

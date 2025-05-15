@@ -11,8 +11,10 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot.kernelModules = [ "88x2bu" ];
+  boot.extraModulePackages = [
+    config.boot.kernelPackages.rtl88x2bu
+  ];
 
   fileSystems."/" =
     {
