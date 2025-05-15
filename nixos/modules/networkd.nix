@@ -75,6 +75,7 @@
     arp-scan
     traceroute
     conntrack-tools
+    socat
     # Just enabling wireshark wasn't enough
     wireshark
   ];
