@@ -8,6 +8,7 @@
       ../modules/infosec.nix
       ../modules/man.nix
       ../modules/metasploit.nix
+      ../modules/mullvad.nix
       ../modules/nagios.nix
       ../modules/network-debug.nix
       ../modules/networkd.nix
