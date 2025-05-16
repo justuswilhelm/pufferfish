@@ -44,6 +44,7 @@ in
           hash = "sha256-NuJmKkjhrnPpxP5zNpB9Af6wC2xkpfxhCdM62nFHA7c=";
         };
       };
+      ghidra = pkgs-unstable.ghidra;
     })
   ];
 }

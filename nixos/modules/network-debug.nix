@@ -1,12 +1,13 @@
 # Modules used to debug networking
-{ specialArgs, pkgs, ... } :
+{ specialArgs, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    # For debugging
     tcpdump
     ethtool
     arp-scan
     socat
+    traceroute
+    conntrack-tools
     # Just enabling wireshark wasn't enough
     wireshark
   ];
@@ -16,6 +17,6 @@
     # For tcpdump
     "pcap"
     # For wireshark
-    "dumpcap"
+    "wireshark"
   ];
 }

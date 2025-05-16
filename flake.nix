@@ -10,6 +10,10 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko/master";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    # optionally choose not to download darwin deps (saves some resources on Linux)
+    agenix.inputs.darwin.follows = "";
     pomoglorbo = {
       url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2024.11.22";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,6 +35,7 @@
     , projectify
     , utils
     , disko
+    , agenix
     }@inputs: {
       nixosConfigurations = {
         helium =
@@ -175,6 +180,10 @@
         buildInputs = with pkgs; [
           nodePackages.prettier
           shellcheck
+          nixos-anywhere
+          nixos-rebuild
+          nixos-generators
+          agenix.packages.${system}.default
         ];
       };
       packages.disko-install = disko.outputs.packages.${system}.disko-install;

@@ -5,7 +5,6 @@ let
 in
 {
   imports = [
-    ./modules/aider.nix
     ./modules/alacritty.nix
     ./modules/cmus.nix
     ./modules/neomutt.nix
@@ -14,6 +13,7 @@ in
     ./modules/packages.nix
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix
+    ./modules/rust.nix
     ./modules/timewarrior.nix
 
     ./home.nix

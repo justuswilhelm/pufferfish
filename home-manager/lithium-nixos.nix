@@ -1,18 +1,32 @@
 { lib, pkgs, osConfig, ... }:
 {
   imports = [
+    # ./modules/infosec-linux.nix
+    # ./modules/infosec.nix
+    # ./modules/passwordstore.nix
+
     ./modules/direnv.nix
     ./modules/firefox.nix
+    ./modules/fish.nix
+    ./modules/fonts.nix
+    ./modules/foot.nix
+    ./modules/git.nix
     ./modules/gpg-agent.nix
-    ./modules/infosec-linux.nix
-    ./modules/infosec.nix
+    ./modules/gpg.nix
     ./modules/linux-packages.nix
+    ./modules/man.nix
+    ./modules/nvim.nix
     ./modules/packages.nix
+    ./modules/paths.nix
+    ./modules/pdb.nix
+    ./modules/poetry.nix
     ./modules/selenized.nix
+    ./modules/ssh.nix
     ./modules/sway.nix
+    ./modules/tmux.nix
 
     ./home.nix
-    ];
+  ];
 
   programs.i3status.modules = {
     "ethernet enp0s1" = {

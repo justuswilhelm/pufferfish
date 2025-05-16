@@ -30,6 +30,7 @@ in
     # Databases
     pkgs.sqlite
 
+    # TODO create modules/writing.nix
     # File, media conversion, Graphics stuff
     pkgs.pandoc
     pkgs.texliveTeTeX
@@ -48,6 +49,7 @@ in
 
     # File transfers, Backups
     pkgs.rsync
+    # TODO unison still needed?
     pkgs.unison
 
     # Linters, Formatters, Spellcheckers
@@ -57,6 +59,7 @@ in
     valeWithStyles
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
+    # TODO move into modules/python.nix
     pkgs.ruff
 
     # Build tools
@@ -67,17 +70,15 @@ in
     pkgs.qemu
 
     # Compilers, Interpreters, VMs
+    # TODO this is already part of modules/poetry.nix
     pkgs.poetry
+    # TODO this could be part of modules/text-proc.nix
     pkgs.jq
+    # TODO this could be part of modules/text-proc.nix
     pkgs.miller
     pkgs.nodejs_20
     pkgs.go
     pkgs.j
-
-    # Rust
-    # If pkgs.gcc is in the env as well, bad things happen with libiconv
-    # and other macOS available binaries.
-    pkgs.rustup
 
     # TUIs
     pkgs.htop
@@ -87,31 +88,24 @@ in
     # https://github.com/NixOS/nixpkgs/issues/299091
     # pkgs.ncdu
     pkgs.ncurses
-    (
-      pkgs.symlinkJoin {
-        name = "nnn";
-        paths = [ pkgs.nnn pkgs.gnused ];
-        postBuild = ''
-          cp $out/bin/sed $out/bin/gsed
-        '';
-      }
-    )
 
+    # TODO move to modules/business.nix
     # Business
     pkgs.hledger
 
+    # TODO unify with vdirsyncer config
     # "Business tools"
     pkgs.khal
     pkgs.khard
 
     # Shell
+    # TODO might not be needed because we have
+    # modules/fish.nix
     pkgs.fish
+    # TODO might not be needed because we have
+    # modules/tmux.nix
     pkgs.tmux
     pkgs.shellcheck
-
-    # Version control
-    pkgs.git
-    pkgs.git-annex
 
     # Shell tools
     pkgs.cloc
@@ -120,10 +114,10 @@ in
     pkgs.watch
     pkgs.hyperfine
     pkgs.pv
+    # TODO make this part of modules/ssh.nix
     pkgs.mosh
 
     # Secrets
-    pkgs.gnupg
     pkgs.yubikey-manager
 
     # Archive things
@@ -132,6 +126,7 @@ in
     pkgs.p7zip
     pkgs.xz
 
+    # TODO this could be part of modules/text-proc.nix
     # Text tools
     pkgs.silver-searcher
     pkgs.ripgrep
@@ -141,7 +136,7 @@ in
 
     # Core tools
     pkgs.coreutils
-    pkgs.moreutils
+    # pkgs.moreutils
 
     # Nix
     pkgs.nix-index

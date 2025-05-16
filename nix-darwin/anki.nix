@@ -39,11 +39,26 @@ in
   users.knownGroups = [ username ];
   users.knownUsers = [ groupname ];
 
-  environment.etc."newsyslog.d/anki.conf".text = ''
-    # logfilename                          [owner:group]            mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/anki-sync-server.stdout.log ${username}:${groupname} 640  10    *    $D0   J
-    ${logPath}/anki-sync-server.stderr.log ${username}:${groupname} 640  10    *    $D0   J
-  '';
+  services.newsyslog.modules.anki = {
+    "${logPath}/anki-sync-server.stdout.log" = {
+      owner = username;
+      group = groupname;
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+    "${logPath}/anki-sync-server.stderr.log" = {
+      owner = username;
+      group = groupname;
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+  };
 
   services.caddy.extraConfig = caddyConfig;
 

@@ -47,11 +47,26 @@ in
 
   environment.etc."radicale/config".source = radicaleConfig;
 
-  environment.etc."newsyslog.d/radicale.conf".text = ''
-    # logfilename                  [owner:group]     mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/radicale.stdout.log radicale:radicale 640  10    *    $D0   J
-    ${logPath}/radicale.stderr.log radicale:radicale 640  10    *    $D0   J
-  '';
+  services.newsyslog.modules.radicale = {
+    "${logPath}/radicale.stdout.log" = {
+      owner = "radicale";
+      group = "radicale";
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+    "${logPath}/radicale.stderr.log" = {
+      owner = "radicale";
+      group = "radicale";
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+  };
 
   services.caddy.extraConfig = caddyConfig;
 

@@ -10,74 +10,70 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
-  boot.initrd.luks.devices.nvme0n1p4_crypt.device = "/dev/disk/by-uuid/04d9dabf-c8b0-4589-879b-fdfd1e212a75";
-  boot.initrd.luks.devices.nvme0n1p3_crypt.device = "/dev/disk/by-uuid/cb8faf69-d547-4511-9916-fff36f9eb475";
-  boot.kernelModules = [ "dm-raid" "dm-mirror" "dm-snapshot" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
 
   fileSystems."/" =
     {
-      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-nixos--root";
+      device = "/dev/disk/by-uuid/17d39f71-7f41-45c4-87cb-fda27e54111d";
       fsType = "ext4";
     };
+
+  fileSystems."/etc" =
+    {
+      device = "/dev/disk/by-uuid/495321d4-6167-430b-8a8f-77e4295867e5";
+      fsType = "ext4";
+    };
+
   fileSystems."/nix" =
     {
-      depends = [ "/" ];
       device = "/nix";
       fsType = "none";
       options = [ "bind" ];
     };
 
-  # From Debian /etc/fstab
+  fileSystems."/var" =
+    {
+      device = "/dev/disk/by-uuid/104adddb-63aa-4f5a-8a3a-473391b077b3";
+      fsType = "ext4";
+    };
+
   fileSystems."/boot" =
     {
       device = "/dev/disk/by-uuid/aff0df62-b55a-4410-b7ef-8f933f795f42";
       fsType = "ext2";
     };
+
   fileSystems."/boot/efi" =
     {
       device = "/dev/disk/by-uuid/C5DD-F6E4";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
+
   fileSystems."/home" =
     {
-      device = "/dev/mapper/${config.networking.hostName}--post--boot--vg-home";
+      device = "/dev/disk/by-uuid/331513f1-1be3-45b1-b3c9-b11e4772e36a";
       fsType = "ext4";
     };
+
   fileSystems."/srv/borgbackup" =
     {
-      device = "/dev/mapper/${config.networking.hostName}--post--boot--vg-borgbackup";
+      device = "/dev/disk/by-uuid/e96f462e-bd88-44e2-a3af-d8c542e80dab";
       fsType = "ext4";
     };
-  fileSystems."/etc" =
-    {
-      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-etc";
-      fsType = "ext4";
-    };
-  fileSystems."/var" =
-    {
-      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-var";
-      fsType = "ext4";
-    };
-  swapDevices = [
-    {
-      device = "/dev/mapper/${config.networking.hostName}--nixos--vg-swap";
-    }
-  ];
 
-  # XXX sda1_crypt and sdb1_crypt keyfiles / uuids have been swapped
-  # accidentally during creation
-  # XXX order of nvme's is wrong too
-  environment.etc.crypttab.text = ''
-    nvme0n1p3_crypt UUID=cb8faf69-d547-4511-9916-fff36f9eb475 - luks,discard
-    nvme1n1p1_crypt UUID=d9f7c8d9-f07a-415f-a657-e0270794fab2 /etc/keyfiles/nvme1 luks,discard
-    nvme2n1p1_crypt UUID=5dbe9083-6787-4e7c-b880-feee7097ad36 /etc/keyfiles/nvme2 luks,discard
-    nvme3n1p1_crypt UUID=ac36df35-0c8f-4310-b724-e420c3672d5b /etc/keyfiles/nvme3 luks,discard
-    nvme4n1p1_crypt UUID=82ca86e4-3338-483a-a56d-12d0b031ce9d /etc/keyfiles/nvme4 luks,discard
-    sda1_crypt UUID=14d440d6-9704-404c-8436-10d276115fe5 /etc/keyfiles/sda luks,discard
-    sdb1_crypt UUID=b58e96b5-dbb2-4560-897f-d47310c454af /etc/keyfiles/sdb luks,discard
-    sdc1_crypt UUID=9647dca1-5039-4127-9fc5-d6fca07dd228 /etc/keyfiles/sdc luks,discard
-  '';
+  swapDevices =
+    [{ device = "/dev/disk/by-uuid/bf078544-06c2-4690-845e-526c0df6aede"; }];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.virbr0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

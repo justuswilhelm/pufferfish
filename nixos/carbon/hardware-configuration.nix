@@ -43,7 +43,6 @@
                 name = "crypted";
                 extraOpenArgs = [ ];
                 settings = {
-                  keyFile = "/var/lib/${config.networking.hostName}-secrets/luks.password";
                   allowDiscards = true;
                 };
                 content = {

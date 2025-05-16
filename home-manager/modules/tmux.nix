@@ -22,8 +22,11 @@ in
       default = "wl-copy";
     };
   };
-  config.programs.tmux =
-    {
+  config = {
+    home.sessionVariables = {
+      TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmuxp";
+    };
+    programs.tmux = {
       enable = true;
       extraConfig = ''
         ${builtins.readFile ../../tmux/tmux.conf}
@@ -44,6 +47,8 @@ in
       # Best compability for true color
       terminal = "screen-256color";
       sensibleOnTop = false;
-      shell = "${pkgs.fish}/bin/fish";
+      shell = "${config.programs.fish.package}/bin/fish";
+      tmuxp.enable = true;
     };
+  };
 }

@@ -1,15 +1,14 @@
-# Contains just sway launcher config now
-{ lib, config, pkgs, specialArgs, osConfig, ... }:
+{ lib, config, specialArgs, ... }:
 let
+  applicationsDirectory = "/Users/${specialArgs.name}/Applications";
   # We need to convince macOS to open this as a proper app, not as a child of
   # aerospace
-  # TODO use cfg.home.homeDirectory
-  alacrittyApp = "/Users/${specialArgs.name}/Applications/Home Manager Apps/Alacritty.app";
+  alacrittyApp = "${applicationsDirectory}/Home Manager Apps/Alacritty.app";
   alacritty = "${alacrittyApp}/Contents/MacOS/alacritty";
   # Hardcoded woops
-  firefoxApp = "/Applications/Free/Firefox.app";
+  firefoxApp = "${applicationsDirectory}/Free/Firefox.app";
   firefox = "${firefoxApp}/Contents/MacOS/firefox";
-  fish = "${pkgs.fish}/bin/fish";
+  fish = "${config.programs.fish.package}/bin/fish";
   # XXX
   # If telling alacritty to create-window it will not be focused when not
   # focused on another alacritty instance window
@@ -20,7 +19,7 @@ let
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
   prefix = "cmd-alt";
-  config = {
+  settings = {
     # Reference: https://github.com/i3/i3/blob/next/etc/config
     mode.main.binding = {
       # change focus
@@ -113,7 +112,7 @@ let
       # Anki
       "${prefix}-shift-a" = [
         "workspace 1"
-        "exec-and-forget open -a Anki.app"
+        "exec-and-forget open -a ${applicationsDirectory}/Free/Anki.app"
       ];
       # Blog
       "${prefix}-shift-b" = [
@@ -161,7 +160,25 @@ let
       }
       {
         "if".app-id = "org.libreoffice.script";
-        "if".window-title-regex-substring = "Save Document|Delete Contents|Rename Sheet|Confirmation|Page Style: .+";
+        "if".window-title-regex-substring = lib.strings.concatMapStringsSep
+          "|"
+          (s: "(${s})")
+          [
+            "(Format|Insert) Cells"
+            "Hyperlink"
+            "Save Document"
+            "Delete Contents"
+            "Rename Sheet"
+            "Confirmation"
+            "Page Style: .+"
+            "Chart (Area|Type|Wall)"
+            "Data (Table|Ranges)"
+            "(X|Y) Axis"
+            "Axes"
+            "Legend"
+            "Titles"
+            "Find And Replace"
+          ];
         run = [ "layout floating" ];
       }
       {
@@ -177,5 +194,5 @@ let
 in
 {
   services.aerospace.enable = true;
-  services.aerospace.settings = config;
+  services.aerospace.settings = settings;
 }

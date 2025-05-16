@@ -9,22 +9,59 @@ date: 2025-03-22
 nix run .#nixosConfigurations.carbon.config.system.build.vm
 ```
 
-# Disko
-
-Refer to:
-
-<https://github.com/nix-community/disko/blob/master/docs/disko-install.md>
+# Installer ISO
 
 Install on USB stick at `/dev/sdb`
 
 ```bash
-sudo nix run .#disko-install -- --flake $PWD#carbon --disk main /dev/sdb
+nixos-generate --format iso -o result
 ```
 
-Test the usb stick:
+Verify build:
+
+```
+~/.dotfiles!+(1)main$file result/iso/nixos.iso
+result/iso/nixos.iso: ISO 9660 CD-ROM filesystem data (DOS/MBR boot sector) 'nixos-24.11-x86_64' (bootable)
+```
+
+Copy to USB stick:
 
 ```bash
-sudo qemu-kvm -enable-kvm -hda /dev/sdb
-# If it doesn't work because of a gtk initialization error, try
-sudo -E qemu-kvm -enable-kvm -hda /dev/sdb
+pv result/iso/nixos.iso | sudo tee /dev/sdd > /dev/null
 ```
+
+Create LUKS secrets for carbon:
+
+```bash
+sudo mkdir -p /var/lib/carbon-secrets
+sudo chmod 700 /var/lib/carbon-secrets
+diceware -n5 -d'-' --no-caps | sudo tee /var/lib/carbon-secrets/luks.password
+```
+
+Then boot Carbon with USB stick:
+
+```bash
+systemctl start sshd.service
+passwd root
+# Enter pw used for installation
+```
+
+Run this on other machine:
+
+```bash
+read target_ip
+# Test connectivity
+ssh -o PasswordAuthentication=yes root@$target_ip
+# Run installation
+nixos-anywhere --ssh-option PasswordAuthentication=yes \
+  --flake .#carbon \
+  --target-host root@$target_ip
+```
+
+After nixos-anywhere boots into kernel, run the following, in case the IP
+address it not retrieved correctly:
+
+```bash
+ip address change dev enps0s25 $ip/24
+```
+

@@ -171,11 +171,53 @@ in
     environment.etc."caddy/php-fpm.cfg".text = phpFpmCfg;
     environment.etc."caddy/php-fpm.cfg".enable = cfg.enablePhp;
 
-    # Copied from /etc/newsyslog.d/wifi.conf
-    environment.etc."newsyslog.d/caddy.conf".text = ''
-      # logfilename               [owner:group] mode count size when  flags [/pid_file] [sig_num]
-      ${logPath}/caddy.stderr.log caddy:caddy   640  10    *    $D0   J
-    '';
+    services.newsyslog.modules.caddy = {
+      "${logPath}/caddy.stderr.log" = {
+        owner = "caddy";
+        group = "caddy";
+        mode = "640";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${logPath}/phpfpm.stdout.log" = {
+        owner = "caddy";
+        group = "caddy";
+        mode = "640";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${logPath}/phpfpm.stderr.log" = {
+        owner = "caddy";
+        group = "caddy";
+        mode = "640";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${logPath}/phpfpm.error.log" = {
+        owner = "caddy";
+        group = "caddy";
+        mode = "640";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${logPath}/phpfpm.slowlog.log" = {
+        owner = "caddy";
+        group = "caddy";
+        mode = "640";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+    };
 
     environment.systemPackages = [ caddy ];
 

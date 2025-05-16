@@ -64,24 +64,43 @@ let
 
   # Let borgmatic run for 2h max
   timeout = 60 * 60 * 2;
+  # Kill after not responding to SIGINT
+  killAfter = 2 * 60;
 in
 {
   environment.systemPackages = [ borgmatic ];
 
   environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
-  # Copied from /etc/newsyslog.d/wifi.conf
-  environment.etc."newsyslog.d/borgmatic.conf".text = ''
-    # logfilename            [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-    ${logPath}/borgmatic.log                  640  10    *    $D0   J
-  '';
+
+  services.newsyslog.modules.borgmatic = {
+    "${logPath}/borgmatic.stdout.log" = {
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+    "${logPath}/borgmatic.stderr.log" = {
+      mode = "640";
+      count = 10;
+      size = "*";
+      when = "$D0";
+      flags = "J";
+    };
+  };
 
   launchd.daemons.borgmatic = {
     path = [ borgmatic pkgs.coreutils config.services.nagios.nsca-package ];
-    command = "timeout --signal INT ${toString timeout} borgmatic --log-file-verbosity 2 --log-file ${logPath}/borgmatic.log";
+    # Kill after 120 seconds of not reacting to SIGINT
+    command = "timeout --kill-after=${toString killAfter}s --signal INT ${toString timeout}s borgmatic --verbosity 2";
     serviceConfig = {
       # Performance
       ProcessType = "Background";
       LowPriorityBackgroundIO = true;
+      # Borgmatic's syslog doesn't appear to work on macOS.
+      # We might be missing out on some error messages
+      StandardOutPath = "${logPath}/borgmatic.stdout.log";
+      StandardErrorPath = "${logPath}/borgmatic.stderr.log";
       # Maybe:
       # NetworkState = true;
       # So that we don't try to back up when not connected to the network
