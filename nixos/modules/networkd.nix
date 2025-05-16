@@ -37,20 +37,30 @@
           DefaultRouteOnDevice = false;
           MulticastDNS = "no";
           Address = [
-            "192.168.11.10/24"
+            # Private testing segment
             "10.128.0.10/24"
+            # TP-Link
+            "192.168.0.10/24"
+            # Buffalo
+            "192.168.11.10/24"
           ];
         };
         routes = [
+          # Private testing segment
           {
             Source = "10.128.0.10/24";
             Destination = "10.128.0.1/24";
-            # Gateway = "10.128.0.1";
             Scope = "link";
           }
+          # TP Link segment
+          {
+            Source = "192.168.0.10/24";
+            Destination = "192.168.0.1/24";
+            Scope = "link";
+          }
+          # Buffalo default segment
           {
             Source = "192.168.11.10/24";
-            # Gateway="192.168.11.1";
             Destination = "192.168.11.1/24";
             Scope = "link";
           }

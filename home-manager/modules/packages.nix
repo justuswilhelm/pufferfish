@@ -133,6 +133,7 @@ in
     pkgs.fd
     pkgs.gnused
     pkgs.lnav
+    pkgs.datamash
 
     # Core tools
     pkgs.coreutils
