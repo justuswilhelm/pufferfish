@@ -22,11 +22,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 let
+  # background 	bg_0
   bg_0 = "#fbf3db";
   bg_1 = "#ece3cc";
+  # selection 	bg_2
   bg_2 = "#d5cdb6";
   dim_0 = "#909995";
+  # foreground 	fg_0
   fg_0 = "#53676d";
+  # bold foreground 	fg_1
+  # cursor color 	fg_1
   fg_1 = "#3a4d53";
 
   red = "#d2212d";
@@ -257,25 +262,86 @@ let
         white = color fg_1;
       };
     };
+  # fish_config theme dump
+  fish =
+    let
+      concatValues = lib.strings.concatStringsSep " ";
+      toColorLine = name: values: "${name} ${concatValues values}";
+      color = builtins.replaceStrings [ "#" ] [ "" ];
+      colors = {
+        "fish_color_autosuggestion" = [ "93a1a1" ];
+        "fish_color_cancel" = [ "-r" ];
+        "fish_color_command" = [ "586e75" ];
+        "fish_color_comment" = [ "93a1a1" ];
+        "fish_color_cwd" = [ "green" ];
+        "fish_color_cwd_root" = [ "red" ];
+        "fish_color_end" = [ "268bd2" ];
+        "fish_color_error" = [ "dc322f" ];
+        "fish_color_escape" = [ "00a6b2" ];
+        "fish_color_history_current" = [ "--bold" ];
+        "fish_color_host" = [ "normal" ];
+        "fish_color_host_remote" = [ "yellow" ];
+        "fish_color_keyword" = [ "586e75" ];
+        "fish_color_match" = [ "--background=brblue" ];
+        "fish_color_normal" = [ (color fg_0) ];
+        "fish_color_operator" = [ "00a6b2" ];
+        "fish_color_option" = [ "657b83" ];
+        "fish_color_param" = [ "657b83" ];
+        "fish_color_quote" = [ "839496" ];
+        "fish_color_redirection" = [ "6c71c4" ];
+        "fish_color_search_match" = [ "'bryellow'" "'--background=white'" ];
+        "fish_color_selection" = [ "'white'" "'--bold'" "'--background=${color bg_2}'" ];
+        "fish_color_status" = [ "red" ];
+        "fish_color_user" = [ "brgreen" ];
+        "fish_color_valid_path" = [ "--underline" ];
+        "fish_pager_color_background" = [ ];
+        "fish_pager_color_completion" = [ "green" ];
+        "fish_pager_color_description" = [ "B3A06D" ];
+        "fish_pager_color_prefix" = [ "'cyan'" "'--underline'" ];
+        "fish_pager_color_progress" = [ "'brwhite'" "'--background=cyan'" ];
+        "fish_pager_color_secondary_background" = [ ];
+        "fish_pager_color_secondary_completion" = [ ];
+        "fish_pager_color_secondary_description" = [ ];
+        "fish_pager_color_secondary_prefix" = [ ];
+        "fish_pager_color_selected_background" = [ "--background=white" ];
+        "fish_pager_color_selected_completion" = [ ];
+        "fish_pager_color_selected_description" = [ ];
+        "fish_pager_color_selected_prefix" = [ ];
+      };
+      toTheme = lib.attrsets.mapAttrsToList toColorLine;
+      theme = toTheme colors;
+    in
+    ''
+      # name: 'Selenized'
+      ${lib.strings.concatStringsSep "\n" theme}
+    '';
 in
 # Test with
-  # nix eval --file $DOTFILES/nix/home-manager/selenized.nix neomutt --arg lib "(import <nixpks>{}).lib"
+  # nix eval --file $DOTFILES/home-manager/modules/selenized.nix --arg lib "(import <nixpks>{}).lib" --arg config "{}"
 {
   # https://neomutt.org/guide/configuration
   xdg.configFile."neomutt/colors" = lib.mkIf config.programs.neomutt.enable {
     text = neomutt;
   };
-  # TODO detect if radare is installed
+
   xdg.configFile."radare2/radare2rc" = lib.mkIf config.programs.radare2.enable {
-      text = ''
+    text = ''
       e cfg.fortunes = true
       e scr.color = 3
       # selenized colors
       ${radare2}
     '';
   };
+
   xdg.configFile."timewarrior/selenized.theme".text = timewarrior;
+
   programs.alacritty.settings.colors = lib.mkIf config.programs.alacritty.enable alacritty;
+
   programs.tmux.extraConfig = lib.mkIf config.programs.tmux.enable tmux;
-  # TODO fish colors
+
+  xdg.configFile."fish/themes/Selenized.theme".text =
+    lib.mkIf config.programs.fish.enable fish;
+  programs.fish.interactiveShellInit = lib.mkIf config.programs.fish.enable ''
+    fish_config theme choose Selenized
+  '';
 }
