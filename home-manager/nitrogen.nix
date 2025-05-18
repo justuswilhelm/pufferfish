@@ -13,8 +13,6 @@ in
     ./modules/infosec.nix
     ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
-    # TODO Investigate if this fix is needed on NixOS
-    ./modules/locale-fix.nix
     ./modules/packages.nix
     ./modules/ssh.nix
     ./modules/sway.nix
