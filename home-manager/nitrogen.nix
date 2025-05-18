@@ -62,11 +62,13 @@ in
     bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
   '';
 
-  programs.i3status.modules = {
-    "wireless wlp59s0" = {
+  programs.i3status.modules = let
+    w_if = "wlp59s0";
+  in {
+    "wireless ${w_if}" = {
       settings = {
-        format_up = "wlp59s0: %ip (%quality)";
-        format_down = "wlp59s0: down";
+        format_up = "${w_if}: %ip (%quality)";
+        format_down = "${w_if}: down";
       };
       position = 0;
     };
