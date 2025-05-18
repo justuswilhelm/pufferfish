@@ -17,8 +17,7 @@ in
     ./modules/ssh.nix
     ./modules/sway.nix
 
-    # TODO enable
-    # ./modules/opensnitch.nix
+    ./modules/opensnitch.nix
 
     ./home.nix
   ];

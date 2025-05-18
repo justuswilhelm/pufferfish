@@ -14,6 +14,7 @@
       ../modules/network-debug.nix
       ../modules/networkd.nix
       ../modules/nix.nix
+      ../modules/opensnitch.nix
       ../modules/openvpn.nix
       ../modules/pipewire.nix
       ../modules/sway.nix
