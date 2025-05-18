@@ -94,6 +94,12 @@
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
+  # Power
+  powerManagement.powertop.enable = true;
+  boot.kernel.sysctl = {
+    "kernel.nmi_watchdog" = "0";
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
