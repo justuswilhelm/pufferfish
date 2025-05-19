@@ -1,5 +1,6 @@
 { ... }:
 {
+  networking.interfaces.enp0s31f6.wakeOnLan.enable = false;
   # Pick only one of the below networking options.
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
   networking.wireless.secretsFile = "/etc/wireless-credentials/wireless.env";
