@@ -23,7 +23,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
-      ./fluentd.nix
+      # ./fluentd.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
