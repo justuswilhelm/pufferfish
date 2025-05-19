@@ -39,9 +39,9 @@
   '';
 
   programs.fish.shellAbbrs = {
-      # Neovim abbreviations
-      # --------------------
-      # Start neovim
-      e = "nvim";
+    # Neovim abbreviations
+    # --------------------
+    # Start neovim
+    e = "nvim";
   };
 }

@@ -1,8 +1,10 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, osConfig, ... }:
 {
   imports = [
-    # ./infosec-linux.nix
-    # ./infosec.nix
+    # ./modules/infosec-linux.nix
+    # ./modules/infosec.nix
+    # ./modules/passwordstore.nix
+
     ./modules/direnv.nix
     ./modules/firefox.nix
     ./modules/fish.nix
@@ -15,7 +17,6 @@
     ./modules/man.nix
     ./modules/nvim.nix
     ./modules/packages.nix
-    ./modules/passwordstore.nix
     ./modules/paths.nix
     ./modules/pdb.nix
     ./modules/poetry.nix
@@ -23,6 +24,8 @@
     ./modules/ssh.nix
     ./modules/sway.nix
     ./modules/tmux.nix
+
+    ./home.nix
   ];
 
   programs.i3status.modules = {

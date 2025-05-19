@@ -5,6 +5,7 @@
     tcpdump
     ethtool
     arp-scan
+    socat
     traceroute
     conntrack-tools
     # Just enabling wireshark wasn't enough

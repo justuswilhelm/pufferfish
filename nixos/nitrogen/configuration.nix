@@ -18,6 +18,7 @@
       ../modules/openvpn.nix
       ../modules/pipewire.nix
       ../modules/sway.nix
+      ../modules/wlan.nix
       ../modules/yubikey.nix
 
       # Include the results of the hardware scan.
