@@ -62,30 +62,32 @@ in
     bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
   '';
 
-  programs.i3status.modules = let
-    w_if = "wlp59s0";
-  in {
-    "wireless ${w_if}" = {
-      settings = {
-        format_up = "${w_if}: %ip (%quality)";
-        format_down = "${w_if}: down";
+  programs.i3status.modules =
+    let
+      w_if = "wlp59s0";
+    in
+    {
+      "wireless ${w_if}" = {
+        settings = {
+          format_up = "${w_if}: %ip (%quality)";
+          format_down = "${w_if}: down";
+        };
+        position = 0;
       };
-      position = 0;
-    };
-    "battery 0" = {
-      settings = {
-        format = "%status %percentage %remaining %emptytime";
-        format_down = "No battery";
-        status_chr = "⚡ CHR";
-        status_bat = "🔋 BAT";
-        status_unk = "? UNK";
-        status_full = "☻ FULL";
-        path = "/sys/class/power_supply/BAT%d/uevent";
-        low_threshold = 10;
+      "battery 0" = {
+        settings = {
+          format = "%status %percentage %remaining %emptytime";
+          format_down = "No battery";
+          status_chr = "⚡ CHR";
+          status_bat = "🔋 BAT";
+          status_unk = "? UNK";
+          status_full = "☻ FULL";
+          path = "/sys/class/power_supply/BAT%d/uevent";
+          low_threshold = 10;
+        };
+        position = 7;
       };
-      position = 7;
     };
-  };
 
   home.stateVersion = "24.05";
 }

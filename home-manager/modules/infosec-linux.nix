@@ -26,7 +26,7 @@
         buildInputs = [ pkgs.makeWrapper ];
         postBuild =
           let
-          # Make the python packages configurable
+            # Make the python packages configurable
             python3 = pkgs.python3.withPackages (p: with p; [ protobuf psutil ]);
           in
           # TODO make the PYTHONPATH configurable
