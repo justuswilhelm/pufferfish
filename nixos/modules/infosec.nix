@@ -17,6 +17,14 @@ in
     # For tftp
     4444
   ];
+  networking.firewall.interfaces.ppp0.allowedTCPPorts = [
+    # HTTP
+    80
+  ];
+  networking.firewall.interfaces.ppp0.allowedUDPPorts = [
+    # For DNS
+    53
+  ];
 
   # Add overrides
   networking.hosts = {
