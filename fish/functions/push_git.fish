@@ -16,17 +16,16 @@ function push_git --description "Push to a remote, create repo if needed" -a rem
 
     if git remote get-url $remote_name > /dev/null
         echo "Remote with name '$remote_name' already exists"
-        return 1
+        echo "Still running git annex sync..."
+    else
+        set remote_url "ssh://$USER@$remote/$dir"
+
+        echo "Using address '$remote_url' for remote '$remote'"
+
+        echo "SSH'ing into remote '$remote' to create repository at path '$dir'"
+        ssh $remote "git init $dir" || return
+        git remote add $remote_name $remote_url || return
     end
-
-    set remote_url "ssh://$USER@$remote/$dir"
-
-    echo "Using address '$remote_url' for remote '$remote'"
-
-    echo "SSH'ing into remote '$remote' to create repository at path '$dir'"
-    ssh $remote "git init $dir" || return
-
-    git remote add $remote_name $remote_url || return
 
     git annex sync || return
 end
