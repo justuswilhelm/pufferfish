@@ -1,8 +1,7 @@
-# TODO rename to push-git
 # TODO detect if annex, otherwise skip `git annex sync`
 # TODO make this work even if annex isn't enabled. We can't push if the remote
 # repository doesn't allow it. Some additional git settings might be necessary.
-function push_git --description "Push to a remote, create repo if needed" -a remote
+function push-git --description "Push git repository to a remote repository, create the repository on the remote target, if needed" -a remote
     if test -z "$remote"
         echo "Must specify remote"
         return 1
