@@ -10,6 +10,8 @@
     conntrack-tools
     # Just enabling wireshark wasn't enough
     wireshark
+
+    kismet
   ];
   programs.wireshark.enable = true;
   programs.tcpdump.enable = true;
