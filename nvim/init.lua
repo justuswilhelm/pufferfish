@@ -26,6 +26,7 @@ Plug("ledger/vim-ledger", {["for"] = "ledger"})
 -- Plug("elzr/vim-json", {['for'] = "json"})
 -- Plug("dag/vim-fish", {['for'] = "fish"})
 -- Plug("tpope/vim-markdown", {['for'] = "markdown"})
+Plug("supercollider/scvim")
 
 -- Ascii stuff
 -- -----------
