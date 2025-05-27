@@ -91,6 +91,10 @@
     # Windows
     # =======
     pkgs.netexec
+    pkgs.evil-winrm
+
+    # Authentication
+    # ==============
     pkgs.openldap
 
     # Debugger

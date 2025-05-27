@@ -27,6 +27,21 @@
           LinkLocalAddressing = "no";
         };
       };
+      "29-ignore-one-usb-eth" = {
+        matchConfig = {
+          Type = "ether";
+          Path = [ "pci-0000:00:14.0-usb-0:3:2.0" ];
+        };
+        networkConfig = {
+          DHCP = "no";
+          DefaultRouteOnDevice = false;
+          MulticastDNS = "no";
+          Address = [
+          ];
+        };
+        routes = [
+        ];
+      };
       "30-usb-ethernet" = {
         matchConfig = {
           Type = "ether";
@@ -72,6 +87,9 @@
   services.resolved = {
     enable = true;
     # domains = [ "~." ];
+    extraConfig = ''
+      DNSStubListener = udp
+    '';
   };
   networking.firewall.enable = true;
   networking.firewall.allowedUDPPorts = [
