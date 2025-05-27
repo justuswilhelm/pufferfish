@@ -25,7 +25,10 @@ in
   home.packages = [
     pkgs.tor-browser
     pkgs.powertop
+
     pkgs.espeak
+    pkgs.supercollider-with-plugins
+    pkgs.puredata
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
