@@ -146,10 +146,6 @@
               # TODO remove overlay?
               nixpkgs.overlays = [
                 (final: previous: {
-                  # XXX
-                  # want to use withPlugins, not available in 24.11
-                  caddy = pkgs-unstable.caddy;
-
                   inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
                   inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
