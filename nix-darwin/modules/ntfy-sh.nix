@@ -135,7 +135,7 @@ in
         text = ''
           mkdir -v -p ${statePath} ${logPath}
           chmod 700 ${statePath} ${logPath}
-          chown -R ntfy-sh:ntfy-sh ${statePath} ${logPath}
+          chown ntfy-sh:ntfy-sh ${statePath} ${logPath}
           launchctl kickstart -k system/${config.launchd.labelPrefix}.ntfy-sh
         '';
       };
