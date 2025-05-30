@@ -2,11 +2,11 @@
   description = "Justus' generic system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko/master";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -48,14 +48,12 @@
           nixpkgs.lib.nixosSystem {
             specialArgs = { inherit system name pkgs-unstable; };
             modules = [
-              ./nixos/overlays.nix
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                # TODO migrate user
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
@@ -145,6 +143,7 @@
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }
             {
+              # TODO remove overlay?
               nixpkgs.overlays = [
                 (final: previous: {
                   # XXX

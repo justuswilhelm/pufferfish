@@ -10,6 +10,7 @@ let
   ]);
 in
 {
+  # TODO put this in a global overlay
   nixpkgs.overlays = [
     (final: previous: {
       vale-ls = previous.symlinkJoin {
