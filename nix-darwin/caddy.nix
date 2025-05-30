@@ -270,8 +270,6 @@ in
     # Restart caddy
     system.activationScripts.postActivation = {
       text = ''
-        caddy validate --config /etc/caddy/Caddyfile
-
         echo "Restarting caddy"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.caddy
       '';
