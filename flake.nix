@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
@@ -30,7 +29,6 @@
     , nix-darwin
     , home-manager
     , nixpkgs
-    , nixpkgs-unstable
     , pomoglorbo
     , projectify
     , utils
@@ -42,11 +40,10 @@
           let
             name = "debian";
             system = "x86_64-linux";
-            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
             hostName = "helium";
           in
           nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit system name pkgs-unstable; };
+            specialArgs = { inherit system name; };
             modules = [
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
@@ -132,7 +129,6 @@
       darwinConfigurations."lithium" =
         let
           system = "aarch64-darwin";
-          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           name = "debian";
           hostName = "lithium";
         in
