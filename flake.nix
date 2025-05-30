@@ -14,7 +14,7 @@
     # optionally choose not to download darwin deps (saves some resources on Linux)
     agenix.inputs.darwin.follows = "";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2024.11.22";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.5.31";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
