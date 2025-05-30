@@ -90,8 +90,6 @@ in
     pkgs.watch
     pkgs.hyperfine
     pkgs.pv
-    # TODO make this part of modules/ssh.nix
-    pkgs.mosh
 
     # Secrets
     pkgs.yubikey-manager
