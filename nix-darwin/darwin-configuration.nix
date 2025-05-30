@@ -20,7 +20,7 @@ in
 
     ./caddy.nix
     ./anki.nix
-    ./attic.nix
+    # ./attic.nix
     ./infosec.nix
   ];
   users.users."${name}" = {
