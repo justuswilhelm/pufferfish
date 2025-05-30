@@ -14,7 +14,7 @@ let
       "github.com/aksdb/caddy-cgi/v2@v2.2.5"
       "github.com/greenpau/caddy-security@v1.1.29"
     ];
-    hash = "sha256-Bzqu6GDMNgYV4F1TJGCYEmjDaD6vlm7LpoH4MuJLL8U=";
+    hash = "sha256-0Bc7oWqdP2VMl64omfNn5oTGRQ6eRiN+8aTvlxRO/Bs=";
   };
   caddyCookieLifetime = 60 * 60 * 24 * 3;
   caddyConfig = pkgs.writeText "Caddyfile" (''
@@ -81,6 +81,7 @@ let
     mv Caddyfile $out
   '';
 
+  # TODO investigate whether these are still needed Justus 2025-05-30
   php = ((pkgs.php.overrideAttrs
     (previous: {
       buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
