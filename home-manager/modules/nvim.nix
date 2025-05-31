@@ -16,8 +16,13 @@
     extraLuaConfig = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
     extraPackages = [
+      pkgs.tree-sitter
+
+      # Language servers
       pkgs.deno
       pkgs.ruff
+      # ruff claims to now have a lsp server and the following package
+      # disappeared from nix 25.05
       # pkgs.ruff-lsp
       pkgs.vale-ls
       pkgs.pyright

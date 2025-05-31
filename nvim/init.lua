@@ -241,13 +241,12 @@ cmp.setup.filetype(
 -- ========================
 -- Capabilities added as per nvim-cmp README
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require('lspconfig')
-lspconfig.ts_ls.setup {
+vim.lsp.enable('ts_ls', {
     capabilities = capabilities,
-}
+})
 -- Svelte
 -- ------
-lspconfig.svelte.setup {
+vim.lsp.enable('svelte', {
     capabilities = capabilities,
     on_attach = function(client)
         vim.api.nvim_create_autocmd("BufWritePost", {
@@ -257,21 +256,21 @@ lspconfig.svelte.setup {
             end,
         })
     end
-}
+})
 
 -- Pyright
 -- -------
-lspconfig.pyright.setup {
+vim.lsp.enable('pyright', {
     capabilities = capabilities
-}
+})
 
 -- Ruff
 -- ----
-lspconfig.ruff.setup {}
+vim.lsp.enable('ruff')
 
 -- Vale
 -- ----
-lspconfig.vale_ls.setup {}
+vim.lsp.enable('vale_ls')
 
 -- Deno
 -- -----
