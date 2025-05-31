@@ -14,6 +14,7 @@ in
     ./modules/ntfy-sh.nix
     ./modules/vdirsyncer.nix
     ./modules/mdns-fix.nix
+    ./modules/overlays.nix
     ./modules/projectify.nix
     ./modules/aerospace.nix
     ./modules/newsyslog.nix
