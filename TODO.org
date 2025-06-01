@@ -1,15 +1,3 @@
-* TODO remote repo init
-  add command to create a bare repo in remote and push with git annex sync
-* TODO Configure macOS /etc/sshd using nix-darwin
-* TODO Add a way to have local git settings (email / name)
-  So far we have just added email and name and checked it into the repo. On the
-  other hand, I would like to be able to have irssi settings be in irssi/config
-  or other personal information without being afraid of accidentally checking
-  it into git
-* TODO Enable auto pushing to new upstream branch in git
-  How would this look like? There could be a command for creating a local
-  dotfiles branch like ~branch-dotfiles~.
-
 * TODO Ensure CI dependencies are up to date
   <2023-11-23 Thu>
   Haven't checked this at all since updating to Debian bookworm
@@ -22,3 +10,21 @@
   We test using CircleCI, and run Node/Python (inside pipenv woah). It would be
   helpful to have all the tools available locally as well in a clean
   environment.
+
+* DONE remote repo init
+CLOSED: [2025-05-18 Sun 16:04]
+  add command to create a bare repo in remote and push with git annex sync
+  There's the ~push_git~ function now.
+* DONE Configure macOS /etc/sshd using nix-darwin
+CLOSED: [2025-05-18 Sun 16:03]
+  Located in ~nix-darwin/modules/openssh.nix~
+* TODO Add a way to have local git settings (email / name)
+  So far we have just added email and name and checked it into the repo. On the
+  other hand, I would like to be able to have irssi settings be in irssi/config
+  or other personal information without being afraid of accidentally checking
+  it into git
+* DONE Enable auto pushing to new upstream branch in git
+CLOSED: [2025-05-18 Sun 16:04]
+  How would this look like? There could be a command for creating a local
+  dotfiles branch like ~branch-dotfiles~.
+  There's the ~branch-off~ fish function.

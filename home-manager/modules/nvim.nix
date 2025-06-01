@@ -18,7 +18,7 @@
     extraPackages = [
       pkgs.deno
       pkgs.ruff
-      pkgs.ruff-lsp
+      # pkgs.ruff-lsp
       pkgs.vale-ls
       pkgs.pyright
       pkgs.typescript
@@ -39,9 +39,9 @@
   '';
 
   programs.fish.shellAbbrs = {
-      # Neovim abbreviations
-      # --------------------
-      # Start neovim
-      e = "nvim";
+    # Neovim abbreviations
+    # --------------------
+    # Start neovim
+    e = "nvim";
   };
 }

@@ -13,9 +13,11 @@
     ./modules/paths.nix
     ./modules/pdb.nix
     ./modules/poetry.nix
-    ./modules/radare.nix
     ./modules/selenized.nix
     ./modules/ssh.nix
     ./modules/tmux.nix
+
+    # Supports enable, so safe to always include
+    ./modules/radare.nix
   ];
 }

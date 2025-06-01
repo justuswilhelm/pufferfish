@@ -1,31 +1,7 @@
 { pkgs, ... }:
 let
-  valeWithStyles = pkgs.vale.withStyles (s: [
-    s.alex
-    s.google
-    s.microsoft
-    s.proselint
-    s.write-good
-    s.readability
-  ]);
 in
 {
-  nixpkgs.overlays = [
-    (final: previous: {
-      vale-ls = previous.symlinkJoin {
-        name = "vale-ls-with-styles-${previous.vale-ls.version}";
-        paths = [ previous.vale-ls valeWithStyles ];
-        nativeBuildInputs = [ previous.makeBinaryWrapper ];
-        postBuild = ''
-          wrapProgram "$out/bin/vale-ls" \
-            --set VALE_STYLES_PATH "$out/share/vale/styles/"
-        '';
-        meta = {
-          inherit (previous.vale-ls.meta) mainProgram;
-        };
-      };
-    })
-  ];
   home.packages = [
     # Databases
     pkgs.sqlite
@@ -56,7 +32,7 @@ in
     # Removed en-science because it was marked unfree in nixpkgs 24.11
     (pkgs.aspellWithDicts (ds: with ds; [ en en-computers ]))
     (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
-    valeWithStyles
+    pkgs.valeWithStyles
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
     # TODO move into modules/python.nix
@@ -114,8 +90,6 @@ in
     pkgs.watch
     pkgs.hyperfine
     pkgs.pv
-    # TODO make this part of modules/ssh.nix
-    pkgs.mosh
 
     # Secrets
     pkgs.yubikey-manager
@@ -133,6 +107,7 @@ in
     pkgs.fd
     pkgs.gnused
     pkgs.lnav
+    pkgs.datamash
 
     # Core tools
     pkgs.coreutils

@@ -13,14 +13,11 @@ in
     ./modules/infosec.nix
     ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
-    # TODO Investigate if this fix is needed on NixOS
-    ./modules/locale-fix.nix
     ./modules/packages.nix
     ./modules/ssh.nix
     ./modules/sway.nix
 
-    # TODO enable
-    # ./modules/opensnitch.nix
+    ./modules/opensnitch.nix
 
     ./home.nix
   ];
@@ -28,6 +25,10 @@ in
   home.packages = [
     pkgs.tor-browser
     pkgs.powertop
+
+    pkgs.espeak
+    pkgs.supercollider-with-plugins
+    pkgs.puredata
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
@@ -65,28 +66,32 @@ in
     bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
   '';
 
-  programs.i3status.modules = {
-    "wireless wlp59s0" = {
-      settings = {
-        format_up = "wlp59s0: %ip (%quality)";
-        format_down = "wlp59s0: down";
+  programs.i3status.modules =
+    let
+      w_if = "wlp59s0";
+    in
+    {
+      "wireless ${w_if}" = {
+        settings = {
+          format_up = "${w_if}: %ip (%quality)";
+          format_down = "${w_if}: down";
+        };
+        position = 0;
       };
-      position = 0;
-    };
-    "battery 0" = {
-      settings = {
-        format = "%status %percentage %remaining %emptytime";
-        format_down = "No battery";
-        status_chr = "⚡ CHR";
-        status_bat = "🔋 BAT";
-        status_unk = "? UNK";
-        status_full = "☻ FULL";
-        path = "/sys/class/power_supply/BAT%d/uevent";
-        low_threshold = 10;
+      "battery 0" = {
+        settings = {
+          format = "%status %percentage %remaining %emptytime";
+          format_down = "No battery";
+          status_chr = "⚡ CHR";
+          status_bat = "🔋 BAT";
+          status_unk = "? UNK";
+          status_full = "☻ FULL";
+          path = "/sys/class/power_supply/BAT%d/uevent";
+          low_threshold = 10;
+        };
+        position = 7;
       };
-      position = 7;
     };
-  };
 
   home.stateVersion = "24.05";
 }
