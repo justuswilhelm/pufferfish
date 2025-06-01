@@ -184,6 +184,13 @@
           modules = [
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }
+            {
+              nixpkgs.overlays = [
+                (final: previous: {
+                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
+                })
+              ];
+            }
             ./nix-darwin/hydrogen/configuration.nix
             home-manager.darwinModules.home-manager
             {
@@ -192,7 +199,7 @@
               home-manager.sharedModules = [
                 { _module.args = inputs; }
               ];
-              # home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
             }
           ];
         };
