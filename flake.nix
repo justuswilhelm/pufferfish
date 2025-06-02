@@ -2,11 +2,10 @@
   description = "Justus' generic system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko/master";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,7 +14,7 @@
     # optionally choose not to download darwin deps (saves some resources on Linux)
     agenix.inputs.darwin.follows = "";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2024.11.22";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.5.31";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
@@ -30,7 +29,6 @@
     , nix-darwin
     , home-manager
     , nixpkgs
-    , nixpkgs-unstable
     , pomoglorbo
     , projectify
     , utils
@@ -42,20 +40,17 @@
           let
             name = "debian";
             system = "x86_64-linux";
-            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
             hostName = "helium";
           in
           nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit system name pkgs-unstable; };
+            specialArgs = { inherit system name; };
             modules = [
-              ./nixos/overlays.nix
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                # TODO migrate user
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
@@ -134,7 +129,6 @@
       darwinConfigurations."lithium" =
         let
           system = "aarch64-darwin";
-          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           name = "debian";
           hostName = "lithium";
         in
@@ -145,17 +139,37 @@
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }
             {
+              # TODO remove overlay?
               nixpkgs.overlays = [
                 (final: previous: {
-                  # XXX
-                  # want to use withPlugins, not available in 24.11
-                  caddy = pkgs-unstable.caddy;
-
                   inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
                   inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
                 (final: previous: {
                   j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
+                })
+                # TODO refactor this and share it with other systems
+                (final: previous: rec {
+                  valeWithStyles = previous.vale.withStyles (s: [
+                    s.alex
+                    s.google
+                    s.microsoft
+                    s.proselint
+                    s.write-good
+                    s.readability
+                  ]);
+                  vale-ls = previous.symlinkJoin {
+                    name = "vale-ls-with-styles-${previous.vale-ls.version}";
+                    paths = [ previous.vale-ls valeWithStyles ];
+                    nativeBuildInputs = [ previous.makeBinaryWrapper ];
+                    postBuild = ''
+                      wrapProgram "$out/bin/vale-ls" \
+                        --set VALE_STYLES_PATH "$out/share/vale/styles/"
+                    '';
+                    meta = {
+                      inherit (previous.vale-ls.meta) mainProgram;
+                    };
+                  };
                 })
               ];
             }
@@ -174,7 +188,6 @@
       darwinConfigurations."hydrogen" =
         let
           system = "aarch64-darwin";
-          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           name = "debian";
           hostName = "hydrogen";
         in
@@ -188,6 +201,28 @@
               nixpkgs.overlays = [
                 (final: previous: {
                   j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
+                })
+                (final: previous: rec {
+                  valeWithStyles = previous.vale.withStyles (s: [
+                    s.alex
+                    s.google
+                    s.microsoft
+                    s.proselint
+                    s.write-good
+                    s.readability
+                  ]);
+                  vale-ls = previous.symlinkJoin {
+                    name = "vale-ls-with-styles-${previous.vale-ls.version}";
+                    paths = [ previous.vale-ls valeWithStyles ];
+                    nativeBuildInputs = [ previous.makeBinaryWrapper ];
+                    postBuild = ''
+                      wrapProgram "$out/bin/vale-ls" \
+                        --set VALE_STYLES_PATH "$out/share/vale/styles/"
+                    '';
+                    meta = {
+                      inherit (previous.vale-ls.meta) mainProgram;
+                    };
+                  };
                 })
               ];
             }

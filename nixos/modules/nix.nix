@@ -12,4 +12,7 @@
       options = "--delete-older-than 30d";
     };
   };
+  environment.systemPackages = [
+    pkgs.nix-tree
+  ];
 }

@@ -2,10 +2,6 @@
 {
   programs.fish = {
     enable = true;
-    # TODO selenized
-    interactiveShellInit = ''
-      fish_config theme choose "Solarized Light"
-    '';
     shellAbbrs = {
       # Reload fish session. Useful if config.fish has changed.
       reload = "exec fish";

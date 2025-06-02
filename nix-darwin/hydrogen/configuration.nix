@@ -15,6 +15,7 @@ in
     home = "/Users/${name}";
     inherit uid;
   };
+  system.primaryUser = name;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -36,7 +37,7 @@ in
   # Other sources say this works:
   # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
   # But unload is deprecated in newer versions of launchd
-  system.activationScripts.postUserActivation = {
+  system.activationScripts.disable-rcd = {
     text = ''
       sudo -u ${name} launchctl bootout gui/${builtins.toString uid}/com.apple.rcd || echo "Already booted out"
       sudo -u ${name} launchctl disable gui/${builtins.toString uid}/com.apple.rcd || echo "Already disabled"
@@ -80,7 +81,7 @@ in
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:
   # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   programs.fish = {
     enable = true;

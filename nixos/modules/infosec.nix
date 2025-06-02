@@ -3,7 +3,14 @@ let
   user = "delighted-negotiate-catchy";
 in
 {
-  networking.firewall.allowedTCPPorts = [
+  networking.firewall.logRefusedPackets = true;
+  networking.firewall.logRefusedConnections = true;
+
+  # TODO copy the below settings to other interfaces if needed
+  # Hack the box stuff
+  networking.firewall.interfaces.tun0.allowedTCPPorts = [
+    # SMB
+    445
     # For reverse shell with openvpn
     4444
     # Another rev shell port
@@ -11,11 +18,19 @@ in
     # For http server
     8080
   ];
-  networking.firewall.logRefusedPackets = true;
-  networking.firewall.logRefusedConnections = true;
-  networking.firewall.allowedUDPPorts = [
+  networking.firewall.interfaces.tun0.allowedUDPPorts = [
     # For tftp
     4444
+  ];
+
+  # For fake ISP hax0ring
+  networking.firewall.interfaces.ppp0.allowedTCPPorts = [
+    # HTTP
+    80
+  ];
+  networking.firewall.interfaces.ppp0.allowedUDPPorts = [
+    # For DNS
+    53
   ];
 
   # Add overrides

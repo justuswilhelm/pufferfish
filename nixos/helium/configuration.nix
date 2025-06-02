@@ -8,6 +8,7 @@
       ../modules/infosec.nix
       ../modules/man.nix
       ../modules/metasploit.nix
+      ../modules/mullvad.nix
       ../modules/nagios.nix
       ../modules/network-debug.nix
       ../modules/networkd.nix
@@ -24,7 +25,7 @@
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./virtualisation.nix
+      # ./virtualisation.nix
     ];
 
   boot = {
