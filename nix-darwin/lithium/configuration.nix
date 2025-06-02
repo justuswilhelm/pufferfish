@@ -5,23 +5,23 @@ let
 in
 {
   imports = [
-    ./modules/nagios.nix
-    ./modules/offlineimap.nix
-    ./modules/borgmatic.nix
-    ./modules/nix.nix
-    ./modules/openssh.nix
-    ./modules/radicale.nix
-    ./modules/ntfy-sh.nix
-    ./modules/vdirsyncer.nix
-    ./modules/mdns-fix.nix
-    ./modules/projectify.nix
-    ./modules/aerospace.nix
-    ./modules/newsyslog.nix
+    ../modules/nagios.nix
+    ../modules/offlineimap.nix
+    ../modules/borgmatic.nix
+    ../modules/nix.nix
+    ../modules/openssh.nix
+    ../modules/radicale.nix
+    ../modules/ntfy-sh.nix
+    ../modules/vdirsyncer.nix
+    ../modules/mdns-fix.nix
+    # ../modules/projectify.nix
+    ../modules/aerospace.nix
+    ../modules/newsyslog.nix
 
-    ./caddy.nix
-    ./anki.nix
+    ../caddy.nix
+    ../anki.nix
     # ./attic.nix
-    ./infosec.nix
+    ../infosec.nix
   ];
   users.users."${name}" = {
     description = name;
@@ -85,13 +85,13 @@ in
     enableWebInterface = true;
     objectDefs = [
       # Template things
-      ./lithium/nagios/commands.cfg
-      ./lithium/nagios/contacts.cfg
-      ./lithium/nagios/templates.cfg
-      ./lithium/nagios/timeperiods.cfg
+      ./nagios/commands.cfg
+      ./nagios/contacts.cfg
+      ./nagios/templates.cfg
+      ./nagios/timeperiods.cfg
       # My config
-      ./lithium/nagios/services.cfg
-      ./lithium/nagios/hosts.cfg
+      ./nagios/services.cfg
+      ./nagios/hosts.cfg
     ];
   };
 
