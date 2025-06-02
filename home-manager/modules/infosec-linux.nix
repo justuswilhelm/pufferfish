@@ -84,11 +84,6 @@
     #   cx-oracle = null;
     # })
 
-    # Cryptography
-    # ============
-    # Broken on darwin 2025-03-11
-    pkgs.sage
-
     # Windows
     # =======
     pkgs.netexec
