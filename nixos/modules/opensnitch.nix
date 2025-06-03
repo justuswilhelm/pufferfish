@@ -1,6 +1,7 @@
 { lib, pkgs, config, ... }:
 let
   firefox = config.programs.firefox.package;
+  firefoxBin = "${firefox}/lib/firefox";
 in
 {
   # https://nixos.wiki/wiki/OpenSnitch
@@ -55,9 +56,9 @@ in
           operand = "list";
           list = [
             {
-              type = "simple";
+              type = "regexp";
               operand = "process.path";
-              data = "${firefox}/bin/firefox-esr";
+              data = firefoxBin;
             }
             {
               type = "simple";
@@ -77,9 +78,9 @@ in
           operand = "list";
           list = [
             {
-              type = "simple";
+              type = "regexp";
               operand = "process.path";
-              data = "${firefox}/bin/firefox-esr";
+              data = firefoxBin;
             }
             {
               type = "simple";
