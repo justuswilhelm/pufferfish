@@ -165,7 +165,6 @@
       darwinConfigurations."hydrogen" =
         let
           system = "aarch64-darwin";
-          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           name = "debian";
           hostName = "hydrogen";
         in
