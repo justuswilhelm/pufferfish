@@ -19,6 +19,7 @@ in
     ../modules/newsyslog.nix
     ../modules/disable-rcd.nix
     ../modules/user.nix
+    ../modules/security.nix
 
     ../caddy.nix
     ../anki.nix
@@ -95,11 +96,6 @@ in
       '';
   };
 
-  # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
-  # For iterm2 see:
-  # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
-  security.pam.services.sudo_local.touchIdAuth = true;
-
   programs.fish = {
     enable = true;
     useBabelfish = true;
@@ -135,19 +131,11 @@ in
       CreateDesktop = false;
       FXEnableExtensionChangeWarning = false;
     };
-    loginwindow = {
-      GuestEnabled = false;
-    };
-    screensaver.askForPassword = true;
-    screensaver.askForPasswordDelay = null;
     ".GlobalPreferences" = {
       "com.apple.mouse.scaling" = 0.5;
     };
   };
   system.startup.chime = false;
-
-  power.sleep.computer = 3;
-  power.sleep.display = 3;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
