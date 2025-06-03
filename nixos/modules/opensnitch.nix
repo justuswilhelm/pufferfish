@@ -114,6 +114,54 @@ in
           data = "${lib.getBin pkgs.nix}/bin/nix";
         };
       };
+      mosh-client = {
+        name = "Allow mosh-client to local network on UDP ports 60000-60100";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "10.0.0.0/16";
+            }
+            { type = "regexp"; operand = "dest.port"; data = "^600\\d\\d$"; }
+            { type = "simple"; operand = "protocol"; data = "udp"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.mosh}/bin/mosh-client";
+            }
+          ];
+        };
+      };
+      perl-ssh = {
+        name = "Allow perl SSH to local network on TCP port 22";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "10.0.0.0/16";
+            }
+            { type = "simple"; operand = "dest.port"; data = "22"; }
+            { type = "simple"; operand = "protocol"; data = "tcp"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.perl}/bin/perl";
+            }
+          ];
+        };
+      };
     };
   };
 }
