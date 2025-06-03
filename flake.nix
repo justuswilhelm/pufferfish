@@ -150,7 +150,7 @@
                 })
               ];
             }
-            ./nix-darwin/darwin-configuration.nix
+            ./nix-darwin/lithium/configuration.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
