@@ -162,6 +162,38 @@
             }
           ];
         };
+      darwinConfigurations."hydrogen" =
+        let
+          system = "aarch64-darwin";
+          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+          name = "debian";
+          hostName = "hydrogen";
+        in
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit name; };
+          modules = [
+            { _module.args = inputs; }
+            { networking = { inherit hostName; }; }
+            {
+              nixpkgs.overlays = [
+                (final: previous: {
+                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
+                })
+              ];
+            }
+            ./nix-darwin/hydrogen/configuration.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [
+                { _module.args = inputs; }
+              ];
+              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+            }
+          ];
+        };
     } // utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
