@@ -1,4 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
+let
+  firefox = config.programs.firefox.package;
+in
 {
   # https://nixos.wiki/wiki/OpenSnitch
   # https://github.com/evilsocket/opensnitch/wiki/Rules
@@ -34,11 +37,34 @@
         enabled = true;
         action = "deny";
         duration = "always";
+        precedence = true;
         operator = {
           type = "regexp";
           sensitive = false;
           operand = "dest.host";
           data = ".*\.services\.mozilla\.com";
+        };
+      };
+      firefox-allow-443 = {
+        name = "Allow Firefox connections to port 443";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${firefox}/bin/firefox-esr";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "443";
+            }
+          ];
         };
       };
       firefox-forbid-80 = {
@@ -53,7 +79,7 @@
             {
               type = "simple";
               operand = "process.path";
-              data = "${lib.getBin pkgs.firefox}/bin/firefox-esr";
+              data = "${firefox}/bin/firefox-esr";
             }
             {
               type = "simple";
