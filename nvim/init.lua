@@ -186,6 +186,9 @@ vim.lsp.enable('ruff')
 
 -- Vale
 -- ----
+vim.lsp.config('vale_ls', {
+    workspace_required = true,
+})
 vim.lsp.enable('vale_ls')
 
 -- Deno
