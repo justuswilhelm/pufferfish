@@ -145,9 +145,6 @@
                   inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
                   inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
-                (final: previous: {
-                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
-                })
               ];
             }
             ./nix-darwin/lithium/configuration.nix
@@ -174,13 +171,6 @@
           modules = [
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }
-            {
-              nixpkgs.overlays = [
-                (final: previous: {
-                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
-                })
-              ];
-            }
             ./nix-darwin/hydrogen/configuration.nix
             home-manager.darwinModules.home-manager
             {
