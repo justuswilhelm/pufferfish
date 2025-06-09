@@ -9,7 +9,6 @@ in
     ./modules/cmus.nix
     ./modules/neomutt.nix
     ./modules/infosec.nix
-    ./modules/pipx.nix
     ./modules/packages.nix
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix

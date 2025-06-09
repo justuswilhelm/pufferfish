@@ -37,6 +37,7 @@ in
   };
   home.packages = [
     pkgs.ruff
+    pkgs.pipx
   ];
   # TODO give this an enable flag
   home.file.".pdbrc".text = ''
@@ -45,4 +46,7 @@ in
     exec(_f)
     del _f
   '';
+
+  # Ensure .local/bin is in PATH for pipx installed apps
+  home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
 }
