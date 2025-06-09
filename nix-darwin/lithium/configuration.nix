@@ -14,7 +14,7 @@ in
     ../modules/ntfy-sh.nix
     ../modules/vdirsyncer.nix
     ../modules/mdns-fix.nix
-    # ../modules/projectify.nix
+    ../modules/projectify.nix
     ../modules/aerospace.nix
     ../modules/newsyslog.nix
     ../modules/disable-rcd.nix
