@@ -148,7 +148,37 @@
                 (final: previous: {
                   j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
                 })
-                # TODO refactor this and share it with other systems
+              ];
+            }
+            ./nix-darwin/lithium/configuration.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [
+                { _module.args = inputs; }
+              ];
+              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+            }
+          ];
+        };
+      darwinConfigurations."hydrogen" =
+        let
+          system = "aarch64-darwin";
+          name = "debian";
+          hostName = "hydrogen";
+        in
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit name; };
+          modules = [
+            { _module.args = inputs; }
+            { networking = { inherit hostName; }; }
+            {
+              nixpkgs.overlays = [
+                (final: previous: {
+                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
+                })
                 (final: previous: rec {
                   valeWithStyles = previous.vale.withStyles (s: [
                     s.alex
@@ -173,7 +203,7 @@
                 })
               ];
             }
-            ./nix-darwin/lithium/configuration.nix
+            ./nix-darwin/hydrogen/configuration.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

@@ -16,6 +16,7 @@
       ../modules/opensnitch.nix
       ../modules/openssh.nix
       ../modules/openvpn.nix
+      ../modules/overlays.nix
       ../modules/podman.nix
       ../modules/sway.nix
       ../modules/yubikey.nix
