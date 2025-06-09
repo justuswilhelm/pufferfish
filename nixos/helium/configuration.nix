@@ -3,6 +3,7 @@
   imports =
     [
       ../modules/borgmatic.nix
+      ../modules/blockchains.nix
       ../modules/compat.nix
       ../modules/ime.nix
       ../modules/infosec.nix
