@@ -130,7 +130,7 @@ in
   };
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-esr;
+    package = osConfig.programs.firefox.package;
     profiles.default = {
       isDefault = true;
       name = "Default profile";

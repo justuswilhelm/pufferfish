@@ -9,7 +9,7 @@
     [
       ../modules/compat.nix
       ../modules/infosec.nix
-      ../modules/infosec.nix
+      ../modules/firefox.nix
       ../modules/man.nix
       ../modules/network-debug.nix
       ../modules/networkd.nix
@@ -70,7 +70,6 @@
     ];
     shell = pkgs.fish;
     packages = with pkgs; [
-      firefox-esr
       tree
       tmux
     ];

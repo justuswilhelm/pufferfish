@@ -8,6 +8,7 @@ in
     ../modules/nix.nix
     ../modules/openssh.nix
     ../modules/aerospace.nix
+    ../modules/overlays.nix
   ];
   users.users."${name}" = {
     description = name;

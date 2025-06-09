@@ -145,9 +145,6 @@
                   inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
                   inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
-                (final: previous: {
-                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
-                })
               ];
             }
             ./nix-darwin/lithium/configuration.nix
@@ -174,35 +171,6 @@
           modules = [
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }
-            {
-              nixpkgs.overlays = [
-                (final: previous: {
-                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
-                })
-                (final: previous: rec {
-                  valeWithStyles = previous.vale.withStyles (s: [
-                    s.alex
-                    s.google
-                    s.microsoft
-                    s.proselint
-                    s.write-good
-                    s.readability
-                  ]);
-                  vale-ls = previous.symlinkJoin {
-                    name = "vale-ls-with-styles-${previous.vale-ls.version}";
-                    paths = [ previous.vale-ls valeWithStyles ];
-                    nativeBuildInputs = [ previous.makeBinaryWrapper ];
-                    postBuild = ''
-                      wrapProgram "$out/bin/vale-ls" \
-                        --set VALE_STYLES_PATH "$out/share/vale/styles/"
-                    '';
-                    meta = {
-                      inherit (previous.vale-ls.meta) mainProgram;
-                    };
-                  };
-                })
-              ];
-            }
             ./nix-darwin/hydrogen/configuration.nix
             home-manager.darwinModules.home-manager
             {
