@@ -71,12 +71,6 @@ in
     pkgs.khard
 
     # Shell
-    # TODO might not be needed because we have
-    # modules/fish.nix
-    pkgs.fish
-    # TODO might not be needed because we have
-    # modules/tmux.nix
-    pkgs.tmux
     pkgs.shellcheck
 
     # Shell tools
