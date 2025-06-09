@@ -256,11 +256,11 @@
         "poetry2nix": "poetry2nix"
       },
       "locked": {
-        "lastModified": 1747880042,
-        "narHash": "sha256-vhzrx8zuEo1e2hAIJpOPYA1awPOG3KlB6QWPqloaV2U=",
+        "lastModified": 1749170412,
+        "narHash": "sha256-d9ZA03Tk55iXATTvhnIqCseIRHpBPKArV72/6xrgg8U=",
         "ref": "refs/heads/main",
-        "rev": "9ff969c49e837c6aac3a7a3dff415c0cfad41dbe",
-        "revCount": 5239,
+        "rev": "cf735e1fbf2dbf05ec934d07d48a985dc2617c64",
+        "revCount": 5297,
         "type": "git",
         "url": "https://github.com/jwpconsulting/projectify.git"
       },
