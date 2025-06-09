@@ -35,8 +35,6 @@ in
     pkgs.valeWithStyles
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
-    # TODO move into modules/python.nix
-    pkgs.ruff
 
     # Build tools
     pkgs.cmake
@@ -46,8 +44,6 @@ in
     pkgs.qemu
 
     # Compilers, Interpreters, VMs
-    # TODO this is already part of modules/poetry.nix
-    pkgs.poetry
     # TODO this could be part of modules/text-proc.nix
     pkgs.jq
     # TODO this could be part of modules/text-proc.nix
