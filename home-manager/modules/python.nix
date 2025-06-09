@@ -1,5 +1,4 @@
-# TODO give this an enable flag
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   pdbrcpy = pkgs.writeTextFile {
     name = "pdbrc.py";
@@ -27,10 +26,27 @@ let
   };
 in
 {
+  programs.poetry = {
+    enable = true;
+    settings = {
+      cache-dir = "${config.xdg.cacheHome}/pypoetry";
+    };
+  };
+  programs.uv = {
+    enable = true;
+  };
+  home.packages = [
+    pkgs.ruff
+    pkgs.pipx
+  ];
+  # TODO give this an enable flag
   home.file.".pdbrc".text = ''
     import os
     with open(os.path.expanduser("${pdbrcpy}")) as _f: _f = _f.read()
     exec(_f)
     del _f
   '';
+
+  # Ensure .local/bin is in PATH for pipx installed apps
+  home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
 }

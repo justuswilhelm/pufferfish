@@ -1,0 +1,10 @@
+{
+  "Transaction": {
+    "prefix": ["tx"],
+    "body": [
+      "${1:date} ${5:description}",
+      "    ${3:account1}  ${2:amount}",
+      "    ${4:account2}"
+    ]
+  }
+}

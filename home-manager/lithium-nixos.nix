@@ -18,8 +18,7 @@
     ./modules/nvim.nix
     ./modules/packages.nix
     ./modules/paths.nix
-    ./modules/pdb.nix
-    ./modules/poetry.nix
+    ./modules/python.nix
     ./modules/selenized.nix
     ./modules/ssh.nix
     ./modules/sway.nix

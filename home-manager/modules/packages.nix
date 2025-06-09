@@ -1,15 +1,10 @@
 { pkgs, ... }:
-let
-in
 {
   home.packages = [
     # Databases
     pkgs.sqlite
 
-    # TODO create modules/writing.nix
     # File, media conversion, Graphics stuff
-    pkgs.pandoc
-    pkgs.texliveTeTeX
     pkgs.graphviz
     pkgs.imagemagick
 
@@ -28,15 +23,10 @@ in
     # TODO unison still needed?
     pkgs.unison
 
-    # Linters, Formatters, Spellcheckers
+    # Linters, Formatters
     # Removed en-science because it was marked unfree in nixpkgs 24.11
-    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers ]))
-    (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
-    pkgs.valeWithStyles
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
-    # TODO move into modules/python.nix
-    pkgs.ruff
 
     # Build tools
     pkgs.cmake
@@ -46,8 +36,6 @@ in
     pkgs.qemu
 
     # Compilers, Interpreters, VMs
-    # TODO this is already part of modules/poetry.nix
-    pkgs.poetry
     # TODO this could be part of modules/text-proc.nix
     pkgs.jq
     # TODO this could be part of modules/text-proc.nix
@@ -75,12 +63,6 @@ in
     pkgs.khard
 
     # Shell
-    # TODO might not be needed because we have
-    # modules/fish.nix
-    pkgs.fish
-    # TODO might not be needed because we have
-    # modules/tmux.nix
-    pkgs.tmux
     pkgs.shellcheck
 
     # Shell tools
