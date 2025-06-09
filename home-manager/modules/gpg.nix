@@ -56,8 +56,9 @@
       armor = true;
       # Enable smartcard
       use-agent = true;
+      # I've turned it back on since some people have trouble decrypting emails.
       # Disable recipient key ID in messages (breaks Mailvelope)
-      throw-keyids = true;
+      # throw-keyids = true;
       # Default key ID to use (helpful with throw-keyids)
       #default-key 0xFF00000000000001
       #trusted-key 0xFF00000000000001
