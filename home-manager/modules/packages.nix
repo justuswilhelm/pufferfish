@@ -1,15 +1,10 @@
 { pkgs, ... }:
-let
-in
 {
   home.packages = [
     # Databases
     pkgs.sqlite
 
-    # TODO create modules/writing.nix
     # File, media conversion, Graphics stuff
-    pkgs.pandoc
-    pkgs.texliveTeTeX
     pkgs.graphviz
     pkgs.imagemagick
 
@@ -28,11 +23,8 @@ in
     # TODO unison still needed?
     pkgs.unison
 
-    # Linters, Formatters, Spellcheckers
+    # Linters, Formatters
     # Removed en-science because it was marked unfree in nixpkgs 24.11
-    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers ]))
-    (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
-    pkgs.valeWithStyles
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
 

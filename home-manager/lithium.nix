@@ -15,6 +15,7 @@ in
     ./modules/cmus.nix
     ./modules/rust.nix
     ./modules/timewarrior.nix
+    ./modules/writing.nix
 
     ./home.nix
   ];
