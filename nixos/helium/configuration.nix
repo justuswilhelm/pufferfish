@@ -3,7 +3,6 @@
   imports =
     [
       ../modules/borgmatic.nix
-      ../modules/blockchains.nix
       ../modules/compat.nix
       ../modules/ime.nix
       ../modules/infosec.nix
@@ -28,6 +27,7 @@
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./blockchains.nix
       # ./virtualisation.nix
     ];
 
