@@ -101,28 +101,29 @@ local function get_relative_buffer_path()
     return relative_path
 end
 
--- Function to add current buffer path to aider
-function M.add_to_aider()
+-- Generic function to send aider commands
+function M.send_aider_command(command)
     check_inside_tmux()
-
     local relative_path = get_relative_buffer_path()
-
     send_to_tmux_pane(
         find_aider_pane(),
-        {string.format("/add %s", relative_path), "C-m"}
+        {string.format("/%s %s", command, relative_path), "C-m"}
     )
+end
+
+-- Function to add current buffer path to aider
+function M.add_to_aider()
+    M.send_aider_command("add")
 end
 
 -- Function to add current buffer path to aider, read-only
 function M.add_to_aider_read_only()
-    check_inside_tmux()
+    M.send_aider_command("read-only")
+end
 
-    local relative_path = get_relative_buffer_path()
-
-    send_to_tmux_pane(
-        find_aider_pane(),
-        {string.format("/read-only %s", relative_path), "C-m"}
-    )
+-- Function to drop current buffer path from aider
+function M.drop_from_aider()
+    M.send_aider_command("drop")
 end
 
 function M.setup()
@@ -131,6 +132,9 @@ function M.setup()
     })
     vim.keymap.set('n', '<Leader>abr', M.add_to_aider_read_only, {
         desc = "Add current buffer to aider as read-only"
+    })
+    vim.keymap.set('n', '<Leader>abd', M.drop_from_aider, {
+        desc = "Drop current buffer from aider"
     })
 end
 
