@@ -9,35 +9,40 @@ M.AIDER_PATTERNS = {"aid", "aider"}
 function M.send_aider_command(command)
     -- Check TMUX environment
     if vim.env.TMUX == nil then
-        error("Must run inside Tmux session.")
+        vim.notify("Must run inside Tmux session.", vim.log.levels.ERROR)
+        return
     end
 
     -- Get the current buffer's path relative to Git root
     local git_root = vim.fs.root(0, '.git')
     if not git_root then
-        error("Couldn't determine root. Are you inside a Git repository?")
+        vim.notify("Couldn't determine root. Are you inside a Git repository?", vim.log.levels.ERROR)
+        return
     end
 
     local current_buffer = vim.api.nvim_buf_get_name(0)
     if not current_buffer then
-        error("Couldn't determine current buffer path")
+        vim.notify("Couldn't determine current buffer path", vim.log.levels.ERROR)
+        return
     end
 
     local current_buffer_abs = vim.fs.abspath(current_buffer)
     if not current_buffer_abs then
-        error(string.format(
+        vim.notify(string.format(
             "Couldn't determine absolute path of current buffer %s",
             current_buffer
-        ))
+        ), vim.log.levels.ERROR)
+        return
     end
 
     local relative_path = vim.fs.relpath(git_root, current_buffer_abs)
     if not relative_path then
-        error(string.format(
+        vim.notify(string.format(
             "Couldn't retrieve path of %s relative to %s",
             current_buffer_abs,
             git_root
-        ))
+        ), vim.log.levels.ERROR)
+        return
     end
 
     -- Find aider pane
@@ -48,7 +53,8 @@ function M.send_aider_command(command)
     local result = vim.system(list_panes_cmd, { text = true }):wait()
 
     if result.code ~= 0 then
-        error(string.format("Failed to list tmux panes: %s", result.stderr))
+        vim.notify(string.format("Failed to list tmux panes: %s", result.stderr), vim.log.levels.ERROR)
+        return
     end
 
     local panes = vim.split(result.stdout, '\n', {trimempty = true})
@@ -59,10 +65,11 @@ function M.send_aider_command(command)
             if pane_line:match(pattern) then
                 pane_id = pane_line:match("%[(.+)%]")
                 if not pane_id then
-                    error(string.format(
+                    vim.notify(string.format(
                         "Couldn't find full pane path in line %s",
                         pane_line
-                    ))
+                    ), vim.log.levels.ERROR)
+                    return
                 end
                 break
             end
@@ -71,10 +78,11 @@ function M.send_aider_command(command)
     end
 
     if not pane_id then
-        error(string.format(
+        vim.notify(string.format(
             'Aider pane not found in current window. Available panes:\n%s',
             table.concat(panes)
-        ))
+        ), vim.log.levels.ERROR)
+        return
     end
 
     -- Send command to pane
@@ -83,10 +91,11 @@ function M.send_aider_command(command)
     local send_result = vim.system(cmd, { text = true }):wait()
 
     if send_result.code ~= 0 then
-        error(string.format(
+        vim.notify(string.format(
             "Failed to send keys to tmux: %s",
             send_result.stderr
-        ))
+        ), vim.log.levels.ERROR)
+        return
     end
 end
 
