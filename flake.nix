@@ -14,7 +14,7 @@
     # optionally choose not to download darwin deps (saves some resources on Linux)
     agenix.inputs.darwin.follows = "";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.5.31";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.6.13.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
@@ -39,11 +39,12 @@
         helium =
           let
             name = "debian";
-            system = "x86_64-linux";
             hostName = "helium";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit system name; };
+            inherit system specialArgs;
             modules = [
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
@@ -52,9 +53,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -62,10 +64,11 @@
           let
             name = "debian";
             hostName = "lithium-nixos";
+            system = "aarch64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = { inherit name; };
+            inherit system specialArgs;
             modules = [
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
@@ -74,9 +77,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -84,10 +88,11 @@
           let
             name = "debian";
             hostName = "nitrogen";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit name; };
+            inherit system specialArgs;
             modules = [
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
@@ -96,9 +101,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -106,10 +112,11 @@
           let
             name = "debian";
             hostName = "carbon";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit name; };
+            inherit system specialArgs;
             modules = [
               disko.nixosModules.disko
               ./nixos/${hostName}/configuration.nix
@@ -119,9 +126,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -131,10 +139,11 @@
           system = "aarch64-darwin";
           name = "debian";
           hostName = "lithium";
+          specialArgs = { inherit name system; };
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = { inherit name; };
+          inherit specialArgs;
           modules = [
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }
@@ -152,6 +161,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = specialArgs;
               home-manager.sharedModules = [
                 { _module.args = inputs; }
               ];
@@ -167,7 +177,7 @@
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = { inherit name; };
+          specialArgs = { inherit name system; };
           modules = [
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }

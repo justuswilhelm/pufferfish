@@ -1,4 +1,4 @@
-{ lib, pkgs, config, options, ... }:
+{ lib, pkgs, specialArgs, config, options, ... }:
 let
   yamlFormat = pkgs.formats.yaml { };
   config = {
@@ -12,6 +12,7 @@ let
     git = true;
     analytics = false;
   };
+  isLinux = lib.strings.hasSuffix "-linux" specialArgs.system;
 in
 {
   home.file.".aider.conf.yml".source = yamlFormat.generate ".aider.conf.yml" config;
@@ -21,14 +22,13 @@ in
     pkgs.pipx
     (pkgs.writeShellApplication {
       name = "aid";
-      runtimeInputs = [
+      runtimeInputs = lib.optional isLinux [
         pkgs.stdenv.cc.cc.lib
         pkgs.glibc
         pkgs.ungoogled-chromium
       ];
       text = ''
-        #!/usr/bin/env bash
-        export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:''${LD_LIBRARY_PATH:-}"
+        ${lib.strings.optionalString isLinux "export LD_LIBRARY_PATH='${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:''$${LD_LIBRARY_PATH:-}'"}
         pipx run aider-chat "$@"
       '';
     })
