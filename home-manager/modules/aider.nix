@@ -22,13 +22,13 @@ in
     pkgs.pipx
     (pkgs.writeShellApplication {
       name = "aid";
-      runtimeInputs = lib.optional isLinux [
+      runtimeInputs = lib.optionals isLinux [
         pkgs.stdenv.cc.cc.lib
         pkgs.glibc
         pkgs.ungoogled-chromium
       ];
       text = ''
-        ${lib.strings.optionalString isLinux "export LD_LIBRARY_PATH='${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:''$${LD_LIBRARY_PATH:-}'"}
+        ${lib.optionalString isLinux ''export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:$${LD_LIBRARY_PATH:-}"''}
         pipx run aider-chat "$@"
       '';
     })
