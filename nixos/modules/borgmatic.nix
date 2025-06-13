@@ -1,8 +1,13 @@
 { pkgs, ... }:
 let
   yamlFormat = pkgs.formats.yaml { };
+  # Share this with other modules
+  # Or use nixos configuration module
   config = {
     source_directories = [ "/home" "/etc" "/var" ];
+    exclude_patterns = [
+      "/var/lib/bitcoind-default"
+    ];
     encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
     ssh_command = "ssh -i /etc/borgmatic/id_rsa";
     keep_hourly = 6;
