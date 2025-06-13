@@ -436,3 +436,7 @@ require('pastify').setup {
         end,
     },
 }
+
+-- Send_to_aider
+-- =============
+require('send_to_aider').setup()

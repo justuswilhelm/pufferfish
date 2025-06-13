@@ -4,6 +4,7 @@
     "nvim/after".source = ../../nvim/after;
     "nvim/colors/selenized.vim".source = ../../nvim/colors/selenized.vim;
     "nvim/init_base.lua".source = ../../nvim/init_base.lua;
+    "nvim/lua".source = ../../nvim/lua;
     "nvim/autoload/plug.vim".source = ../../nvim/autoload/plug.vim;
     "nvim/snippets" = {
       source = ../../nvim/snippets;
