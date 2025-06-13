@@ -22,6 +22,14 @@ let
     ];
     check_last = 10;
   };
+  srv-borgbackup-config = {
+    repositories = [
+      {
+        label = "srv-borgbackup";
+        path = "/srv/borgbackup/${config.networking.hostName}";
+      }
+    ];
+  } // config;
 in
 {
   services.borgmatic = {
@@ -29,4 +37,6 @@ in
   };
   environment.etc."borgmatic/base/borgmatic_base.yaml".source =
     yamlFormat.generate "borgmatic_base.yaml" config;
+  environment.etc."borgmatic.d/srv-borgbackup.yaml".source =
+    yamlFormat.generate "srv-borgbackup.yaml" config;
 }
