@@ -48,7 +48,8 @@ in
         # Part of debian
         swayidle -w \
             timeout 120 '${config.home.homeDirectory}/.dotfiles/bin/lock-screen swayidle' \
-            timeout 125 'swaymsg "output * dpms off"' \
+            before-sleep '${config.home.homeDirectory}/.dotfiles/bin/lock-screen swayidle' \
+            timeout 119 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
             timeout 21600 'systemctl poweroff'
         # Wayland copy-pasting, part of debian
