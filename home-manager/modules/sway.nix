@@ -45,11 +45,10 @@ in
         # TODO migrate ibus to sway, there is no Japanese input right now
         # ibus-daemon -dxr
         # Lock after 2 minutes, suspend after six hours
-        # Part of debian
+        # Turn display off after 2 minutes and 5 seconds
         swayidle -w \
             timeout 120 '${config.home.homeDirectory}/.dotfiles/bin/lock-screen swayidle' \
-            before-sleep '${config.home.homeDirectory}/.dotfiles/bin/lock-screen swayidle' \
-            timeout 119 'swaymsg "output * dpms off"' \
+            timeout 125 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
             timeout 21600 'systemctl poweroff'
         # Wayland copy-pasting, part of debian
