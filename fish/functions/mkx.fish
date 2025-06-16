@@ -1,4 +1,4 @@
-function mkx -d "Create an executable at a path" -a dest
+function mkx -d "Create an executable file at a path" -a dest
     if [ -e $dest ]
         echo "$(realpath "$dest") already exists, skipping initialization"
     else

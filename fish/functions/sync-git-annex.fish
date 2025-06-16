@@ -1,4 +1,4 @@
-function sync-git-annex -a remote
+function sync-git-annex --description "Sync all git annex repositories in your home directory" -a remote
     if [ -n "$remote" ]
         echo "Syncing with remote '$remote'"
     else

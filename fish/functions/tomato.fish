@@ -1,4 +1,4 @@
-function tomato
+function tomato --description "Launch a Pomoglorbo session in tmux"
     set session tomato
 
     if tmux has-session -t "$session"

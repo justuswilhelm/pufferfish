@@ -1,4 +1,4 @@
-function mdtopdf -a file
+function mdtopdf -d "Render this file to PDF with pandoc" -a file
     set additional $argv[2..]
     set out (path change-extension pdf $file)
     echo "Rendering $file to $out"

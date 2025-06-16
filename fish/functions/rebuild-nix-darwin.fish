@@ -1,4 +1,4 @@
-function rebuild-nix-darwin
+function rebuild-nix-darwin --description "Run darwin-rebuild"
     alacritty msg create-window \
         -e $SHELL \
         -c "
