@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   yamlFormat = pkgs.formats.yaml { };
   # Share this with other modules
   # Or use nixos configuration module
-  config = {
+  borgmatic-config = {
     source_directories = [ "/home" "/etc" "/var" ];
     exclude_patterns = [
       "/var/lib/bitcoind-default"
@@ -29,14 +29,14 @@ let
         path = "/srv/borgbackup/${config.networking.hostName}";
       }
     ];
-  } // config;
+  } // borgmatic-config;
 in
 {
   services.borgmatic = {
     enable = true;
   };
   environment.etc."borgmatic/base/borgmatic_base.yaml".source =
-    yamlFormat.generate "borgmatic_base.yaml" config;
+    yamlFormat.generate "borgmatic_base.yaml" borgmatic-config;
   environment.etc."borgmatic.d/srv-borgbackup.yaml".source =
-    yamlFormat.generate "srv-borgbackup.yaml" config;
+    yamlFormat.generate "srv-borgbackup.yaml" srv-borgbackup-config;
 }
