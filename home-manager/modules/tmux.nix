@@ -44,8 +44,7 @@ in
       clock24 = true;
       # vi navigation in tmux screens
       keyMode = "vi";
-      # Best compability for true color
-      terminal = "screen-256color";
+      terminal = "tmux-256color";
       sensibleOnTop = false;
       shell = "${config.programs.fish.package}/bin/fish";
       tmuxp.enable = true;
