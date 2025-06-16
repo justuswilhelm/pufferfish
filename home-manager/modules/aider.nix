@@ -3,7 +3,7 @@ let
   yamlFormat = pkgs.formats.yaml { };
   config = {
     # https://aider.chat/docs/leaderboards/
-    model = "openrouter/anthropic/claude-3.7-sonnet";
+    model = "openrouter/anthropic/claude-sonnet-4";
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
