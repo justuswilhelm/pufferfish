@@ -61,6 +61,7 @@
       # throw-keyids = true;
       # Default key ID to use (helpful with throw-keyids)
       #default-key 0xFF00000000000001
+      default-key = "EDFD17FDF46A726E26FBC1D39FC99E3B31579C1F";
       #trusted-key 0xFF00000000000001
       # Group recipient keys (preferred ID last)
       #group keygroup = 0xFF00000000000003 0xFF00000000000002 0xFF00000000000001
