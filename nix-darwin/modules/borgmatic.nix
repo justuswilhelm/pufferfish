@@ -120,7 +120,7 @@ in
             display_name Borgmatic
             freshness_threshold 86400  ; 24 hours
             check_freshness 1
-            check_command check_dummy!2 "Haven't heard from orgmatic in a while "
+            check_command check_dummy!2 "Haven't heard from borgmatic in a while "
         }
       '';
     in
