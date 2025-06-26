@@ -18,6 +18,7 @@ let
   newFirefoxWindow = ''exec-and-forget if pgrep -U $USER firefox; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
+  # We can't use alt because that's used for entering diacritics
   prefix = "cmd-alt";
   settings = {
     # Reference: https://github.com/i3/i3/blob/next/etc/config
