@@ -6,6 +6,7 @@ in
 {
   imports = [
     ../modules/aerospace.nix
+    ../modules/anki.nix
     ../modules/borgmatic.nix
     ../modules/caddy.nix
     ../modules/disable-rcd.nix
@@ -22,7 +23,6 @@ in
     ../modules/user.nix
     ../modules/vdirsyncer.nix
 
-    ../anki.nix
     # ./attic.nix
     ../infosec.nix
   ];
