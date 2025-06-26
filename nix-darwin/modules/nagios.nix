@@ -236,6 +236,10 @@ in
           description = "Location of nsca config file";
           default = "/etc/nagios/nsca.conf";
         };
+        send_nsca_config_file = mkOption {
+          description = "Location of send_nsca config file";
+          default = "/etc/nagios/send_nsca.conf";
+        };
         pid_file = mkOption {
           description = "Location of pid file";
           default = "${nagiosNscaState}/nsca.pid";
@@ -271,7 +275,7 @@ in
         };
         send_shortcut = mkOption {
           description = "Nix function that generates nsca bash invocation";
-          default = host: service: code: message: "echo -e '${host}\t${service}\t${toString code}\t${message}' | ${nsca}/bin/send_nsca ${cfg.nsca.server_address} -p ${toString cfg.nsca.server_port} -c ${cfg.nsca.config_file}";
+          default = host: service: code: message: "echo -e '${host}\t${service}\t${toString code}\t${message}' | ${nsca}/bin/send_nsca ${cfg.nsca.server_address} -p ${toString cfg.nsca.server_port} -c ${cfg.nsca.send_nsca_config_file}";
         };
       };
 
@@ -368,7 +372,9 @@ in
     # NSCA
     # https://github.com/NagiosEnterprises/nsca/blob/master/sample-config/nsca.cfg.in
     environment.etc."nagios/nsca.conf".source = nscaConfig;
+    # TODO adjust path here to match the path in cfg.nsca.nsca_config_file
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
+    # TODO adjust path to match the one in the cf.gnsca.send_nsca_config_file
     environment.etc."nagios/nagios.cgi.conf".source = cfg.cgiConfigFile;
 
     services.newsyslog.modules.nagios = {
