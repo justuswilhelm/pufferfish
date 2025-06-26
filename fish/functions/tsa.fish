@@ -1,4 +1,4 @@
-function tsa
+function tsa --description "(tmux) Switch or Attach to a tmux session"
     set session "$argv[1]"
     if [ -z "$session" ]
         echo "Must specify session"

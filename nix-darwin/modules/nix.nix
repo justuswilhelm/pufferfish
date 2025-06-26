@@ -9,7 +9,4 @@
     extra-sandbox-paths = [ "/nix/store" ];
   };
   nix.optimise.automatic = true;
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
 }

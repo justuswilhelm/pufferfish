@@ -9,20 +9,22 @@
     [
       ../modules/compat.nix
       ../modules/infosec.nix
-      ../modules/infosec.nix
+      ../modules/firefox.nix
       ../modules/man.nix
       ../modules/network-debug.nix
       ../modules/networkd.nix
       ../modules/nix.nix
+      ../modules/opensnitch.nix
       ../modules/openvpn.nix
       ../modules/pipewire.nix
       ../modules/sway.nix
+      ../modules/wlan.nix
       ../modules/yubikey.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./networking.nix
-      ./fluentd.nix
+      # ./fluentd.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -68,7 +70,6 @@
     ];
     shell = pkgs.fish;
     packages = with pkgs; [
-      firefox-esr
       tree
       tmux
     ];
@@ -92,6 +93,12 @@
 
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
+
+  # Power
+  powerManagement.powertop.enable = true;
+  boot.kernel.sysctl = {
+    "kernel.nmi_watchdog" = "0";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

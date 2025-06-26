@@ -1,39 +1,10 @@
 { pkgs, ... }:
-let
-  valeWithStyles = pkgs.vale.withStyles (s: [
-    s.alex
-    s.google
-    s.microsoft
-    s.proselint
-    s.write-good
-    s.readability
-  ]);
-in
 {
-  nixpkgs.overlays = [
-    (final: previous: {
-      vale-ls = previous.symlinkJoin {
-        name = "vale-ls-with-styles-${previous.vale-ls.version}";
-        paths = [ previous.vale-ls valeWithStyles ];
-        nativeBuildInputs = [ previous.makeBinaryWrapper ];
-        postBuild = ''
-          wrapProgram "$out/bin/vale-ls" \
-            --set VALE_STYLES_PATH "$out/share/vale/styles/"
-        '';
-        meta = {
-          inherit (previous.vale-ls.meta) mainProgram;
-        };
-      };
-    })
-  ];
   home.packages = [
     # Databases
     pkgs.sqlite
 
-    # TODO create modules/writing.nix
     # File, media conversion, Graphics stuff
-    pkgs.pandoc
-    pkgs.texliveTeTeX
     pkgs.graphviz
     pkgs.imagemagick
 
@@ -52,15 +23,10 @@ in
     # TODO unison still needed?
     pkgs.unison
 
-    # Linters, Formatters, Spellcheckers
+    # Linters, Formatters
     # Removed en-science because it was marked unfree in nixpkgs 24.11
-    (pkgs.aspellWithDicts (ds: with ds; [ en en-computers ]))
-    (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
-    valeWithStyles
     pkgs.nixpkgs-fmt
     pkgs.nodePackages.prettier
-    # TODO move into modules/python.nix
-    pkgs.ruff
 
     # Build tools
     pkgs.cmake
@@ -70,8 +36,6 @@ in
     pkgs.qemu
 
     # Compilers, Interpreters, VMs
-    # TODO this is already part of modules/poetry.nix
-    pkgs.poetry
     # TODO this could be part of modules/text-proc.nix
     pkgs.jq
     # TODO this could be part of modules/text-proc.nix
@@ -99,12 +63,6 @@ in
     pkgs.khard
 
     # Shell
-    # TODO might not be needed because we have
-    # modules/fish.nix
-    pkgs.fish
-    # TODO might not be needed because we have
-    # modules/tmux.nix
-    pkgs.tmux
     pkgs.shellcheck
 
     # Shell tools
@@ -114,8 +72,6 @@ in
     pkgs.watch
     pkgs.hyperfine
     pkgs.pv
-    # TODO make this part of modules/ssh.nix
-    pkgs.mosh
 
     # Secrets
     pkgs.yubikey-manager
@@ -133,6 +89,7 @@ in
     pkgs.fd
     pkgs.gnused
     pkgs.lnav
+    pkgs.datamash
 
     # Core tools
     pkgs.coreutils

@@ -55,7 +55,6 @@ Plug("christoomey/vim-tmux-navigator")
 -- --------------------
 Plug("mangelozzi/nvim-rgflow.lua")
 Plug("ibhagwan/fzf-lua", {branch= "main"})
-Plug("rgroli/other.nvim")
 
 -- Git
 -- ---
@@ -115,89 +114,6 @@ require("fzf-lua").setup({
 vim.keymap.set("n", "<c-P>", require('fzf-lua').files, { silent=true })
 vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, { silent=true })
 
--- Other
--- =====
-require("other-nvim").setup({
-    rememberBuffers = false,
-    mappings = {
-        {
-            pattern = "/Pipfile$",
-            target = "/Pipfile.lock",
-        },
-        {
-            pattern = "/Pipfile.lock$",
-            target = "/Pipfile",
-        },
-        {
-            -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+page.ts
-            pattern = "/src/routes/(.*)%+page.*$",
-            target = {
-                {
-                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+page.svelte
-                    target = "/src/routes/%1+page.svelte",
-                    context = "page",
-                },
-                {
-                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+page.ts
-                    target = "/src/routes/%1+page.ts",
-                    context = "page-data",
-                },
-            },
-        },
-        {
-            -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+layout.ts
-            pattern = "/src/routes/(.*)%+layout.*$",
-            target = {
-                {
-                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+layout.svelte
-                    target = "/src/routes/%1+layout.svelte",
-                    context = "layout",
-                },
-                {
-                    -- src/routes/dashboard/workspace-board/[workspaceBoardUuid]/+layout.ts
-                    target = "/src/routes/%1+layout.ts",
-                    context = "layout-data",
-                },
-            },
-        },
-        {
-            pattern = "/src/lib/(.*).svelte$",
-            target = "/src/stories/%1.stories.ts",
-            context = "story",
-        },
-        {
-            pattern = "/(.*)/views.py$",
-            target = "/%1/test/test_views.py",
-            context = "view tests",
-        },
-        {
-            pattern = "/(.*)/test/test_views.py$",
-            target = "/%1/views.py",
-            context = "views",
-        },
-    },
-    style = {
-        -- How the plugin paints its window borders
-        -- Allowed values are none, single, double, rounded, solid and shadow
-        border = "solid",
-
-        -- Column seperator for the window
-        seperator = "|",
-
-        -- width of the window in percent. e.g. 0.5 is 50%, 1.0 is 100%
-        width = 0.7,
-
-        -- min height in rows.
-        -- when more columns are needed this value is extended automatically
-        minHeight = 2
-    },
-})
--- Key mappings
-vim.keymap.set("n", "<leader>os", "<cmd>:OtherSplit<CR>")
--- TODO investigate if these three are still needed
--- vim.keymap.set("n", "<leader>oo", "<cmd>:Other<CR>")
--- vim.keymap.set("n", "<leader>ov", "<cmd>:OtherVSplit<CR>")
--- vim.keymap.set("n", "<leader>oc", "<cmd>:OtherClear<CR>")
 
 -- Nvim-Cmp
 -- ========
@@ -241,13 +157,12 @@ cmp.setup.filetype(
 -- ========================
 -- Capabilities added as per nvim-cmp README
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require('lspconfig')
-lspconfig.ts_ls.setup {
+vim.lsp.enable('ts_ls', {
     capabilities = capabilities,
-}
+})
 -- Svelte
 -- ------
-lspconfig.svelte.setup {
+vim.lsp.enable('svelte', {
     capabilities = capabilities,
     on_attach = function(client)
         vim.api.nvim_create_autocmd("BufWritePost", {
@@ -257,21 +172,24 @@ lspconfig.svelte.setup {
             end,
         })
     end
-}
+})
 
 -- Pyright
 -- -------
-lspconfig.pyright.setup {
+vim.lsp.enable('pyright', {
     capabilities = capabilities
-}
+})
 
 -- Ruff
 -- ----
-lspconfig.ruff.setup {}
+vim.lsp.enable('ruff')
 
 -- Vale
 -- ----
-lspconfig.vale_ls.setup {}
+vim.lsp.config('vale_ls', {
+    workspace_required = true,
+})
+vim.lsp.enable('vale_ls')
 
 -- Deno
 -- -----
@@ -518,3 +436,7 @@ require('pastify').setup {
         end,
     },
 }
+
+-- Send_to_aider
+-- =============
+require('send_to_aider').setup()

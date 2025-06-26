@@ -1,4 +1,4 @@
-function branch-off
+function branch-off -d "Branch off in git"
     argparse 'p/parent=' 'r/remote=' no-remote -- $argv
     or return
 

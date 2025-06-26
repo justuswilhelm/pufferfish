@@ -4,6 +4,7 @@
     "nvim/after".source = ../../nvim/after;
     "nvim/colors/selenized.vim".source = ../../nvim/colors/selenized.vim;
     "nvim/init_base.lua".source = ../../nvim/init_base.lua;
+    "nvim/lua".source = ../../nvim/lua;
     "nvim/autoload/plug.vim".source = ../../nvim/autoload/plug.vim;
     "nvim/snippets" = {
       source = ../../nvim/snippets;
@@ -16,9 +17,14 @@
     extraLuaConfig = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
     extraPackages = [
+      pkgs.tree-sitter
+
+      # Language servers
       pkgs.deno
       pkgs.ruff
-      pkgs.ruff-lsp
+      # ruff claims to now have a lsp server and the following package
+      # disappeared from nix 25.05
+      # pkgs.ruff-lsp
       pkgs.vale-ls
       pkgs.pyright
       pkgs.typescript
@@ -39,9 +45,9 @@
   '';
 
   programs.fish.shellAbbrs = {
-      # Neovim abbreviations
-      # --------------------
-      # Start neovim
-      e = "nvim";
+    # Neovim abbreviations
+    # --------------------
+    # Start neovim
+    e = "nvim";
   };
 }

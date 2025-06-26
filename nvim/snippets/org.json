@@ -3,15 +3,13 @@
     "prefix": ["quote"],
     "body": [
       "#+BEGIN_QUOTE",
-      "${1:TheQuote}",
       "#+END_QUOTE"
     ]
   },
   "src": {
     "prefix": ["src"],
     "body": [
-      "#+BEGIN_SRC ${2:ProgrammingLanguage}",
-      "${1:Content}",
+      "#+BEGIN_SRC ${1:ProgrammingLanguage}",
       "#+END_SRC"
     ]
   },

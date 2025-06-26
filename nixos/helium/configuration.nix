@@ -6,8 +6,10 @@
       ../modules/compat.nix
       ../modules/ime.nix
       ../modules/infosec.nix
+      ../modules/firefox.nix
       ../modules/man.nix
       ../modules/metasploit.nix
+      ../modules/mullvad.nix
       ../modules/nagios.nix
       ../modules/network-debug.nix
       ../modules/networkd.nix
@@ -15,6 +17,7 @@
       ../modules/opensnitch.nix
       ../modules/openssh.nix
       ../modules/openvpn.nix
+      ../modules/overlays.nix
       ../modules/podman.nix
       ../modules/sway.nix
       ../modules/yubikey.nix
@@ -24,7 +27,8 @@
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./virtualisation.nix
+      ./blockchains.nix
+      # ./virtualisation.nix
     ];
 
   boot = {
@@ -102,10 +106,6 @@
     defaultEditor = true;
   };
   programs.mosh.enable = true;
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-esr;
-  };
   programs.tmux.enable = true;
 
   environment.systemPackages = [

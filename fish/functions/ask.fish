@@ -1,4 +1,4 @@
-function ask
+function ask -d "Ask Kagi a question"
     if [ -z "$KAGI_API_TOKEN" ]
         echo "You need to set the environment variable KAGI_API_TOKEN"
         echo "Consult "

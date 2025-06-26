@@ -1,5 +1,5 @@
 # TODO add password hashing
-{ pkgs, config, ... }:
+{ lib, pkgs, config, ... }:
 let
   anki-sync-server = pkgs.anki-sync-server;
   username = "anki-sync-server";
@@ -9,11 +9,13 @@ let
   usersPath = "${home}/users";
   syncUser1 = "${usersPath}/sync_user_1";
   logPath = "/var/log/${username}";
-  host = "127.0.0.1";
+  host = "localhost";
   port = 18090;
+  caddyHost = "lithium.local";
+  caddyPort = 10101;
   caddyConfig = ''
     # Anki
-    https://lithium.local:10101 {
+    https://${caddyHost}:${toString caddyPort} {
       import certs
 
       reverse_proxy ${host}:${toString port}
@@ -60,6 +62,28 @@ in
     };
   };
 
+  services.nagios.objectDefs =
+    let
+      healthEndpoint = "/health";
+      ankiNagios = pkgs.writeText "anki.cfg" ''
+        define service {
+            use generic-service
+            host_name ${caddyHost}
+            service_description anki-sync-server
+            display_name Anki Sync Server (Caddy)
+            check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --url=${healthEndpoint} --expect='HTTP/2 200'
+        }
+
+        define service {
+            use generic-service
+            host_name ${host}
+            service_description anki-sync-server
+            display_name Anki Sync Server (localhost)
+            check_command check_curl!-p ${toString port} --url=${healthEndpoint} --expect='HTTP/1.1 200'
+        }
+      '';
+    in
+    lib.optional config.services.nagios.enable ankiNagios;
   services.caddy.extraConfig = caddyConfig;
 
   launchd.daemons.anki-sync-server = {
@@ -82,11 +106,11 @@ in
     '';
     serviceConfig = {
       KeepAlive = true;
-      StandardOutPath = "${logPath}/anki-sync-server.stdout.log";
-      StandardErrorPath = "${logPath}/anki-sync-server.stderr.log";
+      # Anki doesn't log to stderr
+      StandardOutPath = "${logPath}/anki-sync-server.log";
       UserName = username;
       EnvironmentVariables = {
-        SYNC_HOST = host;
+        SYNC_HOST = "127.0.0.1";
         SYNC_PORT = toString port;
         SYNC_BASE = statePath;
       };

@@ -5,16 +5,17 @@ let
 in
 {
   imports = [
+    ./modules/aider.nix
     ./modules/alacritty.nix
     ./modules/cmus.nix
     ./modules/neomutt.nix
     ./modules/infosec.nix
-    ./modules/pipx.nix
     ./modules/packages.nix
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix
     ./modules/rust.nix
     ./modules/timewarrior.nix
+    ./modules/writing.nix
 
     ./home.nix
   ];
@@ -45,6 +46,9 @@ in
       fish_add_path --move --path ${path}
       set fish_user_paths $fish_user_paths
     '';
+  programs.fish.interactiveShellInit = ''
+    mail -H
+  '';
   programs.fish.shellAliases.rebuild = "alacritty msg create-window -e $SHELL -c rebuild-nix-darwin";
   programs.git.ignores = [ ".DS_Store" ];
 

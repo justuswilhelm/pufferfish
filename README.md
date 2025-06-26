@@ -5,6 +5,8 @@
 Add useful defaults and configuration files for
 
 - Nix,
+- NixOS,
+- macOS,
 - tmux,
 - neovim,
 - fish,

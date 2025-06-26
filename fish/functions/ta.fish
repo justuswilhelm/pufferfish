@@ -1,4 +1,4 @@
-function ta -d "Prompt the user to pick an existing tmux session and connect to it" -a where
+function ta -d "(tmux) Prompt the user to pick an existing tmux session and attach to it" -a where
     if [ -n "$where" ]
         set session $where
     else

@@ -14,8 +14,8 @@
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
     ./modules/packages.nix
-    ./modules/pipx.nix
     ./modules/sway.nix
+    ./modules/writing.nix
 
     ./home.nix
   ];

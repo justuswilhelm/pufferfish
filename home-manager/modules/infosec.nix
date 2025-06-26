@@ -122,9 +122,12 @@ in
         impacket
         pycrypto
         pwntools
+        # Shodan hashes
+        mmh3
       ]
     ))
     pkgs.jwt-cli
+    pkgs.sage
 
     # PHP
     # ===
