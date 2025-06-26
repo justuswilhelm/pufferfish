@@ -135,6 +135,11 @@ in
     ".GlobalPreferences" = {
       "com.apple.mouse.scaling" = 0.5;
     };
+    CustomUserPreferences = {
+      "com.apple.dock" = {
+        "expose-group-apps" = true;
+      };
+    };
   };
   system.startup.chime = false;
 
