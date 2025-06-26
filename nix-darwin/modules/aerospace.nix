@@ -163,7 +163,7 @@ let
         "if".app-id = "org.libreoffice.script";
         "if".window-title-regex-substring = lib.strings.concatMapStringsSep
           "|"
-          (s: "(${s})")
+          (s: "^(${s})$")
           [
             "(Format|Insert) Cells"
             "Hyperlink"
