@@ -2,13 +2,13 @@
 # volume=$(tmutil localsnapshot | grep -o -E '\d{4}-\d{2}-\d{2}-\d{6}')
 # dest=$(mktemp -d)
 # mount_apfs -o ro -s "com.apple.TimeMachine.$volume.local" /Volumes "$dest"
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
   borgmatic = pkgs.borgmatic;
   statePath = "/var/lib/borgmatic";
   logPath = "/var/log/borgmatic";
 
-  send_nsca = code: message: "echo -e 'lithium.local\tborgmatic\t${toString code}\t${message}' | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf";
+  send_nsca = config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic";
 
   borgmaticConfig = {
     source_directories = [
@@ -108,13 +108,26 @@ in
     };
   };
 
+  services.nagios.objectDefs =
+    let
+      # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/freshness.html
+      cfg = pkgs.writeText "borgmatic.cfg" ''
+        define service {
+            use generic-service
+            host_name lithium.local
+            service_description borgmatic
+            active_checks_enabled 0
+            display_name Borgmatic
+            freshness_threshold 86400  ; 24 hours
+            check_freshness 1
+            check_command check_dummy!2 "Haven't heard from borgmatic in a while "
+        }
+      '';
+    in
+    lib.optional config.services.nagios.enable cfg;
+
   launchd.daemons.borgmatic = {
-    path = [
-      borgmatic
-      pkgs.moreutils
-      pkgs.coreutils
-      config.services.nagios.nsca-package
-    ];
+    path = [ borgmatic pkgs.moreutils pkgs.coreutils ];
     script = ''
       timeout --kill-after=${toString killAfter}s \
         --signal INT ${toString timeout}s \

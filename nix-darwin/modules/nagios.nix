@@ -189,13 +189,13 @@ let
   # TODO Test
   # echo -e "host-name\nasdasd\n0\n1\n" | send_nsca 127.0.0.1 -p 5667 -c /etc/nagios/send_nsca.conf
   nscaConfig = pkgs.writeText "nsca.conf" ''
-    pid_file=${nagiosNscaState}/nsca.pid
-    server_port=5667
-    server_address=127.0.0.1
-    nsca_user=nagios-nsca
-    nsca_group=nagios-nsca
-    debug=1
-    command_file=${nagiosRw}/nagios.cmd
+    pid_file=${cfg.nsca.pid_file}
+    server_port=${toString cfg.nsca.server_port}
+    server_address=${cfg.nsca.server_address}
+    nsca_user=${cfg.nsca.user}
+    nsca_group=${cfg.nsca.group}
+    debug=${toString cfg.nsca.debug}
+    command_file=${cfg.nsca.command_file}
   '';
   sendNscaConfig = pkgs.writeText "send_nsca.cfg" ''
 
@@ -226,9 +226,53 @@ in
         description = "Package to be used for nagios";
         default = pkgs.nagios;
       };
-      nsca-package = mkOption {
-        description = "Package to be used for nsca";
-        default = nsca;
+      nsca = {
+        enable = mkEnableOption "Enable nagios nsca";
+        package = mkOption {
+          description = "Package to be used for nsca";
+          default = nsca;
+        };
+        config_file = mkOption {
+          description = "Location of nsca config file";
+          default = "/etc/nagios/nsca.conf";
+        };
+        pid_file = mkOption {
+          description = "Location of pid file";
+          default = "${nagiosNscaState}/nsca.pid";
+        };
+        user = mkOption {
+          type = types.str;
+          description = "User name for nsca";
+          default = "nagios-nsca";
+        };
+        group = mkOption {
+          type = types.str;
+          description = "Group name for nsca";
+          default = "nagios-nsca";
+        };
+        server_port = mkOption {
+          type = types.int;
+          description = "Port where to serve nsca";
+          default = 5667;
+        };
+        server_address = mkOption {
+          type = types.str;
+          description = "Host name where to serve nsca";
+          default = "127.0.0.1";
+        };
+        debug = mkOption {
+          type = types.int;
+          description = "Pass 1 to enable debug";
+          default = 0;
+        };
+        command_file = mkOption {
+          type = types.str;
+          default = "${nagiosRw}/nagios.cmd";
+        };
+        send_shortcut = mkOption {
+          description = "Nix function that generates nsca bash invocation";
+          default = host: service: code: message: "echo -e '${host}\t${service}\t${toString code}\t${message}' | ${nsca}/bin/send_nsca ${cfg.nsca.server_address} -p ${toString cfg.nsca.server_port} -c ${cfg.nsca.config_file}";
+        };
       };
 
       plugins = mkOption {
@@ -369,7 +413,7 @@ in
     services.caddy.enablePhp = mkIf cfg.enableWebInterface true;
     services.caddy.extraConfig = caddyConfig;
 
-    environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca-package ];
+    environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca.package ];
     launchd.daemons.nagios = {
       # Make sure that nagios can use curl to send things to ntfy-sh
       path = [ pkgs.curl cfg.package ] ++ cfg.plugins;
@@ -394,7 +438,7 @@ in
 
 
     launchd.daemons.nagios-nsca = {
-      path = [ cfg.nsca-package ];
+      path = [ cfg.nsca.package ];
       serviceConfig = {
         UserName = "nagios-nsca";
         GroupName = "nagios-nsca";
@@ -403,7 +447,7 @@ in
         StandardErrorPath = "${nagiosNscaLogDir}/nsca.stderr.log";
         WorkingDirectory = nagiosNscaState;
       };
-      command = "nsca -f -c /etc/nagios/nsca.conf";
+      command = "nsca -f -c ${cfg.nsca.config_file}";
     };
 
     system.activationScripts.postActivation = {
