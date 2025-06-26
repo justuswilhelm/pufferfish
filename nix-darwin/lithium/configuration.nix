@@ -5,23 +5,23 @@ let
 in
 {
   imports = [
-    ../modules/nagios.nix
-    ../modules/offlineimap.nix
+    ../modules/aerospace.nix
     ../modules/borgmatic.nix
-    ../modules/nix.nix
-    ../modules/openssh.nix
-    ../modules/radicale.nix
-    ../modules/vdirsyncer.nix
+    ../modules/caddy.nix
+    ../modules/disable-rcd.nix
     ../modules/mdns-fix.nix
+    ../modules/nagios.nix
+    ../modules/newsyslog.nix
+    ../modules/nix.nix
+    ../modules/offlineimap.nix
+    ../modules/openssh.nix
     ../modules/overlays.nix
     ../modules/projectify.nix
-    ../modules/aerospace.nix
-    ../modules/newsyslog.nix
-    ../modules/disable-rcd.nix
-    ../modules/user.nix
+    ../modules/radicale.nix
     ../modules/security.nix
+    ../modules/user.nix
+    ../modules/vdirsyncer.nix
 
-    ../caddy.nix
     ../anki.nix
     # ./attic.nix
     ../infosec.nix
