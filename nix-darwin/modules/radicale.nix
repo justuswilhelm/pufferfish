@@ -4,6 +4,10 @@ let
   logPath = "/var/log/radicale";
 
   radicale = pkgs.radicale;
+  host = "localhost";
+  caddyPort = 10102;
+  caddyHost = "lithium.local";
+  port = 18110;
   radicaleConfig = pkgs.writeText "config" (lib.generators.toINI { } {
     server = {
       hosts = "127.0.0.1:18110";
@@ -22,10 +26,10 @@ let
 
   caddyConfig = ''
     # Radicale
-    https://lithium.local:10102 {
+    https://${caddyHost}:${toString caddyPort} {
       import certs
 
-      reverse_proxy localhost:18110
+      reverse_proxy ${host}:${toString port}
 
       log {
         format console
@@ -35,6 +39,31 @@ let
   '';
 in
 {
+
+  services.nagios.objectDefs =
+    let
+      healthEndpoint = "/.web/";
+      ankiNagios = pkgs.writeText "radicale.cfg" ''
+        define service {
+            use generic-service
+            host_name ${caddyHost}
+            service_description radicale
+            display_name Radicale DAV
+            # No health endpoint there
+            check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --url=${healthEndpoint}
+        }
+
+        define service {
+            use generic-service
+            host_name ${host}
+            service_description radicale
+            display_name Radicale DAV (${host})
+            # No health endpoint there
+            check_command check_curl!-p ${toString port} --url=${healthEndpoint} --expect='HTTP/1.0 200 OK'
+        }
+      '';
+    in
+    lib.optional config.services.nagios.enable ankiNagios;
   users.groups.radicale = { gid = 1020; };
   users.users.radicale = {
     description = "Radicale User";
