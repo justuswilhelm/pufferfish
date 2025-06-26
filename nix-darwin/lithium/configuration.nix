@@ -11,7 +11,6 @@ in
     ../modules/nix.nix
     ../modules/openssh.nix
     ../modules/radicale.nix
-    ../modules/ntfy-sh.nix
     ../modules/vdirsyncer.nix
     ../modules/mdns-fix.nix
     ../modules/overlays.nix
@@ -79,8 +78,6 @@ in
       ./nagios/hosts.cfg
     ];
   };
-
-  services.ntfy-sh.enable = true;
 
   # services.karabiner-elements.enable = true;
   services.skhd = {
