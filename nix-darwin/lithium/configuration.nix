@@ -24,7 +24,6 @@ in
     ../modules/vdirsyncer.nix
 
     # ./attic.nix
-    ../infosec.nix
   ];
 
   # List packages installed in system profile. To search by name, run:
