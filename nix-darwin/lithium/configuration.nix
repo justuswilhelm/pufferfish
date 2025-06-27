@@ -73,7 +73,6 @@ in
       ./nagios/templates.cfg
       ./nagios/timeperiods.cfg
       # My config
-      ./nagios/services.cfg
       ./nagios/hosts.cfg
     ];
   };

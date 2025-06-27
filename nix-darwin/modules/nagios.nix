@@ -127,8 +127,12 @@ let
     $USER1$=${pkgs.monitoring-plugins}/bin
   '';
 
+  # TODO refactor to make this a machine config
+  caddyHost = "lithium.local";
+  caddyPort = 10103;
+
   caddyConfig = ''
-    https://lithium.local:10103 {
+    https://${caddyHost}:${toString caddyPort} {
       import certs
 
       route /auth* {
@@ -153,8 +157,8 @@ let
           php_fastcgi unix//${config.services.caddy.phpFpmSock}
           file_server
         }
-        redir / /nagios/
-        redir /nagios /nagios/
+        redir / ${urlPath}/
+        redir ${urlPath} ${urlPath}/
       }
 
       log {
@@ -374,8 +378,22 @@ in
     environment.etc."nagios/nsca.conf".source = nscaConfig;
     # TODO adjust path here to match the path in cfg.nsca.nsca_config_file
     environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
-    # TODO adjust path to match the one in the cf.gnsca.send_nsca_config_file
+    # TODO adjust path to match the one in the cfg.gnsca.send_nsca_config_file
     environment.etc."nagios/nagios.cgi.conf".source = cfg.cgiConfigFile;
+
+    services.nagios.objectDefs =
+      let
+        nagiosCfg = pkgs.writeText "nagios.cfg" ''
+          define service {
+              use generic-service
+              host_name ${caddyHost}
+              service_description nagios-web
+              display_name Nagios Web Interface
+              check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --url=${urlPath}/ --expect='HTTP/2 302'
+          }
+        '';
+      in
+      lib.optional config.services.nagios.enable nagiosCfg;
 
     services.newsyslog.modules.nagios = {
       "${nagiosLogDir}/stdout.log" = {
