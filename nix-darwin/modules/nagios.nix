@@ -393,10 +393,10 @@ in
           }
         '';
       in
-      lib.optional config.services.nagios.enable nagiosCfg;
+      [ nagiosCfg ];
 
     services.newsyslog.modules.nagios = {
-      "${nagiosLogDir}/stdout.log" = {
+      "${nagiosLogDir}/nagios.log" = {
         owner = "nagios";
         group = "nagios";
         mode = "600";
@@ -405,27 +405,9 @@ in
         when = "$D0";
         flags = "J";
       };
-      "${nagiosLogDir}/stderr.log" = {
-        owner = "nagios";
-        group = "nagios";
-        mode = "600";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
-      "${nagiosNscaLogDir}/nsca.stdout.log" = {
-        owner = "nagios-nsca";
-        group = "nagios-nsca";
-        mode = "600";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
-      "${nagiosNscaLogDir}/nsca.stderr.log" = {
-        owner = "nagios-nsca";
-        group = "nagios-nsca";
+      "${nagiosNscaLogDir}/nsca.log" = {
+        owner = cfg.nsca.user;
+        group = cfg.nsca.group;
         mode = "600";
         count = 10;
         size = "*";
@@ -435,19 +417,17 @@ in
     };
 
     services.caddy.enablePhp = mkIf cfg.enableWebInterface true;
-    services.caddy.extraConfig = caddyConfig;
+    services.caddy.extraConfig = mkIf cfg.enableWebInterface caddyConfig;
 
     environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca.package ];
     launchd.daemons.nagios = {
-      # Make sure that nagios can use curl to send things to ntfy-sh
-      path = [ pkgs.curl cfg.package ] ++ cfg.plugins;
+      path = [ cfg.package pkgs.moreutils ] ++ cfg.plugins;
 
       serviceConfig = {
         UserName = "nagios";
         GroupName = "nagios";
         KeepAlive = true;
-        StandardOutPath = "${nagiosLogDir}/stdout.log";
-        StandardErrorPath = "${nagiosLogDir}/stderr.log";
+        StandardOutPath = "${nagiosLogDir}/nagios.log";
         WorkingDirectory = nagiosState;
         # Thx https://github.com/JasonRivers/Docker-Nagios/issues/135
         SoftResourceLimits = {
@@ -457,21 +437,20 @@ in
           NumberOfFiles = 32768;
         };
       };
-      command = "nagios /etc/nagios/nagios.cfg";
+      script = "nagios /etc/nagios/nagios.cfg 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'";
     };
 
 
     launchd.daemons.nagios-nsca = {
-      path = [ cfg.nsca.package ];
+      path = [ cfg.nsca.package pkgs.moreutils ];
       serviceConfig = {
         UserName = "nagios-nsca";
         GroupName = "nagios-nsca";
         KeepAlive = true;
-        StandardOutPath = "${nagiosNscaLogDir}/nsca.stdout.log";
-        StandardErrorPath = "${nagiosNscaLogDir}/nsca.stderr.log";
+        StandardOutPath = "${nagiosNscaLogDir}/nsca.log";
         WorkingDirectory = nagiosNscaState;
       };
-      command = "nsca -f -c ${cfg.nsca.config_file}";
+      script = "nsca -f -c ${cfg.nsca.config_file} 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'";
     };
 
     system.activationScripts.postActivation = {
