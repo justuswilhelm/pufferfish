@@ -1,6 +1,5 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
-  # TODO use cfg.home.homeDirectory
   applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
 in
 {
@@ -49,7 +48,7 @@ in
   programs.fish.interactiveShellInit = ''
     mail -H
   '';
-  programs.fish.shellAliases.rebuild = "alacritty msg create-window -e $SHELL -c rebuild-nix-darwin";
+  programs.fish.shellAliases.rebuild = "sudo darwin-rebuild switch --flake $DOTFILES";
   programs.git.ignores = [ ".DS_Store" ];
 
   home.file."${applicationSupport}/xbar" = {

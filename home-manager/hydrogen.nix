@@ -38,7 +38,7 @@ in
       fish_add_path --move --path ${path}
       set fish_user_paths $fish_user_paths
     '';
-  programs.fish.shellAliases.rebuild = "alacritty msg create-window -e $SHELL -c rebuild-nix-darwin";
+  programs.fish.shellAliases.rebuild = "sudo darwin-rebuild switch --flake $DOTFILES";
   programs.git.ignores = [ ".DS_Store" ];
 
   xdg.cacheHome = "${config.home.homeDirectory}/Library/Caches";
