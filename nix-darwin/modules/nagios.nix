@@ -343,36 +343,37 @@ in
       gid = 1100;
       isHidden = true;
     };
-    users.users.nagios-nsca = {
+    users.users.${cfg.nsca.user} = {
       description = "Nagios NSCA user";
       uid = 1108;
       home = nagiosNscaState;
       gid = 1108;
       isHidden = true;
     };
-    users.knownUsers = [ "nagios" "nagios-nsca" ];
+    users.knownUsers = [ "nagios" cfg.nsca.user ];
 
     users.groups.nagios = { gid = 1100; };
     users.groups.nagios-cmd = {
       gid = 1106;
       # Allow cgi file to write to nagios.cmd file
       # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
-      members = [ "nagios" "caddy" "nagios-nsca" ];
+      members = [ "nagios" "caddy" cfg.nsca.user ];
     };
-    users.groups.nagios-nsca = { gid = 1108; };
-    users.knownGroups = [ "nagios" "nagios-cmd" "nagios-nsca" ];
+    users.groups.${cfg.nsca.group} = { gid = 1108; };
+    users.knownGroups = [ "nagios" "nagios-cmd" cfg.nsca.group ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
     environment.etc."nagios/nagios.cfg".source = nagiosCfgFile;
+    # Config needed to run CGI script
+    environment.etc."nagios/nagios.cgi.conf".source = cfg.cgiConfigFile;
 
     # NSCA
     # https://github.com/NagiosEnterprises/nsca/blob/master/sample-config/nsca.cfg.in
-    environment.etc."nagios/nsca.conf".source = nscaConfig;
     # TODO adjust path here to match the path in cfg.nsca.nsca_config_file
-    environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
+    environment.etc."nagios/nsca.conf".source = nscaConfig;
     # TODO adjust path to match the one in the cfg.gnsca.send_nsca_config_file
-    environment.etc."nagios/nagios.cgi.conf".source = cfg.cgiConfigFile;
+    environment.etc."nagios/send_nsca.conf".source = sendNscaConfig;
 
     services.nagios.objectDefs =
       let
@@ -437,8 +438,8 @@ in
     launchd.daemons.nagios-nsca = {
       path = [ cfg.nsca.package pkgs.moreutils ];
       serviceConfig = {
-        UserName = "nagios-nsca";
-        GroupName = "nagios-nsca";
+        UserName = cfg.nsca.user;
+        GroupName = cfg.nsca.group;
         KeepAlive = true;
         StandardOutPath = "${nagiosNscaLogDir}/nsca.log";
         WorkingDirectory = nagiosNscaState;
@@ -460,7 +461,7 @@ in
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios
 
         mkdir -vp ${nagiosNscaState} ${nagiosNscaLogDir}
-        chown -v nagios-nsca:nagios-nsca ${nagiosNscaState} ${nagiosNscaLogDir}
+        chown -v ${cfg.nsca.user}:${cfg.nsca.group} ${nagiosNscaState} ${nagiosNscaLogDir}
         echo "Restarting nagios-nsca"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios-nsca
       '';
