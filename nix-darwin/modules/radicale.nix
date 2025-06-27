@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   radicaleState = "/var/lib/radicale";
-  logPath = "/var/log/radicale";
+  logPath = "/var/log/radicale/radicale.log";
 
   radicale = pkgs.radicale;
   host = "localhost";
@@ -10,7 +10,7 @@ let
   port = 18110;
   radicaleConfig = pkgs.writeText "config" (lib.generators.toINI { } {
     server = {
-      hosts = "127.0.0.1:18110";
+      hosts = "127.0.0.1:${toString port}";
     };
 
     auth = {
@@ -43,7 +43,7 @@ in
   services.nagios.objectDefs =
     let
       healthEndpoint = "/.web/";
-      ankiNagios = pkgs.writeText "radicale.cfg" ''
+      cfg = pkgs.writeText "radicale.cfg" ''
         define service {
             use generic-service
             host_name ${caddyHost}
@@ -63,7 +63,7 @@ in
         }
       '';
     in
-    lib.optional config.services.nagios.enable ankiNagios;
+    lib.optional config.services.nagios.enable cfg;
   users.groups.radicale = { gid = 1020; };
   users.users.radicale = {
     description = "Radicale User";
@@ -77,16 +77,7 @@ in
   environment.etc."radicale/config".source = radicaleConfig;
 
   services.newsyslog.modules.radicale = {
-    "${logPath}/radicale.stdout.log" = {
-      owner = "radicale";
-      group = "radicale";
-      mode = "640";
-      count = 10;
-      size = "*";
-      when = "$D0";
-      flags = "J";
-    };
-    "${logPath}/radicale.stderr.log" = {
+    ${logPath} = {
       owner = "radicale";
       group = "radicale";
       mode = "640";
@@ -104,8 +95,8 @@ in
     command = "${radicale}/bin/radicale";
     serviceConfig = {
       KeepAlive = true;
-      StandardOutPath = "${logPath}/radicale.stdout.log";
-      StandardErrorPath = "${logPath}/radicale.stderr.log";
+      # Radicale only logs to stderr
+      StandardErrorPath = logPath;
       UserName = "radicale";
       GroupName = "radicale";
     };
@@ -113,8 +104,8 @@ in
   system.activationScripts.postActivation = {
     text = ''
       echo "Ensuring radicale directories exist"
-      sudo mkdir -p ${radicaleState} ${logPath}
-      sudo chown radicale:radicale ${radicaleState} ${logPath}
+      sudo mkdir -p ${radicaleState} "$(dirname ${logPath})"
+      sudo chown radicale:radicale ${radicaleState} "$(dirname ${logPath})"
       sudo chmod go= ${radicaleState}
       echo "Restarting radicale"
       launchctl kickstart -k system/${config.launchd.labelPrefix}.radicale
