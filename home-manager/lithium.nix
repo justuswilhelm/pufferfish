@@ -112,10 +112,10 @@ in
 
   programs.ssh = {
     matchBlocks."*.local" = {
-      identityFile = "~/.ssh/id_rsa";
+      identityFile = "~/.ssh/id_rsa_yubikey";
     };
     matchBlocks."github.com" = {
-      identityFile = "~/.ssh/id_rsa";
+      identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };
 

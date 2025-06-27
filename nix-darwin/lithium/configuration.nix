@@ -10,6 +10,7 @@ in
     ../modules/borgmatic.nix
     ../modules/caddy.nix
     ../modules/disable-rcd.nix
+    ../modules/gpg-agent.nix
     ../modules/mdns-fix.nix
     ../modules/nagios.nix
     ../modules/newsyslog.nix
