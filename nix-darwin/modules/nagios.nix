@@ -172,13 +172,6 @@ let
     (final: previous: {
       monitoring-plugins = (previous.monitoring-plugins.overrideAttrs (
         final: previous: rec {
-          version = "2.4.0";
-          src = pkgs.fetchFromGitHub {
-            owner = "monitoring-plugins";
-            repo = "monitoring-plugins";
-            rev = "v${version}";
-            sha256 = "sha256-J9fzlxIpujoG7diSRscFhmEV9HpBOxFTJSmGGFjAzcM=";
-          };
           patches = [ ./monitoring-plugins.patch ];
           meta.platforms = pkgs.lib.platforms.all;
         }
