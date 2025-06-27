@@ -8,7 +8,7 @@ let
   statePath = "${home}/sync-base";
   usersPath = "${home}/users";
   syncUser1 = "${usersPath}/sync_user_1";
-  logPath = "/var/log/${username}";
+  logPath = "/var/log/${username}/anki-sync-server.log";
   host = "localhost";
   port = 18090;
   caddyHost = "lithium.local";
@@ -42,16 +42,7 @@ in
   users.knownUsers = [ groupname ];
 
   services.newsyslog.modules.anki = {
-    "${logPath}/anki-sync-server.stdout.log" = {
-      owner = username;
-      group = groupname;
-      mode = "640";
-      count = 10;
-      size = "*";
-      when = "$D0";
-      flags = "J";
-    };
-    "${logPath}/anki-sync-server.stderr.log" = {
+    ${logPath} = {
       owner = username;
       group = groupname;
       mode = "640";
@@ -107,7 +98,7 @@ in
     serviceConfig = {
       KeepAlive = true;
       # Anki doesn't log to stderr
-      StandardOutPath = "${logPath}/anki-sync-server.log";
+      StandardOutPath = logPath;
       UserName = username;
       EnvironmentVariables = {
         SYNC_HOST = "127.0.0.1";
@@ -118,7 +109,7 @@ in
   };
   system.activationScripts.preActivation = {
     text = ''
-      mkdir -pv ${home} ${logPath}
+      mkdir -pv ${home} "$(dirname ${logPath})"
 
       chown -R ${username}:${groupname} ${home} ${logPath}
       chmod -R go= ${home}
