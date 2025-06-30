@@ -1,3 +1,5 @@
+# TODO make this a Nix module
+# users.add_default_user = true
 { pkgs, specialArgs, ... }:
 let
   uid = 501;

@@ -1,3 +1,5 @@
+# TODO make this a Nix module
+# security.pufferfish_default.enable = true
 { ... }:
 {
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157

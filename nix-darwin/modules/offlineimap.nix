@@ -1,3 +1,4 @@
+# TODO make this a nix module
 { config, pkgs, lib, ... }:
 let
   offlineimap = "${pkgs.offlineimap}/bin/offlineimap";
@@ -5,6 +6,7 @@ let
   timeout = 3 * 60;
   # Kill after not responding to SIGINT
   killAfter = 2 * 60;
+  # TODO derive computer name
   send_nsca = config.services.nagios.nsca.send_shortcut "lithium.local" "offlineimap";
 in
 {

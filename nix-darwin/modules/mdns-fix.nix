@@ -1,3 +1,5 @@
+# TODO check if this is still necessary
+# TODO make this a Nix module
 { ... }:
 {
   launchd.user.agents.mdns-hotfix = {

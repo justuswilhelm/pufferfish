@@ -1,3 +1,5 @@
+# TODO make this a Nix module
+# nixpkgs.overlays.pufferfish.enable = true
 { ... }:
 {
   nixpkgs.overlays = [

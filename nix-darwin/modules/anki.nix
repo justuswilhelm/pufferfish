@@ -1,3 +1,4 @@
+# TODO Make this a Nix module
 # TODO add password hashing
 { lib, pkgs, config, ... }:
 let

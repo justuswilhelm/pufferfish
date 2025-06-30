@@ -1,3 +1,4 @@
+# TODO make this a Nix module
 { ... }:
 {
   # This file
@@ -6,6 +7,7 @@
   # keys file.
   # Log output
   # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 0xFFFFFF   Info        0x0                  9999   0    sshd: AuthorizedKeysCommand /bin/cat /etc/ssh/nix_authorized_keys.d/$USER failed, status 1
+  # TODO check if this workaround is still necessaryb
   environment.etc."ssh/sshd_config.d/101-authorized-keys.conf".enable = false;
   #   environment.etc."ssh/sshd_config.d/keys".text = ''
   #     AuthorizedKeysFile /Users/%u/.ssh/authorized_keys

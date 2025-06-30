@@ -1,3 +1,4 @@
+# TODO use Nix module syntax here
 { lib, config, specialArgs, ... }:
 let
   applicationsDirectory = "/Users/${specialArgs.name}/Applications";

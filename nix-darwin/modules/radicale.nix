@@ -1,3 +1,4 @@
+# TODO make this a nix module
 { config, lib, pkgs, ... }:
 let
   radicaleState = "/var/lib/radicale";
@@ -6,6 +7,7 @@ let
   radicale = pkgs.radicale;
   host = "localhost";
   caddyPort = 10102;
+  # TODO check if this value can't be refactored somehow
   caddyHost = "lithium.local";
   port = 18110;
   radicaleConfig = pkgs.writeText "config" (lib.generators.toINI { } {
