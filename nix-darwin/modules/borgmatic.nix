@@ -79,85 +79,90 @@ let
     let
       yamlFormat = pkgs.formats.yaml { };
       cfg = yamlFormat.generate "borgmatic_base.yaml" borgmaticConfig;
-      validated = pkgs.runCommand "borgmatic_base_checked.yml" { preferLocalBuild = true; } ''
-        cp ${cfg} borgmatic_base.yml
-        ${borgmatic}/bin/borgmatic config validate \
-          --config borgmatic_base.yml && cp ${cfg} $out
-
-      '';
     in
-    validated;
+    pkgs.runCommand "borgmatic_base_checked.yml" { preferLocalBuild = true; } ''
+      cp ${cfg} borgmatic_base.yml
+      ${borgmatic}/bin/borgmatic config validate \
+        --config borgmatic_base.yml && cp ${cfg} $out
+    '';
 
   # Let borgmatic run for 50 min max
   timeout = 60 * 50;
   # Kill after not responding to SIGINT
   killAfter = 2 * 60;
 in
+with lib;
 {
-  environment.systemPackages = [ borgmatic ];
+  options.services.borgmatic = {
+    enable = mkEnableOption "borgmatic backup service";
+  };
 
-  environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
+  config = mkIf config.services.borgmatic.enable
+    {
+      environment.systemPackages = [ borgmatic ];
 
-  services.newsyslog.modules.borgmatic = {
-    "${logPath}/borgmatic.stdout.log" = {
-      mode = "640";
-      count = 10;
-      size = "*";
-      when = "$D0";
-      flags = "J";
+      environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
+
+      services.newsyslog.modules.borgmatic = {
+        "${logPath}/borgmatic.stdout.log" = {
+          mode = "640";
+          count = 10;
+          size = "*";
+          when = "$D0";
+          flags = "J";
+        };
+      };
+
+      services.nagios.objectDefs =
+        let
+          # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/freshness.html
+          cfg = pkgs.writeText "borgmatic.cfg" ''
+            define service {
+                use generic-service
+                host_name lithium.local
+                service_description borgmatic
+                active_checks_enabled 0
+                display_name Borgmatic
+                freshness_threshold 86400  ; 24 hours
+                check_freshness 1
+                check_command check_dummy!2 "Haven't heard from borgmatic in a while "
+            }
+          '';
+        in
+        lib.optional config.services.nagios.enable cfg;
+
+      launchd.daemons.borgmatic = {
+        path = [ borgmatic pkgs.moreutils pkgs.coreutils ];
+        script = ''
+          timeout --kill-after=${toString killAfter}s \
+            --signal INT ${toString timeout}s \
+          /usr/bin/caffeinate -s \
+          borgmatic \
+            --verbosity 2 \
+          2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+        '';
+        serviceConfig = {
+          # Performance
+          ProcessType = "Background";
+          LowPriorityBackgroundIO = true;
+          # Borgmatic's syslog doesn't appear to work on macOS.
+          # We might be missing out on some error messages
+          # All logged to stdout now using `ts`
+          StandardOutPath = "${logPath}/borgmatic.stdout.log";
+          # Maybe:
+          # NetworkState = true;
+          # So that we don't try to back up when not connected to the network
+          LowPriorityIO = true;
+          # Timing
+          StartCalendarInterval = [{ Minute = 0; }];
+        };
+      };
+
+      system.activationScripts.preActivation = {
+        text = ''
+          mkdir -p ${logPath} ${statePath}
+          chmod -R go= ${statePath}
+        '';
+      };
     };
-  };
-
-  services.nagios.objectDefs =
-    let
-      # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/freshness.html
-      cfg = pkgs.writeText "borgmatic.cfg" ''
-        define service {
-            use generic-service
-            host_name lithium.local
-            service_description borgmatic
-            active_checks_enabled 0
-            display_name Borgmatic
-            freshness_threshold 86400  ; 24 hours
-            check_freshness 1
-            check_command check_dummy!2 "Haven't heard from borgmatic in a while "
-        }
-      '';
-    in
-    lib.optional config.services.nagios.enable cfg;
-
-  launchd.daemons.borgmatic = {
-    path = [ borgmatic pkgs.moreutils pkgs.coreutils ];
-    script = ''
-      timeout --kill-after=${toString killAfter}s \
-        --signal INT ${toString timeout}s \
-      /usr/bin/caffeinate -s \
-      borgmatic \
-        --verbosity 2 \
-      2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
-    '';
-    serviceConfig = {
-      # Performance
-      ProcessType = "Background";
-      LowPriorityBackgroundIO = true;
-      # Borgmatic's syslog doesn't appear to work on macOS.
-      # We might be missing out on some error messages
-      # All logged to stdout now using `ts`
-      StandardOutPath = "${logPath}/borgmatic.stdout.log";
-      # Maybe:
-      # NetworkState = true;
-      # So that we don't try to back up when not connected to the network
-      LowPriorityIO = true;
-      # Timing
-      StartCalendarInterval = [{ Minute = 0; }];
-    };
-  };
-
-  system.activationScripts.preActivation = {
-    text = ''
-      mkdir -p ${logPath} ${statePath}
-      chmod -R go= ${statePath}
-    '';
-  };
-
 }

@@ -59,6 +59,8 @@ in
 
   launchd.labelPrefix = "net.jwpconsulting";
 
+  services.borgmatic.enable = true;
+
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
