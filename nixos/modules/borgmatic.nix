@@ -1,13 +1,12 @@
-{ pkgs, config, ... }:
+{ config, pkgs, lib, ... }:
 let
+  cfg = config.services.borgmatic;
   yamlFormat = pkgs.formats.yaml { };
   # Share this with other modules
   # Or use nixos configuration module
   borgmatic-config = {
     source_directories = [ "/home" "/etc" "/var" ];
-    exclude_patterns = [
-      "/var/lib/bitcoind-default"
-    ];
+    exclude_patterns = cfg.extra_exclude_patterns;
     encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
     ssh_command = "ssh -i /etc/borgmatic/id_rsa";
     keep_hourly = 6;
@@ -32,11 +31,20 @@ let
   } // borgmatic-config;
 in
 {
-  services.borgmatic = {
-    enable = true;
+  options = {
+    services.borgmatic.extra_exclude_patterns = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Additional patterns to exclude from borgmatic backups";
+    };
   };
-  environment.etc."borgmatic/base/borgmatic_base.yaml".source =
-    yamlFormat.generate "borgmatic_base.yaml" borgmatic-config;
-  environment.etc."borgmatic.d/srv-borgbackup.yaml".source =
-    yamlFormat.generate "srv-borgbackup.yaml" srv-borgbackup-config;
+  config = {
+    services.borgmatic = {
+      enable = true;
+    };
+    environment.etc."borgmatic/base/borgmatic_base.yaml".source =
+      yamlFormat.generate "borgmatic_base.yaml" borgmatic-config;
+    environment.etc."borgmatic.d/srv-borgbackup.yaml".source =
+      yamlFormat.generate "srv-borgbackup.yaml" srv-borgbackup-config;
+  };
 }
