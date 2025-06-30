@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""asd"""
+"""
+Print a markdown table that describes each fish function in Pufferfish.
+
+1) Searches the functions in $DOTFILES/fish/functions
+2) Extracts the `-d` argument
+3) Puts each extracted argument into a table
+"""
 from os import path
 from os import environ
 import re
@@ -14,14 +20,20 @@ FN_GLOB = glob.iglob(
     )
 )
 
-DOC_RE = re.compile(r'function (?P<name>.+) -d "(?P<description>.+)"$')
+DOC_RE = re.compile(r'function (?P<name>.+) (-d|--description) "(?P<description>.+)"')
 
 
-def read_doc(path):
+def read_doc(path: str) -> re.Match:
     """Return doc string."""
     with open(path) as fd:
-        for line in fd:
-            return DOC_RE.search(line)
+        contents = fd.read()
+    match = DOC_RE.search(contents)
+    if not match:
+        raise ValueError(
+            f"Couldn't find function description in {path}.\n"
+            f"Contents:\n{contents}"
+        )
+    return match
 
 
 def header():
@@ -38,17 +50,15 @@ def describe(name, description):
 def main():
     """Run main method."""
 
-    def _iter():
-        yield "\n".join(header())
-        for match in map(read_doc, sorted(FN_GLOB)):
-            yield "\n".join(
-                describe(
-                    match.group("name"),
-                    match.group("description"),
-                )
+    print("\n".join(header()))
+    for fun in sorted(FN_GLOB):
+        match = read_doc(fun)
+        print("\n".join(
+            describe(
+                match.group("name"),
+                match.group("description"),
             )
-
-    print("\n".join(_iter()))
+        ))
 
 
 if __name__ == "__main__":

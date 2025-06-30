@@ -5,26 +5,26 @@ let
 in
 {
   imports = [
-    ../modules/nagios.nix
-    ../modules/offlineimap.nix
-    ../modules/borgmatic.nix
-    ../modules/nix.nix
-    ../modules/openssh.nix
-    ../modules/radicale.nix
-    ../modules/ntfy-sh.nix
-    ../modules/vdirsyncer.nix
-    ../modules/mdns-fix.nix
-    # ../modules/projectify.nix
     ../modules/aerospace.nix
-    ../modules/newsyslog.nix
+    ../modules/anki.nix
+    ../modules/borgmatic.nix
+    ../modules/caddy.nix
     ../modules/disable-rcd.nix
-    ../modules/user.nix
+    ../modules/gpg-agent.nix
+    ../modules/mdns-fix.nix
+    ../modules/nagios.nix
+    ../modules/newsyslog.nix
+    ../modules/nix.nix
+    ../modules/offlineimap.nix
+    ../modules/openssh.nix
+    ../modules/overlays.nix
+    ../modules/projectify.nix
+    ../modules/radicale.nix
     ../modules/security.nix
+    ../modules/user.nix
+    ../modules/vdirsyncer.nix
 
-    ../caddy.nix
-    ../anki.nix
     # ./attic.nix
-    ../infosec.nix
   ];
 
   # List packages installed in system profile. To search by name, run:
@@ -59,6 +59,8 @@ in
 
   launchd.labelPrefix = "net.jwpconsulting";
 
+  services.borgmatic.enable = true;
+
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
@@ -74,12 +76,9 @@ in
       ./nagios/templates.cfg
       ./nagios/timeperiods.cfg
       # My config
-      ./nagios/services.cfg
       ./nagios/hosts.cfg
     ];
   };
-
-  services.ntfy-sh.enable = true;
 
   # services.karabiner-elements.enable = true;
   services.skhd = {
@@ -133,6 +132,11 @@ in
     };
     ".GlobalPreferences" = {
       "com.apple.mouse.scaling" = 0.5;
+    };
+    CustomUserPreferences = {
+      "com.apple.dock" = {
+        "expose-group-apps" = true;
+      };
     };
   };
   system.startup.chime = false;

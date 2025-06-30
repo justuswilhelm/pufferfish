@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
+let
+  firefox = config.programs.firefox.package;
+  firefoxBin = "${firefox}/lib/firefox";
+in
 {
   # https://nixos.wiki/wiki/OpenSnitch
   # https://github.com/evilsocket/opensnitch/wiki/Rules
@@ -34,11 +38,34 @@
         enabled = true;
         action = "deny";
         duration = "always";
+        precedence = true;
         operator = {
           type = "regexp";
           sensitive = false;
           operand = "dest.host";
           data = ".*\.services\.mozilla\.com";
+        };
+      };
+      firefox-allow-443 = {
+        name = "Allow Firefox connections to port 443";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "regexp";
+              operand = "process.path";
+              data = firefoxBin;
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "443";
+            }
+          ];
         };
       };
       firefox-forbid-80 = {
@@ -51,9 +78,9 @@
           operand = "list";
           list = [
             {
-              type = "simple";
+              type = "regexp";
               operand = "process.path";
-              data = "${lib.getBin pkgs.firefox}/bin/firefox-esr";
+              data = firefoxBin;
             }
             {
               type = "simple";
@@ -85,6 +112,54 @@
           sensitive = false;
           operand = "process.path";
           data = "${lib.getBin pkgs.nix}/bin/nix";
+        };
+      };
+      mosh-client = {
+        name = "Allow mosh-client to local network on UDP ports 60000-60100";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "10.0.0.0/16";
+            }
+            { type = "regexp"; operand = "dest.port"; data = "^600\\d\\d$"; }
+            { type = "simple"; operand = "protocol"; data = "udp"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.mosh}/bin/mosh-client";
+            }
+          ];
+        };
+      };
+      perl-ssh = {
+        name = "Allow perl SSH to local network on TCP port 22";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "10.0.0.0/16";
+            }
+            { type = "simple"; operand = "dest.port"; data = "22"; }
+            { type = "simple"; operand = "protocol"; data = "tcp"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.perl}/bin/perl";
+            }
+          ];
         };
       };
     };

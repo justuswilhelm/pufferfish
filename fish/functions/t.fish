@@ -1,4 +1,4 @@
-function t -d "Create a new tmux session with the given name" -a name
+function t -d "(tmux) Create a new tmux session with the given name" -a name
     if [ -n "$name" ]
         set session_name $name
     else

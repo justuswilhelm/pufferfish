@@ -5,9 +5,11 @@ let
 in
 {
   imports = [
+    ../modules/gpg-agent.nix
     ../modules/nix.nix
     ../modules/openssh.nix
     ../modules/aerospace.nix
+    ../modules/overlays.nix
   ];
   users.users."${name}" = {
     description = name;
@@ -59,23 +61,6 @@ in
         rewind : ${cmus-remote} -r
         fast : ${cmus-remote} -n
       '';
-  };
-
-  # https://github.com/drduh/YubiKey-Guide?tab=readme-ov-file#ssh
-  launchd.user.agents.gpg-agent = {
-    path = [ pkgs.gnupg ];
-    command = "gpg-connect-agent";
-    serviceConfig = {
-      RunAtLoad = true;
-      KeepAlive = false;
-    };
-  };
-  launchd.user.agents.gpg-agent-symlink = {
-    path = [ pkgs.coreutils ];
-    command = "ln -sf $HOME/.gnupg/S.gpg-agent.ssh $SSH_AUTH_SOCK";
-    serviceConfig = {
-      RunAtLoad = true;
-    };
   };
 
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157

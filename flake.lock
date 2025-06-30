@@ -49,11 +49,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1710146030,
-        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
         "type": "github"
       },
       "original": {
@@ -233,16 +233,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1748647811,
-        "narHash": "sha256-PkDe0PggFzYte5YHKpJF6hqAfey8zqNloVu5pBtNKOI=",
-        "ref": "refs/tags/2025.5.31",
-        "rev": "f6202e6f22cd9c19f9d4572691634a45f605fd4d",
-        "revCount": 842,
+        "lastModified": 1749779086,
+        "narHash": "sha256-XsMyR+Ndlz/EbEL5l+jszfbmNKWBwI5q1ouUAkyYAbA=",
+        "ref": "refs/tags/2025.6.13.1",
+        "rev": "4c75547a37b1dd52d24f7a2708260f6e91a778a0",
+        "revCount": 856,
         "type": "git",
         "url": "https://codeberg.org/justusw/Pomoglorbo.git"
       },
       "original": {
-        "ref": "refs/tags/2025.5.31",
+        "ref": "refs/tags/2025.6.13.1",
         "type": "git",
         "url": "https://codeberg.org/justusw/Pomoglorbo.git"
       }
@@ -256,11 +256,11 @@
         "poetry2nix": "poetry2nix"
       },
       "locked": {
-        "lastModified": 1747880042,
-        "narHash": "sha256-vhzrx8zuEo1e2hAIJpOPYA1awPOG3KlB6QWPqloaV2U=",
+        "lastModified": 1749170412,
+        "narHash": "sha256-d9ZA03Tk55iXATTvhnIqCseIRHpBPKArV72/6xrgg8U=",
         "ref": "refs/heads/main",
-        "rev": "9ff969c49e837c6aac3a7a3dff415c0cfad41dbe",
-        "revCount": 5239,
+        "rev": "cf735e1fbf2dbf05ec934d07d48a985dc2617c64",
+        "revCount": 5297,
         "type": "git",
         "url": "https://github.com/jwpconsulting/projectify.git"
       },

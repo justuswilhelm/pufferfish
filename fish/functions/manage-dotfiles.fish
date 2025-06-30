@@ -1,4 +1,4 @@
-function manage-dotfiles
+function manage-dotfiles -d "Launch a tmux session to manage your dotfiles"
     set session dotfiles
 
     if tmux has-session -t $session

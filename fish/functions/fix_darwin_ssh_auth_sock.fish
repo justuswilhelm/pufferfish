@@ -1,11 +1,10 @@
-# Fix SSH_AUTH_SOCK on darwin
 # HACKY
-# Launchctl print docs say to not rely on the output
-function fix_darwin_ssh_auth_sock
+function fix_darwin_ssh_auth_sock -d "Fix SSH_AUTH_SOCK on darwin"
     echo "SSH_AUTH_SOCK is $SSH_AUTH_SOCK"
     set uid (id -u "$USER")
     set target "gui/$uid/com.openssh.ssh-agent"
     if not set path (
+        # Launchctl print docs say to not rely on the output
         launchctl print "$target" |
             grep --max-count 1 --only-matching --regexp "/private/.*/Listeners"
     )

@@ -6,6 +6,7 @@
       ../modules/compat.nix
       ../modules/ime.nix
       ../modules/infosec.nix
+      ../modules/firefox.nix
       ../modules/man.nix
       ../modules/metasploit.nix
       ../modules/mullvad.nix
@@ -26,6 +27,7 @@
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./blockchains.nix
       # ./virtualisation.nix
     ];
 
@@ -104,10 +106,6 @@
     defaultEditor = true;
   };
   programs.mosh.enable = true;
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-esr;
-  };
   programs.tmux.enable = true;
 
   environment.systemPackages = [

@@ -1,4 +1,4 @@
-function hugo_session -a cwd
+function hugo_session -d "Launch a hugo session in a given directory" -a cwd
     set session (basename $cwd)
 
     # Attach if already created

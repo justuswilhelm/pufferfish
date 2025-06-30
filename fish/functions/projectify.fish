@@ -1,4 +1,4 @@
-function projectify
+function projectify --description "Launch a Projectify tmux session"
     # This is a relatively complete example of how to create a complex session in
     # tmux using nothing but tmux commands
     set session projectify

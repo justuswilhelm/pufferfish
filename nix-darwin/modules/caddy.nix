@@ -220,6 +220,22 @@ in
       };
     };
 
+    services.nagios.objectDefs =
+      let
+        host = "localhost";
+        port = 2019;
+        nagiosCfg = pkgs.writeText "caddy.cfg" ''
+          define service {
+              use generic-service
+              host_name ${host}
+              service_description Caddy
+              display_name Caddy web server
+              check_command check_curl!-p ${toString port} --expect='HTTP/1.1 404'
+          }
+        '';
+      in
+      lib.optional config.services.nagios.enable nagiosCfg;
+
     environment.systemPackages = [ caddy ];
 
     launchd.daemons.caddy = {
@@ -253,7 +269,7 @@ in
 
     # This is a bit flaky, sometimes this cert is not included in
     # /etc/ssl/certs/ca-ceriticates.crt
-    security.pki.certificateFiles = [ ../nix/lithium-ca.crt ];
+    security.pki.certificateFiles = [ ../../nix/lithium-ca.crt ];
 
     system.activationScripts.preActivation = {
       text = ''
