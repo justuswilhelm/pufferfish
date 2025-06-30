@@ -60,6 +60,7 @@ in
   launchd.labelPrefix = "net.jwpconsulting";
 
   services.borgmatic.enable = true;
+  services.vdirsyncer.enable = true;
 
   services.postgresql = {
     enable = true;
