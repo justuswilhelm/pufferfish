@@ -10,6 +10,7 @@
       device = "/dev/disk/by-uuid/37aab34d-9b1b-49d2-b77f-de9cf217f929";
       fsType = "ext4";
     };
+  services.borgmatic.extra_exclude_patterns = [ "/var/lib/bitcoind-default" ];
 
   services.opensnitch = {
     enable = true;
