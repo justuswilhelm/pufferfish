@@ -1,8 +1,9 @@
-# pufferfish
+# Pufferfish
 
 ![pufferfish](docs/puffer.png)
 
-Add useful defaults and configuration files for
+Pufferfish gives you useful defaults and configuration files for the following
+programs:
 
 - Nix,
 - NixOS,
@@ -10,68 +11,98 @@ Add useful defaults and configuration files for
 - tmux,
 - neovim,
 - fish,
+- neomutt,
+- vdirsyncer,
+- radicale,
+- borgmatic,
 - and many more.
 
-## Using on macOS
+You can install and use Pufferfish on macOS and NixOS. Pufferfish also works on
+Debian, but additional installation steps may be necessary.
+
+## Use Pufferfish on macOS
 
 - [Nix](https://nixos.org/download#download-nix), and
-- [nix darwin](https://github.com/LnL7/nix-darwin)
+- [nix-darwin](https://github.com/LnL7/nix-darwin)
 
-Initial installation:
+Here's how you can install nix-darwin and Pufferfish from scratch.
 
-```
+1. Install nix on macOS using the [official installer](https://nixos.org/download#download-nix).
+2. Clone this repository into your home directory at `$HOME/.dotfiles".
+3. Add your machine to the `flake.nix` file in the repository root.
+4. Run `darwin-rebuild` on the Nix flake contained in this repository.
+Read more about `darwin-rebuild` [here](https://github.com/nix-darwin/nix-darwin?tab=readme-ov-file#getting-started).
+
+Here's how you can clone this repository into the right directory:
+
+```fish
 git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-darwin-rebuild switch --flake "$HOME/.dotfiles"
 ```
 
-Rebuild:
+When you've cloned the repository, run the following to install Pufferfish
+with `darwin-rebuild`:
+
+```fish
+sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles"
+```
+
+### How to add your machine to the flake file
+
+TODO
+
+### How to rebuild Pufferfish
+
+In a fish shell, run the following function:
+
+```fish
+rebuild
+```
+
+## Use Pufferfish on NixOS
+
+TODO
+
+## Use Pufferfish on Debian
+
+You need to install the following programs to use Pufferfish on Debian:
+
+- [Nix](https://nixos.org/download#download-nix), and
+- [home manager](https://nix-community.github.io/home-manager/index.xhtml#sec-install-standalone)
+
+Furthermore, make sure that you've installed the following programs using `apt`:
+
+- sway
+- swaylock
+- swayidle
+
+Pufferfish installs all other dependencies using `home-manager`.
+
+Here's how to install Pufferfish from scratch:
+
+```fish
+git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
+home-manager --extra-experimental-features flakes --extra-experimental-features nix-command switch --flake $HOME/.dotfiles
+```
+
+Here's how to rebuild Pufferfish:
 
 ```fish
 # In fish run the following function
 rebuild
 ```
 
-## Using on Debian
-
-Requirements are:
-
-- [Nix](https://nixos.org/download#download-nix), and
-- [home manager](https://nix-community.github.io/home-manager/index.xhtml#sec-install-standalone)
-
-Furthermore, to properly use the window manager, you need to have installed (using apt)
-
-- sway
-- swaylock
-- swayidle
-
-All other dependencies will be installed using home manager.
-
-Initial installation:
-
-```
-git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
-home-manager --extra-experimental-features flakes --extra-experimental-features nix-command switch --flake $HOME/.dotfiles
-```
-
-Rebuild:
-
-```
-# In fish run the following function
-rebuild
-```
-
 ## Formatting the code
 
-There is a nix flake in the root directory that installs prettier. Inside
-a `nix develop` shell, you can run
+There is a nix flake in the root directory that installs the `prettier` command. Inside
+a `nix develop` shell run the following:
 
-```
+```fish
 prettier --check .
 ```
 
-to check everything. If you want to format everything, run
+If you want to format everything, try the following command:
 
-```
+```fish
 prettier --write .
 ```
 
@@ -92,7 +123,7 @@ to contribute the code back.
 
 # License
 
-Copyright (c) 2014-2024 Justus Perlwitz
+Copyright (c) 2014-2025 Justus Perlwitz
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
