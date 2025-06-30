@@ -166,6 +166,7 @@ let
           (s: "^(${s})$")
           [
             "(Format|Insert) Cells"
+            "Text Import .+"
             "Hyperlink"
             "Save Document"
             "Delete Contents"
