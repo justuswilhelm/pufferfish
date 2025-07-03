@@ -7,13 +7,10 @@ in
   imports = [
     ../modules/aerospace.nix
     ../modules/anki.nix
-    ../modules/borgmatic.nix
     ../modules/caddy.nix
     ../modules/disable-rcd.nix
     ../modules/gpg-agent.nix
     ../modules/mdns-fix.nix
-    ../modules/nagios.nix
-    ../modules/newsyslog.nix
     ../modules/nix.nix
     ../modules/offlineimap.nix
     ../modules/openssh.nix
@@ -22,7 +19,8 @@ in
     ../modules/radicale.nix
     ../modules/security.nix
     ../modules/user.nix
-    ../modules/vdirsyncer.nix
+
+    ../modules/default.nix
 
     # ./attic.nix
   ];
