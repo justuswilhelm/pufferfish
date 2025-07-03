@@ -12,7 +12,7 @@ function open-in-finder --description "Choose a directory, open it in Finder"
 
     if ! set dir (
         begin
-            cat $hist_file
+            tac $hist_file
             fd \
                 --type directory \
                 --max-depth 5 \
