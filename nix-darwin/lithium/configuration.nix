@@ -5,30 +5,25 @@ let
 in
 {
   imports = [
-    ./modules/nagios.nix
-    ./modules/offlineimap.nix
-    ./modules/borgmatic.nix
-    ./modules/nix.nix
-    ./modules/openssh.nix
-    ./modules/radicale.nix
-    ./modules/ntfy-sh.nix
-    ./modules/vdirsyncer.nix
-    ./modules/mdns-fix.nix
-    ./modules/projectify.nix
-    ./modules/aerospace.nix
-    ./modules/newsyslog.nix
+    ../modules/aerospace.nix
+    ../modules/anki.nix
+    ../modules/caddy.nix
+    ../modules/disable-rcd.nix
+    ../modules/gpg-agent.nix
+    ../modules/mdns-fix.nix
+    ../modules/nix.nix
+    ../modules/offlineimap.nix
+    ../modules/openssh.nix
+    ../modules/overlays.nix
+    ../modules/projectify.nix
+    ../modules/radicale.nix
+    ../modules/security.nix
+    ../modules/user.nix
 
-    ./caddy.nix
-    ./anki.nix
-    ./attic.nix
-    ./infosec.nix
+    ../modules/default.nix
+
+    # ./attic.nix
   ];
-  users.users."${name}" = {
-    description = name;
-    shell = pkgs.fish;
-    home = "/Users/${name}";
-    inherit uid;
-  };
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -59,20 +54,11 @@ in
     ];
   };
 
-  # Rid ourselves of Apple Music automatically launching
-  # https://apple.stackexchange.com/questions/372948/how-can-i-prevent-music-app-from-starting-automatically-randomly/373557#373557
-  # Does this actually work? Might have to revisit this
-  # Other sources say this works:
-  # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
-  # But unload is deprecated in newer versions of launchd
-  system.activationScripts.postUserActivation = {
-    text = ''
-      sudo -u ${name} launchctl bootout gui/${builtins.toString uid}/com.apple.rcd || echo "Already booted out"
-      sudo -u ${name} launchctl disable gui/${builtins.toString uid}/com.apple.rcd || echo "Already disabled"
-    '';
-  };
 
   launchd.labelPrefix = "net.jwpconsulting";
+
+  services.borgmatic.enable = true;
+  services.vdirsyncer.enable = true;
 
   services.postgresql = {
     enable = true;
@@ -84,17 +70,14 @@ in
     enableWebInterface = true;
     objectDefs = [
       # Template things
-      ./lithium/nagios/commands.cfg
-      ./lithium/nagios/contacts.cfg
-      ./lithium/nagios/templates.cfg
-      ./lithium/nagios/timeperiods.cfg
+      ./nagios/commands.cfg
+      ./nagios/contacts.cfg
+      ./nagios/templates.cfg
+      ./nagios/timeperiods.cfg
       # My config
-      ./lithium/nagios/services.cfg
-      ./lithium/nagios/hosts.cfg
+      ./nagios/hosts.cfg
     ];
   };
-
-  services.ntfy-sh.enable = true;
 
   # services.karabiner-elements.enable = true;
   services.skhd = {
@@ -110,11 +93,6 @@ in
         fast : ${cmus-remote} -n
       '';
   };
-
-  # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
-  # For iterm2 see:
-  # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
-  security.pam.enableSudoTouchIdAuth = true;
 
   programs.fish = {
     enable = true;
@@ -151,19 +129,16 @@ in
       CreateDesktop = false;
       FXEnableExtensionChangeWarning = false;
     };
-    loginwindow = {
-      GuestEnabled = false;
-    };
-    screensaver.askForPassword = true;
-    screensaver.askForPasswordDelay = null;
     ".GlobalPreferences" = {
       "com.apple.mouse.scaling" = 0.5;
     };
+    CustomUserPreferences = {
+      "com.apple.dock" = {
+        "expose-group-apps" = true;
+      };
+    };
   };
   system.startup.chime = false;
-
-  power.sleep.computer = 3;
-  power.sleep.display = 3;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

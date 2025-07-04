@@ -1,12 +1,18 @@
+# TODO make this a nix module
 { config, lib, pkgs, ... }:
 let
   radicaleState = "/var/lib/radicale";
-  logPath = "/var/log/radicale";
+  logPath = "/var/log/radicale/radicale.log";
 
   radicale = pkgs.radicale;
+  host = "localhost";
+  caddyPort = 10102;
+  # TODO check if this value can't be refactored somehow
+  caddyHost = "lithium.local";
+  port = 18110;
   radicaleConfig = pkgs.writeText "config" (lib.generators.toINI { } {
     server = {
-      hosts = "127.0.0.1:18110";
+      hosts = "127.0.0.1:${toString port}";
     };
 
     auth = {
@@ -22,10 +28,10 @@ let
 
   caddyConfig = ''
     # Radicale
-    https://lithium.local:10102 {
+    https://${caddyHost}:${toString caddyPort} {
       import certs
 
-      reverse_proxy localhost:18110
+      reverse_proxy ${host}:${toString port}
 
       log {
         format console
@@ -35,6 +41,31 @@ let
   '';
 in
 {
+
+  services.nagios.objectDefs =
+    let
+      healthEndpoint = "/.web/";
+      cfg = pkgs.writeText "radicale.cfg" ''
+        define service {
+            use generic-service
+            host_name ${caddyHost}
+            service_description radicale
+            display_name Radicale DAV
+            # No health endpoint there
+            check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --url=${healthEndpoint}
+        }
+
+        define service {
+            use generic-service
+            host_name ${host}
+            service_description radicale
+            display_name Radicale DAV (${host})
+            # No health endpoint there
+            check_command check_curl!-p ${toString port} --url=${healthEndpoint} --expect='HTTP/1.0 200 OK'
+        }
+      '';
+    in
+    lib.optional config.services.nagios.enable cfg;
   users.groups.radicale = { gid = 1020; };
   users.users.radicale = {
     description = "Radicale User";
@@ -48,16 +79,7 @@ in
   environment.etc."radicale/config".source = radicaleConfig;
 
   services.newsyslog.modules.radicale = {
-    "${logPath}/radicale.stdout.log" = {
-      owner = "radicale";
-      group = "radicale";
-      mode = "640";
-      count = 10;
-      size = "*";
-      when = "$D0";
-      flags = "J";
-    };
-    "${logPath}/radicale.stderr.log" = {
+    ${logPath} = {
       owner = "radicale";
       group = "radicale";
       mode = "640";
@@ -75,8 +97,8 @@ in
     command = "${radicale}/bin/radicale";
     serviceConfig = {
       KeepAlive = true;
-      StandardOutPath = "${logPath}/radicale.stdout.log";
-      StandardErrorPath = "${logPath}/radicale.stderr.log";
+      # Radicale only logs to stderr
+      StandardErrorPath = logPath;
       UserName = "radicale";
       GroupName = "radicale";
     };
@@ -84,8 +106,8 @@ in
   system.activationScripts.postActivation = {
     text = ''
       echo "Ensuring radicale directories exist"
-      sudo mkdir -p ${radicaleState} ${logPath}
-      sudo chown radicale:radicale ${radicaleState} ${logPath}
+      sudo mkdir -p ${radicaleState} "$(dirname ${logPath})"
+      sudo chown radicale:radicale ${radicaleState} "$(dirname ${logPath})"
       sudo chmod go= ${radicaleState}
       echo "Restarting radicale"
       launchctl kickstart -k system/${config.launchd.labelPrefix}.radicale

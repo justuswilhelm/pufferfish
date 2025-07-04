@@ -1,4 +1,4 @@
-function open-in-finder
+function open-in-finder --description "Choose a directory, open it in Finder"
     set hist_file $XDG_STATE_HOME/pufferfish/open-in-finder.hist
 
     if ! mkdir -vp (dirname $hist_file)
@@ -12,7 +12,7 @@ function open-in-finder
 
     if ! set dir (
         begin
-            cat $hist_file
+            tac $hist_file
             fd \
                 --type directory \
                 --max-depth 5 \

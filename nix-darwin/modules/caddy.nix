@@ -14,7 +14,7 @@ let
       "github.com/aksdb/caddy-cgi/v2@v2.2.5"
       "github.com/greenpau/caddy-security@v1.1.29"
     ];
-    hash = "sha256-Bzqu6GDMNgYV4F1TJGCYEmjDaD6vlm7LpoH4MuJLL8U=";
+    hash = "sha256-0Bc7oWqdP2VMl64omfNn5oTGRQ6eRiN+8aTvlxRO/Bs=";
   };
   caddyCookieLifetime = 60 * 60 * 24 * 3;
   caddyConfig = pkgs.writeText "Caddyfile" (''
@@ -81,6 +81,7 @@ let
     mv Caddyfile $out
   '';
 
+  # TODO investigate whether these are still needed Justus 2025-05-30
   php = ((pkgs.php.overrideAttrs
     (previous: {
       buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
@@ -219,6 +220,22 @@ in
       };
     };
 
+    services.nagios.objectDefs =
+      let
+        host = "localhost";
+        port = 2019;
+        nagiosCfg = pkgs.writeText "caddy.cfg" ''
+          define service {
+              use generic-service
+              host_name ${host}
+              service_description Caddy
+              display_name Caddy web server
+              check_command check_curl!-p ${toString port} --expect='HTTP/1.1 404'
+          }
+        '';
+      in
+      lib.optional config.services.nagios.enable nagiosCfg;
+
     environment.systemPackages = [ caddy ];
 
     launchd.daemons.caddy = {
@@ -252,7 +269,7 @@ in
 
     # This is a bit flaky, sometimes this cert is not included in
     # /etc/ssl/certs/ca-ceriticates.crt
-    security.pki.certificateFiles = [ ../nix/lithium-ca.crt ];
+    security.pki.certificateFiles = [ ../../nix/lithium-ca.crt ];
 
     system.activationScripts.preActivation = {
       text = ''
@@ -269,8 +286,6 @@ in
     # Restart caddy
     system.activationScripts.postActivation = {
       text = ''
-        caddy validate --config /etc/caddy/Caddyfile
-
         echo "Restarting caddy"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.caddy
       '';

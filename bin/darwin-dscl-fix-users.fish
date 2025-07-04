@@ -10,7 +10,7 @@
 #
 # or remove it from your configuration.
 
-for user in nagios lithium-ca nagios-nsca ntfy-sh
+for user in nagios lithium-ca nagios-nsca
     if sudo dscl . -change /Users/$user NFSHomeDirectory {/private,}/var/lib/$user
         echo "Fixed $user"
     else

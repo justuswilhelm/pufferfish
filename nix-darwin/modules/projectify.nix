@@ -1,3 +1,4 @@
+# TODO make this a nix module
 { pkgs, ... }:
 let
   frontend = pkgs.projectify-frontend-node;
@@ -39,6 +40,7 @@ in
   launchd.daemons.projectify-redis = {
     command = "${pkgs.redis}/bin/redis-server /etc/projectify/redis.conf";
     serviceConfig = {
+      # TODO check if logging can't be merged
       StandardOutPath = "${logPath}/projectify-redis.stdout.log";
       StandardErrorPath = "${logPath}/projectify-redis.stderr.log";
       KeepAlive = true;
@@ -50,6 +52,7 @@ in
     serviceConfig =
       {
         KeepAlive = true;
+        # TODO check if logging can't be merged
         StandardOutPath = "${logPath}/projectify-frontend-node.stdout.log";
         StandardErrorPath = "${logPath}/projectify-frontend-node.stderr.log";
         EnvironmentVariables = {
@@ -73,6 +76,7 @@ in
     serviceConfig =
       {
         KeepAlive = true;
+        # TODO check if logging can't be merged
         StandardOutPath = "${logPath}/projectify-backend.stdout.log";
         StandardErrorPath = "${logPath}/projectify-backend.stderr.log";
         EnvironmentVariables = {

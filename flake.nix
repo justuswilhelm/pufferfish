@@ -2,11 +2,10 @@
   description = "Justus' generic system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko/master";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,7 +14,7 @@
     # optionally choose not to download darwin deps (saves some resources on Linux)
     agenix.inputs.darwin.follows = "";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2024.11.22";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.6.13.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
@@ -30,7 +29,6 @@
     , nix-darwin
     , home-manager
     , nixpkgs
-    , nixpkgs-unstable
     , pomoglorbo
     , projectify
     , utils
@@ -41,25 +39,24 @@
         helium =
           let
             name = "debian";
-            system = "x86_64-linux";
-            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
             hostName = "helium";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit system name pkgs-unstable; };
+            inherit system specialArgs;
             modules = [
-              ./nixos/overlays.nix
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                # TODO migrate user
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -67,10 +64,11 @@
           let
             name = "debian";
             hostName = "lithium-nixos";
+            system = "aarch64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = { inherit name; };
+            inherit system specialArgs;
             modules = [
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
@@ -79,9 +77,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -89,10 +88,11 @@
           let
             name = "debian";
             hostName = "nitrogen";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit name; };
+            inherit system specialArgs;
             modules = [
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
@@ -101,9 +101,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -111,10 +112,11 @@
           let
             name = "debian";
             hostName = "carbon";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
           in
           nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit name; };
+            inherit system specialArgs;
             modules = [
               disko.nixosModules.disko
               ./nixos/${hostName}/configuration.nix
@@ -124,9 +126,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                };
+                } // specialArgs;
               }
             ];
           };
@@ -134,32 +137,51 @@
       darwinConfigurations."lithium" =
         let
           system = "aarch64-darwin";
-          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
           name = "debian";
           hostName = "lithium";
+          specialArgs = { inherit name system; };
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = { inherit name; };
+          inherit specialArgs;
           modules = [
             { _module.args = inputs; }
             { networking = { inherit hostName; }; }
             {
+              # TODO remove overlay?
               nixpkgs.overlays = [
                 (final: previous: {
-                  # XXX
-                  # want to use withPlugins, not available in 24.11
-                  caddy = pkgs-unstable.caddy;
-
                   inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
                   inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
-                (final: previous: {
-                  j = previous.j.overrideAttrs (final: previous: { meta.broken = false; });
-                })
               ];
             }
-            ./nix-darwin/darwin-configuration.nix
+            ./nix-darwin/lithium/configuration.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = specialArgs;
+              home-manager.sharedModules = [
+                { _module.args = inputs; }
+              ];
+              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+            }
+          ];
+        };
+      darwinConfigurations."hydrogen" =
+        let
+          system = "aarch64-darwin";
+          name = "debian";
+          hostName = "hydrogen";
+        in
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit name system; };
+          modules = [
+            { _module.args = inputs; }
+            { networking = { inherit hostName; }; }
+            ./nix-darwin/hydrogen/configuration.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

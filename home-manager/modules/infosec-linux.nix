@@ -78,15 +78,11 @@
     # Cracking
     # ========
     # TODO check if this is still relevant
-    (pkgs.python3Packages.patator.override {
-      # odpic causes issues on Darwin
-      cx-oracle = null;
-    })
-
-    # Cryptography
-    # ============
-    # Broken on darwin 2025-03-11
-    pkgs.sage
+    # Broken on 25.05
+    # (pkgs.python3Packages.patator.override {
+    #   # odpic causes issues on Darwin
+    #   cx-oracle = null;
+    # })
 
     # Windows
     # =======

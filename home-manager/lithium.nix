@@ -1,20 +1,20 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
-  # TODO use cfg.home.homeDirectory
   applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
 in
 {
   imports = [
+    ./modules/aider.nix
     ./modules/alacritty.nix
     ./modules/cmus.nix
     ./modules/neomutt.nix
     ./modules/infosec.nix
-    ./modules/pipx.nix
     ./modules/packages.nix
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix
     ./modules/rust.nix
     ./modules/timewarrior.nix
+    ./modules/writing.nix
 
     ./home.nix
   ];
@@ -48,7 +48,7 @@ in
   programs.fish.interactiveShellInit = ''
     mail -H
   '';
-  programs.fish.shellAliases.rebuild = "alacritty msg create-window -e $SHELL -c rebuild-nix-darwin";
+  programs.fish.shellAliases.rebuild = "sudo darwin-rebuild switch --flake $DOTFILES";
   programs.git.ignores = [ ".DS_Store" ];
 
   home.file."${applicationSupport}/xbar" = {
@@ -112,10 +112,10 @@ in
 
   programs.ssh = {
     matchBlocks."*.local" = {
-      identityFile = "~/.ssh/id_rsa";
+      identityFile = "~/.ssh/id_rsa_yubikey";
     };
     matchBlocks."github.com" = {
-      identityFile = "~/.ssh/id_rsa";
+      identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };
 

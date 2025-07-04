@@ -130,37 +130,37 @@ in
   };
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-esr;
+    package = osConfig.programs.firefox.package;
     profiles.default = {
       isDefault = true;
       name = "Default profile";
-      search.default = "Kagi";
+      search.default = "kagi";
       search.force = true;
       search.engines = {
-        "Kagi" = {
+        "kagi" = {
           urls = [{
             template = "https://kagi.com/search?q={searchTerms}";
           }];
           definedAliases = [ "kagi" ];
         };
-        "DuckDuckGo".metaData.hidden = false;
-        "Bing".metaData.hidden = true;
-        "Google".metaData.hidden = true;
-        "Amazon.co.jp".metaData.hidden = true;
-        "Wikipedia (en)".metaData.hidden = true;
+        "ddg".metaData.hidden = false;
+        "bing".metaData.hidden = true;
+        "google".metaData.hidden = true;
+        "amazon-jp".metaData.hidden = true;
+        "wikipedia".metaData.hidden = true;
       };
       settings = hardenedSettings;
     };
     profiles.mitm-proxy = {
       id = 1;
       name = "mitm-proxy";
-      search.default = "DuckDuckGo";
+      search.default = "ddg";
       search.force = true;
       search.engines = {
-        "Bing".metaData.hidden = true;
-        "Google".metaData.hidden = true;
-        "Amazon.co.jp".metaData.hidden = true;
-        "Wikipedia (en)".metaData.hidden = true;
+        "bing".metaData.hidden = true;
+        "google".metaData.hidden = true;
+        "amazon-jp".metaData.hidden = true;
+        "wikpedia".metaData.hidden = true;
       };
       settings = hardenedSettings // {
         # "browser.privatebrowsing.autostart" = true;
@@ -176,13 +176,13 @@ in
     profiles.claude = {
       id = 2;
       name = "claude";
-      search.default = "DuckDuckGo";
+      search.default = "ddg";
       search.force = true;
       search.engines = {
-        "Bing".metaData.hidden = true;
-        "Google".metaData.hidden = true;
-        "Amazon.co.jp".metaData.hidden = true;
-        "Wikipedia (en)".metaData.hidden = true;
+        "bing".metaData.hidden = true;
+        "google".metaData.hidden = true;
+        "amazon-jp".metaData.hidden = true;
+        "wikipedia".metaData.hidden = true;
       };
     };
   };

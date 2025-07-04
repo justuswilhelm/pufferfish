@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-# Only works on Debian right now ;)
-swaymsg workspace 4
-sleep "0.3"
-swaymsg split h
-swaymsg exec foot "fish -c manage-dotfiles"
-swaymsg focus parent
-swaymsg split h
-swaymsg exec firefox-esr

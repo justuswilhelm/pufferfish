@@ -1,5 +1,0 @@
-#!/bin/bash
-swaymsg workspace 1
-swaymsg split h
-swaymsg exec foot projectify
-swaymsg focus parent

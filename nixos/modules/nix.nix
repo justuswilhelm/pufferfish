@@ -1,3 +1,4 @@
+# TODO make this a Nix module
 { config, lib, pkgs, ... }:
 {
   nix = {

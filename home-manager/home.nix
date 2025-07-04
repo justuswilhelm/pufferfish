@@ -11,8 +11,7 @@
     ./modules/nvim.nix
     ./modules/passwordstore.nix
     ./modules/paths.nix
-    ./modules/pdb.nix
-    ./modules/poetry.nix
+    ./modules/python.nix
     ./modules/selenized.nix
     ./modules/ssh.nix
     ./modules/tmux.nix
