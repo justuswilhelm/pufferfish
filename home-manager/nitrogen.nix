@@ -10,8 +10,8 @@ in
     ./modules/foot.nix
     ./modules/gdb.nix
     ./modules/gpg-agent.nix
-    ./modules/infosec.nix
-    ./modules/infosec-linux.nix
+    # ./modules/infosec.nix
+    # ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
     ./modules/packages.nix
     ./modules/ssh.nix
