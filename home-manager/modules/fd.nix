@@ -1,64 +1,10 @@
-{ lib, pkgs, specialArgs, config, osConfig, ... }:
-let
-  applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
-in
+# Configuration for fd
+{ pkgs, config, ... } :
 {
-  imports = [
-    ./modules/aider.nix
-    ./modules/alacritty.nix
-    ./modules/cmus.nix
-    ./modules/fd.nix
-    ./modules/neomutt.nix
-    ./modules/infosec.nix
-    ./modules/packages.nix
-    ./modules/pomoglorbo.nix
-    ./modules/cmus.nix
-    ./modules/rust.nix
-    ./modules/timewarrior.nix
-    ./modules/writing.nix
-
-    ./home.nix
+  home.packages = [
+    pkgs.fd
   ];
-
-  programs.cmus = {
-    enable = true;
-    output_plugin = "coreaudio";
-  };
-
-  programs.tmux = {
-    pasteCommand = "pbpaste";
-    copyCommand = "pbcopy";
-  };
-
-  programs.fish.loginShellInit =
-    let
-      # Courtesy of
-      # https://github.com/LnL7/nix-darwin/issues/122#issuecomment-1659465635
-      # This naive quoting is good enough in this case. There shouldn't be any
-      # double quotes in the input string, and it needs to be double quoted in case
-      # it contains a space (which is unlikely!)
-      dquote = str: "\"" + str + "\"";
-
-      makeBinPathList = map (path: path + "/bin");
-      path = lib.concatMapStringsSep " " dquote (makeBinPathList osConfig.environment.profiles);
-    in
-    ''
-      fish_add_path --move --path ${path}
-      set fish_user_paths $fish_user_paths
-    '';
-  programs.fish.interactiveShellInit = ''
-    mail -H
-  '';
-  programs.fish.shellAliases.rebuild = "sudo darwin-rebuild switch --flake $DOTFILES";
-  programs.git.ignores = [ ".DS_Store" ];
-
-  home.file."${applicationSupport}/xbar" = {
-    source = ../xbar;
-    recursive = true;
-  };
-  xdg.cacheHome = "${config.home.homeDirectory}/Library/Caches";
-
-  xdg.configFile."karabiner/karabiner.json".source = ../karabiner/karabiner.json;
+  # XXX darwin specific
   xdg.configFile."fd/ignore".text =
     # These are all directories that can't be walked through by fd, or cause
     # permission popups
@@ -110,15 +56,4 @@ in
       /Users/${username}/Library/Weather
       /Users/${username}/Library/com.apple.aiml.instrumentation
     '';
-
-  programs.ssh = {
-    matchBlocks."*.local" = {
-      identityFile = "~/.ssh/id_rsa_yubikey";
-    };
-    matchBlocks."github.com" = {
-      identityFile = "~/.ssh/id_rsa_yubikey";
-    };
-  };
-
-  home.stateVersion = "24.05";
 }
