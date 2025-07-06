@@ -7,6 +7,7 @@ in
     ./modules/alacritty.nix
     ./modules/cmus.nix
     ./modules/fd.nix
+    ./modules/infosec.nix
     ./modules/packages.nix
 
     ./home.nix
