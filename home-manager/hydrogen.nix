@@ -1,6 +1,5 @@
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
-  # TODO use cfg.home.homeDirectory
   applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
 in
 {
