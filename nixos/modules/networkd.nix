@@ -36,6 +36,7 @@
     extraConfig = ''
       DNSStubListener = udp
     '';
+    llmnr = "false";
   };
   networking.firewall.enable = true;
   networking.firewall.allowedUDPPorts = [
