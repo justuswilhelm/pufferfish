@@ -1,5 +1,5 @@
 # Configuration for fd
-{ pkgs, config, ... } :
+{ pkgs, config, ... }:
 {
   home.packages = [
     pkgs.fd
