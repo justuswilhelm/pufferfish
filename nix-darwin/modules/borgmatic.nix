@@ -1,7 +1,3 @@
-# TODO investigate how to use APFS snapshotting
-# volume=$(tmutil localsnapshot | grep -o -E '\d{4}-\d{2}-\d{2}-\d{6}')
-# dest=$(mktemp -d)
-# mount_apfs -o ro -s "com.apple.TimeMachine.$volume.local" /Volumes "$dest"
 { pkgs, config, lib, ... }:
 let
   borgmatic = pkgs.borgmatic;
@@ -10,14 +6,34 @@ let
 
   send_nsca = config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic";
 
+  makeSnapshot = pkgs.writeShellApplication {
+    name = "make-snapshot";
+    runtimeInputs = [ pkgs.gnugrep ];
+    text = ''
+      set -o pipefail
+      volume=$(/usr/bin/tmutil localsnapshot | grep -o -E "[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{6}")
+      /sbin/mount_apfs -o ro -s "com.apple.TimeMachine.$volume.local" /Volumes "${statePath}/snapshot"
+    '';
+  };
+
+  unmountSnapshot = pkgs.writeShellApplication {
+    name = "unmount-snapshot";
+    text = ''
+      /sbin/umount "${statePath}/snapshot"
+    '';
+  };
+
   borgmaticConfig = {
     source_directories = [
-      "/etc"
-      "/Applications"
-      "/Library"
-      "/Users"
-      "/var"
+      "private/etc"
+      "Applications"
+      "Library"
+      "Users"
+      "private/var"
     ];
+    # Prevent borgmatic from silently not updating one of the above directories
+    source_directories_must_exist = true;
+    working_directory = "${statePath}/snapshot";
     exclude_patterns = [
       "/Library/Developer"
       "/Library/Updates"
@@ -50,29 +66,35 @@ let
     ];
     check_last = 10;
     # TODO add individual per-repository checks
-    after_actions = [
-      (send_nsca 0 "{repository} OK")
-    ];
-    on_error = [
-      (send_nsca 2 "{repository} ERROR {error}: {output}")
-    ];
-    # Migrate to something like this when we have borgmatic v2
     # https://torsion.org/borgmatic/docs/how-to/add-preparation-and-cleanup-steps-to-backups/
-    # commands = [
-    #   {
-    #     after = "action";
-    #     run = [
-    #       CMD here
-    #     ];
-    #   }
-    #   {
-    #     after = "error";
-    #     states = ["fail"];
-    #     run = [
-    #       CMD here
-    #     ];
-    #   }
-    # ];
+    commands = [
+      {
+        before = "configuration";
+        when = [ "create" ];
+        run = [ "${makeSnapshot}/bin/make-snapshot" ];
+      }
+      {
+        after = "configuration";
+        when = [ "create" ];
+        run = [ "${unmountSnapshot}/bin/unmount-snapshot" ];
+      }
+      {
+        after = "action";
+        when = [ "create" ];
+        states = [ "finish" ];
+        run = [
+          (send_nsca 0 "{repository} OK")
+        ];
+      }
+      {
+        after = "error";
+        # Send all errors to Nagios
+        # when = [ "create" ];
+        run = [
+          (send_nsca 2 "{repository} ERROR {error}: {output}")
+        ];
+      }
+    ];
   };
 
   borgmaticConfigYaml =
@@ -139,7 +161,7 @@ with lib;
           /usr/bin/caffeinate -s \
           borgmatic \
             --verbosity 2 \
-          2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+            2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
         '';
         serviceConfig = {
           # Performance
@@ -161,7 +183,7 @@ with lib;
       system.activationScripts.preActivation = {
         text = ''
           mkdir -p ${logPath} ${statePath}
-          chmod -R go= ${statePath}
+          chmod go= ${statePath}
         '';
       };
     };
