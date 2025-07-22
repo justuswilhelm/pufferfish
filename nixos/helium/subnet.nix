@@ -84,65 +84,31 @@ in
       valid-lifetime = 4000;
     };
   };
-
-  # services.dnsmasq = {
-  #   enable = true;
-  #   settings = {
-  #     log-debug = true;
-  #     interface = ifname;
-  #     bind-interfaces = true;
-
-  #     # DHCP config
-  #     dhcp-range = "10.128.0.11,10.128.0.100,24h";
-  #     dhcp-option = [
-  #       "option:netmask,255.255.255.0"
-  #       "option:router,10.128.0.10"
-  #       "option:dns-server,10.128.0.10"
-  #     ];
-
-  #     # DNS
-  #     server = [ "10.0.48.1" ];
-  #     domain = "10.128.0.1/24";
-  #   };
-  # };
-  # networking.nat = {
-  #   enable = true;
-  #   internalInterfaces = [ ifname ];
-  #   externalInterface = extIfname;
-  # };
   boot.kernel.sysctl = {
-    # "net.ipv4.conf.all.forwarding" = 1;
-    # "net.ipv4.conf.default.forwarding" = 1;
     "net.ipv4.conf.${extIfname}.route_localnet" = 1;
     "net.ipv4.conf.${ifname}.route_localnet" = 1;
     "net.ipv4.ip_forward" = 1;
   };
   networking.nftables.enable = true;
-  # iifname "${ifname}" tcp dport 443 counter redirect to :9900
-  # log level debug
-  # meta nftrace set 1
-  # Original:
-  # table ip nixos-nat {
-  #         chain pre {
-  #                 type nat hook prerouting priority dstnat; policy accept;
-  #         }
-  #
-  #         chain post {
-  #                 type nat hook postrouting priority srcnat; policy accept;
-  #                 iifname "enp0s20f0u6" oifname "enp7s0" masquerade comment "from internal interfaces"
-  #         }
-  #
-  #         chain out {
-  #                 type nat hook output priority mangle; policy accept;
-  #         }
-  # }
-  #iifname "${ifname}" oifname "${extIfname}" masquerade
+  # https://github.com/aapooksman/certmitm?tab=readme-ov-file#usage
+  # TODO block everything except for the following on the device:
+  # icmp type echo-request accept comment "allow ping"
+  # icmpv6 type != { nd-redirect, 139 } accept comment "Accept all ICMPv6 messages except redirects and node information queries (type 139).  See RFC 4890, section 4.4."
+
+  # # HTTPS (443/tcp)
+  # tcp dport 443 accept
+
+  # # DNS (53/tcp, 53/udp)
+  # tcp dport 53 accept
+  # udp dport 53 accept
+
+  # # NTP (123/udp)
+  # udp dport 123 accept
   networking.nftables.ruleset = ''
     table nat {
       chain prerouting {
         type nat hook prerouting priority dstnat;
         iifname "${ifname}" tcp dport 443 counter redirect to :9900
-        log
       }
       chain postrouting {
         type nat hook postrouting priority srcnat;
@@ -152,11 +118,6 @@ in
   '';
   networking.firewall.logRefusedPackets = true;
   networking.firewall.logRefusedConnections = true;
-  # https://github.com/aapooksman/certmitm?tab=readme-ov-file#usage
-  # networking.firewall.extraCommands = ''
-  #   iptables --table nat --append PREROUTING --in-interface ${ifname} --protocol tcp --match tcp --destination-port 443 --jump REDIRECT --to-ports 9900
-  #   # iptables --table nat --append POSTROUTING --out-interface ${ifname} --jump MASQUERADE
-  # '';
   networking.firewall.interfaces.${ifname} = {
     allowedUDPPorts = [
       # dns
