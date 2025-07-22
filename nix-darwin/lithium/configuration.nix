@@ -10,7 +10,6 @@ in
     ../modules/caddy.nix
     ../modules/disable-rcd.nix
     ../modules/gpg-agent.nix
-    ../modules/mdns-fix.nix
     ../modules/nix.nix
     ../modules/offlineimap.nix
     ../modules/openssh.nix
