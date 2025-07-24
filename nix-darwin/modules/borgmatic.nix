@@ -46,7 +46,7 @@ let
         exit 0
       fi
 
-      if /usr/sbin/diskutil umount "${snapshotPath}"; then
+      if /usr/sbin/diskutil umount force "${snapshotPath}"; then
         echo "Unmounted ${snapshotPath} with /usr/sbin/diskutil"
       else
         echo "Couldn't unmount ${snapshotPath} with /usr/sbin/diskutil, status $?"
@@ -59,8 +59,7 @@ let
         fi
       fi
 
-      still_mounted=$(/sbin/mount | grep ${snapshotPath})
-      if [ -n "$still_mounted" ]; then
+      if still_mounted=$(/sbin/mount | grep ${snapshotPath}); then
         echo "${snapshotPath} is still mounted:"
         echo "$still_mounted"
         exit 1
@@ -115,13 +114,16 @@ let
     # TODO add individual per-repository checks
     # https://torsion.org/borgmatic/docs/how-to/add-preparation-and-cleanup-steps-to-backups/
     commands = [
+      # Make a snapshot before all actions and repositories, when running borgmatic with 'create'
       {
-        before = "everything";
+        before = "configuration";
         when = [ "create" ];
         run = [ "${makeSnapshot}/bin/make-snapshot" ];
       }
+      # Make a snapshot after all borgmatic created
+      # a new backup for all repositories
       {
-        after = "everything";
+        after = "configuration";
         when = [ "create" ];
         run = [ "${unmountSnapshot}/bin/unmount-snapshot" ];
       }
