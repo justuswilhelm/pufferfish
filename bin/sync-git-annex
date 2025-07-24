@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+"""Sync all git annex repositories in your home directory"""
+# TODO manually iterate over all remotes
+
+import argparse
+import re
+import subprocess
+from pathlib import Path
+from typing import Dict, Literal
+
+PING_TIMEOUT = 3
+host_status: Dict[str, Literal["online", "offline"]] = {}
+
+
+def can_ping_remote(remote_url: str) -> bool:
+    """Check if we can ping the remote host"""
+    # Only handle SSH URLs
+    ssh_pattern = r"^ssh://(?:(?P<user>[^@]+)@)?(?P<host>.+?):?/"
+    match = re.match(ssh_pattern, remote_url)
+
+    if not match:
+        print(f"Don't know how to ping host at remote url {remote_url}")
+        return False
+
+    host = match.group("host")
+
+    match host_status.get(host):
+        case "offline":
+            return False
+        case "online":
+            return True
+        case None:
+            pass
+
+    result = subprocess.run(
+        ["ping", "-c", "1", "-W", str(PING_TIMEOUT), host],
+        capture_output=True,
+        text=True,
+    )
+
+    if result.returncode != 0:
+        print(f"{host} appears to be offline")
+        host_status[host] = "offline"
+        return False
+    else:
+        print(f"{host} appears to be online")
+        host_status[host] = "online"
+        return True
+
+
+def main(remote: str, non_interactive: bool):
+    if remote:
+        print(f"Syncing with remote '{remote}'")
+    else:
+        print("Syncing with all remotes")
+
+    cmd = [
+        "fd",
+        "-0",
+        "--exclude",
+        str(Path.home() / ".cache"),
+        "--exclude",
+        str(Path.home() / "Library"),
+        "--prune",
+        "--hidden",
+        "--full-path",
+        str(Path.home() / ".*/.git/annex$"),
+        str(Path.home()),
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    paths = result.stdout.strip().split("\0")
+
+    if not paths:
+        print("No git-annex repositories found")
+        return
+
+    print(f"Found {len(paths)} git-annex repositories")
+
+    for annex_sub_dir in paths:
+        annex = str(Path(annex_sub_dir).parent.parent)
+        if remote:
+            result = subprocess.run(
+                ["git", "-C", annex, "remote", "get-url", remote],
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode != 0:
+                print(f"git-annex at '{annex}' has no remote named '{remote}'")
+                continue
+
+            remote_url = result.stdout.strip()
+            if not can_ping_remote(remote_url):
+                print(f"Skipping remote '{remote}'")
+                continue
+            print(f"Remote at '{remote}' is reachable")
+
+        print(f"Sync git-annex at '{annex}'")
+
+        # Prefer pull over push because other remotes might be offline
+        cmd = ["git", "annex", "sync", "--content", "--no-commit", "--no-push"]
+        if remote:
+            cmd = [*cmd, remote]
+
+        print(f"Running the following command inside {annex}:")
+        print(" ".join(cmd))
+
+        result = subprocess.run(cmd, cwd=annex)
+        if result.returncode != 0:
+            print(f"Sync git-annex for '{annex}' not ok")
+            if non_interactive:
+                print("Non-interactive mode: continuing automatically")
+                continue
+            try:
+                input("Continue? C-c to quit> ")
+            except KeyboardInterrupt:
+                return
+
+        print(f"Sync git-annex for '{annex}' ok")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Sync all git annex repositories in your home directory"
+    )
+    parser.add_argument("remote", nargs="?", help="Remote to sync with (optional)")
+    parser.add_argument(
+        "--non-interactive",
+        action="store_true",
+        help="Skip prompts and continue automatically)",
+    )
+    args = parser.parse_args()
+    main(args.remote, args.non_interactive)
