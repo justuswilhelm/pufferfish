@@ -111,6 +111,9 @@ let
       { name = "archives"; frequency = "1 month"; }
     ];
     check_last = 10;
+
+    verbosity = 2;
+    statistics = true;
     # TODO add individual per-repository checks
     # https://torsion.org/borgmatic/docs/how-to/add-preparation-and-cleanup-steps-to-backups/
     commands = [
@@ -245,7 +248,6 @@ with lib;
             --signal INT ${toString timeout}s \
           /usr/bin/caffeinate -s \
           borgmatic \
-            --verbosity 2 \
             2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
         '';
         serviceConfig = {
