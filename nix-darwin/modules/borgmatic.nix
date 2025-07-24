@@ -164,8 +164,8 @@ let
 
   borgmaticConfigYaml = makeYaml borgmaticConfig;
 
-  # Let borgmatic run for 50 min max
-  timeout = 60 * 50;
+  # Let borgmatic run for 55 min max
+  timeout = 60 * 55;
   # Kill after not responding to SIGINT
   killAfter = 2 * 60;
 in
