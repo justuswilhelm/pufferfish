@@ -4,7 +4,7 @@
     enable = true;
     package = pkgs.nnn.override {
       # nnn tries to use gsed on darwin
-      extraMakeFlags = [ "CPPFLAGS=-DSED='\"sed\"'"];
+      extraMakeFlags = [ "CPPFLAGS=-DSED='\"sed\"'" ];
     };
     extraPackages = [
       # gnused is just sed on darwin
