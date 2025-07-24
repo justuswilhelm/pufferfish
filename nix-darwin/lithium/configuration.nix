@@ -58,6 +58,7 @@ in
 
   services.borgmatic.enable = true;
   services.vdirsyncer.enable = true;
+  services.sync-git-annex.enable = true;
 
   services.postgresql = {
     enable = true;
