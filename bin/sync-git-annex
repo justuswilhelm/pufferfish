@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Sync all git annex repositories in your home directory"""
+# TODO manually iterate over all remotes
 
 import argparse
 import re
@@ -19,7 +20,7 @@ def can_ping_remote(remote_url: str) -> bool:
 
     if not match:
         print(f"Don't know how to ping host at remote url {remote_url}")
-        return True
+        return False
 
     host = match.group("host")
 
@@ -95,14 +96,15 @@ def main(remote: str, non_interactive: bool):
 
         print(f"Sync git-annex at '{annex}'")
 
-        cmd = ["git", "annex", "sync", "--content", "--no-commit"]
+        # Prefer pull over push because other remotes might be offline
+        cmd = ["git", "annex", "sync", "--content", "--no-commit", "--no-push"]
         if remote:
             cmd = [*cmd, remote]
 
         print(f"Running the following command inside {annex}:")
         print(" ".join(cmd))
 
-        result = subprocess.run(cmd, cwd=annex, check=True)
+        result = subprocess.run(cmd, cwd=annex)
         if result.returncode != 0:
             print(f"Sync git-annex for '{annex}' not ok")
             if non_interactive:

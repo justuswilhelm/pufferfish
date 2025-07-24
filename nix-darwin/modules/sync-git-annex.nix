@@ -23,8 +23,9 @@ in
       };
     };
 
-    launchd.daemons.sync-git-annex = {
-    # TODO consider adding timeout
+    launchd.user.agents.sync-git-annex = {
+      path = [ pkgs.python3 pkgs.moreutils pkgs.fd pkgs.git pkgs.git-annex pkgs.openssh ];
+      # TODO consider adding timeout
       script = ''
         /Users/${config.system.primaryUser}/.dotfiles/bin/sync-git-annex --non-interactive \
           2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
