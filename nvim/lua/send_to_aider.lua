@@ -5,15 +5,8 @@ local M = {}
 -- Define patterns to match for aider panes
 M.AIDER_PATTERNS = {"aid", "aider"}
 
--- Generic function to send aider commands
-function M.send_aider_command(command)
-    -- Check TMUX environment
-    if vim.env.TMUX == nil then
-        vim.notify("Must run inside Tmux session.", vim.log.levels.ERROR)
-        return
-    end
-
-    -- Get the current buffer's path relative to Git root
+-- Get the current buffer's path relative to Git root
+function M.get_relative_path()
     local git_root = vim.fs.root(0, '.git')
     if not git_root then
         vim.notify("Couldn't determine root. Are you inside a Git repository?", vim.log.levels.ERROR)
@@ -42,6 +35,17 @@ function M.send_aider_command(command)
             current_buffer_abs,
             git_root
         ), vim.log.levels.ERROR)
+        return
+    end
+
+    return relative_path
+end
+
+-- Generic function to send text to aider
+function M.send_aider_command(text)
+    -- Check TMUX environment
+    if vim.env.TMUX == nil then
+        vim.notify("Must run inside Tmux session.", vim.log.levels.ERROR)
         return
     end
 
@@ -85,9 +89,8 @@ function M.send_aider_command(command)
         return
     end
 
-    -- Send command to pane
-    local cmd = {"tmux", "send-keys", "-t", pane_id,
-                string.format("/%s %s", command, relative_path), "C-m"}
+    -- Send text to pane
+    local cmd = {"tmux", "send-keys", "-t", pane_id, text, "C-m"}
     local send_result = vim.system(cmd, { text = true }):wait()
 
     if send_result.code ~= 0 then
@@ -101,17 +104,32 @@ end
 
 -- Function to add current buffer path to aider
 function M.add_to_aider()
-    M.send_aider_command("add")
+    local relative_path = M.get_relative_path()
+    if not relative_path then
+        return
+    end
+
+    M.send_aider_command(string.format("/add %s", relative_path))
 end
 
 -- Function to add current buffer path to aider, read-only
 function M.add_to_aider_read_only()
-    M.send_aider_command("read-only")
+    local relative_path = M.get_relative_path()
+    if not relative_path then
+        return
+    end
+
+    M.send_aider_command(string.format("/read-only %s", relative_path))
 end
 
 -- Function to drop current buffer path from aider
 function M.drop_from_aider()
-    M.send_aider_command("drop")
+    local relative_path = M.get_relative_path()
+    if not relative_path then
+        return
+    end
+
+    M.send_aider_command(string.format("/drop %s", relative_path))
 end
 
 function M.setup()
