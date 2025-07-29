@@ -3,7 +3,7 @@ let
   borgmatic = pkgs.borgmatic;
   statePath = "/private/var/lib/borgmatic";
   snapshotPath = "${statePath}/snapshot";
-  logPath = "/private/var/log/borgmatic";
+  logPath = "/private/var/log/borgmatic/borgmatic.log";
 
   makeSnapshot = pkgs.writeShellApplication {
     name = "make-snapshot";
@@ -12,12 +12,20 @@ let
     # can't unmoiunt it
     text = ''
       set -o pipefail
-      if already_mounted=$(/sbin/mount | grep ${snapshotPath}); then
-        echo "Already mounted a snapshot:"
+      if [ -e "$1" ] && [ ! -d "$1" ]; then
+        echo "File at $1 already exists but is not a directory"
+        exit 1
+      fi
+      if [ ! -e "$1" ]; then
+        echo "Creating directory for mount point at $1"
+        mkdir "$1"
+      fi
+      if already_mounted=$(/sbin/mount | grep "$1"); then
+        echo "Already mounted a snapshot at $1:"
         echo "$already_mounted"
         echo
-        echo "Trying to unmount"
-        if ! unmount-snapshot; then
+        echo "Trying to unmount $1"
+        if ! unmount-snapshot "$1"; then
           echo "Could not unmount snapshot, exiting"
           exit 1
         fi
@@ -27,7 +35,7 @@ let
         exit 1
       fi
       echo "Snapshot at $volume"
-      if ! /sbin/mount_apfs -o ro -s "com.apple.TimeMachine.$volume.local" /Volumes "${snapshotPath}"; then
+      if ! /sbin/mount_apfs -o ro -s "com.apple.TimeMachine.$volume.local" /Volumes "$1"; then
         echo "Error when mounting snapshot"
         exit 1
       fi
@@ -41,26 +49,30 @@ let
     # umount can fail
     # umount(/private/var/lib/borgmatic/snapshot): Resource busy -- try 'diskutil unmount'
     text = ''
-      if ! /sbin/mount | grep ${snapshotPath}; then
-        echo "${snapshotPath} is not mounted, nothing to do"
+      if [ ! -d "$1" ]; then
+        echo "Error: $1 is not a directory"
+        exit 1
+      fi
+      if ! /sbin/mount | grep "$1"; then
+        echo "$1 is not mounted, nothing to do"
         exit 0
       fi
 
-      if /usr/sbin/diskutil umount force "${snapshotPath}"; then
-        echo "Unmounted ${snapshotPath} with /usr/sbin/diskutil"
+      if /usr/sbin/diskutil umount force "$1"; then
+        echo "Unmounted $1 with /usr/sbin/diskutil"
       else
-        echo "Couldn't unmount ${snapshotPath} with /usr/sbin/diskutil, status $?"
+        echo "Couldn't unmount $1 with /usr/sbin/diskutil, status $?"
 
-        if /sbin/umount "${snapshotPath}"; then
-          echo "Unmounted ${snapshotPath} with /sbin/umount"
+        if /sbin/umount "$1"; then
+          echo "Unmounted $1 with /sbin/umount"
         else
-          echo "Couldn't unmount ${snapshotPath} with /sbin/umount, status $?"
+          echo "Couldn't unmount $1 with /sbin/umount, status $?"
           exit 1
         fi
       fi
 
-      if still_mounted=$(/sbin/mount | grep ${snapshotPath}); then
-        echo "${snapshotPath} is still mounted:"
+      if still_mounted=$(/sbin/mount | grep "$1"); then
+        echo "$1 is still mounted:"
         echo "$still_mounted"
         exit 1
       fi
@@ -76,28 +88,32 @@ let
       "private/var"
     ];
     # Prevent borgmatic from silently not updating one of the above directories
-    source_directories_must_exist = true;
-    working_directory = snapshotPath;
+    # source_directories_must_exist = true;
     exclude_patterns = [
-      "/Library/Developer"
-      "/Library/Updates"
-      "/Library/Caches/*"
-      "/Users/*/.Trash"
-      "/Users/*/.cache"
-      "/Users/*/.npm"
-      "/Users/*/.cargo"
-      "/Users/*/Library/Caches"
-      "/Users/*/Library/Developer/CoreSimulator/Caches/*"
-      "/Users/*/Library/Biome/*"
-      "/Users/*/Library/Metadata/CoreSpotlight/*"
-      "/Users/*/Movies"
+      "Library/Developer"
+      "Library/Updates"
+      "Library/Caches/*"
+      "Users/*/.Trash"
+      "Users/*/.cache"
+      "Users/*/.npm"
+      "Users/*/.cargo"
+      "Users/*/Library/Caches"
+      "Users/*/Library/Developer/CoreSimulator/Caches/*"
+      "Users/*/Library/Biome/*"
+      "Users/*/Library/Metadata/CoreSpotlight/*"
+      "Users/*/Movies"
     ];
     encryption_passcommand = "${pkgs.coreutils}/bin/cat ${statePath}/passphrase";
+
+    checkpoint_interval = 60 * 15;
+
     ssh_command = "ssh -o 'UserKnownHostsFile=${statePath}/ssh/known_hosts' -i${statePath}/ssh/id_rsa";
     borg_base_directory = statePath;
     borg_config_directory = "${statePath}/config";
     borg_cache_directory = "${statePath}/cache";
     borg_security_directory = "${statePath}/security";
+
+    working_directory = snapshotPath;
 
     keep_hourly = 6;
     keep_daily = 7;
@@ -117,25 +133,22 @@ let
     # TODO add individual per-repository checks
     # https://torsion.org/borgmatic/docs/how-to/add-preparation-and-cleanup-steps-to-backups/
     commands = [
-      # Make a snapshot before all actions and repositories, when running borgmatic with 'create'
       {
         before = "configuration";
         when = [ "create" ];
-        run = [ "${makeSnapshot}/bin/make-snapshot" ];
+        run = [ "${makeSnapshot}/bin/make-snapshot ${snapshotPath}" ];
       }
-      # Make a snapshot after all borgmatic created
-      # a new backup for all repositories
       {
         after = "configuration";
         when = [ "create" ];
-        run = [ "${unmountSnapshot}/bin/unmount-snapshot" ];
+        run = [ "${unmountSnapshot}/bin/unmount-snapshot ${snapshotPath}" ];
       }
       {
         after = "action";
         when = [ "create" ];
         states = [ "finish" ];
         run = [
-          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository}" 0 "{repository} OK")
+          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 0 "{repository} OK")
         ];
       }
       {
@@ -149,7 +162,26 @@ let
     ];
   };
 
-  borgmaticHeliumConfig = lib.attrsets.recursiveUpdate borgmaticConfigYaml { };
+  borgmaticHeliumConfig =
+    let
+      hostName = "helium";
+      host = "${hostName}.local";
+      remoteUser = "${config.networking.hostName}-borgbackup";
+    in
+    lib.attrsets.recursiveUpdate borgmaticConfig {
+      repositories = [
+        {
+          path = "ssh://${remoteUser}@${host}/srv/borgbackup/${config.networking.hostName}";
+          label = hostName;
+        }
+      ];
+      commands = borgmaticConfig.commands ++ [
+        {
+          before = "action";
+          run = [ "/sbin/ping -q -c 1 ${host} > /dev/null || exit 75" ];
+        }
+      ];
+    };
 
   makeYaml = config:
     let
@@ -162,10 +194,8 @@ let
         --config config.yml && cp ${cfg} $out
     '';
 
-  borgmaticConfigYaml = makeYaml borgmaticConfig;
-
-  # Let borgmatic run for 55 min max
-  timeout = 60 * 55;
+  # Let borgmatic run for 2h max
+  timeout = 60 * 60 * 2;
   # Kill after not responding to SIGINT
   killAfter = 2 * 60;
 in
@@ -179,29 +209,11 @@ with lib;
     {
       environment.systemPackages = [ borgmatic unmountSnapshot ];
 
-      environment.etc."borgmatic/base/borgmatic_base.yaml".source = borgmaticConfigYaml;
-      # TODO make this an attrset
-      environment.etc."borgmatic.d/helium.yaml".text =
-        let
-          hostName = "helium";
-          host = "${hostName}.local";
-          remoteUser = "${config.networking.hostName}-borgbackup";
-        in
-        ''
-          <<: !include /etc/borgmatic/base/borgmatic_base.yaml
-
-          repositories:
-            - path: ssh://${remoteUser}@${host}/srv/borgbackup/${config.networking.hostName}
-              label: ${hostName}
-
-          commands:
-            - before: action
-              run:
-                - "/sbin/ping -q -c 1 ${host} > /dev/null || exit 75"
-        '';
+      environment.etc."borgmatic/base/borgmatic_base.yaml".source = makeYaml borgmaticConfig;
+      environment.etc."borgmatic.d/helium.yaml".source = makeYaml borgmaticHeliumConfig;
 
       services.newsyslog.modules.borgmatic = {
-        "${logPath}/borgmatic.log" = {
+        ${logPath} = {
           mode = "640";
           count = 10;
           size = "*";
@@ -246,9 +258,7 @@ with lib;
         script = ''
           timeout --kill-after=${toString killAfter}s \
             --signal INT ${toString timeout}s \
-          /usr/bin/caffeinate -s \
-          borgmatic \
-            2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+            /usr/bin/caffeinate -s borgmatic 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
         '';
         serviceConfig = {
           # Performance
@@ -257,7 +267,8 @@ with lib;
           # Borgmatic's syslog doesn't appear to work on macOS.
           # We might be missing out on some error messages
           # All logged to stdout now using `ts`
-          StandardOutPath = "${logPath}/borgmatic.log";
+          StandardOutPath = logPath;
+          WorkingDirectory = statePath;
           # Maybe:
           # NetworkState = true;
           # So that we don't try to back up when not connected to the network
@@ -269,8 +280,11 @@ with lib;
 
       system.activationScripts.preActivation = {
         text = ''
-          mkdir -p ${logPath} ${statePath}
+          mkdir -p "$(dirname ${logPath})" ${statePath}
           chmod go= ${statePath}
+
+          # Validate borgbase.yaml, which we don't version control
+          ${borgmatic}/bin/borgmatic config validate --config /etc/borgmatic.d/borgbase.yaml
         '';
       };
     };
