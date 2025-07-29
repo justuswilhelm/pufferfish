@@ -241,8 +241,8 @@ in
   system.activationScripts.preActivation = {
     text = ''
       mkdir -p ${logPath} ${statePath}
-      chown -R attic:attic ${logPath} ${statePath}
-      chmod -R go= ${statePath}
+      chown attic:attic ${logPath} ${statePath}
+      chmod go= ${statePath}
     '';
   };
 }

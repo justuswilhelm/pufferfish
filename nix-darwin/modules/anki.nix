@@ -112,8 +112,8 @@ in
     text = ''
       mkdir -pv ${home} "$(dirname ${logPath})"
 
-      chown -R ${username}:${groupname} ${home} ${logPath}
-      chmod -R go= ${home}
+      chown ${username}:${groupname} ${home} ${logPath}
+      chmod go= ${home}
     '';
   };
 }

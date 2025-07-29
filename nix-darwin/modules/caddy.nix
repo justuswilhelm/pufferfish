@@ -274,11 +274,11 @@ in
     system.activationScripts.preActivation = {
       text = ''
         mkdir -p ${logPath} ${statePath} ${statePath}/secrets
-        chown -R caddy:caddy ${logPath} ${statePath} ${statePath}/secrets
-        chmod -R go= ${statePath}/secrets
+        chown caddy:caddy ${logPath} ${statePath} ${statePath}/secrets
+        chmod go= ${statePath}/secrets
 
         mkdir -p ${caStatePath} ${caStatePath}/signed ${caStatePath}/secrets
-        chmod -R go= ${caStatePath}/secrets
+        chmod go= ${caStatePath}/secrets
         chown lithium-ca:lithium-ca ${caStatePath} ${caStatePath}/signed
       '';
     };
