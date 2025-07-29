@@ -92,17 +92,49 @@ let
     exclude_patterns = [
       "Library/Developer"
       "Library/Updates"
-      "Library/Caches/*"
       "Users/*/.Trash"
-      "Users/*/.cache"
+
+      # Caches
+      "Library/Caches"
+      "*/.cache"
+
+      # TODO think about excluding these:
+      # "Users/*/Librrary/Group Containers/group.com.apple*"
+      # "Users/*/Librrary/Containers/com.apple*"
+
+      # Temp
+      "private/var/tmp"
+      "private/var/folders"
+
+      # These programs should have been using a XDG cache
+      # directory:
       "Users/*/.npm"
       "Users/*/.cargo"
-      "Users/*/Library/Caches"
-      "Users/*/Library/Developer/CoreSimulator/Caches/*"
-      "Users/*/Library/Biome/*"
-      "Users/*/Library/Metadata/CoreSpotlight/*"
+      "Users/*/.rustup"
+      "Users/*/.rzup"
+      "*/node_modules"
+
+      # No need to commit these
+      "Users/*/.config/nvim/plugged"
+
+      # Something for handoff? Don't need this
+      "Users/*/Library/DuetExpertCenter"
+
+      # Other Apple stuff
+      "Users/*/Library/Developer/CoreSimulator"
+      "Users/*/Library/Biome"
+      "Users/*/Library/Metadata/CoreSpotlight"
+      "Library/Logs/CrashReporter/CoreCapture"
+      "Users/*/Library/Weather"
+
+      # Little snitch
+      "Library/Application Support/Objective Development/Little Snitch/TrafficLog"
+
+      # Too big
       "Users/*/Movies"
     ];
+    exclude_caches = true;
+
     encryption_passcommand = "${pkgs.coreutils}/bin/cat ${statePath}/passphrase";
 
     checkpoint_interval = 60 * 15;
@@ -128,8 +160,11 @@ let
     ];
     check_last = 10;
 
+    # Get more info on why some backups are slow
     verbosity = 2;
     statistics = true;
+    list_details = true;
+
     # TODO add individual per-repository checks
     # https://torsion.org/borgmatic/docs/how-to/add-preparation-and-cleanup-steps-to-backups/
     commands = [
