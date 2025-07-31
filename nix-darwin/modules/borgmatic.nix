@@ -92,10 +92,11 @@ let
     exclude_patterns = [
       "Library/Developer"
       "Library/Updates"
-      "Users/*/.Trash"
+      "*/.Trash"
 
       # Caches
       "Library/Caches"
+      "*/Library/Caches"
       "*/.cache"
 
       # TODO think about excluding these:
@@ -104,6 +105,7 @@ let
 
       # Temp
       "private/var/tmp"
+      "/tmp"
       "private/var/folders"
 
       # These programs should have been using a XDG cache
@@ -126,6 +128,13 @@ let
       "Users/*/Library/Metadata/CoreSpotlight"
       "Library/Logs/CrashReporter/CoreCapture"
       "Users/*/Library/Weather"
+
+      # Apple stuff with high mod frequencies
+      "private/var/db/diagnostics/Special"
+      "private/var/db/accessoryupdater/uarp/tmpfiles"
+      "private/var/protected/sfanalytics"
+      "private/var/db/Spotlight-V100"
+      "private/var/db/uuidtext"
 
       # Little snitch
       "Library/Application Support/Objective Development/Little Snitch/TrafficLog"
