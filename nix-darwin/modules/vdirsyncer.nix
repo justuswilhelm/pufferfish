@@ -53,7 +53,7 @@ in
       path = [ pkgs.coreutils pkgs.moreutils vdirsyncer ];
       script = ''
         (
-          if ! /sbin/ping -q -c 1 example.com
+          if ! /sbin/ping -q -c 1 example.com > /dev/null
           then
             echo "Looks like we're offline"
             exit 0
