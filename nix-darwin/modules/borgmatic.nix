@@ -96,6 +96,7 @@ let
 
       # Caches
       "Library/Caches"
+      "Users/*/Library/Application Support/Firefox/*/cache"
       "*/Library/Caches"
       "*/.cache"
 
@@ -127,14 +128,17 @@ let
       "Users/*/Library/Biome"
       "Users/*/Library/Metadata/CoreSpotlight"
       "Library/Logs/CrashReporter/CoreCapture"
+      "Library/Logs/DiagnosticReports"
       "Users/*/Library/Weather"
 
       # Apple stuff with high mod frequencies
-      "private/var/db/diagnostics/Special"
+      "private/var/db/diagnostics"
       "private/var/db/accessoryupdater/uarp/tmpfiles"
+      "private/var/db/systemstats"
       "private/var/protected/sfanalytics"
       "private/var/db/Spotlight-V100"
       "private/var/db/uuidtext"
+      "private/var/root/Library"
 
       # Little snitch
       "Library/Application Support/Objective Development/Little Snitch/TrafficLog"
@@ -197,10 +201,10 @@ let
       }
       {
         after = "error";
-        # Send all errors to Nagios
-        # when = [ "create" ];
+        # Only send errors on "create" to Nagios
+        when = [ "create" ];
         run = [
-          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 2 "{repository} ERROR {error}: {output}")
+          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 2 "{repository} ERROR during create {error}: {output}")
         ];
       }
     ];
