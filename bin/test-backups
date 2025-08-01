@@ -1,0 +1,213 @@
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+import tempfile
+from typing import Optional
+import yaml
+import random
+import json
+from pathlib import Path
+import itertools
+from datetime import datetime, timedelta
+from dataclasses import dataclass
+
+REPOSITORY = "borgbase"
+BASE = Path.home()
+BASE_CONFIG = Path("/etc/borgmatic/base/borgmatic_base.yaml")
+
+# Look at:
+# https://docs.borgbase.com/strategy
+
+STATE_FILE = Path.home() / ".local/state/pufferfish/test_backups.json"
+
+
+@dataclass
+class FileCountCache:
+    base_path: str
+    number_of_files: int
+    last_counted: datetime
+
+
+def load_file_count_cache() -> Optional[FileCountCache]:
+    """Load cached file count data from state file."""
+    if not STATE_FILE.exists():
+        return None
+    file_count_data = json.loads(STATE_FILE.read_text())
+    try:
+        return FileCountCache(
+            base_path=file_count_data["base_path"],
+            number_of_files=file_count_data["number_of_files"],
+            last_counted=datetime.fromisoformat(file_count_data["last_counted"]),
+        )
+    except Exception as e:
+        print(f"When loading the file count cache: {e}")
+        print("Return None")
+        return None
+
+
+def save_file_count_cache(cache: FileCountCache) -> None:
+    """Save file count information to the cache"""
+    print(f"Saving file count cache to {STATE_FILE}")
+    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    data = {
+        "base_path": cache.base_path,
+        "number_of_files": cache.number_of_files,
+        "last_counted": cache.last_counted.isoformat(),
+    }
+
+    with STATE_FILE.open("w") as f:
+        json.dump(data, f)
+
+
+def should_recount_files(cache_data: Optional[FileCountCache], base_path: Path) -> bool:
+    """Decide whether we should recount files"""
+    if not cache_data:
+        return True
+    if cache_data.base_path != str(base_path):
+        return True
+    if datetime.now() - cache_data.last_counted > timedelta(days=1):
+        return True
+
+    return False
+
+
+def get_files_with_fd(
+    base_path: Path, excludes: list[str], max_count: Optional[int] = None
+) -> list[str]:
+    """Get list of files using fd command with given excludes."""
+    fd_cmd = [
+        "fd",
+        "--no-ignore",
+        "-0",
+        ".",
+        *excludes,
+        str(base_path),
+        "--type",
+        "file",
+        "--changed-within",
+        "7d",
+        "--changed-before",
+        "1d",
+    ]
+
+    if max_count:
+        fd_cmd = [*fd_cmd, "--max-results", str(max_count)]
+
+    result = subprocess.run(fd_cmd, capture_output=True, text=True, check=True)
+    files = result.stdout.strip().split("\0")
+    if not files:
+        raise ValueError("No files found matching criteria")
+    return files
+
+
+def main() -> int:
+    print(f"searching for a random file in {BASE}")
+
+    # Load exclude patterns from borgmatic config
+    with BASE_CONFIG.open() as f:
+        config = yaml.safe_load(f)
+
+    excludes = list(
+        itertools.chain.from_iterable(
+            (["--exclude", p] for p in config["exclude_patterns"])
+        )
+    )
+    print(f"excludes: {excludes}")
+
+    cache_data = load_file_count_cache()
+
+    files = []
+    if not cache_data or should_recount_files(cache_data, BASE):
+        print("Counting files (cache miss or expired)...")
+
+        files = get_files_with_fd(BASE, excludes)
+
+        cache_data = FileCountCache(
+            base_path=str(BASE),
+            number_of_files=len(files),
+            last_counted=datetime.now(),
+        )
+        save_file_count_cache(cache_data)
+        print(f"Found and cached {len(files)} files")
+
+    file_ix = random.randint(0, cache_data.number_of_files)
+    print(f"Picked random file {file_ix + 1}/{cache_data.number_of_files}")
+    if not files:
+        print("Getting files")
+        files = get_files_with_fd(BASE, excludes, max_count=file_ix + 1)
+
+    file = files[file_ix]
+    print(f"File name is {file}")
+
+    try:
+        subprocess.run(["ls", "-lh", file], check=True)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"Could not get file info for {file}") from e
+
+    print()
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        tar_dest = Path(temp_dir) / "dest.tar"
+        tar_dest.touch()
+
+        print(f"Requesting borg to export this file into a tar archive at {tar_dest}")
+
+        file_path = Path(file).relative_to(Path("/"))
+
+        try:
+            subprocess.run(
+                [
+                    "sudo",
+                    "borgmatic",
+                    "export-tar",
+                    "-v",
+                    "1",
+                    "--path",
+                    str(file_path),
+                    "--archive",
+                    "latest",
+                    "--repository",
+                    REPOSITORY,
+                    "--destination",
+                    str(tar_dest),
+                ],
+                check=True,
+            )
+            print(f"Extracted file {file} from repository {REPOSITORY}")
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(
+                f"Couldn't extract file {file} from repository {REPOSITORY}"
+            ) from e
+
+        print("Tar file:")
+        try:
+            subprocess.run(["ls", "-lh", str(tar_dest)], check=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError("Could not get tar file info") from e
+
+        print()
+        print(f"Tar contents at {tar_dest}:")
+        try:
+            subprocess.run(
+                ["tar", "--verbose", "--list", "--file", str(tar_dest)], check=True
+            )
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Could not list tar contents: {e.returncode}") from e
+
+        print("Comparing using tar")
+        try:
+            subprocess.run(
+                ["tar", "--verbose", "--compare", "--file", tar_dest, "-C", "/"],
+                check=True,
+            )
+            print("All ok!")
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"tar --compare exited with {e.returncode}") from e
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
