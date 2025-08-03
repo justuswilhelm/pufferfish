@@ -7,6 +7,7 @@
       ../modules/infosec.nix
       ../modules/man.nix
       ../modules/networkd.nix
+      ../modules/network-debug.nix
       ../modules/nix.nix
       ../modules/openssh.nix
       ../modules/sway.nix
@@ -41,14 +42,15 @@
     enable = true;
     useBabelfish = true;
   };
+  programs.git.enable = true;
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
+  programs.tmux.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    git
-    neovim
-    nnn
-    i3status
-    pciutils
-    tcpdump
+  security.pki.certificateFiles = [
+    ../../nix/lithium-ca.crt
   ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,

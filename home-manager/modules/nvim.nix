@@ -19,6 +19,13 @@
     extraPackages = [
       pkgs.tree-sitter
 
+      # Needed for plugins
+      # ==================
+      pkgs.silver-searcher
+      pkgs.ripgrep
+      # fzf-lua
+      pkgs.fzf
+
       # Language servers
       pkgs.deno
       pkgs.ruff

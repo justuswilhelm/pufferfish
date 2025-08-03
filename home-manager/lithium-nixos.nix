@@ -14,10 +14,10 @@
     ./modules/git.nix
     ./modules/gpg-agent.nix
     ./modules/gpg.nix
-    ./modules/linux-packages.nix
+    # ./modules/linux-packages.nix
     ./modules/man.nix
     ./modules/nvim.nix
-    ./modules/packages.nix
+    # ./modules/packages.nix
     ./modules/paths.nix
     ./modules/python.nix
     ./modules/selenized.nix
