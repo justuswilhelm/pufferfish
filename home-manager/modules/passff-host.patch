@@ -1,0 +1,13 @@
+--- src/passff.py
++++ src/passff.py
+@@ -20,7 +20,9 @@
+-COMMAND = "pass"
++COMMAND = "/etc/profiles/per-user/debian/bin/pass"
+ COMMAND_ARGS = []
+ COMMAND_ENV = {
+     "TREE_CHARSET": "ISO-8859-1",
+     "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
++    "PASSWORD_STORE_DIR": "/home/debian/.local/share/pass",
++    "PASSWORD_STORE_GPG_OPTS": "--no-throw-keyids",
+ }
+ CHARSET = "UTF-8"

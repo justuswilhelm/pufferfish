@@ -119,6 +119,12 @@ let
     "privacy.userContext.enabled" = true;
     "privacy.resistFingerprinting" = true;
   };
+  passff-host = pkgs.passff-host.overrideAttrs (old: {
+    dontStrip = true;
+    patchPhase = ''
+      patch -p0 < ${./passff-host.patch}
+    '';
+  });
 in
 {
   home.sessionVariables = {
@@ -126,7 +132,7 @@ in
   };
   # https://discourse.nixos.org/t/hm-24-11-firefox-with-passff-host/57108
   home.file.".mozilla/native-messaging-hosts/passff.json" = {
-    source = "${pkgs.passff-host}/share/passff-host/passff.json";
+    source = "${passff-host}/share/passff-host/passff.json";
   };
   programs.firefox = {
     enable = true;
