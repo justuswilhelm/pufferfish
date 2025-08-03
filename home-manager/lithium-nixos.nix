@@ -5,6 +5,7 @@
     # ./modules/infosec.nix
     # ./modules/passwordstore.nix
 
+    ./modules/canbus.nix
     ./modules/direnv.nix
     ./modules/firefox.nix
     ./modules/fish.nix
