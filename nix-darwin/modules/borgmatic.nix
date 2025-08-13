@@ -4,6 +4,7 @@ let
   statePath = "/private/var/lib/borgmatic";
   snapshotPath = "${statePath}/snapshot";
   logPath = "/private/var/log/borgmatic/borgmatic.log";
+  maintainLogPath = "/private/var/log/borgmatic/maintain.log";
 
   makeSnapshot = pkgs.writeShellApplication {
     name = "make-snapshot";
@@ -271,6 +272,13 @@ with lib;
           when = "$D0";
           flags = "J";
         };
+        ${maintainLogPath} = {
+          mode = "640";
+          count = 10;
+          size = "*";
+          when = "$D0";
+          flags = "J";
+        };
       };
 
       services.nagios.objectDefs =
@@ -347,7 +355,7 @@ with lib;
           # Borgmatic's syslog doesn't appear to work on macOS.
           # We might be missing out on some error messages
           # All logged to stdout now using `ts`
-          StandardOutPath = logPath;
+          StandardOutPath = maintainLogPath;
           # Start in the state path
           WorkingDirectory = statePath;
           # Run at noon
