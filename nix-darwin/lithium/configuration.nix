@@ -51,6 +51,7 @@ in
     TERMINFO_DIRS = [
       "${pkgs.ncurses}/share/terminfo"
       "${pkgs.alacritty.terminfo}/share/terminfo"
+      # TODO add tmux here
     ];
   };
 
@@ -98,6 +99,18 @@ in
   programs.fish = {
     enable = true;
     useBabelfish = true;
+    shellInit = ''
+      if test -d /private/etc/manpaths.d
+        set --path --export MANPATH
+        set --append MANPATH ""
+        for f in /private/etc/manpaths.d/*
+          for line in (string split "\n" < $f)
+            echo $line
+            set --append MANPATH $line
+          end
+        end
+      end
+    '';
   };
 
   system.defaults = {
