@@ -7,7 +7,7 @@ let
 
   makeSnapshot = pkgs.writeShellApplication {
     name = "make-snapshot";
-    runtimeInputs = [ pkgs.gnugrep unmountSnapshot ];
+    runtimeInputs = [ pkgs.gnugrep ];
     # Attempts to unmount of it finds a mounted snapshot. Gives up when it
     # can't unmoiunt it
     text = ''
@@ -23,12 +23,7 @@ let
       if already_mounted=$(/sbin/mount | grep "$1"); then
         echo "Already mounted a snapshot at $1:"
         echo "$already_mounted"
-        echo
-        echo "Trying to unmount $1"
-        if ! unmount-snapshot "$1"; then
-          echo "Could not unmount snapshot, exiting"
-          exit 1
-        fi
+        exit 75
       fi
       if ! volume=$(/usr/bin/tmutil localsnapshot | tee /dev/stderr | grep -o -E "[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{6}"); then
         echo "Error when creating snapshot"
@@ -85,20 +80,24 @@ let
       "Applications"
       "Library"
       "Users"
-      "private/var"
+      "private/var/lib"
+      "private/var/log"
     ];
     # Prevent borgmatic from silently not updating one of the above directories
     # source_directories_must_exist = true;
     exclude_patterns = [
+      # Library
       "Library/Developer"
       "Library/Updates"
-      "*/.Trash"
+      "Library/Caches"
+      ".Trash"
 
       # Caches
-      "Library/Caches"
-      "Users/*/Library/Application Support/Firefox/*/cache"
-      "*/Library/Caches"
-      "*/.cache"
+      "Users/${config.system.primaryUser}/Library/Caches"
+      "Users/${config.system.primaryUser}/Library/Containers/*/Data/Library/Caches"
+      "Users/${config.system.primaryUser}/Library/Application Support/Firefox/*/cache"
+      "Users/${config.system.primaryUser}/Library/Application Support/Firefox/*/cache2"
+      "Users/${config.system.primaryUser}/.cache"
 
       # TODO think about excluding these:
       # "Users/*/Librrary/Group Containers/group.com.apple*"
@@ -106,51 +105,54 @@ let
 
       # Temp
       "private/var/tmp"
-      "/tmp"
+      "tmp/"
       "private/var/folders"
 
       # These programs should have been using a XDG cache
       # directory:
-      "Users/*/.npm"
-      "Users/*/.cargo"
-      "Users/*/.rustup"
-      "Users/*/.rzup"
-      "*/node_modules"
+      "Users/${config.system.primaryUser}/.npm"
+      "Users/${config.system.primaryUser}/.cargo"
+      "Users/${config.system.primaryUser}/.rustup"
+      "Users/${config.system.primaryUser}/.rzup"
+      "node_modules"
 
       # No need to commit these
-      "Users/*/.config/nvim/plugged"
+      "Users/${config.system.primaryUser}/.config/nvim/plugged"
 
       # Something for handoff? Don't need this
-      "Users/*/Library/DuetExpertCenter"
+      "Users/${config.system.primaryUser}/Library/DuetExpertCenter"
 
       # Other Apple stuff
-      "Users/*/Library/Developer/CoreSimulator"
-      "Users/*/Library/Biome"
-      "Users/*/Library/Metadata/CoreSpotlight"
+      "Users/${config.system.primaryUser}/Library/Developer/CoreSimulator"
+      "Users/${config.system.primaryUser}/Library/Biome"
+      "Users/${config.system.primaryUser}/Library/Metadata/CoreSpotlight"
       "Library/Logs/CrashReporter/CoreCapture"
       "Library/Logs/DiagnosticReports"
-      "Users/*/Library/Weather"
+      "Users/${config.system.primaryUser}/Library/Weather"
+      # Files in these directories get "operation not permitted":
+      "Users/${config.system.primaryUser}/Library/Containers/com.apple.Maps/"
+      "Users/${config.system.primaryUser}/Library/Daemon Containers/*/Data/com.apple.milod"
+      # Won't back up xcode
+      "Applications/Xcode.app"
 
       # Apple stuff with high mod frequencies
-      "private/var/db/diagnostics"
-      "private/var/db/accessoryupdater/uarp/tmpfiles"
-      "private/var/db/systemstats"
+      "private/var/db"
       "private/var/protected/sfanalytics"
-      "private/var/db/Spotlight-V100"
-      "private/var/db/uuidtext"
       "private/var/root/Library"
 
       # Little snitch
       "Library/Application Support/Objective Development/Little Snitch/TrafficLog"
+      # don't back up signal
+      "Users/${config.system.primaryUser}/Library/Application Support/Signal"
 
       # Too big
-      "Users/*/Movies"
+      "Users/${config.system.primaryUser}/Movies"
     ];
     exclude_caches = true;
 
     encryption_passcommand = "${pkgs.coreutils}/bin/cat ${statePath}/passphrase";
 
-    checkpoint_interval = 60 * 15;
+    # checkpoint_interval = 60 * 15;
 
     ssh_command = "ssh -o 'UserKnownHostsFile=${statePath}/ssh/known_hosts' -i${statePath}/ssh/id_rsa";
     borg_base_directory = statePath;
@@ -204,7 +206,8 @@ let
         # Only send errors on "create" to Nagios
         when = [ "create" ];
         run = [
-          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 2 "{repository} ERROR during create {error}: {output}")
+          # The output can contain `'` characters, and that messes with bash
+          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 2 "{repository} ERROR during create {error}")
         ];
       }
     ];
@@ -255,7 +258,7 @@ with lib;
 
   config = mkIf config.services.borgmatic.enable
     {
-      environment.systemPackages = [ borgmatic unmountSnapshot ];
+      environment.systemPackages = [ pkgs.borgbackup borgmatic unmountSnapshot ];
 
       environment.etc."borgmatic/base/borgmatic_base.yaml".source = makeYaml borgmaticConfig;
       environment.etc."borgmatic.d/helium.yaml".source = makeYaml borgmaticHeliumConfig;
@@ -289,6 +292,7 @@ with lib;
               use generic-borgmatic
               host_name lithium.local
               service_description borgmatic.helium
+              freshness_threshold 1209600 ; 2 weeks
               display_name Borgmatic on Helium
             }
             define service {
@@ -306,23 +310,50 @@ with lib;
         script = ''
           timeout --kill-after=${toString killAfter}s \
             --signal INT ${toString timeout}s \
-            /usr/bin/caffeinate -s borgmatic 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+            /usr/bin/caffeinate -s borgmatic create 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
         '';
         serviceConfig = {
-          # Performance
-          ProcessType = "Background";
-          LowPriorityBackgroundIO = true;
           # Borgmatic's syslog doesn't appear to work on macOS.
           # We might be missing out on some error messages
           # All logged to stdout now using `ts`
           StandardOutPath = logPath;
+          # Start in the state path
           WorkingDirectory = statePath;
+          # Run every 'every' hours
+          StartCalendarInterval =
+            let
+              every = 3;
+              range = lib.lists.range 0 (24 / every - 1);
+            in
+            map (h: { Hour = h * every; Minute = 0; }) range;
+          # Performance
+          ProcessType = "Background";
+          # LowPriorityBackgroundIO = true;
           # Maybe:
           # NetworkState = true;
           # So that we don't try to back up when not connected to the network
-          LowPriorityIO = true;
-          # Timing
-          StartCalendarInterval = [{ Minute = 0; }];
+          # LowPriorityIO = true;
+        };
+      };
+
+      launchd.daemons.borgmatic-maintain = {
+        path = [ borgmatic pkgs.moreutils pkgs.coreutils ];
+        script = ''
+          timeout --kill-after=${toString killAfter}s \
+            --signal INT ${toString timeout}s \
+            /usr/bin/caffeinate -s borgmatic prune compact check 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+        '';
+        serviceConfig = {
+          # Borgmatic's syslog doesn't appear to work on macOS.
+          # We might be missing out on some error messages
+          # All logged to stdout now using `ts`
+          StandardOutPath = logPath;
+          # Start in the state path
+          WorkingDirectory = statePath;
+          # Run at noon
+          StartCalendarInterval = { Hour = 12; Minute = 0; };
+          # Performance
+          ProcessType = "Background";
         };
       };
 
