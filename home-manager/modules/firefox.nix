@@ -1,5 +1,6 @@
 { lib, pkgs, config, osConfig, ... }:
 let
+  cfg = config.programs.firefox;
   # Hardening settings from
   # https://brainfucksec.github.io/firefox-hardening-guide
   hardenedSettings = {
@@ -127,68 +128,78 @@ let
   });
 in
 {
-  home.sessionVariables = {
-    BROWSER = "${config.programs.firefox.package}/bin/firefox-esr";
+  options.programs.firefox = {
+    defaultSearchEngine = lib.mkOption {
+      type = lib.types.str;
+      default = "kagi";
+      description = "Default search engine for the main profile";
+    };
   };
-  # https://discourse.nixos.org/t/hm-24-11-firefox-with-passff-host/57108
-  home.file.".mozilla/native-messaging-hosts/passff.json" = {
-    source = "${passff-host}/share/passff-host/passff.json";
-  };
-  programs.firefox = {
-    enable = true;
-    package = osConfig.programs.firefox.package;
-    profiles.default = {
-      isDefault = true;
-      name = "Default profile";
-      search.default = "kagi";
-      search.force = true;
-      search.engines = {
-        "kagi" = {
-          urls = [{
-            template = "https://kagi.com/search?q={searchTerms}";
-          }];
-          definedAliases = [ "kagi" ];
+
+  config = {
+    home.sessionVariables = {
+      BROWSER = "${config.programs.firefox.package}/bin/firefox-esr";
+    };
+    # https://discourse.nixos.org/t/hm-24-11-firefox-with-passff-host/57108
+    home.file.".mozilla/native-messaging-hosts/passff.json" = {
+      source = "${passff-host}/share/passff-host/passff.json";
+    };
+    programs.firefox = {
+      enable = true;
+      package = osConfig.programs.firefox.package;
+      profiles.default = {
+        isDefault = true;
+        name = "Default profile";
+        search.default = cfg.defaultSearchEngine;
+        search.force = true;
+        search.engines = {
+          "kagi" = {
+            urls = [{
+              template = "https://kagi.com/search?q={searchTerms}";
+            }];
+            definedAliases = [ "kagi" ];
+          };
+          "ddg".metaData.hidden = false;
+          "bing".metaData.hidden = true;
+          "google".metaData.hidden = true;
+          "amazon-jp".metaData.hidden = true;
+          "wikipedia".metaData.hidden = true;
         };
-        "ddg".metaData.hidden = false;
-        "bing".metaData.hidden = true;
-        "google".metaData.hidden = true;
-        "amazon-jp".metaData.hidden = true;
-        "wikipedia".metaData.hidden = true;
+        settings = hardenedSettings;
       };
-      settings = hardenedSettings;
-    };
-    profiles.mitm-proxy = {
-      id = 1;
-      name = "mitm-proxy";
-      search.default = "ddg";
-      search.force = true;
-      search.engines = {
-        "bing".metaData.hidden = true;
-        "google".metaData.hidden = true;
-        "amazon-jp".metaData.hidden = true;
-        "wikpedia".metaData.hidden = true;
+      profiles.mitm-proxy = {
+        id = 1;
+        name = "mitm-proxy";
+        search.default = "ddg";
+        search.force = true;
+        search.engines = {
+          "bing".metaData.hidden = true;
+          "google".metaData.hidden = true;
+          "amazon-jp".metaData.hidden = true;
+          "wikpedia".metaData.hidden = true;
+        };
+        settings = hardenedSettings // {
+          # "browser.privatebrowsing.autostart" = true;
+          "network.proxy.http" = "localhost";
+          "network.proxy.http_port" = "8080";
+          "network.proxy.share_proxy_settings" = true;
+          "network.proxy.ssl" = "localhost";
+          "network.proxy.ssl_port" = "8080";
+          "network.proxy.type" = "1";
+          "signon.rememberSignons" = true;
+        };
       };
-      settings = hardenedSettings // {
-        # "browser.privatebrowsing.autostart" = true;
-        "network.proxy.http" = "localhost";
-        "network.proxy.http_port" = "8080";
-        "network.proxy.share_proxy_settings" = true;
-        "network.proxy.ssl" = "localhost";
-        "network.proxy.ssl_port" = "8080";
-        "network.proxy.type" = "1";
-        "signon.rememberSignons" = true;
-      };
-    };
-    profiles.claude = {
-      id = 2;
-      name = "claude";
-      search.default = "ddg";
-      search.force = true;
-      search.engines = {
-        "bing".metaData.hidden = true;
-        "google".metaData.hidden = true;
-        "amazon-jp".metaData.hidden = true;
-        "wikipedia".metaData.hidden = true;
+      profiles.claude = {
+        id = 2;
+        name = "claude";
+        search.default = "ddg";
+        search.force = true;
+        search.engines = {
+          "bing".metaData.hidden = true;
+          "google".metaData.hidden = true;
+          "amazon-jp".metaData.hidden = true;
+          "wikipedia".metaData.hidden = true;
+        };
       };
     };
   };

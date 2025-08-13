@@ -1,4 +1,4 @@
-{ pkgs, ... } : {
+{ pkgs, ... }: {
   home.packages = [
     pkgs.can-utils
     pkgs.usbutils
