@@ -150,6 +150,7 @@ let
       "Users/${config.system.primaryUser}/Movies"
     ];
     exclude_caches = true;
+    exclude_nodump = true;
 
     encryption_passcommand = "${pkgs.coreutils}/bin/cat ${statePath}/passphrase";
 
