@@ -105,7 +105,6 @@ in
         set --append MANPATH ""
         for f in /private/etc/manpaths.d/*
           for line in (string split "\n" < $f)
-            echo $line
             set --append MANPATH $line
           end
         end
