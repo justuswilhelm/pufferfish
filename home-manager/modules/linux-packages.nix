@@ -3,7 +3,6 @@
   home.packages = [
     # Communication
     # =============
-    pkgs.signal-desktop
     pkgs.mumble
 
     # File management

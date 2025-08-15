@@ -22,6 +22,7 @@
 
   home.packages = [
     pkgs.tor-browser
+    pkgs.signal-desktop
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
