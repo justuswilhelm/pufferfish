@@ -62,7 +62,6 @@
 
     # Core tools
     pkgs.coreutils
-    # pkgs.moreutils
 
     # Nix
     pkgs.nix-index
