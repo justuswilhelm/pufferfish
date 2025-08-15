@@ -15,6 +15,7 @@ in
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix
     ./modules/rust.nix
+    ./modules/text-proc.nix
     ./modules/timewarrior.nix
     ./modules/writing.nix
 

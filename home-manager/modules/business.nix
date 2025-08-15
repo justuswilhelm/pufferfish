@@ -1,5 +1,7 @@
 { pkgs, ... }: {
-  pkgs.hledger
-  pkgs.khal
-  pkgs.khard
+  home.packages = [
+    pkgs.hledger
+    pkgs.khal
+    pkgs.khard
+  ];
 }
