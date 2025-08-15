@@ -13,11 +13,6 @@
     pkgs.netcat-gnu
     pkgs.whois
 
-    # WWW
-    pkgs.httrack
-    pkgs.curl
-    pkgs.wget
-
     # File transfers, Backups
     pkgs.rsync
 
