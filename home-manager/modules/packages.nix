@@ -32,9 +32,6 @@
     pkgs.cmake
     pkgs.hugo
 
-    # Debugger
-    pkgs.qemu
-
     # Compilers, Interpreters, VMs
     # TODO this could be part of modules/text-proc.nix
     pkgs.jq
