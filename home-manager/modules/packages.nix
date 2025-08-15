@@ -20,8 +20,6 @@
 
     # File transfers, Backups
     pkgs.rsync
-    # TODO unison still needed?
-    pkgs.unison
 
     # Linters, Formatters
     # Removed en-science because it was marked unfree in nixpkgs 24.11
