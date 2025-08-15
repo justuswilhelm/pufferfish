@@ -26,10 +26,6 @@
     pkgs.hugo
 
     # Compilers, Interpreters, VMs
-    # TODO this could be part of modules/text-proc.nix
-    pkgs.jq
-    # TODO this could be part of modules/text-proc.nix
-    pkgs.miller
     pkgs.nodejs_20
     pkgs.go
     pkgs.j
@@ -59,14 +55,10 @@
     pkgs.p7zip
     pkgs.xz
 
-    # TODO this could be part of modules/text-proc.nix
     # Text tools
     pkgs.silver-searcher
-    pkgs.ripgrep
     pkgs.fd
     pkgs.gnused
-    pkgs.lnav
-    pkgs.datamash
 
     # Core tools
     pkgs.coreutils
