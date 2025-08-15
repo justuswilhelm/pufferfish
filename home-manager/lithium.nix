@@ -113,6 +113,10 @@ in
     '';
 
   programs.ssh = {
+    matchBlocks."throwaway.local" = {
+      identityFile = "~/.ssh/id_rsa_yubikey";
+      port = 2222;
+    };
     matchBlocks."*.local" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };

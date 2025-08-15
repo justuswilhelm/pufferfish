@@ -10,6 +10,7 @@ in
     ../modules/caddy.nix
     ../modules/disable-rcd.nix
     ../modules/gpg-agent.nix
+    ../modules/man.nix
     ../modules/nix.nix
     ../modules/offlineimap.nix
     ../modules/openssh.nix
@@ -50,6 +51,7 @@ in
     TERMINFO_DIRS = [
       "${pkgs.ncurses}/share/terminfo"
       "${pkgs.alacritty.terminfo}/share/terminfo"
+      # TODO add tmux here
     ];
   };
 
@@ -97,6 +99,17 @@ in
   programs.fish = {
     enable = true;
     useBabelfish = true;
+    shellInit = ''
+      if test -d /private/etc/manpaths.d
+        set --path --export MANPATH
+        set --append MANPATH ""
+        for f in /private/etc/manpaths.d/*
+          for line in (string split "\n" < $f)
+            set --append MANPATH $line
+          end
+        end
+      end
+    '';
   };
 
   system.defaults = {
