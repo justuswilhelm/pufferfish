@@ -12,6 +12,7 @@
     pkgs.httperf
     pkgs.netcat-gnu
     pkgs.whois
+    pkgs.mtr
 
     # File transfers, Backups
     pkgs.rsync
