@@ -1,18 +1,10 @@
 { pkgs, ... }:
 {
   home.packages = [
-    # Communication
-    # =============
-    pkgs.mumble
-
     # File management
     # ===============
     pkgs.ncdu
     pkgs.file
-
-    # GUIs
-    # ====
-    pkgs.keepassxc
 
     # Nix
     # ===
@@ -21,7 +13,6 @@
 
     # Remote desktop
     # ==============
-    pkgs.tigervnc
 
     # TTY tools
     # =========
@@ -34,7 +25,5 @@
 
     # Build tools
     # ===========
-    pkgs.gcc
-    pkgs.gnumake
   ];
 }
