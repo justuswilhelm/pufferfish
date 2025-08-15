@@ -37,7 +37,6 @@
     # TUIs
     pkgs.htop
     pkgs.fzf
-    pkgs.htop
     # Broken,
     # https://github.com/NixOS/nixpkgs/issues/299091
     # pkgs.ncdu
