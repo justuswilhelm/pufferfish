@@ -48,15 +48,6 @@
     # pkgs.ncdu
     pkgs.ncurses
 
-    # TODO move to modules/business.nix
-    # Business
-    pkgs.hledger
-
-    # TODO unify with vdirsyncer config
-    # "Business tools"
-    pkgs.khal
-    pkgs.khard
-
     # Shell
     pkgs.shellcheck
 

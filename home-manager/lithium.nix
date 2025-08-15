@@ -6,6 +6,7 @@ in
   imports = [
     ./modules/aider.nix
     ./modules/alacritty.nix
+    ./modules/business.nix
     ./modules/cmus.nix
     ./modules/fd.nix
     ./modules/neomutt.nix
