@@ -15,12 +15,8 @@ vim.call("plug#begin", "~/.config/nvim/plugged")
 Plug("evanleck/vim-svelte", { branch = "main"})
 Plug("guersam/vim-j", { ['for'] = "j"})
 Plug("leafgarland/typescript-vim")
-Plug("othree/html5.vim")
 Plug("pangloss/vim-javascript")
 Plug("nvim-orgmode/orgmode")
--- If this isn't enabled, indentation on the next line is wrong.
-Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
-Plug("ledger/vim-ledger", {["for"] = "ledger"})
 -- Commenting these out -- add back if needed Justus 2023-11-15
 -- TODO Still needed? Justus 2023-03-10
 -- Plug("elzr/vim-json", {['for'] = "json"})
@@ -28,38 +24,17 @@ Plug("ledger/vim-ledger", {["for"] = "ledger"})
 -- Plug("tpope/vim-markdown", {['for'] = "markdown"})
 Plug("supercollider/scvim")
 
--- Ascii stuff
--- -----------
-Plug("jbyuki/venn.nvim")
-
--- Treesitter
--- ----------
-Plug("nvim-treesitter/nvim-treesitter")
--- Works with treesitter
-Plug("kylechui/nvim-surround")
-
--- Improve editor appearance
--- -------------------------
-Plug("jeffkreeftmeijer/vim-numbertoggle")
-
 -- Improve general editor behavior
 -- -------------------------------
-Plug("easymotion/vim-easymotion")
 Plug("TobinPalmer/pastify.nvim")
 
 -- tmux interaction
 -- ----------------
 Plug("epeli/slimux")
-Plug("christoomey/vim-tmux-navigator")
 
 -- Search and file jump
 -- --------------------
 Plug("mangelozzi/nvim-rgflow.lua")
-Plug("ibhagwan/fzf-lua", {branch= "main"})
-
--- Git
--- ---
-Plug("tpope/vim-fugitive")
 
 -- Autocomplete
 -- ------------
@@ -73,12 +48,6 @@ Plug("hrsh7th/cmp-cmdline")
 Plug("hrsh7th/vim-vsnip")
 Plug("hrsh7th/vim-vsnip-integ")
 Plug("hrsh7th/cmp-vsnip")
-
--- LSP Config
--- ----------
-Plug("neovim/nvim-lspconfig")
-Plug("hrsh7th/cmp-nvim-lsp")
-
 vim.call('plug#end')
 
 -- Slimux
@@ -240,14 +209,6 @@ require('nvim-treesitter.configs').setup {
     -- indent = {
     --     enable = true,
     -- },
-    ensure_installed = {
-        "lua",
-        "svelte",
-        "typescript",
-        "markdown",
-        "ledger",
-        "nix",
-    },
 }
 -- Folding
 -- -------

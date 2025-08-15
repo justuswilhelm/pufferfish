@@ -16,8 +16,54 @@
     enable = true;
     extraLuaConfig = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
+    plugins = with pkgs.vimPlugins; [
+      # Language specific
+      # -----------------
+      # ledger/vim-ledger
+      vim-ledger
+      # othree/html5.vim
+      html5-vim
+      # hynek/vim-python-pep8-indent
+      # If this isn't enabled, indentation on the next line is wrong.
+      vim-python-pep8-indent
+      # Ascii stuff
+      # -----------
+      # jbyuki/venn.nvim
+      venn-nvim
+      # LSP Config
+      # ----------
+      # neovim/nvim-lspconfig
+      nvim-lspconfig
+      # hrsh7th/cmp-nvim-lsp
+      cmp-nvim-lsp
+      # Search and file jump
+      # --------------------
+      # ibhagwan/fzf-lua
+      fzf-lua
+      # tmux interaction
+      # ----------------
+      # christoomey/vim-tmux-navigator
+      vim-tmux-navigator
+      # treesitter
+      # ----------
+      # nvim-treesitter/nvim-treesitter
+      nvim-treesitter.withAllGrammars
+      # kylechui/nvim-surround
+      # works with treesitter
+      nvim-surround
+      # jeffkreeftmeijer/vim-numbertoggle
+      vim-numbertoggle
+      # easymotion/vim-easymotion
+      vim-easymotion
+      # Git
+      # ---
+      # tpope/vim-fugitive
+      vim-fugitive
+    ];
     extraPackages = [
       pkgs.tree-sitter
+      pkgs.git
+      pkgs.gcc
 
       # Needed for plugins
       # ==================
@@ -45,9 +91,7 @@
   };
 
   home.activation.performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH=${pkgs.git}/bin:${pkgs.gcc}/bin:$PATH
-    $DRY_RUN_CMD exec ${config.programs.neovim.finalPackage}/bin/nvim \
-      --headless \
+    run ${config.programs.neovim.finalPackage}/bin/nvim --headless \
       +"PlugUpdate --sync" +qa
   '';
 
