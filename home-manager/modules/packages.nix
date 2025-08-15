@@ -59,9 +59,6 @@
     pkgs.hyperfine
     pkgs.pv
 
-    # Secrets
-    pkgs.yubikey-manager
-
     # Archive things
     pkgs.gnutar
     pkgs.unzip

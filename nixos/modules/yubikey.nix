@@ -24,5 +24,6 @@
   environment.systemPackages = [
     pkgs.pam_u2f
     pkgs.pamtester
+    pkgs.yubikey-manager
   ];
 }
