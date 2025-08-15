@@ -17,7 +17,7 @@
     # ./modules/linux-packages.nix
     ./modules/man.nix
     ./modules/nvim.nix
-    # ./modules/packages.nix
+    ./modules/packages.nix
     ./modules/paths.nix
     ./modules/python.nix
     ./modules/selenized.nix
