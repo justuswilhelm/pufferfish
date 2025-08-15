@@ -8,6 +8,9 @@ in
 
   # TODO copy the below settings to other interfaces if needed
   # Hack the box stuff
+  networking.firewall.allowedTCPPorts = [
+    4444
+  ];
   networking.firewall.interfaces.tun0.allowedTCPPorts = [
     # SMB
     445
