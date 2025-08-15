@@ -119,6 +119,7 @@ let
 
       # No need to commit these
       "Users/${config.system.primaryUser}/.config/nvim/plugged"
+      "Users/${config.system.primaryUser}/.local/pipx/shared"
 
       # Something for handoff? Don't need this
       "Users/${config.system.primaryUser}/Library/DuetExpertCenter"
@@ -155,8 +156,6 @@ let
     encryption_passcommand = "${pkgs.coreutils}/bin/cat ${statePath}/passphrase";
 
     # checkpoint_interval = 60 * 15;
-
-    ssh_command = "ssh -o 'UserKnownHostsFile=${statePath}/ssh/known_hosts' -i${statePath}/ssh/id_rsa";
     borg_base_directory = statePath;
     borg_config_directory = "${statePath}/config";
     borg_cache_directory = "${statePath}/cache";
@@ -215,23 +214,21 @@ let
     ];
   };
 
+  borgmaticHelium = "helium";
+  borgmaticHeliumHost = "${borgmaticHelium}.local";
+  borgmaticHeliumUser = "${config.networking.hostName}-borgbackup";
   borgmaticHeliumConfig =
-    let
-      hostName = "helium";
-      host = "${hostName}.local";
-      remoteUser = "${config.networking.hostName}-borgbackup";
-    in
     lib.attrsets.recursiveUpdate borgmaticConfig {
       repositories = [
         {
-          path = "ssh://${remoteUser}@${host}/srv/borgbackup/${config.networking.hostName}";
-          label = hostName;
+          path = "ssh://${borgmaticHeliumUser}@${borgmaticHeliumHost}/srv/borgbackup/${config.networking.hostName}";
+          label = borgmaticHelium;
         }
       ];
       commands = borgmaticConfig.commands ++ [
         {
           before = "action";
-          run = [ "/sbin/ping -q -c 1 ${host} > /dev/null || exit 75" ];
+          run = [ "/sbin/ping -q -c 1 ${borgmaticHeliumHost} > /dev/null || exit 75" ];
         }
       ];
     };
@@ -263,7 +260,21 @@ with lib;
       environment.systemPackages = [ pkgs.borgbackup borgmatic unmountSnapshot ];
 
       environment.etc."borgmatic/base/borgmatic_base.yaml".source = makeYaml borgmaticConfig;
-      environment.etc."borgmatic.d/helium.yaml".source = makeYaml borgmaticHeliumConfig;
+      environment.etc."borgmatic.d/${borgmaticHelium}.yaml".source = makeYaml borgmaticHeliumConfig;
+      environment.etc."ssh/ssh_config.d/borgmatic.conf".text = ''
+        Match host="*.repo.borgbase.com"
+          ServerAliveInterval 10
+          ServerAliveCountMax 30
+          UserKnownHostsFile=${statePath}/ssh/known_hosts
+          IdentityFile ${statePath}/ssh/id_rsa
+          IdentitiesOnly yes
+        Match host="${borgmaticHeliumHost}" user="${borgmaticHeliumUser}"
+          ServerAliveInterval 10
+          ServerAliveCountMax 30
+          UserKnownHostsFile=${statePath}/ssh/known_hosts
+          IdentityFile ${statePath}/ssh/id_rsa
+          IdentitiesOnly yes
+      '';
 
       services.newsyslog.modules.borgmatic = {
         ${logPath} = {
