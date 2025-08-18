@@ -1,7 +1,7 @@
 # Configuration used for testing devices
 { ... }:
 let
-  ifname = "enp0s20f0u2";
+  ifname = "enp0s20f0u2c2";
   # Private testing segment
   privateSubnet = "10.128.0.10/24";
   privateSubnetGateway = "10.128.0.1/24";
@@ -16,7 +16,7 @@ in
       "30-usb-ethernet" = {
         matchConfig = {
           Type = "ether";
-          Path = [ "pci-*-usb-*" ];
+          Driver = [ "cdc_ncm" ];
         };
         networkConfig = {
           DHCP = "no";
