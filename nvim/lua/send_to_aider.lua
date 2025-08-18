@@ -89,14 +89,41 @@ function M.send_aider_command(text)
         return
     end
 
-    -- Send text to pane
-    local cmd = {"tmux", "send-keys", "-t", pane_id, text, "C-m"}
-    local send_result = vim.system(cmd, { text = true }):wait()
+    -- Generate a random-ish buffer name
+    local buffer_name = string.format("send-to-aider-%06d", math.random(100000, 999999))
 
-    if send_result.code ~= 0 then
+    -- Load text into tmux buffer via stdin
+    local load_cmd = {"tmux", "load-buffer", "-b", buffer_name, "-"}
+    local load_result = vim.system(load_cmd, { text = true, stdin = text }):wait()
+
+    if load_result.code ~= 0 then
         vim.notify(string.format(
-            "Failed to send keys to tmux: %s",
-            send_result.stderr
+            "Failed to load buffer to tmux: %s",
+            load_result.stderr
+        ), vim.log.levels.ERROR)
+        return
+    end
+
+    -- Paste buffer into target pane
+    local paste_cmd = {"tmux", "paste-buffer", "-dpr", "-b", buffer_name, "-t", pane_id}
+    local paste_result = vim.system(paste_cmd, { text = true }):wait()
+
+    if paste_result.code ~= 0 then
+        vim.notify(string.format(
+            "Failed to paste buffer to tmux: %s",
+            paste_result.stderr
+        ), vim.log.levels.ERROR)
+        return
+    end
+
+    -- Send Enter key
+    local enter_cmd = {"tmux", "send-keys", "-t", pane_id, "C-m"}
+    local enter_result = vim.system(enter_cmd, { text = true }):wait()
+
+    if enter_result.code ~= 0 then
+        vim.notify(string.format(
+            "Failed to send enter key to tmux: %s",
+            enter_result.stderr
         ), vim.log.levels.ERROR)
         return
     end
@@ -132,6 +159,40 @@ function M.drop_from_aider()
     M.send_aider_command(string.format("/drop %s", relative_path))
 end
 
+-- Function to get visual selection in pure Lua
+local function get_visual_selection()
+    -- https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-2495851785
+    local current_clipboard_content = vim.fn.getreg('"')
+
+    vim.cmd('noau normal! "vy"')
+    local text = vim.fn.getreg('v')
+    vim.fn.setreg('v', {})
+
+    vim.fn.setreg('"', current_clipboard_content)
+
+    -- text = string.gsub(text, "\n", "")
+    if #text > 0 then
+        return text
+    else
+        return ''
+    end
+end
+
+-- Function to send current visual selection to aider
+function M.send_selection_to_aider()
+    -- Maybe do this:
+    -- M.add_to_aider()
+
+    local text = get_visual_selection()
+
+    if text == '' then
+        vim.notify("No selection found", vim.log.levels.ERROR)
+        return
+    end
+
+    M.send_aider_command(text)
+end
+
 function M.setup()
     vim.keymap.set('n', '<Leader>aba', M.add_to_aider, {
         desc = "Add current buffer to aider"
@@ -141,6 +202,9 @@ function M.setup()
     })
     vim.keymap.set('n', '<Leader>abd', M.drop_from_aider, {
         desc = "Drop current buffer from aider"
+    })
+    vim.keymap.set('v', '<Leader>abs', M.send_selection_to_aider, {
+        desc = "Send current selection to aider"
     })
 end
 
