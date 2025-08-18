@@ -37,6 +37,10 @@
       }
     )
 
+    # Build
+    # =====
+    pkgs.gnumake
+
     # Exploits
     # =======
     pkgs.radamsa
