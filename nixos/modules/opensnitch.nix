@@ -11,6 +11,8 @@ in
     rules = {
       systemd-timesyncd = {
         name = "systemd-timesyncd";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
@@ -23,6 +25,8 @@ in
       };
       systemd-resolved = {
         name = "systemd-resolved";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
@@ -35,6 +39,8 @@ in
       };
       forbid-mozilla = {
         name = "Forbid *.mozilla.* domains that provide no user benefit";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "deny";
         duration = "always";
@@ -48,6 +54,8 @@ in
       };
       firefox-allow-443 = {
         name = "Allow Firefox connections to port 443";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
@@ -70,6 +78,8 @@ in
       };
       firefox-forbid-80 = {
         name = "Deny Firefox connections to port 80";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "deny";
         duration = "always";
@@ -92,6 +102,8 @@ in
       };
       git-remote-http = {
         name = "Allow git-remote-http";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
@@ -104,6 +116,8 @@ in
       };
       nix = {
         name = "Allow nix";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
@@ -116,6 +130,8 @@ in
       };
       mosh-client = {
         name = "Allow mosh-client to local network on UDP ports 60000-60100";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
@@ -140,6 +156,8 @@ in
       };
       perl-ssh = {
         name = "Allow perl SSH to local network on TCP port 22";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
