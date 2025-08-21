@@ -43,7 +43,7 @@ in
     enable = true;
     settings = {
       interfaces-config = {
-        interfaces = [ ifname ];
+        interfaces = [ ifname "enp0s20f0u6" ];
       };
       lease-database = {
         name = "/var/lib/kea/dhcp4.lease";

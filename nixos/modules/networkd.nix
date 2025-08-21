@@ -12,7 +12,7 @@
           Type = "ether";
         };
         networkConfig = {
-          DHCP = "yes";
+          DHCP = "ipv4";
           MulticastDNS = "yes";
           LinkLocalAddressing = "no";
         };
@@ -22,7 +22,7 @@
           Type = "wlan";
         };
         networkConfig = {
-          DHCP = "yes";
+          DHCP = "ipv4";
           MulticastDNS = "yes";
           LinkLocalAddressing = "no";
         };
