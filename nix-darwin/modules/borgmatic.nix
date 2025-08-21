@@ -370,8 +370,8 @@ with lib;
           StandardOutPath = maintainLogPath;
           # Start in the state path
           WorkingDirectory = statePath;
-          # Run at noon
-          StartCalendarInterval = { Hour = 12; Minute = 0; };
+          # Run some other time than the main process
+          StartCalendarInterval = { Hour = 14; Minute = 0; };
           # Performance
           ProcessType = "Background";
         };
