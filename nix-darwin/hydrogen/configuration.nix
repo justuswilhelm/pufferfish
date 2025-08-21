@@ -9,6 +9,7 @@ in
     ../modules/nix.nix
     ../modules/openssh.nix
     ../modules/aerospace.nix
+    ../modules/skhd.nix
     ../modules/overlays.nix
   ];
   users.users."${name}" = {
@@ -49,20 +50,6 @@ in
   launchd.labelPrefix = "net.jwpconsulting";
 
   # services.karabiner-elements.enable = true;
-  services.skhd = {
-    enable = true;
-    # https://github.com/koekeishiya/skhd/issues/1
-    skhdConfig =
-      let
-        cmus-remote = "${pkgs.cmus}/bin/cmus-remote";
-      in
-      ''
-        play : ${cmus-remote} -u
-        rewind : ${cmus-remote} -r
-        fast : ${cmus-remote} -n
-      '';
-  };
-
   # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
   # For iterm2 see:
   # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
