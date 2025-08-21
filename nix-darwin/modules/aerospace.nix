@@ -1,5 +1,5 @@
 # TODO use Nix module syntax here
-{ lib, config, specialArgs, ... }:
+{ lib, config, pkgs, specialArgs, ... }:
 let
   applicationsDirectory = "/Users/${specialArgs.name}/Applications";
   # We need to convince macOS to open this as a proper app, not as a child of
@@ -126,6 +126,11 @@ let
         openClipboardInFirefox
       ];
       "${prefix}-r" = "mode resize";
+      "${prefix}-p" =
+        let
+          pomoglorbo = "${pkgs.pomoglorbo}/bin/pomoglorbo";
+        in
+        "exec-and-forget ${pomoglorbo} start";
     };
     mode.resize.binding = {
       # These bindings trigger as soon as you enter the resize mode

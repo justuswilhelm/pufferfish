@@ -18,6 +18,7 @@ in
     ../modules/projectify.nix
     ../modules/radicale.nix
     ../modules/security.nix
+    ../modules/skhd.nix
     ../modules/user.nix
 
     ../modules/default.nix
@@ -82,19 +83,6 @@ in
   };
 
   # services.karabiner-elements.enable = true;
-  services.skhd = {
-    enable = true;
-    # https://github.com/koekeishiya/skhd/issues/1
-    skhdConfig =
-      let
-        cmus-remote = "${pkgs.cmus}/bin/cmus-remote";
-      in
-      ''
-        play : ${cmus-remote} -u
-        rewind : ${cmus-remote} -r
-        fast : ${cmus-remote} -n
-      '';
-  };
 
   programs.fish = {
     enable = true;

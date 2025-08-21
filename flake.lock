@@ -233,16 +233,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1749779086,
-        "narHash": "sha256-XsMyR+Ndlz/EbEL5l+jszfbmNKWBwI5q1ouUAkyYAbA=",
-        "ref": "refs/tags/2025.6.13.1",
-        "rev": "4c75547a37b1dd52d24f7a2708260f6e91a778a0",
-        "revCount": 856,
+        "lastModified": 1755739527,
+        "narHash": "sha256-TeOOy759zcmZc+HDfyszmC8yMwoC9Oc80s6Amsj34XY=",
+        "ref": "refs/tags/2025.8.21",
+        "rev": "87043c2adb928fd2b9f5ae54e015505b38786b86",
+        "revCount": 894,
         "type": "git",
         "url": "https://codeberg.org/justusw/Pomoglorbo.git"
       },
       "original": {
-        "ref": "refs/tags/2025.6.13.1",
+        "ref": "refs/tags/2025.8.21",
         "type": "git",
         "url": "https://codeberg.org/justusw/Pomoglorbo.git"
       }

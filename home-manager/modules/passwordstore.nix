@@ -9,5 +9,6 @@
   home.packages = [
     pkgs.pass
     pkgs.diceware
+    pkgs.yubikey-manager
   ];
 }
