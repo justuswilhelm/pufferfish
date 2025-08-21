@@ -40,6 +40,8 @@
     # Build
     # =====
     pkgs.gnumake
+    pkgs.gcc
+    pkgs.pkg-config
 
     # Exploits
     # =======
