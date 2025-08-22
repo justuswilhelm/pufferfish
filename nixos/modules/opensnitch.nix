@@ -49,7 +49,7 @@ in
           type = "regexp";
           sensitive = false;
           operand = "dest.host";
-          data = ".*\.services\.mozilla\.com";
+          data = "[^.]+\.services\.mozilla\.com";
         };
       };
       firefox-allow-443 = {
@@ -63,21 +63,30 @@ in
           type = "list";
           operand = "list";
           list = [
-            {
-              type = "regexp";
-              operand = "process.path";
-              data = firefoxBin;
-            }
-            {
-              type = "simple";
-              operand = "dest.port";
-              data = "443";
-            }
+            { type = "regexp"; operand = "process.path"; data = firefoxBin; }
+            { type = "simple"; operand = "dest.port"; data = "443"; }
           ];
         };
       };
-      firefox-forbid-80 = {
-        name = "Deny Firefox connections to port 80";
+      firefox-allow-local-80 = {
+        name = "Allow Firefox connections to 10.0.0.0/8:80";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "regexp"; operand = "process.path"; data = firefoxBin; }
+            { type = "simple"; operand = "dest.port"; data = "80"; }
+            { type = "network"; operand = "dest.network"; data = "10.0.0.0/8"; }
+          ];
+        };
+      };
+      firefox-deny-80 = {
+        name = "Deny Firefox connections to :80";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -87,16 +96,8 @@ in
           type = "list";
           operand = "list";
           list = [
-            {
-              type = "regexp";
-              operand = "process.path";
-              data = firefoxBin;
-            }
-            {
-              type = "simple";
-              operand = "dest.port";
-              data = "80";
-            }
+            { type = "regexp"; operand = "process.path"; data = firefoxBin; }
+            { type = "simple"; operand = "dest.port"; data = "80"; }
           ];
         };
       };
@@ -139,11 +140,7 @@ in
           type = "list";
           operand = "list";
           list = [
-            {
-              type = "network";
-              operand = "dest.network";
-              data = "10.0.0.0/16";
-            }
+            { type = "network"; operand = "dest.network"; data = "10.0.0.0/16"; }
             { type = "regexp"; operand = "dest.port"; data = "^600\\d\\d$"; }
             { type = "simple"; operand = "protocol"; data = "udp"; }
             {
@@ -165,11 +162,7 @@ in
           type = "list";
           operand = "list";
           list = [
-            {
-              type = "network";
-              operand = "dest.network";
-              data = "10.0.0.0/16";
-            }
+            { type = "network"; operand = "dest.network"; data = "10.0.0.0/16"; }
             { type = "simple"; operand = "dest.port"; data = "22"; }
             { type = "simple"; operand = "protocol"; data = "tcp"; }
             {
@@ -178,6 +171,20 @@ in
               data = "${lib.getBin pkgs.perl}/bin/perl";
             }
           ];
+        };
+      };
+      nmap = {
+        name = "Allow nmap to connect everywhere";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "simple";
+          sensitive = false;
+          operand = "process.path";
+          data = "${lib.getBin pkgs.nmap}/bin/nmap";
         };
       };
     };
