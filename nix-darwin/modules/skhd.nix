@@ -1,4 +1,4 @@
-{ pkgs, ... } : {
+{ pkgs, ... }: {
   services.skhd = {
     enable = true;
     # https://github.com/koekeishiya/skhd/issues/1
