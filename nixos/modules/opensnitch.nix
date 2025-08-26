@@ -42,7 +42,7 @@ in
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
-        action = "deny";
+        action = "reject";
         duration = "always";
         precedence = true;
         operator = {
@@ -69,12 +69,13 @@ in
         };
       };
       firefox-allow-local-80 = {
-        name = "Allow Firefox connections to 10.0.0.0/8:80";
+        name = "Allow local Firefox connections to :80";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
+        precedence = true;
         operator = {
           type = "list";
           operand = "list";
@@ -90,7 +91,7 @@ in
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
-        action = "deny";
+        action = "reject";
         duration = "always";
         operator = {
           type = "list";
@@ -102,17 +103,20 @@ in
         };
       };
       git-remote-http = {
-        name = "Allow git-remote-http";
+        name = "Allow git-remote-http TCP to port 443";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
         duration = "always";
         operator = {
-          type = "simple";
-          sensitive = false;
-          operand = "process.path";
-          data = "${lib.getBin pkgs.git}/libexec/git-core/git-remote-http";
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.git}/libexec/git-core/git-remote-http"; }
+            { type = "simple"; operand = "protocol"; data = "tcp"; }
+            { type = "simple"; operand = "dest.port"; data = "443"; }
+          ];
         };
       };
       nix = {
