@@ -16,11 +16,28 @@
     enable = true;
     rules = {
       bitcoind = {
-        name = "bitcoind";
+        name = "bitcoind TCP to specific ports";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
         action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "simple"; operand = "process.path"; data = "${lib.getBin config.services.bitcoind.default.package}/bin/bitcoind"; }
+            { type = "simple"; operand = "protocol"; data = "tcp"; }
+            { type = "regexp"; operand = "dest.port"; data = "^(8333|8335|30034|39388|20008)$"; }
+          ];
+        };
+      };
+      bitcoind-deny-all = {
+        name = "Deny all other bitcoind connections";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "reject";
         duration = "always";
         operator = {
           type = "simple";
