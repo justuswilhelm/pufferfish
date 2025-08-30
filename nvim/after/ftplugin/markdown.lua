@@ -1,11 +1,13 @@
 -- Paste clipboard contents with code fence
 vim.keymap.set(
     "n",
-    "<leader>cfp",
-    -- 1. Write code fence. Mark.
-    -- 2. Paste
-    -- 3. Write closing code fence. Jump to mark.
-    "o```<esc>magpo```<esc>`a"
+    "<leader>p",
+    -- 1. Write code fence.
+    -- 2. Mark.
+    -- 3. Write closing code fence.
+    -- 4. Paste
+    -- 5. Jump to Mark
+    "o```<esc>mao```<esc>kp`a"
 )
 
 -- Don't conceal
