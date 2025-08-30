@@ -98,8 +98,6 @@ vim.opt.conceallevel = 0
 vim.g.tex_conceal = ""
 -- Json
 vim.g.vim_json_syntax_conceal = 0
--- Markdown
-vim.g.markdown_syntax_conceal = 0
 -- Format options
 -- --------------
 -- Stop vim from inserting a newline at inopportune moments

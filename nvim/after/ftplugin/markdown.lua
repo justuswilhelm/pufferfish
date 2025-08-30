@@ -7,3 +7,6 @@ vim.keymap.set(
     -- 3. Write closing code fence. Jump to mark.
     "o```<esc>magpo```<esc>`a"
 )
+
+-- Don't conceal
+vim.g.markdown_syntax_conceal = 0
