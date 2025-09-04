@@ -42,6 +42,25 @@ in
     services.borgmatic = {
       enable = true;
     };
+    services.opensnitch.rules.borgmatic-ssh = {
+      name = "Allow borgmatic SSH to borgbase.com";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          { type = "regexp"; operand = "process.path"; data = "${lib.getBin pkgs.openssh}/bin/ssh"; }
+          { type = "regexp"; operand = "dest.host"; data = ".*\\.repo\\.borgbase\\.com"; }
+          { type = "simple"; operand = "dest.port"; data = "22"; }
+          { type = "simple"; operand = "user.id"; data = "0"; }
+          { type = "simple"; operand = "protocol"; data = "tcp"; }
+        ];
+      };
+    };
     environment.etc."borgmatic/base/borgmatic_base.yaml".source =
       yamlFormat.generate "borgmatic_base.yaml" borgmatic-config;
     environment.etc."borgmatic.d/srv-borgbackup.yaml".source =
