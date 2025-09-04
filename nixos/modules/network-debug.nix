@@ -45,8 +45,10 @@
         };
       };
     in
-    lib.listToAttrs (map (protocol: {
-      name = "traceroute-${protocol}";
-      value = makeTracerouteRule protocol;
-    }) tracerouteProtocols);
+    lib.listToAttrs (map
+      (protocol: {
+        name = "traceroute-${protocol}";
+        value = makeTracerouteRule protocol;
+      })
+      tracerouteProtocols);
 }
