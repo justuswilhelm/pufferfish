@@ -17,10 +17,13 @@ in
         action = "allow";
         duration = "always";
         operator = {
-          type = "simple";
-          sensitive = false;
-          operand = "process.path";
-          data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-timesyncd";
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-timesyncd"; }
+            { type = "simple"; operand = "protocol"; data = "udp"; }
+            { type = "regexp"; operand = "dest.port"; data = "^(53|123)$"; }
+          ];
         };
       };
       systemd-resolved = {
@@ -31,10 +34,13 @@ in
         action = "allow";
         duration = "always";
         operator = {
-          type = "simple";
-          sensitive = false;
-          operand = "process.path";
-          data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved";
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved"; }
+            { type = "simple"; operand = "protocol"; data = "udp"; }
+            { type = "regexp"; operand = "dest.port"; data = "^(53|5353)$"; }
+          ];
         };
       };
       forbid-mozilla = {
@@ -127,10 +133,12 @@ in
         action = "allow";
         duration = "always";
         operator = {
-          type = "simple";
-          sensitive = false;
-          operand = "process.path";
-          data = "${lib.getBin pkgs.nix}/bin/nix";
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.nix}/bin/nix"; }
+            { type = "regexp"; operand = "dest.port"; data = "^(53|443)$"; }
+          ];
         };
       };
       mosh-client = {
@@ -155,6 +163,29 @@ in
           ];
         };
       };
+      git-ssh = {
+        name = "Allow git SSH to local network on TCP port 22";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "network"; operand = "dest.network"; data = "10.0.0.0/16"; }
+            { type = "simple"; operand = "dest.port"; data = "22"; }
+            { type = "simple"; operand = "user.id"; data = "1000"; }
+            { type = "simple"; operand = "protocol"; data = "tcp"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.openssh}/bin/ssh";
+            }
+          ];
+        };
+      };
       perl-ssh = {
         name = "Allow perl SSH to local network on TCP port 22";
         created = "1970-01-01T00:00:00Z";
@@ -167,6 +198,7 @@ in
           operand = "list";
           list = [
             { type = "network"; operand = "dest.network"; data = "10.0.0.0/16"; }
+            { type = "simple"; operand = "user.id"; data = "1000"; }
             { type = "simple"; operand = "dest.port"; data = "22"; }
             { type = "simple"; operand = "protocol"; data = "tcp"; }
             {
