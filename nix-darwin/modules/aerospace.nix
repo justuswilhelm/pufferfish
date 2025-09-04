@@ -125,26 +125,11 @@ let
       "${prefix}-shift-p" = [
         openClipboardInFirefox
       ];
-      "${prefix}-r" = "mode resize";
-      "${prefix}-p" =
+      "${prefix}-r" =
         let
           pomoglorbo = "${pkgs.pomoglorbo}/bin/pomoglorbo";
         in
         "exec-and-forget ${pomoglorbo} start";
-    };
-    mode.resize.binding = {
-      # These bindings trigger as soon as you enter the resize mode
-      # Pressing left will shrink the window’s width.
-      # Pressing right will grow the window’s width.
-      # Pressing up will shrink the window’s height.
-      # Pressing down will grow the window’s height.
-      h = "resize width -50";
-      j = "resize height +50";
-      k = "resize height -50";
-      l = "resize width +50";
-
-      # back to normal
-      cmd-alt-r = "mode main";
     };
     # https://nikitabobko.github.io/AeroSpace/guide#callbacks
     on-window-detected = [
