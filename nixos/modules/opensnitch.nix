@@ -4,9 +4,12 @@
   # https://github.com/evilsocket/opensnitch/wiki/Rules
   services.opensnitch = {
     enable = true;
+    settings = {
+      DefaultAction = "deny";
+    };
     rules = {
       systemd-timesyncd = {
-        name = "systemd-timesyncd";
+        name = "allow-systemd-timesyncd";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -23,7 +26,7 @@
         };
       };
       systemd-resolved = {
-        name = "systemd-resolved";
+        name = "allow-systemd-resolved";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -40,7 +43,8 @@
         };
       };
       git-remote-http = {
-        name = "Allow git-remote-http TCP to port 443";
+        name = "allow-git-remote-http";
+        description = "Allow git-remote-http TCP to port 443";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -57,7 +61,8 @@
         };
       };
       nix = {
-        name = "Allow nix";
+        name = "allow-nix";
+        description = "Allow nix";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -73,7 +78,8 @@
         };
       };
       mosh-client = {
-        name = "Allow mosh-client to local network on UDP ports 60000-60100";
+        name = "allow-mosh-client";
+        description = "Allow mosh-client to local network on UDP ports 60000-60100";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -95,7 +101,8 @@
         };
       };
       git-ssh = {
-        name = "Allow git SSH to local network on TCP port 22";
+        name = "allow-git-ssh";
+        description = "Allow git SSH to local network on TCP port 22";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -118,7 +125,8 @@
         };
       };
       perl-ssh = {
-        name = "Allow perl SSH to local network on TCP port 22";
+        name = "allow-perl-ssh";
+        description = "Allow perl SSH to local network on TCP port 22";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -141,7 +149,8 @@
         };
       };
       nmap = {
-        name = "Allow nmap to connect everywhere";
+        name = "allow-nmap";
+        description = "Allow nmap to connect everywhere";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
