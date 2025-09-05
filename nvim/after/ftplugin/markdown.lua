@@ -33,8 +33,7 @@ local function select_inside_fence()
     end
     vim.cmd(string.format('normal! %sGVo%sG', prev + 1, next - 1))
 end
-vim.keymap.set('x', 'ic', select_inside_fence, { silent = true })
-vim.keymap.set('o', 'ic', select_inside_fence, { silent = true })
+vim.keymap.set({'x', 'o' }, 'ic', select_inside_fence, { silent = true, buffer = true })
 
 -- Don't conceal
 vim.g.markdown_syntax_conceal = 0
