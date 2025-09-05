@@ -3,7 +3,7 @@ let
   yamlFormat = pkgs.formats.yaml { };
   config = {
     # https://aider.chat/docs/leaderboards/
-    model = "openrouter/anthropic/claude-sonnet-4";
+    model = "openrouter/openai/gpt-5";
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
@@ -26,9 +26,11 @@ in
         pkgs.stdenv.cc.cc.lib
         pkgs.glibc
         pkgs.ungoogled-chromium
+        pkgs.bash
       ];
       text = ''
         ${lib.optionalString isLinux ''export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:$${LD_LIBRARY_PATH:-}"''}
+        export SHELL=bash
         pipx run aider-chat "$@"
       '';
     })
