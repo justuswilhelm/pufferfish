@@ -30,9 +30,7 @@ vim.g.editorconfig = true
 -- ======
 -- Color scheme
 -- ------------
-if vim.fn.has("termguicolors") then
-    vim.opt.termguicolors = true
-end
+if vim.fn.has("termguicolors") then vim.opt.termguicolors = true end
 vim.cmd.colorscheme("selenized")
 vim.opt.background = "light"
 -- Make active pane visible
@@ -40,28 +38,24 @@ vim.opt.background = "light"
 -- https://superuser.com/questions/385553/making-the-active-window-in-vim-more-obvious
 -- Translated to lua
 -- See: https://neovim.io/doc/user/lua-guide.html#lua-guide-autocommands
-local BgHighlight = vim.api.nvim_create_augroup('BgHighlight', { clear = true })
+local BgHighlight = vim.api.nvim_create_augroup('BgHighlight', {clear = true})
 -- XXX Seems to be buggy when called :GRemove or otherwise messing
 -- around with file creation / deletion
-vim.api.nvim_create_autocmd({ 'WinEnter' }, {
+vim.api.nvim_create_autocmd({'WinEnter'}, {
     pattern = '*',
     group = BgHighlight,
-    command = 'set cul',
+    command = 'set cul'
 })
-vim.api.nvim_create_autocmd({ 'WinLeave' }, {
+vim.api.nvim_create_autocmd({'WinLeave'}, {
     pattern = '*',
     group = BgHighlight,
-    command = 'set nocul',
+    command = 'set nocul'
 })
 -- Show commands while they're being typed
 vim.opt.showcmd = true
 -- Show unprintable characters
 vim.opt.list = true
-vim.opt.listchars = {
-    tab = '»·',
-    nbsp = '෴',
-    trail = '※',
-}
+vim.opt.listchars = {tab = '»·', nbsp = '෴', trail = '※'}
 vim.opt.colorcolumn = "80"
 -- Match highlighting
 -- ------------------
@@ -126,13 +120,7 @@ vim.keymap.set("n", "<leader><space>", vim.cmd.nohlsearch)
 
 -- Reload configuration
 -- --------------------
-vim.keymap.set(
-    "n",
-    "<leader>l",
-    function()
-        vim.cmd.source(nvim_init_file)
-    end
-)
+vim.keymap.set("n", "<leader>l", function() vim.cmd.source(nvim_init_file) end)
 
 -- Make matching a little bit more magical
 -- http://vim.wikia.com/wiki/Simplifying_regular_expressions_using_magic_and_no-magic
@@ -147,18 +135,12 @@ vim.keymap.set("i", "jk", "<esc>")
 
 -- TODO timestamp
 -- --------------
-vim.keymap.set(
-    "n",
-    "<leader>ts",
-    function()
-        -- Remove newline at end
-        date = string.format(
-            " Justus %s",
-            string.sub(vim.fn.system({"date", "-Idate"}), 0, -2)
-        )
-        vim.api.nvim_put({date}, "", true, true)
-    end
-)
+vim.keymap.set("n", "<leader>ts", function()
+    -- Remove newline at end
+    date = string.format(" Justus %s",
+                         string.sub(vim.fn.system({"date", "-Idate"}), 0, -2))
+    vim.api.nvim_put({date}, "", true, true)
+end)
 
 -- Copy current buffer's path
 -- --------------------------
