@@ -18,5 +18,9 @@ sudo -u lithium-ca openssl req -new \
   -key /var/lib/lithium-ca/secrets/lithium-ca.key \
   -out /var/lib/lithium-ca/lithium-ca.crt
 
+install /var/lib/lithium-ca/lithium-ca.crt $HOME/.dotfiles/nix/lithium-ca.crt
+git add $HOME/.dotfiles/nix/lithium-ca.crt
+git commit --message "Nix: Update lithium-ca.crt"
+
 open /var/lib/lithium-ca/lithium-ca.crt
 open /var/lib/lithium-ca

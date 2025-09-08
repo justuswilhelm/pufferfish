@@ -231,6 +231,7 @@
           nixos-rebuild
           nixos-generators
           agenix.packages.${system}.default
+          luaformatter
         ];
       };
       packages.disko-install = disko.outputs.packages.${system}.disko-install;
