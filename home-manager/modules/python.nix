@@ -52,7 +52,7 @@ in
       pkgs.pipx
     ];
 
-    home.file.".pdbrc" = mkIf cfg.enable {
+    home.file.".pdbrc" = lib.mkIf cfg.enable {
       text =
         ''
           import os
