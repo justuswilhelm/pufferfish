@@ -30,6 +30,7 @@ let
   opt = options.services.tor;
   stateDir = "/var/lib/tor";
   runDir = "/run/tor";
+  torLogDir = "/var/log/tor";
   descriptionGeneric = option: ''
     See [torrc manual](https://2019.www.torproject.org/docs/tor-manual.html.en#${option}).
   '';
@@ -1232,14 +1233,16 @@ in
         ) cfg.relay.onionServices
       );
 
-    users.groups.tor.gid = config.ids.gids.tor;
+    users.groups.tor = { gid = 1107; };
     users.users.tor = {
       description = "Tor Daemon User";
-      createHome = true;
       home = stateDir;
-      group = "tor";
-      uid = config.ids.uids.tor;
+      gid = 1107;
+      uid = 1107;
+      isHidden = true;
     };
+    users.knownUsers = [ "tor" ];
+    users.knownGroups = [ "tor" ];
 
     services.tor.settings = lib.mkMerge [
       (lib.mkIf cfg.enableGeoIP {
@@ -1321,47 +1324,35 @@ in
       ))
     ];
 
-    networking.firewall = lib.mkIf cfg.openFirewall {
-      allowedTCPPorts =
-        lib.concatMap
-          (
-            o:
-            if lib.isInt o && o > 0 then
-              [ o ]
-            else
-              lib.optionals (o ? "port" && lib.isInt o.port && o.port > 0) [ o.port ]
-          )
-          (
-            lib.flatten [
-              cfg.settings.ORPort
-              cfg.settings.DirPort
-            ]
-          );
-    };
+    # Note: nix-darwin doesn't have built-in firewall management like NixOS
+    # Users should configure firewall rules manually if needed
 
-    systemd.services.tor = {
-      description = "Tor Daemon";
-      documentation = [ "man:tor(8)" ];
-      path = [ pkgs.tor ];
-
-      wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
-      restartTriggers = [ torrc ];
-
+    launchd.daemons.tor = {
+      path = [ cfg.package pkgs.moreutils ];
       serviceConfig = {
-        Type = "simple";
-        User = "tor";
-        Group = "tor";
-        ExecStartPre = [
-          "${cfg.package}/bin/tor -f ${torrc} --verify-config"
-          # DOC: Appendix G of https://spec.torproject.org/rend-spec-v3
-          (
-            "+"
-            + pkgs.writeShellScript "ExecStartPre" (
-              lib.concatStringsSep "\n" (
-                lib.flatten (
-                  [ "set -eu" ]
-                  ++ lib.mapAttrsToList (
+        UserName = "tor";
+        GroupName = "tor";
+        KeepAlive = true;
+        StandardOutPath = "${torLogDir}/tor.log";
+        WorkingDirectory = stateDir;
+        SoftResourceLimits = {
+          NumberOfFiles = 32768;
+        };
+        HardResourceLimits = {
+          NumberOfFiles = 32768;
+        };
+      };
+      script =
+        let
+          preStartScript = pkgs.writeShellScript "tor-prestart" (
+            lib.concatStringsSep "\n" (
+              lib.flatten (
+                [
+                  "set -eu"
+                  "${cfg.package}/bin/tor -f ${torrc} --verify-config"
+                ]
+                ++ lib.mapAttrsToList
+                  (
                     name: onion:
                     lib.optional (onion.authorizedClients != [ ]) ''
                       rm -rf ${lib.escapeShellArg onion.path}/authorized_clients
@@ -1377,7 +1368,7 @@ in
                       case "$key" in
                        ("== ed25519v"*"-secret")
                         install -o tor -g tor -m 0400 ${lib.escapeShellArg onion.secretKey} ${lib.escapeShellArg onion.path}/hs_ed25519_secret_key;;
-                       (*) echo >&2 "NixOS does not (yet) support secret key type for onion: ${name}"; exit 1;;
+                       (*) echo >&2 "nix-darwin does not (yet) support secret key type for onion: ${name}"; exit 1;;
                       esac
                     ''
                   ) cfg.relay.onionServices
@@ -1395,101 +1386,61 @@ in
                       ''
                     ) onion.clientAuthorizations
                   ) cfg.client.onionServices
-                )
               )
             )
-          )
-        ];
-        ExecStart = "${cfg.package}/bin/tor -f ${torrc}";
-        ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
-        KillSignal = "SIGINT";
-        TimeoutSec = cfg.settings.ShutdownWaitLength + 30; # Wait a bit longer than ShutdownWaitLength before actually timing out
-        Restart = "on-failure";
-        LimitNOFILE = 32768;
-        RuntimeDirectory = [
-          # g+x allows access to the control socket
-          "tor"
-          "tor/root"
-          # g+x can't be removed in ExecStart=, but will be removed by Tor
-          "tor/ClientOnionAuthDir"
-        ];
-        RuntimeDirectoryMode = "0710";
-        StateDirectoryMode = "0700";
-        StateDirectory = [
-          "tor"
-          "tor/onion"
-        ]
-        ++ lib.flatten (
-          lib.mapAttrsToList (
-            name: onion: lib.optional (onion.secretKey == null) "tor/onion/${name}"
-          ) cfg.relay.onionServices
-        );
-        # The following options are only to optimize:
-        # systemd-analyze security tor
-        RootDirectory = runDir + "/root";
-        RootDirectoryStartOnly = true;
-        #InaccessiblePaths = [ "-+${runDir}/root" ];
-        UMask = "0066";
-        BindPaths = [ stateDir ];
-        BindReadOnlyPaths = [
-          builtins.storeDir
-          "/etc"
-        ]
-        ++ lib.optionals config.services.resolved.enable [
-          "/run/systemd/resolve/stub-resolv.conf"
-          "/run/systemd/resolve/resolv.conf"
-        ];
-        AmbientCapabilities = [ "" ] ++ lib.optional bindsPrivilegedPort "CAP_NET_BIND_SERVICE";
-        CapabilityBoundingSet = [ "" ] ++ lib.optional bindsPrivilegedPort "CAP_NET_BIND_SERVICE";
-        # ProtectClock= adds DeviceAllow=char-rtc r
-        DeviceAllow = "";
-        LockPersonality = true;
-        MemoryDenyWriteExecute = true;
-        NoNewPrivileges = true;
-        PrivateDevices = true;
-        PrivateMounts = true;
-        PrivateNetwork = lib.mkDefault false;
-        PrivateTmp = true;
-        # Tor cannot currently bind privileged port when PrivateUsers=true,
-        # see https://gitlab.torproject.org/legacy/trac/-/issues/20930
-        PrivateUsers = !bindsPrivilegedPort;
-        ProcSubset = "pid";
-        ProtectClock = true;
-        ProtectControlGroups = true;
-        ProtectHome = true;
-        ProtectHostname = true;
-        ProtectKernelLogs = true;
-        ProtectKernelModules = true;
-        ProtectKernelTunables = true;
-        ProtectProc = "invisible";
-        ProtectSystem = "strict";
-        RemoveIPC = true;
-        RestrictAddressFamilies = [
-          "AF_UNIX"
-          "AF_INET"
-          "AF_INET6"
-          "AF_NETLINK"
-        ];
-        RestrictNamespaces = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-        # See also the finer but experimental option settings.Sandbox
-        SystemCallFilter = [
-          "@system-service"
-          # Groups in @system-service which do not contain a syscall listed by:
-          # perf stat -x, 2>perf.log -e 'syscalls:sys_enter_*' tor
-          # in tests, and seem likely not necessary for tor.
-          "~@aio"
-          "~@chown"
-          "~@keyring"
-          "~@memlock"
-          "~@resources"
-          "~@setuid"
-          "~@timer"
-        ];
-        SystemCallArchitectures = "native";
-        SystemCallErrorNumber = "EPERM";
+          );
+        in
+        ''
+          ${preStartScript}
+          exec ${cfg.package}/bin/tor -f ${torrc} 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+        '';
+    };
+
+    services.newsyslog.modules.tor = {
+      "${torLogDir}/tor.log" = {
+        owner = "tor";
+        group = "tor";
+        mode = "600";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
       };
+    };
+
+    system.activationScripts.postActivation = {
+      text = ''
+        echo "Ensuring tor directories exist"
+        mkdir -p ${stateDir} ${runDir} ${torLogDir}
+        chown tor:tor ${stateDir} ${runDir} ${torLogDir}
+        chmod 0700 ${stateDir}
+        chmod 0710 ${runDir}
+
+        # Create onion service directories
+        ${lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (
+            name: onion:
+            lib.optionalString (onion.secretKey == null) ''
+              mkdir -p ${stateDir}/onion/${lib.escapeShellArg name}
+              chown tor:tor ${stateDir}/onion/${lib.escapeShellArg name}
+              chmod 0700 ${stateDir}/onion/${lib.escapeShellArg name}
+            ''
+          ) cfg.relay.onionServices
+        )}
+
+        # Create client onion auth directory if needed
+        ${lib.optionalString
+          (lib.flatten (lib.mapAttrsToList (n: o: o.clientAuthorizations) cfg.client.onionServices) != [ ])
+          ''
+            mkdir -p ${runDir}/ClientOnionAuthDir
+            chown tor:tor ${runDir}/ClientOnionAuthDir
+            chmod 0700 ${runDir}/ClientOnionAuthDir
+          ''
+        }
+
+        echo "Restarting tor"
+        launchctl kickstart -k system/${config.launchd.labelPrefix}.tor
+      '';
     };
 
     environment.systemPackages = [ cfg.package ];

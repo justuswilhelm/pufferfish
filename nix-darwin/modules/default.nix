@@ -9,6 +9,7 @@
     ../modules/nagios.nix
     ../modules/newsyslog.nix
     ../modules/sync-git-annex.nix
+    ../modules/tor.nix
     ../modules/vdirsyncer.nix
   ];
 }
