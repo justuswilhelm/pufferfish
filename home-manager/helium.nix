@@ -14,6 +14,7 @@
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
     ./modules/packages.nix
+    ./modules/rust.nix
     ./modules/sway.nix
     ./modules/writing.nix
 
@@ -69,6 +70,9 @@
 
   programs.ssh = {
     matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey";
+    };
+    matchBlocks."localhost" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };
