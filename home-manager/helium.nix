@@ -35,6 +35,11 @@
       };
       position = 0;
     };
+    "load" = {
+      settings = {
+        color_bad = 10;
+      };
+    };
   };
 
   xdg.configFile."sway/config.d/${osConfig.networking.hostName}".text = ''

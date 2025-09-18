@@ -20,6 +20,7 @@
       ../modules/overlays.nix
       ../modules/podman.nix
       ../modules/sway.nix
+      ../modules/users.nix
       ../modules/yubikey.nix
 
       # TODO set up impermanence
@@ -27,7 +28,9 @@
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
       ./blockchains.nix
+      ./hhack.nix
       ./subnet.nix
     ];
 
@@ -67,21 +70,6 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
-  users.users.${specialArgs.name} = {
-    isNormalUser = true;
-    extraGroups = [
-      # Enable sudo
-      "wheel"
-      # allow using virtd
-      "libvirtd"
-      # For serial port
-      # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
-      "dialout"
-    ];
-    home = "/home/${specialArgs.name}";
-    shell = pkgs.fish;
-  };
 
   users.users.lithium-borgbackup = {
     isSystemUser = true;

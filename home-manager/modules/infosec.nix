@@ -28,7 +28,6 @@ in
 
     # Networking
     # ==========
-    pkgs.inetutils
     pkgs.whois
     pkgs.nmap
     pkgs.arp-scan

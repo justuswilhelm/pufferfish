@@ -1,22 +1,23 @@
 # Configuration used for testing devices
 { ... }:
 let
-  ifname = "enp0s20f0u2";
+  ifName = "enp0s20f0u2c2";
+  extraIfname = "enp0s20f0u6";
   # Private testing segment
-  privateSubnet = "10.128.0.10/24";
-  privateSubnetGateway = "10.128.0.1/24";
-  extIfname = "enp7s0";
-  dnsServer = "10.0.48.1";
   router = "10.128.0.10";
+  privateSubnet = "${router}/24";
+  # External network on extIfName
+  privateSubnetGateway = "10.0.48.1/24";
+  extIfName = "enp7s0";
+  dnsServer = "10.0.48.1";
 in
 {
-
   systemd.network = {
     networks = {
       "30-usb-ethernet" = {
         matchConfig = {
           Type = "ether";
-          Path = [ "pci-*-usb-*" ];
+          Driver = [ "cdc_ncm" ];
         };
         networkConfig = {
           DHCP = "no";
@@ -35,6 +36,20 @@ in
           }
         ];
       };
+      "31-usb-ethernet-2" = {
+        matchConfig = {
+          Type = "ether";
+          Driver = [ "ax88179_178a" ];
+        };
+        networkConfig = {
+          DHCP = "no";
+          DefaultRouteOnDevice = false;
+          MulticastDNS = "no";
+          IPv4Forwarding = true;
+          IPv6Forwarding = true;
+          Address = [ "10.128.128.125/24" ];
+        };
+      };
     };
   };
 
@@ -43,7 +58,7 @@ in
     enable = true;
     settings = {
       interfaces-config = {
-        interfaces = [ ifname ];
+        interfaces = [ ifName ];
       };
       lease-database = {
         name = "/var/lib/kea/dhcp4.lease";
@@ -85,8 +100,8 @@ in
     };
   };
   boot.kernel.sysctl = {
-    "net.ipv4.conf.${extIfname}.route_localnet" = 1;
-    "net.ipv4.conf.${ifname}.route_localnet" = 1;
+    "net.ipv4.conf.${extIfName}.route_localnet" = 1;
+    "net.ipv4.conf.${ifName}.route_localnet" = 1;
     "net.ipv4.ip_forward" = 1;
   };
   networking.nftables.enable = true;
@@ -112,22 +127,26 @@ in
       }
       chain postrouting {
         type nat hook postrouting priority srcnat;
-        iifname "${ifname}" oifname "${extIfname}" counter masquerade comment "from internal interfaces"
+        iifname "${ifName}" oifname "${extIfName}" counter masquerade comment "from internal interfaces"
       }
     }
   '';
   networking.firewall.logRefusedPackets = true;
   networking.firewall.logRefusedConnections = true;
-  networking.firewall.interfaces.${ifname} = {
+  networking.firewall.interfaces.${ifName} = {
     allowedUDPPorts = [
       # dns
       53
       # bootps
       67
+      # syslog
+      10514
     ];
     allowedTCPPorts = [
       # TLS / certmitm
       9900
+      # proxy test
+      9999
     ];
   };
 }
