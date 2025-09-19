@@ -75,16 +75,24 @@
       pkgs.fzf
 
       # Language servers
+      # ================
+      # rust
+      # rustup component add rust-analyzer
+      # pkgs.rust-analyzer
+      # JavaScript
+      # ----------
       pkgs.deno
+      pkgs.typescript
+      pkgs.nodePackages.typescript-language-server
+      pkgs.nodePackages.svelte-language-server
+      # Python
+      # ------
       pkgs.ruff
       # ruff claims to now have a lsp server and the following package
       # disappeared from nix 25.05
       # pkgs.ruff-lsp
-      pkgs.vale-ls
       pkgs.pyright
-      pkgs.typescript
-      pkgs.nodePackages.typescript-language-server
-      pkgs.nodePackages.svelte-language-server
+      pkgs.vale-ls
     ];
     extraPython3Packages = python3Packages: [
       # Pillow needed for pastify
