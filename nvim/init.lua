@@ -80,7 +80,7 @@ vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, {silent = true})
 -- Nvim-Cmp
 -- ========
 local cmp = require 'cmp'
-cmp.setup.filetype({"python", "svelte", "typescript"}, {
+cmp.setup.filetype({"rust", "python", "svelte", "typescript"}, {
     snippet = {
         expand = function(args)
             vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
@@ -182,7 +182,8 @@ require('nvim-treesitter.configs').setup {
         -- code block highlights that do not have ts grammar
         additional_vim_regex_highlighting = {
             "diff", "gitcommit", "svelte", "org"
-        }
+        },
+        ensure_installed = {"lua", "rust", "toml"}
         -- disable = { "sh" },
     }
     -- indent = {

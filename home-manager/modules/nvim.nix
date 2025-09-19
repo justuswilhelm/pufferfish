@@ -19,6 +19,8 @@
     plugins = with pkgs.vimPlugins; [
       # Language specific
       # -----------------
+      # mrcjkb/rustaeceanvim
+      rustaceanvim
       # ledger/vim-ledger
       vim-ledger
       # othree/html5.vim
