@@ -53,7 +53,6 @@ in
     };
   };
 
-
   services.kea.dhcp4 = {
     enable = true;
     settings = {
@@ -123,7 +122,7 @@ in
     table nat {
       chain prerouting {
         type nat hook prerouting priority dstnat;
-        iifname "${ifname}" tcp dport 443 counter redirect to :9900
+        iifname "${ifName}" tcp dport 443 counter redirect to :9900
       }
       chain postrouting {
         type nat hook postrouting priority srcnat;
