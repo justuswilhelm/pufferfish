@@ -26,6 +26,9 @@ let
   # We can't use alt because that's used for entering diacritics
   prefix = "cmd-alt";
   settings = {
+    # SPDX-SnippetBegin
+    # SPDX-SnippetCopyrightText: 2009, Michael Stapelberg and contributors
+    # SPDX-License-Identifier: BSD-3-Clause
     # Reference: https://github.com/i3/i3/blob/next/etc/config
     mode.main.binding = {
       # change focus
@@ -100,6 +103,7 @@ let
       "${prefix}-enter" = openAlacritty fish;
       "${prefix}-shift-enter" = newFirefoxWindow;
       "${prefix}-shift-n" = openAlacritty "${fish} -i -c open-in-finder";
+      # SPDX-SnippetEnd
       # Dotfiles
       "${prefix}-shift-m" = [
         "workspace 4"
