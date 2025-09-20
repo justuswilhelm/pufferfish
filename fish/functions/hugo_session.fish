@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function hugo_session -d "Launch a hugo session in a given directory" -a cwd
     set session (basename $cwd)
 

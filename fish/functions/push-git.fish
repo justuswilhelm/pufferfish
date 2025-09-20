@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # TODO detect if annex, otherwise skip `git annex sync`
 # TODO make this work even if annex isn't enabled. We can't push if the remote
 # repository doesn't allow it. Some additional git settings might be necessary.

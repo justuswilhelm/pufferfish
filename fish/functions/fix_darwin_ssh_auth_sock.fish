@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # HACKY
 function fix_darwin_ssh_auth_sock -d "Fix SSH_AUTH_SOCK on darwin"
     echo "SSH_AUTH_SOCK is $SSH_AUTH_SOCK"

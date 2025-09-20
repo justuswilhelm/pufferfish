@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function tsa --description "(tmux) Switch or Attach to a tmux session"
     set session "$argv[1]"
     if [ -z "$session" ]

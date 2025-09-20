@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function td -d "(tmux) Create a new tmux session in a given directory" -a query
     set hist_file $XDG_STATE_HOME/pufferfish/td.hist
 
