@@ -1,6 +1,9 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 # Sway config, copied over from my i3 config
 # Justus 2023-07-27
-set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -8,6 +11,10 @@ font pango:Iosevka Fixed 12
 
 default_border normal 4
 
+# SPDX-SnippetBegin
+# SPDX-SnippetCopyrightText: 2009, Michael Stapelberg and contributors
+# SPDX-License-Identifier: BSD-3-Clause
+set $mod Mod4
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -100,6 +107,7 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+# SPDX-SnippetEnd
 
 # Prevent focus steal
 focus_on_window_activation none
