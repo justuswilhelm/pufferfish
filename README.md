@@ -6,7 +6,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 # Pufferfish
 
-![pufferfish](docs/puffer.png)
+![pufferfish](docs/puffer.gif)
 
 Pufferfish gives you useful defaults and configuration files for the following
 programs:
