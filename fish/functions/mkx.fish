@@ -5,7 +5,7 @@ function mkx -d "Create an executable file at a path" -a dest
         echo "#!/usr/bin/env sh
 # Maybe set -e, -o pipefail or -u
 echo Hello World
-" > $dest
+" >$dest
     end
     chmod -v u+x $dest
     ls -lh $dest

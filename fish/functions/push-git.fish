@@ -13,7 +13,7 @@ function push-git --description "Push git repository to a remote repository, cre
     set remote_name (string replace --regex '.local$' "" $remote)
     echo "Setting remote name for remote '$remote' to '$remote_name'"
 
-    if git remote get-url $remote_name > /dev/null
+    if git remote get-url $remote_name >/dev/null
         echo "Remote with name '$remote_name' already exists"
         echo "Still running git annex sync..."
     else

@@ -10,10 +10,10 @@ function tomato --description "Launch a Pomoglorbo session in tmux"
     tmux send-keys -t "$session" "watch timew summary :ids" C-m
 
     tmux split-window -c "$HOME" -t "$session:0" -h
-    tmux send-keys -t "$session" "pomoglorbo" C-m
+    tmux send-keys -t "$session" pomoglorbo C-m
 
     tmux split-window -c "$HOME" -t "$session:0" -v
-    tmux send-keys -t "$session" "timew" C-m
+    tmux send-keys -t "$session" timew C-m
 
     tsa "$session"
 end
