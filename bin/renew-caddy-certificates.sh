@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # Renew the certificates for caddy
 # See docs/caddy.readme.md
 set -e
