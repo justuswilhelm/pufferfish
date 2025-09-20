@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+r"""
 Outputs markdown-formatted code blocks from files passed on stdin
 
 Example:

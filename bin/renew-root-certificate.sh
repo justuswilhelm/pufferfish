@@ -1,4 +1,10 @@
 #!/usr/bin/env sh
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Renew the root CA certificates at /var/lib/lithium-ca
+
 # Want 600
 umask 077
 sudo -u lithium-ca openssl ecparam \
