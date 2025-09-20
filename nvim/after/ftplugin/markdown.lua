@@ -4,8 +4,10 @@
 -- 3. Write closing code fence.
 -- 4. Paste
 -- 5. Jump to Mark
-vim.keymap.set("n", "<leader>p", "o```<esc>mao```<esc>kp`a")
-
+-- `paste code fence`
+vim.keymap.set("n", "<leader>pcf", "o```<esc>mao```<esc>kp`a", {buffer=true})
+-- `paste plain link`
+vim.keymap.set("n", "<leader>ppl", "i<<esc>pa><esc>", {buffer=true})
 -- xmap ic :<c-u>call search('```')<cr> \| normal! lvi)<cr>
 -- select line after ```: https://stackoverflow.com/a/60549604
 local function select_inside_fence()
