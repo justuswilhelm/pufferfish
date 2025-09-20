@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # How to troubleshoot some problems
 
 ## Less complains when running with tmux (2023-09-13)
