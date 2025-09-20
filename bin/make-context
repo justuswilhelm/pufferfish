@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""
+Outputs markdown-formatted code blocks from files passed on stdin
+
+Example:
+echo -en "filea.txt\nfileb.json" | make-context
+or
+echo "filea.txt\0fileb.json" | make-context -0
+
+gives you:
+==> filea.txt <==
+```json
+contents of filea
+```
+==> fileb.json <==
+```json
+contents of fileb
+```
+"""
+
+import argparse
+from pathlib import Path
+import subprocess
+import sys
+import tarfile
+from typing import Callable, Dict, Tuple, Optional
+
+
+def read_file_contents(file: Path, mime_type: str) -> Tuple[Optional[str], str]:
+    """Read and return the fence type and contents of a regular file."""
+    try:
+        contents = file.read_text().rstrip("\n")
+    except UnicodeDecodeError:
+        contents = "<binary file>"
+
+    # Look up the fence type from MIME_MAPPING
+    fence_type, _ = MIME_MAPPING.get(mime_type, (None, read_file_contents))
+    return fence_type, contents
+
+
+def read_tar_contents(file: Path, mime_type: str) -> Tuple[Optional[str], str]:
+    """Read and return the fence type and contents of a tar file as a file listing."""
+    del mime_type
+    try:
+        # Open for reading with transparent compression (recommended).
+        with tarfile.open(file, "r:*") as tar:
+            names = tar.getnames()
+            contents = "\n".join(names)
+    except Exception as e:
+        contents = f"<error reading tar file: {e}>"
+
+    return None, contents
+
+
+Handler = Callable[[Path, str], Tuple[Optional[str], str]]
+
+MIME_MAPPING: Dict[str, Tuple[Optional[str], Handler]] = {
+    "text/x-script.python": ("python", read_file_contents),
+    "text/x-python": ("python", read_file_contents),
+    "text/x-shellscript": ("bash", read_file_contents),
+    "application/x-shellscript": ("bash", read_file_contents),
+    "application/json": ("json", read_file_contents),
+    "text/x-c": ("c", read_file_contents),
+    "text/x-csrc": ("c", read_file_contents),
+    "text/x-c++": ("cpp", read_file_contents),
+    "text/x-c++src": ("cpp", read_file_contents),
+    "text/javascript": ("javascript", read_file_contents),
+    "application/javascript": ("javascript", read_file_contents),
+    "text/html": ("html", read_file_contents),
+    "text/css": ("css", read_file_contents),
+    "text/x-yaml": ("yaml", read_file_contents),
+    "application/x-yaml": ("yaml", read_file_contents),
+    "text/xml": ("xml", read_file_contents),
+    "application/xml": ("xml", read_file_contents),
+    "text/x-lua": ("lua", read_file_contents),
+    "text/x-rust": ("rust", read_file_contents),
+    "text/x-go": ("go", read_file_contents),
+    "text/x-ruby": ("ruby", read_file_contents),
+    "text/x-php": ("php", read_file_contents),
+    "text/x-java": ("java", read_file_contents),
+    "text/x-markdown": ("markdown", read_file_contents),
+    "text/x-tex": ("latex", read_file_contents),
+    "text/x-makefile": ("makefile", read_file_contents),
+    "text/x-dockerfile": ("dockerfile", read_file_contents),
+    "text/x-nix": ("nix", read_file_contents),
+    "application/x-tar": (None, read_tar_contents),
+    "application/x-gtar": (None, read_tar_contents),
+    "application/gzip": (None, read_tar_contents),
+}
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Outputs markdown-formatted code blocks from files passed on stdin"
+    )
+    parser.add_argument(
+        "-0",
+        "--null",
+        action="store_true",
+        help="Separate input lines by \\0 byte instead of newline",
+    )
+    args = parser.parse_args()
+
+    if args.null:
+        lines = sys.stdin.read().split("\0")
+    else:
+        lines = sys.stdin.readlines()
+
+    for line in lines:
+        if not line.strip():
+            continue
+        file = Path(line.strip())
+        if not file.exists():
+            print(f"==> {file} <==\nDoes not exist", file=sys.stderr)
+            continue
+        if not file.is_file():
+            print(f"==> {file} <==\nNot a file", file=sys.stderr)
+            continue
+
+        result = subprocess.run(
+            ["file", "--mime-type", "--brief", file],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode == 0:
+            mime_type = result.stdout.strip()
+        else:
+            mime_type = ""
+
+        _, handler = MIME_MAPPING.get(mime_type, (None, read_file_contents))
+        lang, contents = handler(file, mime_type)
+
+        print(f"==> {file} <==\n```{lang or ''}\n{contents}\n```")
+
+
+if __name__ == "__main__":
+    main()
