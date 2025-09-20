@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
+--
+-- SPDX-License-Identifier: GPL-3.0-or-later
+
 -- Paste clipboard contents with code fence
 -- 1. Write code fence.
 -- 2. Mark.

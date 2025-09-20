@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # Install radicale on nix-darwin
 
 Create runtime dirs

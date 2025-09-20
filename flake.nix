@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 {
   description = "Justus' generic system";
 
@@ -232,6 +236,7 @@
           nixos-generators
           agenix.packages.${system}.default
           luaformatter
+          reuse
         ];
       };
       packages.disko-install = disko.outputs.packages.${system}.disko-install;

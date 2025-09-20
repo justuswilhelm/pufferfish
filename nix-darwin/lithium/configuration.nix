@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { specialArgs, config, pkgs, projectify, ... }:
 let
   uid = 501;
@@ -62,6 +66,11 @@ in
   services.borgmatic.enable = true;
   services.vdirsyncer.enable = true;
   services.sync-git-annex.enable = true;
+
+  services.tor = {
+    enable = true;
+    # https://git-annex.branchable.com/tips/enable_tor_on_nixos/
+  };
 
   services.postgresql = {
     enable = true;

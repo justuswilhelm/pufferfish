@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function manage-dotfiles -d "Launch a tmux session to manage your dotfiles"
     set session dotfiles
 

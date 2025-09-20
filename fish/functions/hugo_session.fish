@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function hugo_session -d "Launch a hugo session in a given directory" -a cwd
     set session (basename $cwd)
 
@@ -8,7 +12,7 @@ function hugo_session -d "Launch a hugo session in a given directory" -a cwd
     end
 
     tmux new-session -c $cwd -d -s $session -n editor
-    tmux send-keys -t $session:editor "nvim" C-m
+    tmux send-keys -t $session:editor nvim C-m
     tmux split-window -c $cwd -h -t $session
     tmux send-keys -t $session:editor "git status" C-m
 

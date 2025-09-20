@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function far -d "Replace all occurences of a word with another recursively in a given folder" -a location search with
     if [ -z $location ]
         read -S -P "where: " location || begin
