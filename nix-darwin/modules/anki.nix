@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # TODO Make this a Nix module
 # TODO add password hashing
 { lib, pkgs, config, ... }:
