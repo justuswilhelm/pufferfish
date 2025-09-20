@@ -1,4 +1,0 @@
-# treat generated vim colorscheme files as binary
-# (the reader should be interested in the templates)
-editors/vim/colors/*.vim -diff linguist-generated
-
