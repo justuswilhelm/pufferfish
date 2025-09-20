@@ -32,7 +32,6 @@
 
       ./blockchains.nix
       ./hhack.nix
-      ./subnet.nix
     ];
 
   boot = {
