@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 * TODO Ensure CI dependencies are up to date
   <2023-11-23 Thu>
   Haven't checked this at all since updating to Debian bookworm
