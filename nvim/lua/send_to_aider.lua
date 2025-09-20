@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
+--
+-- SPDX-License-Identifier: GPL-3.0-or-later
+
 -- Send_to_aider
 -- =============
 local M = {}

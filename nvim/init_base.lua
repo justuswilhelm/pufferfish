@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
+--
+-- SPDX-License-Identifier: GPL-3.0-or-later
+
 -- General editor settings
 -- =======================
 -- Shell
