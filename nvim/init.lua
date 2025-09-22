@@ -38,7 +38,7 @@ Plug("epeli/slimux")
 
 -- Search and file jump
 -- --------------------
-Plug("mangelozzi/nvim-rgflow.lua")
+Plug("~/.local/share/nvim/site/ack.vim")
 
 -- Autocomplete
 -- ------------
@@ -298,27 +298,16 @@ vim.g.svelte_preprocessor_tags = {
 }
 vim.g.svelte_preprocessors = {"ts", "typescript"}
 
--- rgflow
+-- ack.vim
 -- =======
-require('rgflow').setup({
-    -- Set the default rip grep flags and options for when running a search via
-    -- RgFlow. Once changed via the UI, the previous search flags are used for
-    -- each subsequent search (until Neovim restarts).
-    cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
-
-    -- Mappings to trigger RgFlow functions
-    default_trigger_mappings = true,
-    -- These mappings are only active when the RgFlow UI (panel) is open
-    default_ui_mappings = true,
-    -- QuickFix window only mapping
-    default_quickfix_mappings = true
-})
+if vim.fn.executable("ag") then
+    vim.g.ackprg = "ag --vimgrep"
+end
 -- Search for selected text
-vim.keymap.set('v', '<leader>ack', require("rgflow").open_cword)
-vim.keymap.set('n', '<leader>af', function()
-    path = vim.fn.expand("%")
-    require("rgflow").open(path)
-end)
+vim.keymap.set('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
+vim.keymap.set('n', '<leader>ag', ":Ack ")
+-- Search for the current file
+vim.keymap.set('n', '<leader>af', ":Ack %:t<CR>")
 
 -- Clear registers
 vim.api.nvim_create_user_command('WipeReg', function()
