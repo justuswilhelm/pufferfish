@@ -131,6 +131,7 @@ in
         pwntools
         # Shodan hashes
         mmh3
+        tqdm
       ]
     ))
     pkgs.jwt-cli
