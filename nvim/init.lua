@@ -304,7 +304,7 @@ if vim.fn.executable("ag") then
     vim.g.ackprg = "ag --vimgrep"
 end
 -- Search for selected text
-vim.keymap.set('v', '<leader>ack', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
+vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
 vim.keymap.set('n', '<leader>ag', ":Ack ")
 -- Search for the current file
 vim.keymap.set('n', '<leader>af', ":Ack %:t<CR>")
