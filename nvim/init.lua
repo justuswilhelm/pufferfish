@@ -36,10 +36,6 @@ Plug("TobinPalmer/pastify.nvim")
 -- ----------------
 Plug("epeli/slimux")
 
--- Search and file jump
--- --------------------
-Plug("~/.local/share/nvim/site/ack.vim")
-
 -- Autocomplete
 -- ------------
 Plug("hrsh7th/nvim-cmp", {commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01"})
@@ -300,9 +296,7 @@ vim.g.svelte_preprocessors = {"ts", "typescript"}
 
 -- ack.vim
 -- =======
-if vim.fn.executable("ag") then
-    vim.g.ackprg = "ag --vimgrep"
-end
+if vim.fn.executable("ag") then vim.g.ackprg = "ag --vimgrep" end
 -- Search for selected text
 vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
 vim.keymap.set('n', '<leader>ag', ":Ack ")

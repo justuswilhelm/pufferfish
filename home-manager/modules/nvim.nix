@@ -16,8 +16,6 @@
     };
   };
 
-  xdg.dataFile."nvim/site/ack.vim".source = ../../nvim/ack.vim;
-
   programs.neovim = {
     enable = true;
     extraLuaConfig = builtins.readFile ../../nvim/init.lua;
