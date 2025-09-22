@@ -5,8 +5,8 @@
 local M = {}
 
 -- Module state
-local searching_filepaths = false
-local using_loclist = false
+M.searching_filepaths = false
+M.using_loclist = false
 
 -- Check if dispatch is available and configured
 local function check_dispatch()
@@ -274,116 +274,112 @@ function M.ShowResults()
   vim.cmd('redraw!')
 end
 
-if vim.g.loaded_ack or vim.o.compatible then
-  return
+function M.setup()
+    if not vim.g.ack_default_options then
+      vim.g.ack_default_options = " -s -H --nopager --nocolor --nogroup --column"
+    end
+
+    -- Location of the ack utility
+    if not vim.g.ackprg then
+      if vim.fn.executable('ack-grep') == 1 then
+        vim.g.ackprg = "ack-grep"
+      elseif vim.fn.executable('ack') == 1 then
+        vim.g.ackprg = "ack"
+      else
+        return
+      end
+      vim.g.ackprg = vim.g.ackprg .. vim.g.ack_default_options
+    end
+
+    if vim.g.ack_apply_qmappings == nil then
+      vim.g.ack_apply_qmappings = vim.g.ack_qhandler == nil
+    end
+
+    if vim.g.ack_apply_lmappings == nil then
+      vim.g.ack_apply_lmappings = vim.g.ack_lhandler == nil
+    end
+
+    local s_ack_mappings = {
+      t = "<C-W><CR><C-W>T",
+      T = "<C-W><CR><C-W>TgT<C-W>j",
+      o = "<CR>",
+      O = "<CR><C-W>p<C-W>c",
+      go = "<CR><C-W>p",
+      h = "<C-W><CR><C-W>K",
+      H = "<C-W><CR><C-W>K<C-W>b",
+      v = "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
+      gv = "<C-W><CR><C-W>H<C-W>b<C-W>J"
+    }
+
+    if vim.g.ack_mappings then
+      vim.g.ack_mappings = vim.tbl_extend("force", s_ack_mappings, vim.g.ack_mappings)
+    else
+      vim.g.ack_mappings = s_ack_mappings
+    end
+
+    if not vim.g.ack_qhandler then
+      vim.g.ack_qhandler = "botright copen"
+    end
+
+    if not vim.g.ack_lhandler then
+      vim.g.ack_lhandler = "botright lopen"
+    end
+
+    if vim.g.ackhighlight == nil then
+      vim.g.ackhighlight = 0
+    end
+
+    if vim.g.ack_autoclose == nil then
+      vim.g.ack_autoclose = 0
+    end
+
+    if vim.g.ack_autofold_results == nil then
+      vim.g.ack_autofold_results = 0
+    end
+
+    if vim.g.ack_use_cword_for_empty_search == nil then
+      vim.g.ack_use_cword_for_empty_search = 1
+    end
+
+    vim.api.nvim_create_user_command('Ack', function(opts)
+      M.Ack('grep' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*', complete = 'file' })
+
+    vim.api.nvim_create_user_command('AckAdd', function(opts)
+      M.Ack('grepadd' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*', complete = 'file' })
+
+    vim.api.nvim_create_user_command('AckFromSearch', function(opts)
+      M.AckFromSearch('grep' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*', complete = 'file' })
+
+    vim.api.nvim_create_user_command('LAck', function(opts)
+      M.Ack('lgrep' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*', complete = 'file' })
+
+    vim.api.nvim_create_user_command('LAckAdd', function(opts)
+      M.Ack('lgrepadd' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*', complete = 'file' })
+
+    vim.api.nvim_create_user_command('AckFile', function(opts)
+      M.Ack('grep' .. (opts.bang and '!' or '') .. ' -g', opts.args)
+    end, { bang = true, nargs = '*', complete = 'file' })
+
+    vim.api.nvim_create_user_command('AckHelp', function(opts)
+      M.AckHelp('grep' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*', complete = 'help' })
+
+    vim.api.nvim_create_user_command('LAckHelp', function(opts)
+      M.AckHelp('lgrep' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*', complete = 'help' })
+
+    vim.api.nvim_create_user_command('AckWindow', function(opts)
+      M.AckWindow('grep' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*' })
+
+    vim.api.nvim_create_user_command('LAckWindow', function(opts)
+      M.AckWindow('lgrep' .. (opts.bang and '!' or ''), opts.args)
+    end, { bang = true, nargs = '*' })
 end
-
-if not vim.g.ack_default_options then
-  vim.g.ack_default_options = " -s -H --nopager --nocolor --nogroup --column"
-end
-
--- Location of the ack utility
-if not vim.g.ackprg then
-  if vim.fn.executable('ack-grep') == 1 then
-    vim.g.ackprg = "ack-grep"
-  elseif vim.fn.executable('ack') == 1 then
-    vim.g.ackprg = "ack"
-  else
-    return
-  end
-  vim.g.ackprg = vim.g.ackprg .. vim.g.ack_default_options
-end
-
-if vim.g.ack_apply_qmappings == nil then
-  vim.g.ack_apply_qmappings = vim.g.ack_qhandler == nil
-end
-
-if vim.g.ack_apply_lmappings == nil then
-  vim.g.ack_apply_lmappings = vim.g.ack_lhandler == nil
-end
-
-local s_ack_mappings = {
-  t = "<C-W><CR><C-W>T",
-  T = "<C-W><CR><C-W>TgT<C-W>j",
-  o = "<CR>",
-  O = "<CR><C-W>p<C-W>c",
-  go = "<CR><C-W>p",
-  h = "<C-W><CR><C-W>K",
-  H = "<C-W><CR><C-W>K<C-W>b",
-  v = "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
-  gv = "<C-W><CR><C-W>H<C-W>b<C-W>J"
-}
-
-if vim.g.ack_mappings then
-  vim.g.ack_mappings = vim.tbl_extend("force", s_ack_mappings, vim.g.ack_mappings)
-else
-  vim.g.ack_mappings = s_ack_mappings
-end
-
-if not vim.g.ack_qhandler then
-  vim.g.ack_qhandler = "botright copen"
-end
-
-if not vim.g.ack_lhandler then
-  vim.g.ack_lhandler = "botright lopen"
-end
-
-if vim.g.ackhighlight == nil then
-  vim.g.ackhighlight = 0
-end
-
-if vim.g.ack_autoclose == nil then
-  vim.g.ack_autoclose = 0
-end
-
-if vim.g.ack_autofold_results == nil then
-  vim.g.ack_autofold_results = 0
-end
-
-if vim.g.ack_use_cword_for_empty_search == nil then
-  vim.g.ack_use_cword_for_empty_search = 1
-end
-
-vim.api.nvim_create_user_command('Ack', function(opts)
-  M.Ack('grep' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*', complete = 'file' })
-
-vim.api.nvim_create_user_command('AckAdd', function(opts)
-  M.Ack('grepadd' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*', complete = 'file' })
-
-vim.api.nvim_create_user_command('AckFromSearch', function(opts)
-  M.AckFromSearch('grep' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*', complete = 'file' })
-
-vim.api.nvim_create_user_command('LAck', function(opts)
-  M.Ack('lgrep' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*', complete = 'file' })
-
-vim.api.nvim_create_user_command('LAckAdd', function(opts)
-  M.Ack('lgrepadd' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*', complete = 'file' })
-
-vim.api.nvim_create_user_command('AckFile', function(opts)
-  M.Ack('grep' .. (opts.bang and '!' or '') .. ' -g', opts.args)
-end, { bang = true, nargs = '*', complete = 'file' })
-
-vim.api.nvim_create_user_command('AckHelp', function(opts)
-  M.AckHelp('grep' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*', complete = 'help' })
-
-vim.api.nvim_create_user_command('LAckHelp', function(opts)
-  M.AckHelp('lgrep' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*', complete = 'help' })
-
-vim.api.nvim_create_user_command('AckWindow', function(opts)
-  M.AckWindow('grep' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*' })
-
-vim.api.nvim_create_user_command('LAckWindow', function(opts)
-  M.AckWindow('lgrep' .. (opts.bang and '!' or ''), opts.args)
-end, { bang = true, nargs = '*' })
-
-vim.g.loaded_ack = 1
 
 return M

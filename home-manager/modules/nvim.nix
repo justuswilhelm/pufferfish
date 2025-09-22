@@ -73,8 +73,8 @@
 
       # Needed for plugins
       # ==================
+      # ag.vim (ported to lua)
       pkgs.silver-searcher
-      pkgs.ripgrep
       # fzf-lua
       pkgs.fzf
 

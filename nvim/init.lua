@@ -353,3 +353,7 @@ require('pastify').setup {
 -- Send_to_aider
 -- =============
 require('send_to_aider').setup()
+
+-- ack.vim (lua port)
+-- ==================
+require('ack').setup()
