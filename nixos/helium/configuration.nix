@@ -143,6 +143,14 @@
   };
   systemd.services.tor.serviceConfig.BindPaths = [ "/var/lib/tor-annex" ];
 
+  services.printing = {
+    enable = true;
+    drivers = [
+      pkgs.cups-filters
+      pkgs.cups-browsed
+    ];
+  };
+
   security.pki.certificateFiles = [
     ../../nix/lithium-ca.crt
   ];
