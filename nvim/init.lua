@@ -293,14 +293,22 @@ vim.g.svelte_preprocessor_tags = {
 }
 vim.g.svelte_preprocessors = {"ts", "typescript"}
 
--- ack.vim
--- =======
-if vim.fn.executable("ag") then vim.g.ackprg = "ag --vimgrep" end
+-- ack.vim (lua port)
+-- ==================
+local ack = require('ack')
+ack.setup()
 -- Search for selected text
 vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
-vim.keymap.set('n', '<leader>ag', ":Ack ")
+vim.keymap.set('n', '<leader>ag', ":<C-u>Ack ")
 -- Search for the current file
-vim.keymap.set('n', '<leader>af', ":Ack %:t<CR>")
+vim.keymap.set('n', '<leader>af', function()
+    ack.Ack('grep', vim.fn.expand('%:t'))
+end)
+-- Search for word under cursor
+vim.keymap.set('n', '<leader>aw', function()
+    local word = vim.fn.expand('<C-R><C-W>')
+    ack.Ack('grep!', '')
+end)
 
 -- Clear registers
 vim.api.nvim_create_user_command('WipeReg', function()
@@ -353,7 +361,3 @@ require('pastify').setup {
 -- Send_to_aider
 -- =============
 require('send_to_aider').setup()
-
--- ack.vim (lua port)
--- ==================
-require('ack').setup()

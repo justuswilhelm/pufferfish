@@ -285,6 +285,8 @@ function M.setup()
         vim.g.ackprg = "ack-grep"
       elseif vim.fn.executable('ack') == 1 then
         vim.g.ackprg = "ack"
+      elseif vim.fn.executable('ag') == 1 then
+          vim.g.ackprg = 'ag --vimgrep'
       else
         return
       end
