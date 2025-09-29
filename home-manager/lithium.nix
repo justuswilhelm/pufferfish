@@ -13,6 +13,7 @@ in
     ./modules/business.nix
     ./modules/cmus.nix
     ./modules/fd.nix
+    ./modules/http.nix
     ./modules/neomutt.nix
     ./modules/infosec.nix
     ./modules/packages.nix
