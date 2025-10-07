@@ -1,19 +1,4 @@
--- https://github.com/mrcjkb/rustaceanvim?tab=readme-ov-file#zap-quick-setup
-local bufnr = vim.api.nvim_get_current_buf()
-vim.keymap.set(
-  "n",
-  "<leader>a",
-  function()
-    vim.cmd.RustLsp('codeAction') -- supports rust-analyzer's grouping
-    -- or vim.lsp.buf.codeAction() if you don't want grouping.
-  end,
-  { silent = true, buffer = bufnr }
-)
-vim.keymap.set(
-  "n",
-  "K",  -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
-  function()
-    vim.cmd.RustLsp({'hover', 'actions'})
-  end,
-  { silent = true, buffer = bufnr }
-)
+-- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
+--
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- This is where I put Rust specific config
