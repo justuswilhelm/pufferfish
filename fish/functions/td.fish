@@ -3,43 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 function td -d "(tmux) Create a new tmux session in a given directory" -a query
-    set hist_file $XDG_STATE_HOME/pufferfish/td.hist
-
-    if ! mkdir -vp (dirname $hist_file)
-        echo "Couldn't make directory for hist_file $hist_file"
-        return 1
-    end
-
-    if test ! -e $hist_file
-        touch $hist_file
-    end
-
-    if ! set dir (
-        begin
-            tac $hist_file
-            fd \
-                --type directory \
-                --max-depth 5 \
-                . $PWD
-        end | fzf --scheme=history --query=$query
-    )
-        echo "Couldn't determine new tmux session directory"
-        return 1
-    end
-
-    if [ ! -e $dir ]
-        echo "Directory $dir doesn't exist"
-        return 1
-    end
-
-    if ! set rlpath (realpath $dir)/
-        echo "Could not determine directory $dir's realpath"
-        return 1
-    end
-
-    if ! grep $rlpath $hist_file
-        echo $rlpath >>$hist_file
-    end
+    set dir (fzf-from-jump-history --query=$query)
 
     if ! set session_name (basename $dir)
         echo "Couldn't determine new tmux session name"
