@@ -54,7 +54,9 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
         return 1
     end
 
-    if ! grep $rlpath $hist_file
+    if ! grep $rlpath $hist_file >/dev/null
         echo $rlpath >>$hist_file
     end
+
+    echo $rlpath
 end

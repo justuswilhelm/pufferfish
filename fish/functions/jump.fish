@@ -10,7 +10,10 @@ function jump -d "Jump to a directory" -a query
         set where $PWD
     end
 
-    set dir (fzf-from-jump-history --where=$where --query=$query)
+    if ! set dir (fzf-from-jump-history --where=$where --query=$query)
+        echo "fzf-from-jump-history failed" >/dev/stderr
+        return 1
+    end
 
     cd $dir
 end
