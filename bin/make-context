@@ -112,12 +112,12 @@ def main():
     for line in lines:
         if not line.strip():
             continue
-        file = Path(line.strip())
+        file = Path(line.strip()).resolve()
         if not file.exists():
-            print(f"==> {file} <==\nDoes not exist", file=sys.stderr)
+            print(f"==> {file} ({line})<==\nDoes not exist", file=sys.stderr)
             continue
         if not file.is_file():
-            print(f"==> {file} <==\nNot a file", file=sys.stderr)
+            print(f"==> {file} ({line})<==\nNot a file", file=sys.stderr)
             continue
 
         result = subprocess.run(
@@ -133,7 +133,7 @@ def main():
         _, handler = MIME_MAPPING.get(mime_type, (None, read_file_contents))
         lang, contents = handler(file, mime_type)
 
-        print(f"==> {file} <==\n```{lang or ''}\n{contents}\n```")
+        print(f">>>{file}{f' ({lang})' if lang else ''}<<<\n{contents}")
 
 
 if __name__ == "__main__":
