@@ -168,6 +168,16 @@ vim.keymap.set("v", "<leader>h", function()
     vim.cmd(cmd)
 end)
 
+-- Replace hex with integer under cursor
+-- -----------------------------
+vim.keymap.set("v", "<leader>d", function()
+    word = vim.fn.expand("<cword>")
+    number = tonumber(word, 16)
+    integer_result = tostring(number)
+    cmd = string.format("normal! c%s", integer_result)
+    vim.cmd(cmd)
+end)
+
 -- Mouse
 -- =====
 vim.opt.mouse = "a"
