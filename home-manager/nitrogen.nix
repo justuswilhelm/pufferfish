@@ -28,7 +28,9 @@ in
 
     pkgs.espeak
     pkgs.supercollider-with-plugins
-    pkgs.puredata
+
+    pkgs.xxd
+    pkgs.python3
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
