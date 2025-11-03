@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # https://fishshell.com/docs/current/completions.html
 set -l commands (openvpn3 shell-completion --list-commands | string split ' ') shell-completion
 

@@ -1,19 +1,14 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { pkgs, ... }:
 {
   home.packages = [
-    # Communication
-    # =============
-    pkgs.signal-desktop
-    pkgs.mumble
-
     # File management
     # ===============
     pkgs.ncdu
     pkgs.file
-
-    # GUIs
-    # ====
-    pkgs.keepassxc
 
     # Nix
     # ===
@@ -22,7 +17,6 @@
 
     # Remote desktop
     # ==============
-    pkgs.tigervnc
 
     # TTY tools
     # =========
@@ -35,7 +29,5 @@
 
     # Build tools
     # ===========
-    pkgs.gcc
-    pkgs.gnumake
   ];
 }

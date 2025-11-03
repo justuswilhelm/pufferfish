@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function mdtopdf -d "Render this file to PDF with pandoc" -a file
     set additional $argv[2..]
     set out (path change-extension pdf $file)

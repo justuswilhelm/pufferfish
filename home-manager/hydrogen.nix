@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
   applicationSupport = "${config.home.homeDirectory}/Library/Application Support";

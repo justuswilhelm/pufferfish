@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { lib, pkgs, config, ... }:
 {
   xdg.configFile = {
@@ -16,20 +20,83 @@
     enable = true;
     extraLuaConfig = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
+    plugins = with pkgs.vimPlugins; [
+      # Language specific
+      # -----------------
+      # mrcjkb/rustaeceanvim
+      rustaceanvim
+      # ledger/vim-ledger
+      vim-ledger
+      # othree/html5.vim
+      html5-vim
+      # hynek/vim-python-pep8-indent
+      # If this isn't enabled, indentation on the next line is wrong.
+      vim-python-pep8-indent
+      # Ascii stuff
+      # -----------
+      # jbyuki/venn.nvim
+      venn-nvim
+      # LSP Config
+      # ----------
+      # neovim/nvim-lspconfig
+      nvim-lspconfig
+      # hrsh7th/cmp-nvim-lsp
+      cmp-nvim-lsp
+      # Search and file jump
+      # --------------------
+      # ibhagwan/fzf-lua
+      fzf-lua
+      # tmux interaction
+      # ----------------
+      # christoomey/vim-tmux-navigator
+      vim-tmux-navigator
+      # treesitter
+      # ----------
+      # nvim-treesitter/nvim-treesitter
+      nvim-treesitter.withAllGrammars
+      # kylechui/nvim-surround
+      # works with treesitter
+      nvim-surround
+      # jeffkreeftmeijer/vim-numbertoggle
+      vim-numbertoggle
+      # easymotion/vim-easymotion
+      vim-easymotion
+      # Git
+      # ---
+      # tpope/vim-fugitive
+      vim-fugitive
+    ];
     extraPackages = [
       pkgs.tree-sitter
+      pkgs.git
+      pkgs.gcc
+
+      # Needed for plugins
+      # ==================
+      # ag.vim (ported to lua)
+      pkgs.silver-searcher
+      # fzf-lua
+      pkgs.fzf
 
       # Language servers
+      # ================
+      # rust
+      # rustup component add rust-analyzer
+      # pkgs.rust-analyzer
+      # JavaScript
+      # ----------
       pkgs.deno
+      pkgs.typescript
+      pkgs.nodePackages.typescript-language-server
+      pkgs.nodePackages.svelte-language-server
+      # Python
+      # ------
       pkgs.ruff
       # ruff claims to now have a lsp server and the following package
       # disappeared from nix 25.05
       # pkgs.ruff-lsp
-      pkgs.vale-ls
       pkgs.pyright
-      pkgs.typescript
-      pkgs.nodePackages.typescript-language-server
-      pkgs.nodePackages.svelte-language-server
+      pkgs.vale-ls
     ];
     extraPython3Packages = python3Packages: [
       # Pillow needed for pastify
@@ -38,9 +105,7 @@
   };
 
   home.activation.performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH=${pkgs.git}/bin:${pkgs.gcc}/bin:$PATH
-    $DRY_RUN_CMD exec ${config.programs.neovim.finalPackage}/bin/nvim \
-      --headless \
+    run ${config.programs.neovim.finalPackage}/bin/nvim --headless \
       +"PlugUpdate --sync" +qa
   '';
 

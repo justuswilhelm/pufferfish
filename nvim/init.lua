@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
+--
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- General configuration
 -- =====================
 nvim_init_file = vim.fn.expand("~/.config/nvim/init.lua")
@@ -12,15 +15,11 @@ vim.call("plug#begin", "~/.config/nvim/plugged")
 
 -- Language specific
 -- -----------------
-Plug("evanleck/vim-svelte", { branch = "main"})
-Plug("guersam/vim-j", { ['for'] = "j"})
+Plug("evanleck/vim-svelte", {branch = "main"})
+Plug("guersam/vim-j", {['for'] = "j"})
 Plug("leafgarland/typescript-vim")
-Plug("othree/html5.vim")
 Plug("pangloss/vim-javascript")
 Plug("nvim-orgmode/orgmode")
--- If this isn't enabled, indentation on the next line is wrong.
-Plug("hynek/vim-python-pep8-indent", {['for'] = "python"})
-Plug("ledger/vim-ledger", {["for"] = "ledger"})
 -- Commenting these out -- add back if needed Justus 2023-11-15
 -- TODO Still needed? Justus 2023-03-10
 -- Plug("elzr/vim-json", {['for'] = "json"})
@@ -28,42 +27,17 @@ Plug("ledger/vim-ledger", {["for"] = "ledger"})
 -- Plug("tpope/vim-markdown", {['for'] = "markdown"})
 Plug("supercollider/scvim")
 
--- Ascii stuff
--- -----------
-Plug("jbyuki/venn.nvim")
-
--- Treesitter
--- ----------
-Plug("nvim-treesitter/nvim-treesitter")
--- Works with treesitter
-Plug("kylechui/nvim-surround")
-
--- Improve editor appearance
--- -------------------------
-Plug("jeffkreeftmeijer/vim-numbertoggle")
-
 -- Improve general editor behavior
 -- -------------------------------
-Plug("easymotion/vim-easymotion")
 Plug("TobinPalmer/pastify.nvim")
 
 -- tmux interaction
 -- ----------------
 Plug("epeli/slimux")
-Plug("christoomey/vim-tmux-navigator")
-
--- Search and file jump
--- --------------------
-Plug("mangelozzi/nvim-rgflow.lua")
-Plug("ibhagwan/fzf-lua", {branch= "main"})
-
--- Git
--- ---
-Plug("tpope/vim-fugitive")
 
 -- Autocomplete
 -- ------------
-Plug("hrsh7th/nvim-cmp", {commit="ed31156aa2cc14e3bc066c59357cc91536a2bc01"})
+Plug("hrsh7th/nvim-cmp", {commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01"})
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
@@ -73,12 +47,6 @@ Plug("hrsh7th/cmp-cmdline")
 Plug("hrsh7th/vim-vsnip")
 Plug("hrsh7th/vim-vsnip-integ")
 Plug("hrsh7th/cmp-vsnip")
-
--- LSP Config
--- ----------
-Plug("neovim/nvim-lspconfig")
-Plug("hrsh7th/cmp-nvim-lsp")
-
 vim.call('plug#end')
 
 -- Slimux
@@ -98,88 +66,66 @@ vim.keymap.set("n", "<c-l>", ":TmuxNavigateRight<CR>")
 vim.keymap.set("n", "<c-j>", ":TmuxNavigateDown<CR>")
 vim.keymap.set("n", "<c-k>", ":TmuxNavigateUp<CR>")
 
-
 -- fzf-lua
 -- =======
 -- This replaces nvim-tree and ctrlp for me
 require("fzf-lua").setup({
-    winopts = {
-        preview = {
-            flip_columns = 200,
-        },
-    },
-    files = {
-        git_icons = false,
-    },
+    winopts = {preview = {flip_columns = 200}},
+    files = {git_icons = false}
 })
-vim.keymap.set("n", "<c-P>", require('fzf-lua').files, { silent=true })
-vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, { silent=true })
-
+vim.keymap.set("n", "<c-P>", require('fzf-lua').files, {silent = true})
+vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, {silent = true})
 
 -- Nvim-Cmp
 -- ========
-local cmp = require'cmp'
-cmp.setup.filetype(
-    { "python", "svelte", "typescript" },
-    {
-        snippet = {
-            expand = function(args)
-                vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-            end,
-        },
-        preselect = cmp.PreselectMode.None,
-        window = {
-            completion = cmp.config.window.bordered(),
-            documentation = cmp.config.disable,
-        },
-        mapping = cmp.mapping.preset.insert({
-            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            -- ['<C-Space>'] = cmp.mapping.complete(),
-            ['<C-e>'] = cmp.mapping.abort(),
-            -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-            ['<CR>'] = cmp.mapping.confirm({ select = false }),
-        }),
-        sources = cmp.config.sources(
-            {
-                { name = 'buffer' },
-                { name = 'vsnip' },
-                { name = 'nvim_lsp' },
-                { name = 'orgmode' },
-            },
-            {
-                { name = 'buffer' },
-            }
-        ),
-    }
-)
+local cmp = require 'cmp'
+cmp.setup.filetype({"rust", "python", "svelte", "typescript"}, {
+    snippet = {
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        end
+    },
+    preselect = cmp.PreselectMode.None,
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.disable
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        -- ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<CR>'] = cmp.mapping.confirm({select = false})
+    }),
+    sources = cmp.config.sources({
+        {name = 'buffer'}, {name = 'vsnip'}, {name = 'nvim_lsp'},
+        {name = 'orgmode'}
+    }, {{name = 'buffer'}})
+})
 
 -- Language Server Protocol
 -- ========================
 -- Capabilities added as per nvim-cmp README
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-vim.lsp.enable('ts_ls', {
-    capabilities = capabilities,
-})
+vim.lsp.enable('ts_ls', {capabilities = capabilities})
 -- Svelte
 -- ------
 vim.lsp.enable('svelte', {
     capabilities = capabilities,
     on_attach = function(client)
         vim.api.nvim_create_autocmd("BufWritePost", {
-            pattern = { "*.js", "*.ts" },
+            pattern = {"*.js", "*.ts"},
             callback = function(ctx)
-                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-            end,
+                client.notify("$/onDidChangeTsOrJsFile", {uri = ctx.match})
+            end
         })
     end
 })
 
 -- Pyright
 -- -------
-vim.lsp.enable('pyright', {
-    capabilities = capabilities
-})
+vim.lsp.enable('pyright', {capabilities = capabilities})
 
 -- Ruff
 -- ----
@@ -187,9 +133,7 @@ vim.lsp.enable('ruff')
 
 -- Vale
 -- ----
-vim.lsp.config('vale_ls', {
-    workspace_required = true,
-})
+vim.lsp.config('vale_ls', {workspace_required = true})
 vim.lsp.enable('vale_ls')
 
 -- Deno
@@ -198,27 +142,33 @@ vim.lsp.enable('vale_ls')
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+    callback = function(ev)
+        -- Enable completion triggered by <c-x><c-o>
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local opts = { buffer = ev.buf }
-    vim.keymap.set('n', 'gd', function() vim.cmd("split") vim.lsp.buf.definition() end, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float, opts)
+        -- Buffer local mappings.
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        local opts = {buffer = ev.buf}
+        vim.keymap.set('n', 'gd', function()
+            vim.cmd("split")
+            vim.lsp.buf.definition()
+        end, opts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float, opts)
 
-    -- Potential keymap graveyard Justus 2023-08-02
-    vim.keymap.set('n', 'gk', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', 'gD', function() vim.cmd("split") vim.lsp.buf.declaration() end, opts)
-  end,
+        -- Potential keymap graveyard Justus 2023-08-02
+        vim.keymap.set('n', 'gk', vim.lsp.buf.signature_help, opts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+        vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+        vim.keymap.set('n', 'gD', function()
+            vim.cmd("split")
+            vim.lsp.buf.declaration()
+        end, opts)
+    end
 })
 
 -- Treesitter configuration
@@ -230,23 +180,14 @@ require('nvim-treesitter.configs').setup {
         -- Required for spellcheck, some LaTex highlights and
         -- code block highlights that do not have ts grammar
         additional_vim_regex_highlighting = {
-            "diff",
-            "gitcommit",
-            "svelte",
-            "org",
+            "diff", "gitcommit", "svelte", "org"
         },
+        ensure_installed = {"lua", "rust", "toml"}
         -- disable = { "sh" },
-    },
+    }
     -- indent = {
     --     enable = true,
     -- },
-    ensure_installed = {
-        "lua",
-        "typescript",
-        "markdown",
-        "ledger",
-        "nix",
-    },
 }
 -- Folding
 -- -------
@@ -260,13 +201,13 @@ vim.opt.foldenable = false
 -- fold autocommand
 -- ----------------
 -- Inspired by https://www.jmaguire.tech/posts/treesitter_folding/
-local OpenFolds = vim.api.nvim_create_augroup("OpenFolds", { clear = true })
+local OpenFolds = vim.api.nvim_create_augroup("OpenFolds", {clear = true})
 -- XXX Problem: this is executed even when calling :edit to reload it.
 -- On a simple reload, we don't want to have this autocmd called
-vim.api.nvim_create_autocmd({ "BufReadPost", "FileReadPost" }, {
-   pattern = "*",
-   group = OpenFolds,
-   command = "normal zR",
+vim.api.nvim_create_autocmd({"BufReadPost", "FileReadPost"}, {
+    pattern = "*",
+    group = OpenFolds,
+    command = "normal zR"
 })
 
 -- Nvim surround
@@ -286,7 +227,7 @@ function toggle_venn()
         print("enabling venn mode")
         vim.b.venn_enabled = true
         vim.opt_local.virtualedit = "all"
-        opts = { buffer = true }
+        opts = {buffer = true}
         -- draw a line on HJKL keystokes
         -- TODO call VBox function directly here
         vim.keymap.set("n", "J", "<C-v>j:VBox<CR>", opts)
@@ -298,16 +239,16 @@ function toggle_venn()
 
         set_line = require"venn".set_line
         set_arrow = require"venn".set_arrow
-        set_line({ "s", "s" , " ", " " }, '|')
-        set_line({ " ", "s" , " ", "s" }, '.')
-        set_line({ "s", " " , " ", "s" }, '.')
-        set_line({ " ", "s" , "s", " " }, '.')
-        set_line({ "s", " " , "s", " " }, '.')
-        set_line({ " ", "s" , "s", "s" }, '+')
-        set_line({ "s", " " , "s", "s" }, '+')
-        set_line({ "s", "s" , " ", "s" }, '+')
-        set_line({ "s", "s" , "s", " " }, '+')
-        set_line({ " ", " " , "s", "s" }, '-')
+        set_line({"s", "s", " ", " "}, '|')
+        set_line({" ", "s", " ", "s"}, '.')
+        set_line({"s", " ", " ", "s"}, '.')
+        set_line({" ", "s", "s", " "}, '.')
+        set_line({"s", " ", "s", " "}, '.')
+        set_line({" ", "s", "s", "s"}, '+')
+        set_line({"s", " ", "s", "s"}, '+')
+        set_line({"s", "s", " ", "s"}, '+')
+        set_line({"s", "s", "s", " "}, '+')
+        set_line({" ", " ", "s", "s"}, '-')
         set_arrow("up", '^')
         set_arrow("down", 'v')
         set_arrow("left", '<')
@@ -348,57 +289,42 @@ imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab
 -- Svelte
 -- ======
 vim.g.svelte_preprocessor_tags = {
-    { name = "ts", tag = "script", as = "typescript" }
+    {name = "ts", tag = "script", as = "typescript"}
 }
-vim.g.svelte_preprocessors = { "ts", "typescript" }
+vim.g.svelte_preprocessors = {"ts", "typescript"}
 
--- rgflow
--- =======
-require('rgflow').setup(
-    {
-        -- Set the default rip grep flags and options for when running a search via
-        -- RgFlow. Once changed via the UI, the previous search flags are used for
-        -- each subsequent search (until Neovim restarts).
-        cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
-
-        -- Mappings to trigger RgFlow functions
-        default_trigger_mappings = true,
-        -- These mappings are only active when the RgFlow UI (panel) is open
-        default_ui_mappings = true,
-        -- QuickFix window only mapping
-        default_quickfix_mappings = true,
-    }
-)
+-- ack.vim (lua port)
+-- ==================
+local ack = require('ack')
+ack.setup()
 -- Search for selected text
-vim.keymap.set('v', '<leader>ack', require("rgflow").open_cword)
-vim.keymap.set(
-    'n',
-    '<leader>af',
-    function()
-        path = vim.fn.expand("%")
-        require("rgflow").open(path)
-    end
-)
+vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
+vim.keymap.set('n', '<leader>ag', ":<C-u>Ack ")
+-- Search for the current file
+vim.keymap.set('n', '<leader>af', function()
+    ack.Ack('grep', vim.fn.expand('%:t'))
+end)
+-- Search for word under cursor
+vim.keymap.set('n', '<leader>aw', function()
+    local word = vim.fn.expand('<C-R><C-W>')
+    ack.Ack('grep!', '')
+end)
 
 -- Clear registers
-vim.api.nvim_create_user_command(
-    'WipeReg',
-    function()
-        -- ascii '"' to 'z'
-        for i=34,122 do
-            char = string.char(i)
-            cmd = string.format("silent! call setreg('%s', [])", char)
-            vim.cmd(cmd)
-        end
-    end,
-    { nargs = 0}
-)
+vim.api.nvim_create_user_command('WipeReg', function()
+    -- ascii '"' to 'z'
+    for i = 34, 122 do
+        char = string.char(i)
+        cmd = string.format("silent! call setreg('%s', [])", char)
+        vim.cmd(cmd)
+    end
+end, {nargs = 0})
 
 -- Orgmode.nvim
 -- ============
 require('orgmode').setup({
     org_startup_indented = false,
-    org_adapt_indentation = false,
+    org_adapt_indentation = false
 })
 
 -- EasyMotion
@@ -420,7 +346,6 @@ vim.g.EasyMotion_smartcase = 1
 vim.keymap.set("n", "<Leader>j", "<Plug>(easymotion-j)")
 vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
 
-
 -- vim-ledger
 -- ==========
 vim.g.ledger_accounts_cmd = "hledger accounts"
@@ -430,11 +355,7 @@ vim.g.ledger_fuzzy_account_completion = 1
 -- Pastifiy.nvim
 -- =============
 require('pastify').setup {
-    opts = {
-        local_path = function()
-            return vim.fn.expand("%:h")
-        end,
-    },
+    opts = {local_path = function() return vim.fn.expand("%:h") end}
 }
 
 -- Send_to_aider

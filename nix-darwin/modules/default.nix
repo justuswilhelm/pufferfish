@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # This imports all the modules that use .enable Nix module semantics
 # You can import this on all Nix Darwin machines and be guaranteed that they
 # don't do anything you don't want if you don't explicitly set .enable to
@@ -8,6 +12,8 @@
     ../modules/borgmatic.nix
     ../modules/nagios.nix
     ../modules/newsyslog.nix
+    ../modules/sync-git-annex.nix
+    ../modules/tor.nix
     ../modules/vdirsyncer.nix
   ];
 }

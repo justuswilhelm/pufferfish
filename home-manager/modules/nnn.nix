@@ -1,8 +1,17 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { pkgs, ... }:
 {
   programs.nnn = {
     enable = true;
+    package = pkgs.nnn.override {
+      # nnn tries to use gsed on darwin
+      extraMakeFlags = [ "CPPFLAGS=-DSED='\"sed\"'" ];
+    };
     extraPackages = [
+      # gnused is just sed on darwin
       pkgs.gnused
     ];
   };

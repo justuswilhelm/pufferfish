@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function t -d "(tmux) Create a new tmux session with the given name" -a name
     if [ -n "$name" ]
         set session_name $name

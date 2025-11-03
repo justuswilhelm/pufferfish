@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function t-cmus -d "Launch cmus in a tmux session"
     set session cmus
     # This could be a universal variable as well

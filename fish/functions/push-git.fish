@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # TODO detect if annex, otherwise skip `git annex sync`
 # TODO make this work even if annex isn't enabled. We can't push if the remote
 # repository doesn't allow it. Some additional git settings might be necessary.
@@ -13,7 +17,7 @@ function push-git --description "Push git repository to a remote repository, cre
     set remote_name (string replace --regex '.local$' "" $remote)
     echo "Setting remote name for remote '$remote' to '$remote_name'"
 
-    if git remote get-url $remote_name > /dev/null
+    if git remote get-url $remote_name >/dev/null
         echo "Remote with name '$remote_name' already exists"
         echo "Still running git annex sync..."
     else

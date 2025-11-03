@@ -1,3 +1,7 @@
+" SPDX-FileCopyrightText: 2021 Jan Warchoł
+"
+" SPDX-License-Identifier: MIT
+
 " Name:         Selenized dark/light, beta version
 " Author:       Jan Warchoł <jan.warchol@gmail.com>
 " Maintainer:   Jan Warchoł <jan.warchol@gmail.com>

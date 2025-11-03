@@ -1,5 +1,9 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # TODO use Nix module syntax here
-{ lib, config, specialArgs, ... }:
+{ lib, config, pkgs, specialArgs, ... }:
 let
   applicationsDirectory = "/Users/${specialArgs.name}/Applications";
   # We need to convince macOS to open this as a proper app, not as a child of
@@ -16,12 +20,15 @@ let
   # I am temporarily changing openAlacritty to just always a new instance instead.
   # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
   openAlacritty = cmd: ''exec-and-forget open -n -a '${alacrittyApp}' --args -e ${cmd}'';
-  newFirefoxWindow = ''exec-and-forget if pgrep -U $USER firefox; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
+  newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f '${firefoxApp}'; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
   # We can't use alt because that's used for entering diacritics
   prefix = "cmd-alt";
   settings = {
+    # SPDX-SnippetBegin
+    # SPDX-SnippetCopyrightText: 2009, Michael Stapelberg and contributors
+    # SPDX-License-Identifier: BSD-3-Clause
     # Reference: https://github.com/i3/i3/blob/next/etc/config
     mode.main.binding = {
       # change focus
@@ -96,6 +103,7 @@ let
       "${prefix}-enter" = openAlacritty fish;
       "${prefix}-shift-enter" = newFirefoxWindow;
       "${prefix}-shift-n" = openAlacritty "${fish} -i -c open-in-finder";
+      # SPDX-SnippetEnd
       # Dotfiles
       "${prefix}-shift-m" = [
         "workspace 4"
@@ -125,21 +133,11 @@ let
       "${prefix}-shift-p" = [
         openClipboardInFirefox
       ];
-      "${prefix}-r" = "mode resize";
-    };
-    mode.resize.binding = {
-      # These bindings trigger as soon as you enter the resize mode
-      # Pressing left will shrink the window’s width.
-      # Pressing right will grow the window’s width.
-      # Pressing up will shrink the window’s height.
-      # Pressing down will grow the window’s height.
-      h = "resize width -50";
-      j = "resize height +50";
-      k = "resize height -50";
-      l = "resize width +50";
-
-      # back to normal
-      cmd-alt-r = "mode main";
+      "${prefix}-r" =
+        let
+          pomoglorbo = "${pkgs.pomoglorbo}/bin/pomoglorbo";
+        in
+        "exec-and-forget ${pomoglorbo} start";
     };
     # https://nikitabobko.github.io/AeroSpace/guide#callbacks
     on-window-detected = [

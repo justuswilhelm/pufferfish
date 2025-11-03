@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { specialArgs, config, pkgs, projectify, ... }:
 let
   uid = 501;
@@ -10,7 +14,7 @@ in
     ../modules/caddy.nix
     ../modules/disable-rcd.nix
     ../modules/gpg-agent.nix
-    ../modules/mdns-fix.nix
+    ../modules/man.nix
     ../modules/nix.nix
     ../modules/offlineimap.nix
     ../modules/openssh.nix
@@ -18,6 +22,7 @@ in
     ../modules/projectify.nix
     ../modules/radicale.nix
     ../modules/security.nix
+    ../modules/skhd.nix
     ../modules/user.nix
 
     ../modules/default.nix
@@ -51,6 +56,7 @@ in
     TERMINFO_DIRS = [
       "${pkgs.ncurses}/share/terminfo"
       "${pkgs.alacritty.terminfo}/share/terminfo"
+      # TODO add tmux here
     ];
   };
 
@@ -59,6 +65,12 @@ in
 
   services.borgmatic.enable = true;
   services.vdirsyncer.enable = true;
+  services.sync-git-annex.enable = true;
+
+  services.tor = {
+    enable = true;
+    # https://git-annex.branchable.com/tips/enable_tor_on_nixos/
+  };
 
   services.postgresql = {
     enable = true;
@@ -80,23 +92,21 @@ in
   };
 
   # services.karabiner-elements.enable = true;
-  services.skhd = {
-    enable = true;
-    # https://github.com/koekeishiya/skhd/issues/1
-    skhdConfig =
-      let
-        cmus-remote = "${pkgs.cmus}/bin/cmus-remote";
-      in
-      ''
-        play : ${cmus-remote} -u
-        rewind : ${cmus-remote} -r
-        fast : ${cmus-remote} -n
-      '';
-  };
 
   programs.fish = {
     enable = true;
     useBabelfish = true;
+    shellInit = ''
+      if test -d /private/etc/manpaths.d
+        set --path --export MANPATH
+        set --append MANPATH ""
+        for f in /private/etc/manpaths.d/*
+          for line in (string split "\n" < $f)
+            set --append MANPATH $line
+          end
+        end
+      end
+    '';
   };
 
   system.defaults = {
