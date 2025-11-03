@@ -68,6 +68,12 @@ in
     bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
   '';
 
+  programs.ssh = {
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+    };
+  };
+
   programs.i3status.modules =
     let
       w_if = "wlp59s0";
