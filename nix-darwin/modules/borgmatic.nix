@@ -152,7 +152,7 @@ let
       "Users/${config.system.primaryUser}/Library/Application Support/Signal"
 
       # Too big
-      "Users/${config.system.primaryUser}/Movies"
+      "Users/${config.system.primaryUser}/annex/Movies"
     ];
     exclude_caches = true;
     exclude_nodump = true;
