@@ -32,7 +32,9 @@ in
 
     pkgs.espeak
     pkgs.supercollider-with-plugins
-    pkgs.puredata
+
+    pkgs.xxd
+    pkgs.python3
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
@@ -69,6 +71,12 @@ in
     bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
     bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
   '';
+
+  programs.ssh = {
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+    };
+  };
 
   programs.i3status.modules =
     let

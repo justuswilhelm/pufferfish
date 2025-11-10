@@ -14,6 +14,7 @@ in
     ./modules/cmus.nix
     ./modules/fd.nix
     ./modules/http.nix
+    ./modules/karabiner.nix
     ./modules/neomutt.nix
     ./modules/infosec.nix
     ./modules/packages.nix
@@ -65,7 +66,6 @@ in
   };
   xdg.cacheHome = "${config.home.homeDirectory}/Library/Caches";
 
-  xdg.configFile."karabiner/karabiner.json".source = ../karabiner/karabiner.json;
   xdg.configFile."fd/ignore".text =
     # These are all directories that can't be walked through by fd, or cause
     # permission popups
@@ -120,14 +120,18 @@ in
 
   programs.ssh = {
     matchBlocks."throwaway.local" = {
-      identityFile = "~/.ssh/id_rsa_yubikey";
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
       port = 2222;
     };
+    # TODO refactor all of these, since I'm using the same path among all devices
     matchBlocks."*.local" = {
-      identityFile = "~/.ssh/id_rsa_yubikey";
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
     };
     matchBlocks."github.com" = {
-      identityFile = "~/.ssh/id_rsa_yubikey";
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+    };
+    matchBlocks."gitlab.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
     };
   };
 
