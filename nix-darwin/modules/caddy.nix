@@ -85,18 +85,10 @@ let
     mv Caddyfile $out
   '';
 
-  # TODO investigate whether these are still needed Justus 2025-05-30
-  php = ((pkgs.php.overrideAttrs
-    (previous: {
-      buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
-    })).override {
-    apxs2Support = true;
-    # available extensions:
-  }).withExtensions ({ all, ... }: with all; ([
-    # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/interpreters/php/8.3.nix
-    filter
-  ]));
+  # https://wiki.nixos.org/wiki/PHP#Apache,_plugins,_settings
+  php = pkgs.php.buildEnv { };
 
+  # TODO check if still needed Justus 2025-11-11
   # https://github.com/NixOS/nixpkgs/blob/54830391487253422f0ccab55fc557b2e725ace0/nixos/modules/services/web-servers/apache-httpd/default.nix#L319
   phpIni = pkgs.runCommand "php.ini"
     {
