@@ -1,7 +1,13 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { lib, pkgs, config, ... }:
 {
   home.packages = [
     pkgs.git-annex
+    # For git annex p2p
+    pkgs.magic-wormhole
   ];
   programs.git = {
     enable = true;

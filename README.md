@@ -1,6 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # Pufferfish
 
-![pufferfish](docs/puffer.png)
+![pufferfish](docs/puffer.gif)
 
 Pufferfish gives you useful defaults and configuration files for the following
 programs:
@@ -120,22 +126,6 @@ a pull request right
 The best way to get started is by forking this repository and developing a new
 feature or bug fix on your own repository. Then, you can create a pull request
 to contribute the code back.
-
-# License
-
-Copyright (c) 2014-2025 Justus Perlwitz
-
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Credits
 

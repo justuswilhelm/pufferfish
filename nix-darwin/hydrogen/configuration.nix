@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { specialArgs, config, pkgs, projectify, ... }:
 let
   uid = 501;
@@ -12,6 +16,7 @@ in
     ../modules/openssh.nix
     ../modules/overlays.nix
     ../modules/security.nix
+    ../modules/skhd.nix
     ../modules/user.nix
   ];
 
@@ -40,19 +45,10 @@ in
   launchd.labelPrefix = "net.jwpconsulting";
 
   # services.karabiner-elements.enable = true;
-  services.skhd = {
-    enable = true;
-    # https://github.com/koekeishiya/skhd/issues/1
-    skhdConfig =
-      let
-        cmus-remote = "${pkgs.cmus}/bin/cmus-remote";
-      in
-      ''
-        play : ${cmus-remote} -u
-        rewind : ${cmus-remote} -r
-        fast : ${cmus-remote} -n
-      '';
-  };
+  # https://github.com/LnL7/nix-darwin/issues/165#issuecomment-1256957157
+  # For iterm2 see:
+  # https://apple.stackexchange.com/questions/259093/can-touch-id-on-mac-authenticate-sudo-in-terminal/355880#355880
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   programs.fish = {
     enable = true;

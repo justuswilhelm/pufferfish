@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { lib, pkgs, specialArgs, config, osConfig, ... }:
 let
   applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
@@ -6,6 +10,7 @@ in
   imports = [
     ./modules/aider.nix
     ./modules/alacritty.nix
+    ./modules/business.nix
     ./modules/cmus.nix
     ./modules/fd.nix
     ./modules/neomutt.nix
@@ -14,6 +19,7 @@ in
     ./modules/pomoglorbo.nix
     ./modules/cmus.nix
     ./modules/rust.nix
+    ./modules/text-proc.nix
     ./modules/timewarrior.nix
     ./modules/writing.nix
 
@@ -112,6 +118,10 @@ in
     '';
 
   programs.ssh = {
+    matchBlocks."throwaway.local" = {
+      identityFile = "~/.ssh/id_rsa_yubikey";
+      port = 2222;
+    };
     matchBlocks."*.local" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };

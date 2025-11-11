@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { lib, pkgs, osConfig, ... }:
 {
   imports = [
@@ -14,6 +18,7 @@
     ./modules/mitmproxy.nix
     ./modules/opensnitch.nix
     ./modules/packages.nix
+    ./modules/rust.nix
     ./modules/sway.nix
     ./modules/writing.nix
 
@@ -22,6 +27,7 @@
 
   home.packages = [
     pkgs.tor-browser
+    pkgs.signal-desktop
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
@@ -33,6 +39,11 @@
         format_down = "enp7s0: down";
       };
       position = 0;
+    };
+    "load" = {
+      settings = {
+        color_bad = 10;
+      };
     };
   };
 
@@ -63,6 +74,9 @@
 
   programs.ssh = {
     matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_rsa_yubikey";
+    };
+    matchBlocks."localhost" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };

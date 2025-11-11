@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2016 Eric Scheibler <email@eric-scheibler.de>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # This is a sample configuration file for khard taken from lithium
 # example configuration file for khard version > 0.14.0
 # place it under ~/.config/khard/khard.conf

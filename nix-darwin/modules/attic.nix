@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { config, pkgs, ... }:
 let
   logPath = "/var/log/atticd";
@@ -241,8 +245,8 @@ in
   system.activationScripts.preActivation = {
     text = ''
       mkdir -p ${logPath} ${statePath}
-      chown -R attic:attic ${logPath} ${statePath}
-      chmod -R go= ${statePath}
+      chown attic:attic ${logPath} ${statePath}
+      chmod go= ${statePath}
     '';
   };
 }

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { pkgs, ... }:
 let
   user = "delighted-negotiate-catchy";
@@ -8,6 +12,9 @@ in
 
   # TODO copy the below settings to other interfaces if needed
   # Hack the box stuff
+  networking.firewall.allowedTCPPorts = [
+    4444
+  ];
   networking.firewall.interfaces.tun0.allowedTCPPorts = [
     # SMB
     445

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -53,7 +57,7 @@ in
       path = [ pkgs.coreutils pkgs.moreutils vdirsyncer ];
       script = ''
         (
-          if ! /sbin/ping -q -c 1 example.com
+          if ! /sbin/ping -q -c 1 example.com > /dev/null
           then
             echo "Looks like we're offline"
             exit 0

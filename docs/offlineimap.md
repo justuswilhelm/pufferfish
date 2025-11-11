@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # Configuring OfflineIMAP
 
 I want to try out OfflineIMAP3, the recent Python 3 based version of OfflineIMAP.

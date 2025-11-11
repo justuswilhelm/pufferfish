@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function commit -d "Suggest git commit messages based on previous commit messages of staged files"
     set git_root (git rev-parse --show-toplevel) || begin
         echo "Could not determine root"

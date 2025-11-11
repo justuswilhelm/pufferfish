@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function open-in-finder --description "Choose a directory, open it in Finder"
     set hist_file $XDG_STATE_HOME/pufferfish/open-in-finder.hist
 

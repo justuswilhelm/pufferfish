@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 {
   description = "Justus' generic system";
 
@@ -14,7 +18,7 @@
     # optionally choose not to download darwin deps (saves some resources on Linux)
     agenix.inputs.darwin.follows = "";
     pomoglorbo = {
-      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.6.13.1";
+      url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.8.21";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     projectify = {
@@ -133,6 +137,31 @@
               }
             ];
           };
+        throwaway =
+          let
+            name = "debian";
+            hostName = "throwaway";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system specialArgs;
+            modules = [
+              disko.nixosModules.disko
+              ./nixos/${hostName}/configuration.nix
+              { networking = { inherit hostName; }; }
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/${name}";
+                } // specialArgs;
+              }
+            ];
+          };
       };
       darwinConfigurations."lithium" =
         let
@@ -206,6 +235,8 @@
           nixos-rebuild
           nixos-generators
           agenix.packages.${system}.default
+          luaformatter
+          reuse
         ];
       };
       packages.disko-install = disko.outputs.packages.${system}.disko-install;

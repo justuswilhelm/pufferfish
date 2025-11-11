@@ -1,6 +1,11 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 # Renew the certificates for caddy
 # See docs/caddy.readme.md
+
 set -e
 
 # Create a CSR

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { lib, pkgs, osConfig, ... }:
 {
   imports = [
@@ -5,6 +9,7 @@
     # ./modules/infosec.nix
     # ./modules/passwordstore.nix
 
+    ./modules/canbus.nix
     ./modules/direnv.nix
     ./modules/firefox.nix
     ./modules/fish.nix
@@ -13,7 +18,7 @@
     ./modules/git.nix
     ./modules/gpg-agent.nix
     ./modules/gpg.nix
-    ./modules/linux-packages.nix
+    # ./modules/linux-packages.nix
     ./modules/man.nix
     ./modules/nvim.nix
     ./modules/packages.nix

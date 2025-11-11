@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # TODO Make this a Nix module
 # TODO add password hashing
 { lib, pkgs, config, ... }:
@@ -112,8 +116,8 @@ in
     text = ''
       mkdir -pv ${home} "$(dirname ${logPath})"
 
-      chown -R ${username}:${groupname} ${home} ${logPath}
-      chmod -R go= ${home}
+      chown ${username}:${groupname} ${home} ${logPath}
+      chmod go= ${home}
     '';
   };
 }

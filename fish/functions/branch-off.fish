@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function branch-off -d "Branch off in git"
     argparse 'p/parent=' 'r/remote=' no-remote -- $argv
     or return

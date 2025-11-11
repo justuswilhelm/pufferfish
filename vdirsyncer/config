@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2020 Markus Unterwaditzer & contributors
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # This is taken from lithium's vdirsyncer config at ~/.config/vdirsyncer/config
 # An example configuration for vdirsyncer.
 #

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Infosec related packages and config
 { pkgs, ... }:
 let
@@ -22,9 +26,12 @@ in
     pkgs.binwalk
     pkgs.nasm
 
+    # Debugger
+    # ========
+    pkgs.qemu
+
     # Networking
     # ==========
-    pkgs.inetutils
     pkgs.whois
     pkgs.nmap
     pkgs.arp-scan

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { config, pkgs, lib, ... }:
 with lib;
 let
@@ -14,7 +18,7 @@ let
       "github.com/aksdb/caddy-cgi/v2@v2.2.5"
       "github.com/greenpau/caddy-security@v1.1.29"
     ];
-    hash = "sha256-0Bc7oWqdP2VMl64omfNn5oTGRQ6eRiN+8aTvlxRO/Bs=";
+    hash = "sha256-9V1q8g4MRNnZRn2a2lAJCbBe/jK3pvTfufWxzT8Jg0M=";
   };
   caddyCookieLifetime = 60 * 60 * 24 * 3;
   caddyConfig = pkgs.writeText "Caddyfile" (''
@@ -274,11 +278,11 @@ in
     system.activationScripts.preActivation = {
       text = ''
         mkdir -p ${logPath} ${statePath} ${statePath}/secrets
-        chown -R caddy:caddy ${logPath} ${statePath} ${statePath}/secrets
-        chmod -R go= ${statePath}/secrets
+        chown caddy:caddy ${logPath} ${statePath} ${statePath}/secrets
+        chmod go= ${statePath}/secrets
 
         mkdir -p ${caStatePath} ${caStatePath}/signed ${caStatePath}/secrets
-        chmod -R go= ${caStatePath}/secrets
+        chmod go= ${caStatePath}/secrets
         chown lithium-ca:lithium-ca ${caStatePath} ${caStatePath}/signed
       '';
     };
