@@ -21,7 +21,7 @@
         type = "list";
         operand = "list";
         list = [
-          { type = "regexp"; operand = "dest.port"; data = "^(993|8080|9001)$"; }
+          { type = "regexp"; operand = "dest.port"; data = "^(993|8080|9000|9001)$"; }
           { type = "simple"; operand = "user.name"; data = "tor"; }
           { type = "simple"; operand = "protocol"; data = "tcp"; }
           { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.tor}/bin/tor"; }
