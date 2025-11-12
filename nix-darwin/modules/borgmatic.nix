@@ -177,6 +177,16 @@ let
     checks = [
       { name = "repository"; frequency = "1 month"; }
       { name = "archives"; frequency = "1 month"; }
+      # Copied from nixos borg config
+      {
+        name = "spot";
+        frequency = "2 weeks";
+        count_tolerance_percentage = 5;
+        data_sample_percentage =    0.00001;
+        data_tolerance_percentage = 0.000005;
+        # pkgs.xxHash only exposes xxhsum, not xxh64sum. xxh64 is the default option, htough
+        xxh64sum_command = "${pkgs.xxHash}/bin/xxhsum";
+      }
     ];
     check_last = 10;
 
