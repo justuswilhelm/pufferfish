@@ -84,9 +84,10 @@ def main(remote: str, non_interactive: bool):
 
     logger.info("Found %d git-annex repositories", len(paths))
 
-    for annex_sub_dir in paths:
-        annex = str(Path(annex_sub_dir).parent.parent)
-        if remote:
+    if remote:
+        available_paths = []
+        for annex_sub_dir in paths:
+            annex = str(Path(annex_sub_dir).parent.parent)
             result = subprocess.run(
                 ["git", "-C", annex, "remote", "get-url", remote],
                 capture_output=True,
@@ -101,6 +102,12 @@ def main(remote: str, non_interactive: bool):
                 logger.info("git-annex at '%s': Remote '%s' offline, skipping", annex, remote)
                 continue
             logger.info("git-annex at '%s': Remote %s is reachable", annex, remote)
+            available_paths.append(annex_sub_dir)
+    else:
+        available_paths = paths
+
+    for annex_sub_dir in available_paths:
+        annex = str(Path(annex_sub_dir).parent.parent)
 
         logger.info("git-annex at '%s': Starting sync", annex)
 
