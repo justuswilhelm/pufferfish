@@ -158,6 +158,26 @@ vim.keymap.set("v", "<leader>m", '"ms<C-R>=<C-R>m<CR><ESC>')
 -- -----------------------------------
 vim.keymap.set("n", "<leader>cne", ':cnext<CR>')
 
+-- Replace integer with hex under cursor
+-- -----------------------------
+vim.keymap.set("v", "<leader>h", function()
+    word = vim.fn.expand("<cword>")
+    number = tonumber(word)
+    hex_result = string.format("0x%x", number)
+    cmd = string.format("normal! c%s", hex_result)
+    vim.cmd(cmd)
+end)
+
+-- Replace hex with integer under cursor
+-- -----------------------------
+vim.keymap.set("v", "<leader>d", function()
+    word = vim.fn.expand("<cword>")
+    number = tonumber(word, 16)
+    integer_result = tostring(number)
+    cmd = string.format("normal! c%s", integer_result)
+    vim.cmd(cmd)
+end)
+
 -- Mouse
 -- =====
 vim.opt.mouse = "a"

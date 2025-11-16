@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Back up LUKS keys on the current system and print out instructions on
+# how to add this to pass using the pass-file extension
+import tempfile
+from pathlib import Path
+import subprocess
+import json
+from typing import Any
+import logging
+import shutil
+import argparse
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
+
+def get_volumes(volume_list: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    result = []
+    for volume in volume_list:
+        children = volume.get("children")
+        if not children:
+            continue
+        result.extend(get_volumes(children))
+
+        has_crypt_child = any(child["type"] == "crypt" for child in children)
+        if has_crypt_child:
+            result.append(volume)
+
+    return result
+
+
+def main(out_path: str, user: str) -> None:
+    # 1. Find all LUKS volumes
+    result = subprocess.run(
+        ["/run/current-system/sw/bin/lsblk", "--json"],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    lsblk_out = json.loads(result.stdout)
+    block_devices = lsblk_out["blockdevices"]
+    crypt_volumes = get_volumes(block_devices)
+    # Loop over LUKS volumes and dump key
+    with tempfile.TemporaryDirectory() as dir:
+        for crypt_volume in crypt_volumes:
+            dev_path = Path("/dev") / crypt_volume["name"]
+            backup_out: Path = Path(dir) / (crypt_volume["name"] + ".dump")
+            info_out: Path = Path(dir) / (crypt_volume["name"] + ".info")
+            assert dev_path.exists()
+            subprocess.run(
+                [
+                    "/run/current-system/sw/bin/cryptsetup",
+                    "luksHeaderBackup",
+                    "--header-backup-file",
+                    backup_out,
+                    dev_path,
+                ],
+                check=True,
+            )
+            stat = backup_out.stat().st_size
+            logger.info("Dumped %d bytes header to %s", stat, backup_out)
+
+            result = subprocess.run(
+                [
+                    "/run/current-system/sw/bin/cryptsetup",
+                    "luksDump",
+                    dev_path,
+                ],
+                capture_output=True,
+                check=True,
+                text=True,
+            )
+            info_out.write_text(result.stdout)
+            logger.info("Dumped %d bytes info to %s", len(result.stdout), info_out)
+        shutil.copytree(dir, out_path)
+        subprocess.run(
+            ["chown", "--recursive", "--verbose", user, out_path], check=True
+        )
+
+    print(f'''Now run the following as user '{user}':
+
+find {out_path} -print0 | xargs --null --replace=FILE -n1 sh -c "pass file add FILE fde/$hostname"''')
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("out_path")
+    parser.add_argument("user")
+    args = parser.parse_args()
+    main(args.out_path, args.user)
