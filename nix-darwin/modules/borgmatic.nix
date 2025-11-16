@@ -153,6 +153,7 @@ let
 
       # Too big
       "Users/${config.system.primaryUser}/annex/Movies"
+      "Users/${config.system.primaryUser}/annex/kiwix"
     ];
     exclude_caches = true;
     exclude_nodump = true;
