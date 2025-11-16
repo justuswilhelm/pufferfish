@@ -8,8 +8,6 @@ let
   groupname = "wiki";
   home = "/var/lib/wiki";
   logPath = "/var/log/${username}";
-  host = "localhost";
-  port = 18200;
   caddyHost = "lithium.local";
   caddyPort = 10106;
 
@@ -18,9 +16,18 @@ let
     https://${caddyHost}:${toString caddyPort} {
       import certs
 
-      root * ${home}/mediawiki
-      php_fastcgi unix//${config.services.caddy.phpFpmSock}
-      file_server
+      route /auth* {
+        authenticate with myportal
+      }
+
+      route {
+        authorize with admins_policy
+
+
+        root * ${home}/mediawiki
+        php_fastcgi unix//${config.services.caddy.phpFpmSock}
+        file_server
+      }
 
       log {
         format console

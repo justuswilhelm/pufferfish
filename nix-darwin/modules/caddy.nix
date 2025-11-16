@@ -59,6 +59,8 @@ let
 
           enable strip token
 
+          inject header "Remote-User" from subject
+
           acl rule {
             comment allow admins
             match role authp/admin
