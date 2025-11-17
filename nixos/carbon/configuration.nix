@@ -2,20 +2,25 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ config, lib, pkgs, specialArgs, ... }:
 {
-  imports =
-    [
-      ../modules/sway.nix
-      ../modules/networkd.nix
-      ../modules/nix.nix
-      ../modules/compat.nix
-      ../modules/openssh.nix
+  config,
+  lib,
+  pkgs,
+  specialArgs,
+  ...
+}:
+{
+  imports = [
+    ../modules/sway.nix
+    ../modules/networkd.nix
+    ../modules/nix.nix
+    ../modules/compat.nix
+    ../modules/openssh.nix
 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./networking.nix
-    ];
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./networking.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

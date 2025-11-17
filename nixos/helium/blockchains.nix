@@ -9,18 +9,21 @@
     enable = true;
   };
 
-  fileSystems."/var/lib/bitcoind-default" =
-    {
-      device = "/dev/disk/by-uuid/37aab34d-9b1b-49d2-b77f-de9cf217f929";
-      fsType = "ext4";
-    };
+  fileSystems."/var/lib/bitcoind-default" = {
+    device = "/dev/disk/by-uuid/37aab34d-9b1b-49d2-b77f-de9cf217f929";
+    fsType = "ext4";
+  };
   services.borgmatic.extra_exclude_patterns = [ "/var/lib/bitcoind-default" ];
 
   services.opensnitch = {
     enable = true;
     rules =
       let
-        processPath = { type = "simple"; operand = "process.path"; data = "${lib.getBin config.services.bitcoind.default.package}/bin/bitcoind"; };
+        processPath = {
+          type = "simple";
+          operand = "process.path";
+          data = "${lib.getBin config.services.bitcoind.default.package}/bin/bitcoind";
+        };
       in
       {
         "000-bitcoind-allowlist" = {
@@ -37,8 +40,16 @@
             operand = "list";
             list = [
               processPath
-              { type = "simple"; operand = "protocol"; data = "tcp"; }
-              { type = "regexp"; operand = "dest.port"; data = "^(8333|8335|30034|39388|20008)$"; }
+              {
+                type = "simple";
+                operand = "protocol";
+                data = "tcp";
+              }
+              {
+                type = "regexp";
+                operand = "dest.port";
+                data = "^(8333|8335|30034|39388|20008)$";
+              }
             ];
           };
         };

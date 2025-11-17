@@ -3,7 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Config needed to use yubikeys
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   # For servers
   services.openssh.enable = true;

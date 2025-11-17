@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services.pipewire = {
     enable = true;
     alsa.enable = true;

@@ -2,45 +2,58 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ config, specialArgs, lib, pkgs, ... }:
 {
-  imports =
-    [
-      ../modules/borgmatic.nix
-      ../modules/compat.nix
-      ../modules/ime.nix
-      ../modules/infosec.nix
-      ../modules/firefox.nix
-      ../modules/man.nix
-      ../modules/metasploit.nix
-      ../modules/mullvad.nix
-      ../modules/nagios.nix
-      ../modules/network-debug.nix
-      ../modules/networkd.nix
-      ../modules/nix.nix
-      ../modules/opensnitch.nix
-      ../modules/openssh.nix
-      ../modules/openvpn.nix
-      ../modules/overlays.nix
-      ../modules/podman.nix
-      ../modules/sway.nix
-      ../modules/tor.nix
-      ../modules/users.nix
-      ../modules/yubikey.nix
+  config,
+  specialArgs,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    ../modules/borgmatic.nix
+    ../modules/compat.nix
+    ../modules/ime.nix
+    ../modules/infosec.nix
+    ../modules/firefox.nix
+    ../modules/man.nix
+    ../modules/metasploit.nix
+    ../modules/mullvad.nix
+    ../modules/nagios.nix
+    ../modules/network-debug.nix
+    ../modules/networkd.nix
+    ../modules/nix.nix
+    ../modules/opensnitch.nix
+    ../modules/openssh.nix
+    ../modules/openvpn.nix
+    ../modules/overlays.nix
+    ../modules/podman.nix
+    ../modules/sway.nix
+    ../modules/tor.nix
+    ../modules/users.nix
+    ../modules/yubikey.nix
 
-      # TODO set up impermanence
-      # https://github.com/nix-community/impermanence
+    # TODO set up impermanence
+    # https://github.com/nix-community/impermanence
 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
 
-      ./blockchains.nix
-      ./hhack.nix
-    ];
+    ./blockchains.nix
+    ./hhack.nix
+  ];
 
   boot = {
-    kernelModules = [ "dm-raid" "dm-mirror" "dm-snapshot" ];
-    blacklistedKernelModules = [ "iwlwifi" "iwlmvm" "nouveau" ];
+    kernelModules = [
+      "dm-raid"
+      "dm-mirror"
+      "dm-snapshot"
+    ];
+    blacklistedKernelModules = [
+      "iwlwifi"
+      "iwlmvm"
+      "nouveau"
+    ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -108,13 +121,15 @@
   services.postgresql = {
     enable = true;
     ensureDatabases = [ specialArgs.name ];
-    ensureUsers = [{
-      name = specialArgs.name;
-      ensureDBOwnership = true;
-      ensureClauses = {
-        createdb = true;
-      };
-    }];
+    ensureUsers = [
+      {
+        name = specialArgs.name;
+        ensureDBOwnership = true;
+        ensureClauses = {
+          createdb = true;
+        };
+      }
+    ];
   };
 
   services.tor = {
@@ -132,10 +147,12 @@
           # the HiddenServicePort directive requires both tor and git-annex # remotedaemon
           # to be able to access the socket which is why git annex places it in a separate
           # directory, but this also needs to be made visible to tor
-          map = [{
-            port = 33312;
-            target.unix = "/var/lib/tor-annex/1000_${uuid}/s";
-          }];
+          map = [
+            {
+              port = 33312;
+              target.unix = "/var/lib/tor-annex/1000_${uuid}/s";
+            }
+          ];
         };
       };
 
@@ -174,4 +191,3 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
 }
-
