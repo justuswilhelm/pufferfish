@@ -12,34 +12,35 @@
     pkgs.python3Packages.ropper
     pkgs.flashrom
     # TODO put this in modules/ghidra.nix
-    (
-      pkgs.symlinkJoin {
-        name = "ghidra";
-        paths = [ pkgs.ghidra ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          wrapProgram $out/bin/ghidra --set _JAVA_AWT_WM_NONREPARENTING 1
-        '';
-      }
-    )
+    (pkgs.symlinkJoin {
+      name = "ghidra";
+      paths = [ pkgs.ghidra ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/ghidra --set _JAVA_AWT_WM_NONREPARENTING 1
+      '';
+    })
     # TODO put this in modules/gdb.nix
-    (
-      pkgs.symlinkJoin {
-        name = "gdb-with-python-packages";
-        paths = [ pkgs.gdb ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild =
-          let
-            # Make the python packages configurable
-            python3 = pkgs.python3.withPackages (p: with p; [ protobuf psutil ]);
-          in
-          # TODO make the PYTHONPATH configurable
-          ''
-            wrapProgram $out/bin/gdb --set PYTHONPATH ${python3}/${python3.sitePackages}:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-agent-gdb/pypkg/src:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-rmi-trace/pypkg/src
+    (pkgs.symlinkJoin {
+      name = "gdb-with-python-packages";
+      paths = [ pkgs.gdb ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild =
+        let
+          # Make the python packages configurable
+          python3 = pkgs.python3.withPackages (
+            p: with p; [
+              protobuf
+              psutil
+            ]
+          );
+        in
+        # TODO make the PYTHONPATH configurable
+        ''
+          wrapProgram $out/bin/gdb --set PYTHONPATH ${python3}/${python3.sitePackages}:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-agent-gdb/pypkg/src:${pkgs.ghidra}/lib/ghidra/Ghidra/Debug/Debugger-rmi-trace/pypkg/src
 
-          '';
-      }
-    )
+        '';
+    })
 
     # Build
     # =====

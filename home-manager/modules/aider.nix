@@ -2,7 +2,14 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ lib, pkgs, specialArgs, config, options, ... }:
+{
+  lib,
+  pkgs,
+  specialArgs,
+  config,
+  options,
+  ...
+}:
 let
   yamlFormat = pkgs.formats.yaml { };
   config = {

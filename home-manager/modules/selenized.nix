@@ -52,12 +52,31 @@ let
   neomutt =
     let
       pairs = {
-        normal = [ fg_0 bg_0 ];
-        bold = [ bold fg_1 bg_0 ];
-        error = [ br_red bg_0 ];
-        warning = [ red bg_0 ];
-        indicator = [ bg_0 yellow ];
-        status = [ bg_0 fg_0 ];
+        normal = [
+          fg_0
+          bg_0
+        ];
+        bold = [
+          bold
+          fg_1
+          bg_0
+        ];
+        error = [
+          br_red
+          bg_0
+        ];
+        warning = [
+          red
+          bg_0
+        ];
+        indicator = [
+          bg_0
+          yellow
+        ];
+        status = [
+          bg_0
+          fg_0
+        ];
       };
       concatColors = colors: lib.strings.concatStringsSep " " colors;
       toColorLine = name: colors: "color ${name} ${concatColors colors}";
@@ -71,7 +90,8 @@ let
       # (see man page for tmux at set-option)
       so = "set-option";
       swo = "set-window-option";
-      toStyleLine = arguments:
+      toStyleLine =
+        arguments:
         let
           inherit (builtins) elemAt;
           type = elemAt arguments 0;
@@ -82,8 +102,10 @@ let
         in
         ''
           # ${comment}
-          ${type} -g ${name} 'fg=${fg}'' + (if bg != null then ",bg=${bg}'" else "'");
-      toColorLine = arguments:
+          ${type} -g ${name} 'fg=${fg}''
+        + (if bg != null then ",bg=${bg}'" else "'");
+      toColorLine =
+        arguments:
         let
           inherit (builtins) elemAt;
           type = elemAt arguments 0;
@@ -96,18 +118,76 @@ let
           ${type} -g ${name} '${color}'
         '';
       stylePairs = [
-        [ so "message-style" fg_0 bg_0 "Message text" ]
-        [ so "mode-style" fg_1 bg_2 "Selection" ]
-        [ so "pane-active-border-style" fg_0 null "Pane border" ]
-        [ so "pane-border-style" bg_2 null "Pane border" ]
-        [ so "status-style" magenta bg_1 "Default statusbar colors" ]
-        [ swo "window-status-bell-style" fg_0 bg_0 "Bell" ]
-        [ swo "window-status-current-style" bg_0 fg_0 "Active window title colors" ]
-        [ swo "window-status-style" fg_0 bg_0 "Default window title colors" ]
+        [
+          so
+          "message-style"
+          fg_0
+          bg_0
+          "Message text"
+        ]
+        [
+          so
+          "mode-style"
+          fg_1
+          bg_2
+          "Selection"
+        ]
+        [
+          so
+          "pane-active-border-style"
+          fg_0
+          null
+          "Pane border"
+        ]
+        [
+          so
+          "pane-border-style"
+          bg_2
+          null
+          "Pane border"
+        ]
+        [
+          so
+          "status-style"
+          magenta
+          bg_1
+          "Default statusbar colors"
+        ]
+        [
+          swo
+          "window-status-bell-style"
+          fg_0
+          bg_0
+          "Bell"
+        ]
+        [
+          swo
+          "window-status-current-style"
+          bg_0
+          fg_0
+          "Active window title colors"
+        ]
+        [
+          swo
+          "window-status-style"
+          fg_0
+          bg_0
+          "Default window title colors"
+        ]
       ];
       colourPairs = [
-        [ so "display-panes-active-colour" fg_0 "Pane number display" ]
-        [ so "display-panes-colour" fg_0 "Pane number display" ]
+        [
+          so
+          "display-panes-active-colour"
+          fg_0
+          "Pane number display"
+        ]
+        [
+          so
+          "display-panes-colour"
+          fg_0
+          "Pane number display"
+        ]
       ];
       colors = (map toStyleLine stylePairs) ++ (map toColorLine colourPairs);
     in
@@ -185,12 +265,17 @@ let
         "gui.background" = [ fg_0 ];
         "gui.background2" = [ fg_0 ];
         "gui.border" = [ fg_0 ];
-        wordhl = [ yellow bg_0 ];
-        linehl = [ violet bg_0 ];
+        wordhl = [
+          yellow
+          bg_0
+        ];
+        linehl = [
+          violet
+          bg_0
+        ];
       };
       makeRadare2Color = builtins.replaceStrings [ "#" ] [ "rgb:" ];
-      concatColors = colors:
-        lib.strings.concatStringsSep " " (map makeRadare2Color colors);
+      concatColors = colors: lib.strings.concatStringsSep " " (map makeRadare2Color colors);
       # Usage ec[s?] [key][[=| ]fg] [bg]
       toColorLine = name: colors: ''
         ec ${name} ${concatColors colors}
@@ -276,16 +361,29 @@ let
         "fish_color_param" = [ "657b83" ];
         "fish_color_quote" = [ "839496" ];
         "fish_color_redirection" = [ "6c71c4" ];
-        "fish_color_search_match" = [ "'bryellow'" "'--background=white'" ];
-        "fish_color_selection" = [ "'white'" "'--bold'" "'--background=${color bg_2}'" ];
+        "fish_color_search_match" = [
+          "'bryellow'"
+          "'--background=white'"
+        ];
+        "fish_color_selection" = [
+          "'white'"
+          "'--bold'"
+          "'--background=${color bg_2}'"
+        ];
         "fish_color_status" = [ "red" ];
         "fish_color_user" = [ "brgreen" ];
         "fish_color_valid_path" = [ "--underline" ];
         "fish_pager_color_background" = [ ];
         "fish_pager_color_completion" = [ "green" ];
         "fish_pager_color_description" = [ "B3A06D" ];
-        "fish_pager_color_prefix" = [ "'cyan'" "'--underline'" ];
-        "fish_pager_color_progress" = [ "'brwhite'" "'--background=cyan'" ];
+        "fish_pager_color_prefix" = [
+          "'cyan'"
+          "'--underline'"
+        ];
+        "fish_pager_color_progress" = [
+          "'brwhite'"
+          "'--background=cyan'"
+        ];
         "fish_pager_color_secondary_background" = [ ];
         "fish_pager_color_secondary_completion" = [ ];
         "fish_pager_color_secondary_description" = [ ];
@@ -304,7 +402,7 @@ let
     '';
 in
 # Test with
-  # nix eval --file $DOTFILES/home-manager/modules/selenized.nix --arg lib "(import <nixpks>{}).lib" --arg config "{}"
+# nix eval --file $DOTFILES/home-manager/modules/selenized.nix --arg lib "(import <nixpks>{}).lib" --arg config "{}"
 {
   # https://neomutt.org/guide/configuration
   xdg.configFile."neomutt/colors" = lib.mkIf config.programs.neomutt.enable {
@@ -326,8 +424,7 @@ in
 
   programs.tmux.extraConfig = lib.mkIf config.programs.tmux.enable tmux;
 
-  xdg.configFile."fish/themes/Selenized.theme".text =
-    lib.mkIf config.programs.fish.enable fish;
+  xdg.configFile."fish/themes/Selenized.theme".text = lib.mkIf config.programs.fish.enable fish;
   programs.fish.interactiveShellInit = lib.mkIf config.programs.fish.enable ''
     fish_config theme choose Selenized
   '';

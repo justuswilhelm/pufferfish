@@ -2,22 +2,29 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   # Wrap neomutt to ensure true color support
-  package =
-    pkgs.symlinkJoin {
-      name = "neomutt";
-      paths = [ pkgs.neomutt ];
-      buildInputs = [ pkgs.makeWrapper ];
-      # https://neomutt.org/guide/reference.html#color-directcolor
-      postBuild = ''
-        wrapProgram $out/bin/neomutt --set TERM xterm-direct
-      '';
-    };
+  package = pkgs.symlinkJoin {
+    name = "neomutt";
+    paths = [ pkgs.neomutt ];
+    buildInputs = [ pkgs.makeWrapper ];
+    # https://neomutt.org/guide/reference.html#color-directcolor
+    postBuild = ''
+      wrapProgram $out/bin/neomutt --set TERM xterm-direct
+    '';
+  };
   convert = pkgs.writeShellApplication {
     name = "convert";
-    runtimeInputs = with pkgs; [ pandoc libuchardet ];
+    runtimeInputs = with pkgs; [
+      pandoc
+      libuchardet
+    ];
     text = ''
       format="$(uchardet "$1")"
       if [ "$format" = "unknown" ]; then
