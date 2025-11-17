@@ -212,7 +212,8 @@ in
       in
       lib.optional config.services.nagios.enable nagiosCfg;
 
-    environment.systemPackages = [ caddy ];
+    environment.systemPackages = [ caddy ]
+      ++ (lib.lists.optional cfg.enablePhp php);
 
     launchd.daemons.caddy = {
       script = ''
