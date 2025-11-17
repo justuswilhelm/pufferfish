@@ -3,7 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # TODO make this a nix module
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   offlineimap = "${pkgs.offlineimap}/bin/offlineimap";
   logPath = "/Users/${config.system.primaryUser}/Library/Logs/offlineimap/offlineimap.log";
@@ -46,7 +51,10 @@ in
 
   launchd.user.agents = {
     "offlineimap" = {
-      path = [ pkgs.coreutils pkgs.moreutils ];
+      path = [
+        pkgs.coreutils
+        pkgs.moreutils
+      ];
       script = ''
         (
           if ! /sbin/ping -q -c 1 example.com

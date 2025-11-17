@@ -1215,7 +1215,9 @@ in
         ) cfg.relay.onionServices
       );
 
-    users.groups.tor = { gid = 1107; };
+    users.groups.tor = {
+      gid = 1107;
+    };
     users.users.tor = {
       description = "Tor Daemon User";
       home = stateDir;
@@ -1310,7 +1312,10 @@ in
     # Users should configure firewall rules manually if needed
 
     launchd.daemons.tor = {
-      path = [ cfg.package pkgs.moreutils ];
+      path = [
+        cfg.package
+        pkgs.moreutils
+      ];
       serviceConfig = {
         UserName = "tor";
         GroupName = "tor";
@@ -1333,41 +1338,40 @@ in
                   "set -eu"
                   "${cfg.package}/bin/tor -f ${torrc} --verify-config"
                 ]
-                ++ lib.mapAttrsToList
-                  (
-                    name: onion:
-                    lib.optional (onion.authorizedClients != [ ]) ''
-                      rm -rf ${lib.escapeShellArg onion.path}/authorized_clients
-                      install -d -o tor -g tor -m 0700 ${lib.escapeShellArg onion.path} ${lib.escapeShellArg onion.path}/authorized_clients
+                ++ lib.mapAttrsToList (
+                  name: onion:
+                  lib.optional (onion.authorizedClients != [ ]) ''
+                    rm -rf ${lib.escapeShellArg onion.path}/authorized_clients
+                    install -d -o tor -g tor -m 0700 ${lib.escapeShellArg onion.path} ${lib.escapeShellArg onion.path}/authorized_clients
+                  ''
+                  ++ lib.imap0 (i: pubKey: ''
+                    echo ${pubKey} |
+                    install -o tor -g tor -m 0400 /dev/stdin ${lib.escapeShellArg onion.path}/authorized_clients/${toString i}.auth
+                  '') onion.authorizedClients
+                  ++ lib.optional (onion.secretKey != null) ''
+                    install -d -o tor -g tor -m 0700 ${lib.escapeShellArg onion.path}
+                    key="$(cut -f1 -d: ${lib.escapeShellArg onion.secretKey} | head -1)"
+                    case "$key" in
+                     ("== ed25519v"*"-secret")
+                      install -o tor -g tor -m 0400 ${lib.escapeShellArg onion.secretKey} ${lib.escapeShellArg onion.path}/hs_ed25519_secret_key;;
+                     (*) echo >&2 "nix-darwin does not (yet) support secret key type for onion: ${name}"; exit 1;;
+                    esac
+                  ''
+                ) cfg.relay.onionServices
+                ++ lib.mapAttrsToList (
+                  name: onion:
+                  lib.imap0 (
+                    i: prvKeyPath:
+                    let
+                      hostname = lib.removeSuffix ".onion" name;
+                    in
                     ''
-                    ++ lib.imap0 (i: pubKey: ''
-                      echo ${pubKey} |
-                      install -o tor -g tor -m 0400 /dev/stdin ${lib.escapeShellArg onion.path}/authorized_clients/${toString i}.auth
-                    '') onion.authorizedClients
-                    ++ lib.optional (onion.secretKey != null) ''
-                      install -d -o tor -g tor -m 0700 ${lib.escapeShellArg onion.path}
-                      key="$(cut -f1 -d: ${lib.escapeShellArg onion.secretKey} | head -1)"
-                      case "$key" in
-                       ("== ed25519v"*"-secret")
-                        install -o tor -g tor -m 0400 ${lib.escapeShellArg onion.secretKey} ${lib.escapeShellArg onion.path}/hs_ed25519_secret_key;;
-                       (*) echo >&2 "nix-darwin does not (yet) support secret key type for onion: ${name}"; exit 1;;
-                      esac
+                      printf "%s:" ${lib.escapeShellArg hostname} | cat - ${lib.escapeShellArg prvKeyPath} |
+                      install -o tor -g tor -m 0700 /dev/stdin \
+                       ${runDir}/ClientOnionAuthDir/${lib.escapeShellArg hostname}.${toString i}.auth_private
                     ''
-                  ) cfg.relay.onionServices
-                  ++ lib.mapAttrsToList (
-                    name: onion:
-                    lib.imap0 (
-                      i: prvKeyPath:
-                      let
-                        hostname = lib.removeSuffix ".onion" name;
-                      in
-                      ''
-                        printf "%s:" ${lib.escapeShellArg hostname} | cat - ${lib.escapeShellArg prvKeyPath} |
-                        install -o tor -g tor -m 0700 /dev/stdin \
-                         ${runDir}/ClientOnionAuthDir/${lib.escapeShellArg hostname}.${toString i}.auth_private
-                      ''
-                    ) onion.clientAuthorizations
-                  ) cfg.client.onionServices
+                  ) onion.clientAuthorizations
+                ) cfg.client.onionServices
               )
             )
           );

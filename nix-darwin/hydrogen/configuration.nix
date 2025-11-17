@@ -2,7 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ specialArgs, config, pkgs, projectify, ... }:
+{
+  specialArgs,
+  config,
+  pkgs,
+  projectify,
+  ...
+}:
 let
   uid = 501;
   name = specialArgs.name;
