@@ -101,23 +101,28 @@ let
       cat ${php.phpIni} > $out
     '';
 
-  phpFpmCfg = lib.generators.toINIWithGlobalSection { } {
-    globalSection = {
-      error_log = "${logPath}/phpfpm.error.log";
-      daemonize = "no";
-    };
-    sections = {
-      php = {
-        listen = cfg.phpFpmSock;
-        "php_admin_value[disable_functions]" = "exec,passthru,shell_exec,system";
-        "php_admin_flag[allow_url_fopen]" = "off";
-        # Choose how the process manager will control the number of child processes.
-        pm = "static";
-        "pm.max_children" = 1;
-        slowlog = "${logPath}/phpfpm.slowlog.log";
+  phpFpmCfg =
+    let
+      stderr = "/dev/stderr";
+    in
+    lib.generators.toINIWithGlobalSection { } {
+      globalSection = {
+        error_log = stderr;
+        daemonize = "no";
+      };
+      sections = {
+        php = {
+          listen = cfg.phpFpmSock;
+          "php_admin_value[disable_functions]" = "exec,passthru,shell_exec,system";
+          "php_admin_flag[allow_url_fopen]" = "off";
+          # Choose how the process manager will control the number of child processes.
+          pm = "static";
+          "pm.max_children" = 1;
+          slowlog = stderr;
+          "access.log" = stderr;
+        };
       };
     };
-  };
 in
 {
   options = {
@@ -180,34 +185,7 @@ in
         when = "$D0";
         flags = "J";
       };
-      "${logPath}/phpfpm.stdout.log" = {
-        owner = "caddy";
-        group = "caddy";
-        mode = "640";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
       "${logPath}/phpfpm.stderr.log" = {
-        owner = "caddy";
-        group = "caddy";
-        mode = "640";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
-      "${logPath}/phpfpm.error.log" = {
-        owner = "caddy";
-        group = "caddy";
-        mode = "640";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
-      "${logPath}/phpfpm.slowlog.log" = {
         owner = "caddy";
         group = "caddy";
         mode = "640";
@@ -258,7 +236,6 @@ in
         UserName = "caddy";
         GroupName = "caddy";
         KeepAlive = true;
-        StandardOutPath = "${logPath}/phpfpm.stdout.log";
         StandardErrorPath = "${logPath}/phpfpm.stderr.log";
         WorkingDirectory = statePath;
       };
