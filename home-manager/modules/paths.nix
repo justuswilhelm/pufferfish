@@ -2,7 +2,14 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ lib, pkgs, config, options, specialArgs, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  options,
+  specialArgs,
+  ...
+}:
 {
   home.sessionPath = [
     "${config.home.sessionVariables.DOTFILES}/bin"

@@ -131,10 +131,14 @@ in
         pwntools
         # Shodan hashes
         mmh3
+        tqdm
       ]
     ))
     pkgs.jwt-cli
-    pkgs.sage
+    (pkgs.sage.override {
+      extraPythonPackages = ps: with ps; [ seaborn ];
+      requireSageTests = false;
+    })
 
     # PHP
     # ===

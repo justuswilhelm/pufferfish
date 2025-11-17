@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Hardware hacking stuff
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment.systemPackages = [
     pkgs.pulseview
     pkgs.sigrok-cli

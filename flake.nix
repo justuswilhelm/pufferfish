@@ -29,16 +29,18 @@
   };
 
   outputs =
-    { self
-    , nix-darwin
-    , home-manager
-    , nixpkgs
-    , pomoglorbo
-    , projectify
-    , utils
-    , disko
-    , agenix
-    }@inputs: {
+    {
+      self,
+      nix-darwin,
+      home-manager,
+      nixpkgs,
+      pomoglorbo,
+      projectify,
+      utils,
+      disko,
+      agenix,
+    }@inputs:
+    {
       nixosConfigurations = {
         helium =
           let
@@ -60,7 +62,8 @@
                 # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                } // specialArgs;
+                }
+                // specialArgs;
               }
             ];
           };
@@ -84,7 +87,8 @@
                 # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                } // specialArgs;
+                }
+                // specialArgs;
               }
             ];
           };
@@ -108,7 +112,8 @@
                 # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                } // specialArgs;
+                }
+                // specialArgs;
               }
             ];
           };
@@ -133,7 +138,8 @@
                 # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                } // specialArgs;
+                }
+                // specialArgs;
               }
             ];
           };
@@ -158,7 +164,8 @@
                 # TODO check if homeDirectory still needed
                 home-manager.extraSpecialArgs = {
                   homeDirectory = "/home/${name}";
-                } // specialArgs;
+                }
+                // specialArgs;
               }
             ];
           };
@@ -222,24 +229,26 @@
             }
           ];
         };
-    } // utils.lib.eachDefaultSystem (system:
-    let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
-    {
-      devShell = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          nodePackages.prettier
-          shellcheck
-          nixos-anywhere
-          nixos-rebuild
-          nixos-generators
-          agenix.packages.${system}.default
-          luaformatter
-          reuse
-        ];
-      };
-      packages.disko-install = disko.outputs.packages.${system}.disko-install;
     }
+    // utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        devShell = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            nodePackages.prettier
+            shellcheck
+            nixos-anywhere
+            nixos-rebuild
+            nixos-generators
+            agenix.packages.${system}.default
+            luaformatter
+            reuse
+          ];
+        };
+        packages.disko-install = disko.outputs.packages.${system}.disko-install;
+      }
     );
 }

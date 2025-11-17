@@ -1,7 +1,6 @@
 -- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
 --
 -- SPDX-License-Identifier: GPL-3.0-or-later
-
 -- General configuration
 -- =====================
 nvim_init_file = vim.fn.expand("~/.config/nvim/init.lua")
@@ -35,10 +34,6 @@ Plug("TobinPalmer/pastify.nvim")
 -- tmux interaction
 -- ----------------
 Plug("epeli/slimux")
-
--- Search and file jump
--- --------------------
-Plug("mangelozzi/nvim-rgflow.lua")
 
 -- Autocomplete
 -- ------------
@@ -84,7 +79,7 @@ vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, {silent = true})
 -- Nvim-Cmp
 -- ========
 local cmp = require 'cmp'
-cmp.setup.filetype({"python", "svelte", "typescript"}, {
+cmp.setup.filetype({"rust", "python", "svelte", "typescript"}, {
     snippet = {
         expand = function(args)
             vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
@@ -186,7 +181,8 @@ require('nvim-treesitter.configs').setup {
         -- code block highlights that do not have ts grammar
         additional_vim_regex_highlighting = {
             "diff", "gitcommit", "svelte", "org"
-        }
+        },
+        ensure_installed = {"lua", "rust", "toml"}
         -- disable = { "sh" },
     }
     -- indent = {
@@ -297,26 +293,21 @@ vim.g.svelte_preprocessor_tags = {
 }
 vim.g.svelte_preprocessors = {"ts", "typescript"}
 
--- rgflow
--- =======
-require('rgflow').setup({
-    -- Set the default rip grep flags and options for when running a search via
-    -- RgFlow. Once changed via the UI, the previous search flags are used for
-    -- each subsequent search (until Neovim restarts).
-    cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
-
-    -- Mappings to trigger RgFlow functions
-    default_trigger_mappings = true,
-    -- These mappings are only active when the RgFlow UI (panel) is open
-    default_ui_mappings = true,
-    -- QuickFix window only mapping
-    default_quickfix_mappings = true
-})
+-- ack.vim (lua port)
+-- ==================
+local ack = require('ack')
+ack.setup()
 -- Search for selected text
-vim.keymap.set('v', '<leader>ack', require("rgflow").open_cword)
+vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
+vim.keymap.set('n', '<leader>ag', ":<C-u>Ack ")
+-- Search for the current file
 vim.keymap.set('n', '<leader>af', function()
-    path = vim.fn.expand("%")
-    require("rgflow").open(path)
+    ack.Ack('grep', vim.fn.expand('%:t'))
+end)
+-- Search for word under cursor
+vim.keymap.set('n', '<leader>aw', function()
+    local word = vim.fn.expand('<C-R><C-W>')
+    ack.Ack('grep!', '')
 end)
 
 -- Clear registers

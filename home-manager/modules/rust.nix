@@ -11,5 +11,6 @@
     # If pkgs.gcc is in the env as well, bad things happen with libiconv
     # and other macOS available binaries.
     pkgs.rustup
+    pkgs.lldb
   ];
 }

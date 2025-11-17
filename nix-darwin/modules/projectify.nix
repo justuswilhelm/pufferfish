@@ -51,17 +51,16 @@ in
   };
   launchd.daemons.projectify-frontend-node = {
     command = "${frontend}/bin/projectify-frontend-node";
-    serviceConfig =
-      {
-        KeepAlive = true;
-        # TODO check if logging can't be merged
-        StandardOutPath = "${logPath}/projectify-frontend-node.stdout.log";
-        StandardErrorPath = "${logPath}/projectify-frontend-node.stderr.log";
-        EnvironmentVariables = {
-          SVELTE_KIT_PORT = frontendPort;
-        };
-        UserName = "projectify";
+    serviceConfig = {
+      KeepAlive = true;
+      # TODO check if logging can't be merged
+      StandardOutPath = "${logPath}/projectify-frontend-node.stdout.log";
+      StandardErrorPath = "${logPath}/projectify-frontend-node.stderr.log";
+      EnvironmentVariables = {
+        SVELTE_KIT_PORT = frontendPort;
       };
+      UserName = "projectify";
+    };
   };
   launchd.daemons.projectify-backend = {
     script = ''
@@ -75,23 +74,22 @@ in
       export SECRET_KEY
       exec ${backend}/bin/projectify-backend
     '';
-    serviceConfig =
-      {
-        KeepAlive = true;
-        # TODO check if logging can't be merged
-        StandardOutPath = "${logPath}/projectify-backend.stdout.log";
-        StandardErrorPath = "${logPath}/projectify-backend.stderr.log";
-        EnvironmentVariables = {
-          FRONTEND_URL = "https://${hostname}:${revproxyPort}";
-          ALLOWED_HOSTS = hostname;
-          REDIS_URL = "redis://${hostname}:${redisPort}";
-          DJANGO_SETTINGS_MODULE = "projectify.settings.production";
-          DJANGO_CONFIGURATION = "Production";
-          DATABASE_URL = "sqlite:////var/projectify/projectify-backend.sqlite";
-          PORT = backendPort;
-        };
-        UserName = "projectify";
+    serviceConfig = {
+      KeepAlive = true;
+      # TODO check if logging can't be merged
+      StandardOutPath = "${logPath}/projectify-backend.stdout.log";
+      StandardErrorPath = "${logPath}/projectify-backend.stderr.log";
+      EnvironmentVariables = {
+        FRONTEND_URL = "https://${hostname}:${revproxyPort}";
+        ALLOWED_HOSTS = hostname;
+        REDIS_URL = "redis://${hostname}:${redisPort}";
+        DJANGO_SETTINGS_MODULE = "projectify.settings.production";
+        DJANGO_CONFIGURATION = "Production";
+        DATABASE_URL = "sqlite:////var/projectify/projectify-backend.sqlite";
+        PORT = backendPort;
       };
+      UserName = "projectify";
+    };
   };
 
   # SPDX-SnippetBegin
@@ -172,6 +170,9 @@ in
   # SPDX-SnippetEnd
 
   nix.settings = {
-    extra-sandbox-paths = [ "/usr/share" "/private/var/db" ];
+    extra-sandbox-paths = [
+      "/usr/share"
+      "/private/var/db"
+    ];
   };
 }

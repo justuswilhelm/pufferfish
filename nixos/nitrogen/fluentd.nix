@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # References:
   # rsyslogd -> fluentd
   # https://www.fluentd.org/guides/recipes/rsyslogd-aggregation

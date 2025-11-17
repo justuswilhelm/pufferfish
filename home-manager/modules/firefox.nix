@@ -1,6 +1,12 @@
 # SPDX-FileCopyrightText: 2025 Justus Perlwitz
 # SPDX-License-Identifier: GPL-3.0-or-later
-{ lib, pkgs, config, osConfig, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  osConfig,
+  ...
+}:
 let
   cfg = config.programs.firefox;
   # SPDX-SnippetBegin
@@ -161,9 +167,11 @@ in
         search.force = true;
         search.engines = {
           "kagi" = {
-            urls = [{
-              template = "https://kagi.com/search?q={searchTerms}";
-            }];
+            urls = [
+              {
+                template = "https://kagi.com/search?q={searchTerms}";
+              }
+            ];
             definedAliases = [ "kagi" ];
           };
           "ddg".metaData.hidden = false;

@@ -2,7 +2,12 @@
 # SPDX-License-Identifier: MIT
 #
 # Nagios system/network monitoring daemon.
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -19,11 +24,10 @@ let
 
   nagiosObjectDefs = cfg.objectDefs;
 
-  nagiosObjectDefsDir = pkgs.runCommand "nagios-objects"
-    {
-      inherit nagiosObjectDefs;
-      preferLocalBuild = true;
-    } "mkdir -p $out; ln -s $nagiosObjectDefs $out/";
+  nagiosObjectDefsDir = pkgs.runCommand "nagios-objects" {
+    inherit nagiosObjectDefs;
+    preferLocalBuild = true;
+  } "mkdir -p $out; ln -s $nagiosObjectDefs $out/";
 
   nagiosCfgFile =
     let
@@ -92,19 +96,18 @@ let
 
   # Plain configuration for the Nagios web-interface with http basic auth
   # https://docs.redhat.com/en/documentation/red_hat_gluster_storage/3/html/administration_guide/sect-nagios_advanced_configuration
-  nagiosCGICfgFile = pkgs.writeText "nagios.cgi.conf"
-    ''
-      main_config_file=/etc/nagios/nagios.cfg
-      use_authentication=1
-      url_html_path=${urlPath}
-      authorized_for_system_information=nagiosadmin
-      authorized_for_configuration_information=nagiosadmin
-      authorized_for_system_commands=nagiosadmin
-      authorized_for_all_services=nagiosadmin
-      authorized_for_all_hosts=nagiosadmin
-      authorized_for_all_service_commands=nagiosadmin
-      authorized_for_all_host_commands=nagiosadmin
-    '';
+  nagiosCGICfgFile = pkgs.writeText "nagios.cgi.conf" ''
+    main_config_file=/etc/nagios/nagios.cfg
+    use_authentication=1
+    url_html_path=${urlPath}
+    authorized_for_system_information=nagiosadmin
+    authorized_for_configuration_information=nagiosadmin
+    authorized_for_system_commands=nagiosadmin
+    authorized_for_all_services=nagiosadmin
+    authorized_for_all_hosts=nagiosadmin
+    authorized_for_all_service_commands=nagiosadmin
+    authorized_for_all_host_commands=nagiosadmin
+  '';
 
   nagiosResourceFile = pkgs.writeText "resource.cfg" ''
     $USER1$=${pkgs.monitoring-plugins}/bin
@@ -153,15 +156,17 @@ let
 
   overlays = [
     (final: previous: {
-      monitoring-plugins = (previous.monitoring-plugins.overrideAttrs (
-        final: previous: rec {
-          patches = [ ./monitoring-plugins.patch ];
-          meta.platforms = pkgs.lib.platforms.all;
-        }
-      )).override {
-        lm_sensors = null;
-        net-snmp = null;
-      };
+      monitoring-plugins =
+        (previous.monitoring-plugins.overrideAttrs (
+          final: previous: rec {
+            patches = [ ./monitoring-plugins.patch ];
+            meta.platforms = pkgs.lib.platforms.all;
+          }
+        )).override
+          {
+            lm_sensors = null;
+            net-snmp = null;
+          };
     })
   ];
 
@@ -179,11 +184,15 @@ let
   '';
   sendNscaConfig = pkgs.writeText "send_nsca.cfg" ''
 
-'';
+  '';
 in
 {
   imports = [
-    (mkRemovedOptionModule [ "services" "nagios" "urlPath" ] "The urlPath option has been removed as it is hard coded to /nagios in the nagios package.")
+    (mkRemovedOptionModule [
+      "services"
+      "nagios"
+      "urlPath"
+    ] "The urlPath option has been removed as it is hard coded to /nagios in the nagios package.")
   ];
 
   meta.maintainers = with lib.maintainers; [ symphorien ];
@@ -255,14 +264,20 @@ in
         };
         send_shortcut = mkOption {
           description = "Nix function that generates nsca bash invocation";
-          default = host: service: code: message: "echo -e '${host}\t${service}\t${toString code}\t${message}' | ${nsca}/bin/send_nsca ${cfg.nsca.server_address} -p ${toString cfg.nsca.server_port} -c ${cfg.nsca.send_nsca_config_file}";
+          default =
+            host: service: code: message:
+            "echo -e '${host}\t${service}\t${toString code}\t${message}' | ${nsca}/bin/send_nsca ${cfg.nsca.server_address} -p ${toString cfg.nsca.server_port} -c ${cfg.nsca.send_nsca_config_file}";
         };
       };
 
       plugins = mkOption {
         type = types.listOf types.package;
 
-        default = with pkgs; [ monitoring-plugins msmtp mailutils ];
+        default = with pkgs; [
+          monitoring-plugins
+          msmtp
+          mailutils
+        ];
         defaultText = literalExpression "[pkgs.monitoring-plugins pkgs.msmtp pkgs.mailutils]";
         description = ''
           Packages to be added to the Nagios {env}`PATH`.
@@ -316,7 +331,6 @@ in
     };
   };
 
-
   config = mkIf cfg.enable {
     nixpkgs.overlays = overlays;
     users.users.nagios = {
@@ -333,17 +347,32 @@ in
       gid = 1108;
       isHidden = true;
     };
-    users.knownUsers = [ "nagios" cfg.nsca.user ];
+    users.knownUsers = [
+      "nagios"
+      cfg.nsca.user
+    ];
 
-    users.groups.nagios = { gid = 1100; };
+    users.groups.nagios = {
+      gid = 1100;
+    };
     users.groups.nagios-cmd = {
       gid = 1106;
       # Allow cgi file to write to nagios.cmd file
       # https://web.archive.org/web/20220327165441/http://nagios.manubulon.com/traduction/docs14en/commandfile.html
-      members = [ "nagios" "caddy" cfg.nsca.user ];
+      members = [
+        "nagios"
+        "caddy"
+        cfg.nsca.user
+      ];
     };
-    users.groups.${cfg.nsca.group} = { gid = 1108; };
-    users.knownGroups = [ "nagios" "nagios-cmd" cfg.nsca.group ];
+    users.groups.${cfg.nsca.group} = {
+      gid = 1108;
+    };
+    users.knownGroups = [
+      "nagios"
+      "nagios-cmd"
+      cfg.nsca.group
+    ];
 
     # This isn't needed, it's just so that the user can type "nagiostats
     # -c /etc/nagios.cfg".
@@ -396,9 +425,17 @@ in
     services.caddy.enablePhp = mkIf cfg.enableWebInterface true;
     services.caddy.extraConfig = mkIf cfg.enableWebInterface caddyConfig;
 
-    environment.systemPackages = [ cfg.package pkgs.monitoring-plugins cfg.nsca.package ];
+    environment.systemPackages = [
+      cfg.package
+      pkgs.monitoring-plugins
+      cfg.nsca.package
+    ];
     launchd.daemons.nagios = {
-      path = [ cfg.package pkgs.moreutils ] ++ cfg.plugins;
+      path = [
+        cfg.package
+        pkgs.moreutils
+      ]
+      ++ cfg.plugins;
 
       serviceConfig = {
         UserName = "nagios";
@@ -417,9 +454,11 @@ in
       script = "nagios /etc/nagios/nagios.cfg 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'";
     };
 
-
     launchd.daemons.nagios-nsca = {
-      path = [ cfg.nsca.package pkgs.moreutils ];
+      path = [
+        cfg.nsca.package
+        pkgs.moreutils
+      ];
       serviceConfig = {
         UserName = cfg.nsca.user;
         GroupName = cfg.nsca.group;

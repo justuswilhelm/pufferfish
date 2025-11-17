@@ -13,5 +13,9 @@ in
     PASSWORD_STORE_GPG_OPTS = "--no-throw-keyids";
     PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
   };
-  home.packages = [ pass pkgs.diceware pkgs.yubikey-manager ];
+  home.packages = [
+    pass
+    pkgs.diceware
+    pkgs.yubikey-manager
+  ];
 }

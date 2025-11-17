@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # TODO make this a Nix module
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # https://github.com/drduh/YubiKey-Guide?tab=readme-ov-file#ssh
   launchd.user.agents.gpg-agent = {
     path = [ pkgs.gnupg ];

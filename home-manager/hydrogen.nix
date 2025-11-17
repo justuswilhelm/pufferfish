@@ -2,7 +2,14 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ lib, pkgs, specialArgs, config, osConfig, ... }:
+{
+  lib,
+  pkgs,
+  specialArgs,
+  config,
+  osConfig,
+  ...
+}:
 let
   applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
 in

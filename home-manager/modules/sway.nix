@@ -3,7 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Contains just sway launcher config now
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   fish = "${config.programs.fish.package}/bin/fish";
   firefox-esr = "${config.programs.firefox.finalPackage}/bin/firefox-esr";
@@ -21,7 +26,10 @@ in
   # terminal
   home.sessionVariables.MOZ_ENABLE_WAYLAND = 1;
 
-  home.packages = [ pkgs.phinger-cursors pkgs.clipman ];
+  home.packages = [
+    pkgs.phinger-cursors
+    pkgs.clipman
+  ];
 
   xdg.configFile."sway/config".text = ''
     ${builtins.readFile ../../sway/config}
@@ -101,11 +109,10 @@ in
   programs.i3status = {
     enable = true;
     enableDefault = false;
-    general =
-      {
-        output_format = "i3bar";
-        interval = 5;
-      };
+    general = {
+      output_format = "i3bar";
+      interval = 5;
+    };
 
     modules = {
       "disk /" = {

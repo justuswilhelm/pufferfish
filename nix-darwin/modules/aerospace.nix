@@ -3,7 +3,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # TODO use Nix module syntax here
-{ lib, config, pkgs, specialArgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  specialArgs,
+  ...
+}:
 let
   applicationsDirectory = "/Users/${specialArgs.name}/Applications";
   # We need to convince macOS to open this as a proper app, not as a child of
@@ -20,7 +26,7 @@ let
   # I am temporarily changing openAlacritty to just always a new instance instead.
   # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
   openAlacritty = cmd: ''exec-and-forget open -n -a '${alacrittyApp}' --args -e ${cmd}'';
-  newFirefoxWindow = ''exec-and-forget if pgrep -U $USER firefox; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
+  newFirefoxWindow = ''exec-and-forget if pgrep -U $USER -f '${firefoxApp}'; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi'';
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
   # We can't use alt because that's used for entering diacritics
@@ -160,26 +166,23 @@ let
       }
       {
         "if".app-id = "org.libreoffice.script";
-        "if".window-title-regex-substring = lib.strings.concatMapStringsSep
-          "|"
-          (s: "^(${s})$")
-          [
-            "(Format|Insert) Cells"
-            "Text Import .+"
-            "Hyperlink"
-            "Save Document"
-            "Delete Contents"
-            "Rename Sheet"
-            "Confirmation"
-            "Page Style: .+"
-            "Chart (Area|Type|Wall)"
-            "Data (Table|Ranges)"
-            "(X|Y) Axis"
-            "Axes"
-            "Legend"
-            "Titles"
-            "Find And Replace"
-          ];
+        "if".window-title-regex-substring = lib.strings.concatMapStringsSep "|" (s: "^(${s})$") [
+          "(Format|Insert) Cells"
+          "Text Import .+"
+          "Hyperlink"
+          "Save Document"
+          "Delete Contents"
+          "Rename Sheet"
+          "Confirmation"
+          "Page Style: .+"
+          "Chart (Area|Type|Wall)"
+          "Data (Table|Ranges)"
+          "(X|Y) Axis"
+          "Axes"
+          "Legend"
+          "Titles"
+          "Find And Replace"
+        ];
         run = [ "layout floating" ];
       }
       {
