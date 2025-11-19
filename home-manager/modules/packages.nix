@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { pkgs, ... }:
 {
   home.packages = [
@@ -12,6 +16,7 @@
     pkgs.httperf
     pkgs.netcat-gnu
     pkgs.whois
+    pkgs.mtr
 
     # File transfers, Backups
     pkgs.rsync

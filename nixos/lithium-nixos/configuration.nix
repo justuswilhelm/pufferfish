@@ -1,25 +1,34 @@
-{ config, lib, specialArgs, pkgs, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 {
-  imports =
-    [
-      ../modules/compat.nix
-      ../modules/infosec.nix
-      ../modules/man.nix
-      ../modules/networkd.nix
-      ../modules/network-debug.nix
-      ../modules/nix.nix
-      ../modules/openssh.nix
-      ../modules/sway.nix
-      ../modules/utm.nix
-      ../modules/yubikey.nix
-      ../modules/wlan.nix
+  config,
+  lib,
+  specialArgs,
+  pkgs,
+  ...
+}:
 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+{
+  imports = [
+    ../modules/compat.nix
+    ../modules/infosec.nix
+    ../modules/man.nix
+    ../modules/networkd.nix
+    ../modules/network-debug.nix
+    ../modules/nix.nix
+    ../modules/openssh.nix
+    ../modules/sway.nix
+    ../modules/utm.nix
+    ../modules/yubikey.nix
+    ../modules/wlan.nix
 
-      ./wireguard.nix
-    ];
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+
+    ./wireguard.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -73,4 +82,3 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-

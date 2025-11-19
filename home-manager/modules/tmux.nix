@@ -1,4 +1,13 @@
-{ lib, pkgs, config, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   cfg = config.programs.tmux;
   strip-trailing-nl = pkgs.writeShellApplication {

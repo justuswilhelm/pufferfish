@@ -1,39 +1,59 @@
-{ config, specialArgs, lib, pkgs, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 {
-  imports =
-    [
-      ../modules/borgmatic.nix
-      ../modules/compat.nix
-      ../modules/ime.nix
-      ../modules/infosec.nix
-      ../modules/firefox.nix
-      ../modules/man.nix
-      ../modules/metasploit.nix
-      ../modules/mullvad.nix
-      ../modules/nagios.nix
-      ../modules/network-debug.nix
-      ../modules/networkd.nix
-      ../modules/nix.nix
-      ../modules/opensnitch.nix
-      ../modules/openssh.nix
-      ../modules/openvpn.nix
-      ../modules/overlays.nix
-      ../modules/podman.nix
-      ../modules/sway.nix
-      ../modules/yubikey.nix
+  config,
+  specialArgs,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    ../modules/borgmatic.nix
+    ../modules/compat.nix
+    ../modules/ime.nix
+    ../modules/infosec.nix
+    ../modules/firefox.nix
+    ../modules/man.nix
+    ../modules/metasploit.nix
+    ../modules/mullvad.nix
+    ../modules/nagios.nix
+    ../modules/network-debug.nix
+    ../modules/networkd.nix
+    ../modules/nix.nix
+    ../modules/opensnitch.nix
+    ../modules/openssh.nix
+    ../modules/openvpn.nix
+    ../modules/overlays.nix
+    ../modules/podman.nix
+    ../modules/sway.nix
+    ../modules/tor.nix
+    ../modules/users.nix
+    ../modules/yubikey.nix
 
-      # TODO set up impermanence
-      # https://github.com/nix-community/impermanence
+    # TODO set up impermanence
+    # https://github.com/nix-community/impermanence
 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./blockchains.nix
-      ./subnet.nix
-    ];
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+
+    ./blockchains.nix
+    ./hhack.nix
+  ];
 
   boot = {
-    kernelModules = [ "dm-raid" "dm-mirror" "dm-snapshot" ];
-    blacklistedKernelModules = [ "iwlwifi" "iwlmvm" "nouveau" ];
+    kernelModules = [
+      "dm-raid"
+      "dm-mirror"
+      "dm-snapshot"
+    ];
+    blacklistedKernelModules = [
+      "iwlwifi"
+      "iwlmvm"
+      "nouveau"
+    ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -68,21 +88,6 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  users.users.${specialArgs.name} = {
-    isNormalUser = true;
-    extraGroups = [
-      # Enable sudo
-      "wheel"
-      # allow using virtd
-      "libvirtd"
-      # For serial port
-      # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
-      "dialout"
-    ];
-    home = "/home/${specialArgs.name}";
-    shell = pkgs.fish;
-  };
-
   users.users.lithium-borgbackup = {
     isSystemUser = true;
     group = "lithium-borgbackup";
@@ -116,13 +121,51 @@
   services.postgresql = {
     enable = true;
     ensureDatabases = [ specialArgs.name ];
-    ensureUsers = [{
-      name = specialArgs.name;
-      ensureDBOwnership = true;
-      ensureClauses = {
-        createdb = true;
+    ensureUsers = [
+      {
+        name = specialArgs.name;
+        ensureDBOwnership = true;
+        ensureClauses = {
+          createdb = true;
+        };
+      }
+    ];
+  };
+
+  services.tor = {
+    # https://git-annex.branchable.com/tips/enable_tor_on_nixos/
+    relay.onionServices =
+      let
+        uuid = "4c22327b-ec2b-4fae-87e2-93603ae4393c";
+      in
+      {
+        "git-annex-${uuid}" = {
+          # this is where git annex configures it, which works fine, but doesn't
+          # actually seem necessary, so it could be left empty
+          path = "/var/lib/tor/tor-annex_1000_${uuid}";
+
+          # the HiddenServicePort directive requires both tor and git-annex # remotedaemon
+          # to be able to access the socket which is why git annex places it in a separate
+          # directory, but this also needs to be made visible to tor
+          map = [
+            {
+              port = 33312;
+              target.unix = "/var/lib/tor-annex/1000_${uuid}/s";
+            }
+          ];
+        };
       };
-    }];
+
+    # make the sockets directory visible to the otherwise sandboxed tor daemon
+  };
+  systemd.services.tor.serviceConfig.BindPaths = [ "/var/lib/tor-annex" ];
+
+  services.printing = {
+    enable = true;
+    drivers = [
+      pkgs.cups-filters
+      pkgs.cups-browsed
+    ];
   };
 
   security.pki.certificateFiles = [
@@ -148,4 +191,3 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
 }
-

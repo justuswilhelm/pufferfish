@@ -1,31 +1,40 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, specialArgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  specialArgs,
+  ...
+}:
 
 {
-  imports =
-    [
-      ../modules/compat.nix
-      ../modules/infosec.nix
-      ../modules/firefox.nix
-      ../modules/man.nix
-      ../modules/network-debug.nix
-      ../modules/networkd.nix
-      ../modules/nix.nix
-      ../modules/opensnitch.nix
-      ../modules/openvpn.nix
-      ../modules/pipewire.nix
-      ../modules/sway.nix
-      ../modules/wlan.nix
-      ../modules/yubikey.nix
+  imports = [
+    ../modules/compat.nix
+    ../modules/infosec.nix
+    ../modules/firefox.nix
+    ../modules/man.nix
+    ../modules/network-debug.nix
+    ../modules/networkd.nix
+    ../modules/nix.nix
+    ../modules/opensnitch.nix
+    ../modules/openvpn.nix
+    ../modules/pipewire.nix
+    ../modules/sway.nix
+    ../modules/wlan.nix
+    ../modules/yubikey.nix
 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./networking.nix
-      # ./fluentd.nix
-    ];
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./networking.nix
+    # ./fluentd.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -84,12 +93,6 @@
     vimAlias = true;
   };
   programs.light.enable = true;
-
-  programs.steam.enable = true;
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-unwrapped"
-  ];
 
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;

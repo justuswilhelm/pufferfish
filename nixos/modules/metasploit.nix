@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { pkgs, ... }:
 let
   # TODO
@@ -60,10 +64,12 @@ in
   services.postgresql = {
     enable = true;
     ensureDatabases = [ "msf" ];
-    ensureUsers = [{
-      name = "msf";
-      ensureDBOwnership = true;
-    }];
+    ensureUsers = [
+      {
+        name = "msf";
+        ensureDBOwnership = true;
+      }
+    ];
     authentication = ''
       local msf all peer map=msf
       host msf all 127.0.0.1/32 trust

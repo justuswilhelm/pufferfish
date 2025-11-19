@@ -1,4 +1,13 @@
-{ lib, pkgs, config, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 {
   xdg.configFile = {
     "nvim/after".source = ../../nvim/after;
@@ -19,6 +28,8 @@
     plugins = with pkgs.vimPlugins; [
       # Language specific
       # -----------------
+      # mrcjkb/rustaeceanvim
+      rustaceanvim
       # ledger/vim-ledger
       vim-ledger
       # othree/html5.vim
@@ -67,22 +78,30 @@
 
       # Needed for plugins
       # ==================
+      # ag.vim (ported to lua)
       pkgs.silver-searcher
-      pkgs.ripgrep
       # fzf-lua
       pkgs.fzf
 
       # Language servers
+      # ================
+      # rust
+      # rustup component add rust-analyzer
+      # pkgs.rust-analyzer
+      # JavaScript
+      # ----------
       pkgs.deno
+      pkgs.typescript
+      pkgs.nodePackages.typescript-language-server
+      pkgs.nodePackages.svelte-language-server
+      # Python
+      # ------
       pkgs.ruff
       # ruff claims to now have a lsp server and the following package
       # disappeared from nix 25.05
       # pkgs.ruff-lsp
-      pkgs.vale-ls
       pkgs.pyright
-      pkgs.typescript
-      pkgs.nodePackages.typescript-language-server
-      pkgs.nodePackages.svelte-language-server
+      pkgs.vale-ls
     ];
     extraPython3Packages = python3Packages: [
       # Pillow needed for pastify

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function projectify --description "Launch a Projectify tmux session"
     # This is a relatively complete example of how to create a complex session in
     # tmux using nothing but tmux commands

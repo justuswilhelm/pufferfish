@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { pkgs, ... }:
 {
   home.packages = [
@@ -14,6 +18,9 @@
       disable-ccid = true;
     };
     settings = {
+      # SPDX-SnippetBegin
+      # SPDX-SnippetCopyrightText: 2016 drduh
+      # SPDX-License-Identifier: MIT
       # https://github.com/drduh/config/blob/master/gpg.conf
       # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Options.html
       # 'gpg --version' to get capabilities
@@ -84,6 +91,7 @@
       #list-options show-unusable-subkeys
       # Verbose output
       #verbose
+      # SPDX-SnippetEnd
     };
   };
 

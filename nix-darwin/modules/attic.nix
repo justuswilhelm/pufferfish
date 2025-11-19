@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { config, pkgs, ... }:
 let
   logPath = "/var/log/atticd";
@@ -168,7 +172,9 @@ let
   };
 in
 {
-  users.groups.attic = { gid = 603; };
+  users.groups.attic = {
+    gid = 603;
+  };
   users.users.attic = {
     home = statePath;
     description = "attic user";
@@ -179,7 +185,10 @@ in
   users.knownGroups = [ "attic" ];
   users.knownUsers = [ "attic" ];
 
-  environment.systemPackages = [ attic-client attic-server ];
+  environment.systemPackages = [
+    attic-client
+    attic-server
+  ];
   environment.etc."attic/atticd.toml".source = tomlFormat.generate "atticd.toml" atticConfig;
 
   services.newsyslog.modules.attic = {

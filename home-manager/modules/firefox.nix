@@ -1,6 +1,18 @@
-{ lib, pkgs, config, osConfig, ... }:
+# SPDX-FileCopyrightText: 2025 Justus Perlwitz
+# SPDX-License-Identifier: GPL-3.0-or-later
+{
+  lib,
+  pkgs,
+  config,
+  osConfig,
+  ...
+}:
 let
   cfg = config.programs.firefox;
+  # SPDX-SnippetBegin
+  # SPDX-SnippetCopyrightText: None
+  #
+  # SPDX-License-Identifier: CC0-1.0
   # Hardening settings from
   # https://brainfucksec.github.io/firefox-hardening-guide
   hardenedSettings = {
@@ -120,6 +132,7 @@ let
     "privacy.userContext.enabled" = true;
     "privacy.resistFingerprinting" = true;
   };
+  # SPDX-SnippetEnd
   passff-host = pkgs.passff-host.overrideAttrs (old: {
     dontStrip = true;
     patchPhase = ''
@@ -154,9 +167,11 @@ in
         search.force = true;
         search.engines = {
           "kagi" = {
-            urls = [{
-              template = "https://kagi.com/search?q={searchTerms}";
-            }];
+            urls = [
+              {
+                template = "https://kagi.com/search?q={searchTerms}";
+              }
+            ];
             definedAliases = [ "kagi" ];
           };
           "ddg".metaData.hidden = false;

@@ -1,8 +1,20 @@
-{ lib, pkgs, specialArgs, config, options, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  lib,
+  pkgs,
+  specialArgs,
+  config,
+  options,
+  ...
+}:
 let
   yamlFormat = pkgs.formats.yaml { };
   config = {
     # https://aider.chat/docs/leaderboards/
+    # openai/gpt-5 has high latency. Switched back to claude-sonnet-4
     model = "openrouter/anthropic/claude-sonnet-4";
     auto-commits = false;
     light-mode = true;
@@ -26,9 +38,11 @@ in
         pkgs.stdenv.cc.cc.lib
         pkgs.glibc
         pkgs.ungoogled-chromium
+        pkgs.bash
       ];
       text = ''
         ${lib.optionalString isLinux ''export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:$${LD_LIBRARY_PATH:-}"''}
+        export SHELL=bash
         pipx run aider-chat "$@"
       '';
     })

@@ -1,4 +1,9 @@
-{ pkgs, ... }: {
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{ pkgs, ... }:
+{
   nixpkgs.overlays = [
     (final: previous: rec {
       wireshark-cli = previous.wireshark;
@@ -6,7 +11,10 @@
         name = "wireshark-with-python";
         paths = [
           previous.wireshark
-          (previous.python3.withPackages (pkgs: [ pkgs.pyserial pkgs.psutil ]))
+          (previous.python3.withPackages (pkgs: [
+            pkgs.pyserial
+            pkgs.psutil
+          ]))
         ];
       };
     })

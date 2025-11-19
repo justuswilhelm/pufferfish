@@ -1,3 +1,16 @@
+# SPDX-FileCopyrightText: 1998-2002 Timo Sirainen <cras@irssi.org>
+# SPDX-FileCopyrightText: Valentin Batz (senneth, vb)
+# SPDX-FileCopyrightText: Wouter Coekaerts (coekie)
+# SPDX-FileCopyrightText: Jochen Eisinger (c0ffee)
+# SPDX-FileCopyrightText: Geert Hauwaerts (Geert)
+# SPDX-FileCopyrightText: Jilles Tjoelker (jilles)
+# SPDX-FileCopyrightText: Alexander Færøy (ahf)
+# SPDX-FileCopyrightText: Jase Thew (bazerka)
+# SPDX-FileCopyrightText: dequis (dx)
+# SPDX-FileCopyrightText: Ailin Nemui (Nei)
+# SPDX-FileCopyrightText: Emanuele Giaquinta (exg)
+# SPDX-License-Identifier: GPL-2.0-or-later WITH LicenseRef-OpenSSL-exception
+
 servers = (
 );
 

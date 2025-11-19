@@ -1,4 +1,13 @@
-{ config, pkgs, lib, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.services.caddy;
@@ -14,66 +23,71 @@ let
       "github.com/aksdb/caddy-cgi/v2@v2.2.5"
       "github.com/greenpau/caddy-security@v1.1.29"
     ];
-    hash = "sha256-0Bc7oWqdP2VMl64omfNn5oTGRQ6eRiN+8aTvlxRO/Bs=";
+    hash = "sha256-9V1q8g4MRNnZRn2a2lAJCbBe/jK3pvTfufWxzT8Jg0M=";
   };
   caddyCookieLifetime = 60 * 60 * 24 * 3;
-  caddyConfig = pkgs.writeText "Caddyfile" (''
-    {
-      log {
-        format console
-      }
-      # Prevent Caddy from serving on port :80 and disable certificate
-      # automation.
-      # https://caddyserver.com/docs/caddyfile/options#auto-https
-      auto_https off
-
-      # https://docs.authcrunch.com/docs/authenticate/local/local
-      security {
-        local identity store localdb {
-          realm local
-          path ${statePath}/secrets/users.json
+  caddyConfig = pkgs.writeText "Caddyfile" (
+    ''
+      {
+        log {
+          format console
         }
+        # Prevent Caddy from serving on port :80 and disable certificate
+        # automation.
+        # https://caddyserver.com/docs/caddyfile/options#auto-https
+        auto_https off
 
-        authentication portal myportal {
-          enable identity store localdb
-
-          # The cookie should stay valid longer than the auth token
-          # to redirect to the log in page if needed
-          cookie lifetime ${toString (caddyCookieLifetime * 2)}
-
-          crypto default token lifetime ${toString caddyCookieLifetime}
-          crypto key sign-verify {env.JWT_SHARED_KEY}
-        }
-        authorization policy admins_policy {
-          set auth url https://lithium.local:10103/auth
-
-          crypto key verify {env.JWT_SHARED_KEY}
-
-          allow roles authp/admin
-
-          set user identity subject
-
-          enable strip token
-
-          acl rule {
-            comment allow admins
-            match role authp/admin
-            allow stop log info
+        # https://docs.authcrunch.com/docs/authenticate/local/local
+        security {
+          local identity store localdb {
+            realm local
+            path ${statePath}/secrets/users.json
           }
-          acl rule {
-            comment default deny
-            match any
-            deny log warn
+
+          authentication portal myportal {
+            enable identity store localdb
+
+            # The cookie should stay valid longer than the auth token
+            # to redirect to the log in page if needed
+            cookie lifetime ${toString (caddyCookieLifetime * 2)}
+
+            crypto default token lifetime ${toString caddyCookieLifetime}
+            crypto key sign-verify {env.JWT_SHARED_KEY}
+          }
+          authorization policy admins_policy {
+            set auth url https://lithium.local:10103/auth
+
+            crypto key verify {env.JWT_SHARED_KEY}
+
+            allow roles authp/admin
+
+            set user identity subject
+
+            enable strip token
+
+            inject header "Remote-User" from subject
+
+            acl rule {
+              comment allow admins
+              match role authp/admin
+              allow stop log info
+            }
+            acl rule {
+              comment default deny
+              match any
+              deny log warn
+            }
           }
         }
       }
-    }
 
-    (certs) {
-      tls ${statePath}/certs/lithium-server.crt ${statePath}/secrets/lithium-server.key
-    }
+      (certs) {
+        tls ${statePath}/certs/lithium-server.crt ${statePath}/secrets/lithium-server.key
+      }
 
-  '' + cfg.extraConfig);
+    ''
+    + cfg.extraConfig
+  );
   caddyConfigValidated = pkgs.runCommand "Caddyfile" { preferLocalBuild = true; } ''
     ${caddy}/bin/caddy fmt - < ${caddyConfig} > Caddyfile
     # Broken
@@ -81,45 +95,43 @@ let
     mv Caddyfile $out
   '';
 
-  # TODO investigate whether these are still needed Justus 2025-05-30
-  php = ((pkgs.php.overrideAttrs
-    (previous: {
-      buildInputs = previous.buildInputs ++ [ pkgs.openldap ];
-    })).override {
-    apxs2Support = true;
-    # available extensions:
-  }).withExtensions ({ all, ... }: with all; ([
-    # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/interpreters/php/8.3.nix
-    filter
-  ]));
+  # https://wiki.nixos.org/wiki/PHP#Apache,_plugins,_settings
+  php = pkgs.php.buildEnv { };
 
+  # TODO check if still needed Justus 2025-11-11
   # https://github.com/NixOS/nixpkgs/blob/54830391487253422f0ccab55fc557b2e725ace0/nixos/modules/services/web-servers/apache-httpd/default.nix#L319
-  phpIni = pkgs.runCommand "php.ini"
-    {
-      preferLocalBuild = true;
-    }
-    ''
-      cat ${php}/etc/php.ini > $out
-      cat ${php.phpIni} > $out
-    '';
+  phpIni =
+    pkgs.runCommand "php.ini"
+      {
+        preferLocalBuild = true;
+      }
+      ''
+        cat ${php}/etc/php.ini > $out
+        cat ${php.phpIni} > $out
+      '';
 
-  phpFpmCfg = lib.generators.toINIWithGlobalSection { } {
-    globalSection = {
-      error_log = "${logPath}/phpfpm.error.log";
-      daemonize = "no";
-    };
-    sections = {
-      php = {
-        listen = cfg.phpFpmSock;
-        "php_admin_value[disable_functions]" = "exec,passthru,shell_exec,system";
-        "php_admin_flag[allow_url_fopen]" = "off";
-        # Choose how the process manager will control the number of child processes.
-        pm = "static";
-        "pm.max_children" = 1;
-        slowlog = "${logPath}/phpfpm.slowlog.log";
+  phpFpmCfg =
+    let
+      stderr = "/dev/stderr";
+    in
+    lib.generators.toINIWithGlobalSection { } {
+      globalSection = {
+        error_log = stderr;
+        daemonize = "no";
+      };
+      sections = {
+        php = {
+          listen = cfg.phpFpmSock;
+          "php_admin_value[disable_functions]" = "exec,passthru,shell_exec,system";
+          "php_admin_flag[allow_url_fopen]" = "off";
+          # Choose how the process manager will control the number of child processes.
+          pm = "static";
+          "pm.max_children" = 1;
+          slowlog = stderr;
+          "access.log" = stderr;
+        };
       };
     };
-  };
 in
 {
   options = {
@@ -144,7 +156,9 @@ in
     };
   };
   config = {
-    users.groups.lithium-ca = { gid = 1101; };
+    users.groups.lithium-ca = {
+      gid = 1101;
+    };
     users.users.lithium-ca = {
       description = "Lithium CA";
       home = caStatePath;
@@ -153,7 +167,9 @@ in
       isHidden = true;
     };
 
-    users.groups.caddy = { gid = 602; };
+    users.groups.caddy = {
+      gid = 602;
+    };
     users.users.caddy = {
       home = statePath;
       description = "Caddy";
@@ -162,8 +178,14 @@ in
       isHidden = true;
     };
 
-    users.knownGroups = [ "lithium-ca" "caddy" ];
-    users.knownUsers = [ "lithium-ca" "caddy" ];
+    users.knownGroups = [
+      "lithium-ca"
+      "caddy"
+    ];
+    users.knownUsers = [
+      "lithium-ca"
+      "caddy"
+    ];
 
     environment.etc."caddy/Caddyfile".source = caddyConfigValidated;
 
@@ -182,34 +204,7 @@ in
         when = "$D0";
         flags = "J";
       };
-      "${logPath}/phpfpm.stdout.log" = {
-        owner = "caddy";
-        group = "caddy";
-        mode = "640";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
       "${logPath}/phpfpm.stderr.log" = {
-        owner = "caddy";
-        group = "caddy";
-        mode = "640";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
-      "${logPath}/phpfpm.error.log" = {
-        owner = "caddy";
-        group = "caddy";
-        mode = "640";
-        count = 10;
-        size = "*";
-        when = "$D0";
-        flags = "J";
-      };
-      "${logPath}/phpfpm.slowlog.log" = {
         owner = "caddy";
         group = "caddy";
         mode = "640";
@@ -236,7 +231,7 @@ in
       in
       lib.optional config.services.nagios.enable nagiosCfg;
 
-    environment.systemPackages = [ caddy ];
+    environment.systemPackages = [ caddy ] ++ (lib.lists.optional cfg.enablePhp php);
 
     launchd.daemons.caddy = {
       script = ''
@@ -260,7 +255,6 @@ in
         UserName = "caddy";
         GroupName = "caddy";
         KeepAlive = true;
-        StandardOutPath = "${logPath}/phpfpm.stdout.log";
         StandardErrorPath = "${logPath}/phpfpm.stderr.log";
         WorkingDirectory = statePath;
       };

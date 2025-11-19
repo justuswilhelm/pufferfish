@@ -1,17 +1,26 @@
-{ config, lib, pkgs, specialArgs, ... }:
-{
-  imports =
-    [
-      ../modules/sway.nix
-      ../modules/networkd.nix
-      ../modules/nix.nix
-      ../modules/compat.nix
-      ../modules/openssh.nix
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./networking.nix
-    ];
+{
+  config,
+  lib,
+  pkgs,
+  specialArgs,
+  ...
+}:
+{
+  imports = [
+    ../modules/sway.nix
+    ../modules/networkd.nix
+    ../modules/nix.nix
+    ../modules/compat.nix
+    ../modules/openssh.nix
+
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./networking.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

@@ -1,6 +1,15 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # TODO Make this a Nix module
 # TODO add password hashing
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   anki-sync-server = pkgs.anki-sync-server;
   username = "anki-sync-server";
@@ -79,7 +88,10 @@ in
   services.caddy.extraConfig = caddyConfig;
 
   launchd.daemons.anki-sync-server = {
-    path = [ pkgs.coreutils anki-sync-server ];
+    path = [
+      pkgs.coreutils
+      anki-sync-server
+    ];
     script = ''
       mkdir -p ${statePath}
       mkdir -p ${usersPath}

@@ -1,4 +1,14 @@
-{ specialArgs, config, pkgs, projectify, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  specialArgs,
+  config,
+  pkgs,
+  projectify,
+  ...
+}:
 let
   uid = 501;
   name = specialArgs.name;
@@ -18,11 +28,13 @@ in
     ../modules/projectify.nix
     ../modules/radicale.nix
     ../modules/security.nix
+    ../modules/skhd.nix
     ../modules/user.nix
 
     ../modules/default.nix
 
     # ./attic.nix
+    ../modules/wiki.nix
   ];
 
   # List packages installed in system profile. To search by name, run:
@@ -55,12 +67,16 @@ in
     ];
   };
 
-
   launchd.labelPrefix = "net.jwpconsulting";
 
   services.borgmatic.enable = true;
   services.vdirsyncer.enable = true;
   services.sync-git-annex.enable = true;
+
+  services.tor = {
+    enable = true;
+    # https://git-annex.branchable.com/tips/enable_tor_on_nixos/
+  };
 
   services.postgresql = {
     enable = true;
@@ -82,19 +98,6 @@ in
   };
 
   # services.karabiner-elements.enable = true;
-  services.skhd = {
-    enable = true;
-    # https://github.com/koekeishiya/skhd/issues/1
-    skhdConfig =
-      let
-        cmus-remote = "${pkgs.cmus}/bin/cmus-remote";
-      in
-      ''
-        play : ${cmus-remote} -u
-        rewind : ${cmus-remote} -r
-        fast : ${cmus-remote} -n
-      '';
-  };
 
   programs.fish = {
     enable = true;

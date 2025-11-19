@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 function ta -d "(tmux) Prompt the user to pick an existing tmux session and attach to it" -a where
     if [ -n "$where" ]
         set session $where

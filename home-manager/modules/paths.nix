@@ -1,4 +1,15 @@
-{ lib, pkgs, config, options, specialArgs, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  lib,
+  pkgs,
+  config,
+  options,
+  specialArgs,
+  ...
+}:
 {
   home.sessionPath = [
     "${config.home.sessionVariables.DOTFILES}/bin"

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+# SPDX-License-Identifier: GPL-3.0-or-later
 # TODO make this a nix module
 { pkgs, ... }:
 let
@@ -49,17 +51,16 @@ in
   };
   launchd.daemons.projectify-frontend-node = {
     command = "${frontend}/bin/projectify-frontend-node";
-    serviceConfig =
-      {
-        KeepAlive = true;
-        # TODO check if logging can't be merged
-        StandardOutPath = "${logPath}/projectify-frontend-node.stdout.log";
-        StandardErrorPath = "${logPath}/projectify-frontend-node.stderr.log";
-        EnvironmentVariables = {
-          SVELTE_KIT_PORT = frontendPort;
-        };
-        UserName = "projectify";
+    serviceConfig = {
+      KeepAlive = true;
+      # TODO check if logging can't be merged
+      StandardOutPath = "${logPath}/projectify-frontend-node.stdout.log";
+      StandardErrorPath = "${logPath}/projectify-frontend-node.stderr.log";
+      EnvironmentVariables = {
+        SVELTE_KIT_PORT = frontendPort;
       };
+      UserName = "projectify";
+    };
   };
   launchd.daemons.projectify-backend = {
     script = ''
@@ -73,28 +74,28 @@ in
       export SECRET_KEY
       exec ${backend}/bin/projectify-backend
     '';
-    serviceConfig =
-      {
-        KeepAlive = true;
-        # TODO check if logging can't be merged
-        StandardOutPath = "${logPath}/projectify-backend.stdout.log";
-        StandardErrorPath = "${logPath}/projectify-backend.stderr.log";
-        EnvironmentVariables = {
-          FRONTEND_URL = "https://${hostname}:${revproxyPort}";
-          ALLOWED_HOSTS = hostname;
-          REDIS_URL = "redis://${hostname}:${redisPort}";
-          DJANGO_SETTINGS_MODULE = "projectify.settings.production";
-          DJANGO_CONFIGURATION = "Production";
-          DATABASE_URL = "sqlite:////var/projectify/projectify-backend.sqlite";
-          PORT = backendPort;
-        };
-        UserName = "projectify";
+    serviceConfig = {
+      KeepAlive = true;
+      # TODO check if logging can't be merged
+      StandardOutPath = "${logPath}/projectify-backend.stdout.log";
+      StandardErrorPath = "${logPath}/projectify-backend.stderr.log";
+      EnvironmentVariables = {
+        FRONTEND_URL = "https://${hostname}:${revproxyPort}";
+        ALLOWED_HOSTS = hostname;
+        REDIS_URL = "redis://${hostname}:${redisPort}";
+        DJANGO_SETTINGS_MODULE = "projectify.settings.production";
+        DJANGO_CONFIGURATION = "Production";
+        DATABASE_URL = "sqlite:////var/projectify/projectify-backend.sqlite";
+        PORT = backendPort;
       };
+      UserName = "projectify";
+    };
   };
 
+  # SPDX-SnippetBegin
+  # SPDX-License-Identifier: AGPL-3.0-or-later
+  # SPDX-SnippetCopyrightText: 2024 JWP Consulting GK
   services.caddy.extraConfig = ''
-    # SPDX-License-Identifier: AGPL-3.0-or-later
-    # SPDX-FileCopyrightText: 2024 JWP Consulting GK
     # Helpful links for Caddy security headers
     # https://github.com/jpcaparas/caddy-csp/blob/f241472610a5a4e4f8d74e0976120bbb2cca84cc/Caddyfile
     # https://paulbradley.dev/caddyfile-web-security-headers/
@@ -166,8 +167,12 @@ in
       }
     }
   '';
+  # SPDX-SnippetEnd
 
   nix.settings = {
-    extra-sandbox-paths = [ "/usr/share" "/private/var/db" ];
+    extra-sandbox-paths = [
+      "/usr/share"
+      "/private/var/db"
+    ];
   };
 }

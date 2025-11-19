@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { ... }:
 {
   # systemd networkd and resolved config
@@ -12,7 +16,7 @@
           Type = "ether";
         };
         networkConfig = {
-          DHCP = "yes";
+          DHCP = "ipv4";
           MulticastDNS = "yes";
           LinkLocalAddressing = "no";
         };
@@ -22,7 +26,7 @@
           Type = "wlan";
         };
         networkConfig = {
-          DHCP = "yes";
+          DHCP = "ipv4";
           MulticastDNS = "yes";
           LinkLocalAddressing = "no";
         };

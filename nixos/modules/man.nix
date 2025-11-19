@@ -1,4 +1,13 @@
-{ config, lib, pkgs, ... }:
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   documentation = {
     dev.enable = true;

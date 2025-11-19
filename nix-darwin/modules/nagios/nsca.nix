@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 { pkgs }:
 pkgs.stdenv.mkDerivation rec {
   pname = "nsca";
@@ -14,4 +18,3 @@ pkgs.stdenv.mkDerivation rec {
     cp src/nsca src/send_nsca $out/bin
   '';
 }
-
