@@ -2,7 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ specialArgs, config, pkgs, projectify, ... }:
+{
+  specialArgs,
+  config,
+  pkgs,
+  projectify,
+  ...
+}:
 let
   uid = 501;
   name = specialArgs.name;
@@ -28,6 +34,7 @@ in
     ../modules/default.nix
 
     # ./attic.nix
+    ../modules/wiki.nix
   ];
 
   # List packages installed in system profile. To search by name, run:
@@ -59,7 +66,6 @@ in
       # TODO add tmux here
     ];
   };
-
 
   launchd.labelPrefix = "net.jwpconsulting";
 

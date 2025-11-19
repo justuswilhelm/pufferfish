@@ -4,23 +4,47 @@ let
     description = "Function Key + hjkl to arrow keys Vim";
     manipulators = [
       {
-        from = { key_code = "h"; modifiers = { mandatory = [ "fn" ]; optional = [ "any" ]; }; };
-        to = [{ key_code = "left_arrow"; }];
+        from = {
+          key_code = "h";
+          modifiers = {
+            mandatory = [ "fn" ];
+            optional = [ "any" ];
+          };
+        };
+        to = [ { key_code = "left_arrow"; } ];
         type = "basic";
       }
       {
-        from = { key_code = "j"; modifiers = { mandatory = [ "fn" ]; optional = [ "any" ]; }; };
-        to = [{ key_code = "down_arrow"; }];
+        from = {
+          key_code = "j";
+          modifiers = {
+            mandatory = [ "fn" ];
+            optional = [ "any" ];
+          };
+        };
+        to = [ { key_code = "down_arrow"; } ];
         type = "basic";
       }
       {
-        from = { key_code = "k"; modifiers = { mandatory = [ "fn" ]; optional = [ "any" ]; }; };
-        to = [{ key_code = "up_arrow"; }];
+        from = {
+          key_code = "k";
+          modifiers = {
+            mandatory = [ "fn" ];
+            optional = [ "any" ];
+          };
+        };
+        to = [ { key_code = "up_arrow"; } ];
         type = "basic";
       }
       {
-        from = { key_code = "l"; modifiers = { mandatory = [ "fn" ]; optional = [ "any" ]; }; };
-        to = [{ key_code = "right_arrow"; }];
+        from = {
+          key_code = "l";
+          modifiers = {
+            mandatory = [ "fn" ];
+            optional = [ "any" ];
+          };
+        };
+        to = [ { key_code = "right_arrow"; } ];
         type = "basic";
       }
     ];
@@ -29,8 +53,18 @@ let
     description = "right_command -> cmd+alt for aerospace";
     manipulators = [
       {
-        from = { key_code = "right_command"; modifiers = { optional = [ "any" ]; }; };
-        to = [{ key_code = "left_command"; modifiers = [ "left_option" ]; }];
+        from = {
+          key_code = "right_command";
+          modifiers = {
+            optional = [ "any" ];
+          };
+        };
+        to = [
+          {
+            key_code = "left_command";
+            modifiers = [ "left_option" ];
+          }
+        ];
         type = "basic";
       }
     ];
@@ -73,10 +107,30 @@ in
             ignore = false;
             manipulate_caps_lock_led = true;
             simple_modifications = [
-              { from = { key_code = "caps_lock"; }; to = [{ key_code = "return_or_enter"; }]; }
-              { from = { key_code = "grave_accent_and_tilde"; }; to = [{ key_code = "vk_none"; }]; }
-              { from = { key_code = "non_us_backslash"; }; to = [{ key_code = "grave_accent_and_tilde"; }]; }
-              { from = { key_code = "return_or_enter"; }; to = [{ key_code = "vk_none"; }]; }
+              {
+                from = {
+                  key_code = "caps_lock";
+                };
+                to = [ { key_code = "return_or_enter"; } ];
+              }
+              {
+                from = {
+                  key_code = "grave_accent_and_tilde";
+                };
+                to = [ { key_code = "vk_none"; } ];
+              }
+              {
+                from = {
+                  key_code = "non_us_backslash";
+                };
+                to = [ { key_code = "grave_accent_and_tilde"; } ];
+              }
+              {
+                from = {
+                  key_code = "return_or_enter";
+                };
+                to = [ { key_code = "vk_none"; } ];
+              }
             ];
             treat_as_built_in_keyboard = false;
           }
@@ -93,13 +147,48 @@ in
             ignore = false;
             manipulate_caps_lock_led = true;
             simple_modifications = [
-              { from = { key_code = "left_option"; }; to = [{ key_code = "left_command"; }]; }
-              { from = { key_code = "left_command"; }; to = [{ key_code = "left_option"; }]; }
-              { from = { key_code = "right_option"; }; to = [{ key_code = "right_command"; }]; }
-              { from = { key_code = "right_command"; }; to = [{ key_code = "left_option"; }]; }
-              { from = { key_code = "caps_lock"; }; to = [{ key_code = "return_or_enter"; }]; }
-              { from = { key_code = "non_us_backslash"; }; to = [{ key_code = "grave_accent_and_tilde"; }]; }
-              { from = { key_code = "return_or_enter"; }; to = [{ key_code = "vk_none"; }]; }
+              {
+                from = {
+                  key_code = "left_option";
+                };
+                to = [ { key_code = "left_command"; } ];
+              }
+              {
+                from = {
+                  key_code = "left_command";
+                };
+                to = [ { key_code = "left_option"; } ];
+              }
+              {
+                from = {
+                  key_code = "right_option";
+                };
+                to = [ { key_code = "right_command"; } ];
+              }
+              {
+                from = {
+                  key_code = "right_command";
+                };
+                to = [ { key_code = "left_option"; } ];
+              }
+              {
+                from = {
+                  key_code = "caps_lock";
+                };
+                to = [ { key_code = "return_or_enter"; } ];
+              }
+              {
+                from = {
+                  key_code = "non_us_backslash";
+                };
+                to = [ { key_code = "grave_accent_and_tilde"; } ];
+              }
+              {
+                from = {
+                  key_code = "return_or_enter";
+                };
+                to = [ { key_code = "vk_none"; } ];
+              }
             ];
             treat_as_built_in_keyboard = false;
           }
@@ -116,26 +205,101 @@ in
             ignore = false;
             manipulate_caps_lock_led = true;
             simple_modifications = [
-              { from = { key_code = "caps_lock"; }; to = [{ key_code = "return_or_enter"; }]; }
-              { from = { key_code = "non_us_backslash"; }; to = [{ key_code = "grave_accent_and_tilde"; }]; }
-              { from = { key_code = "return_or_enter"; }; to = [{ key_code = "vk_none"; }]; }
+              {
+                from = {
+                  key_code = "caps_lock";
+                };
+                to = [ { key_code = "return_or_enter"; } ];
+              }
+              {
+                from = {
+                  key_code = "non_us_backslash";
+                };
+                to = [ { key_code = "grave_accent_and_tilde"; } ];
+              }
+              {
+                from = {
+                  key_code = "return_or_enter";
+                };
+                to = [ { key_code = "vk_none"; } ];
+              }
             ];
             treat_as_built_in_keyboard = false;
           }
         ];
         fn_function_keys = [
-          { from = { key_code = "f1"; }; to = [{ consumer_key_code = "display_brightness_decrement"; }]; }
-          { from = { key_code = "f2"; }; to = [{ consumer_key_code = "display_brightness_increment"; }]; }
-          { from = { key_code = "f3"; }; to = [{ apple_vendor_keyboard_key_code = "mission_control"; }]; }
-          { from = { key_code = "f4"; }; to = [{ apple_vendor_keyboard_key_code = "spotlight"; }]; }
-          { from = { key_code = "f5"; }; to = [{ consumer_key_code = "dictation"; }]; }
-          { from = { key_code = "f6"; }; to = [{ key_code = "f6"; }]; }
-          { from = { key_code = "f7"; }; to = [{ consumer_key_code = "rewind"; }]; }
-          { from = { key_code = "f8"; }; to = [{ consumer_key_code = "play_or_pause"; }]; }
-          { from = { key_code = "f9"; }; to = [{ consumer_key_code = "fast_forward"; }]; }
-          { from = { key_code = "f10"; }; to = [{ consumer_key_code = "mute"; }]; }
-          { from = { key_code = "f11"; }; to = [{ consumer_key_code = "volume_decrement"; }]; }
-          { from = { key_code = "f12"; }; to = [{ consumer_key_code = "volume_increment"; }]; }
+          {
+            from = {
+              key_code = "f1";
+            };
+            to = [ { consumer_key_code = "display_brightness_decrement"; } ];
+          }
+          {
+            from = {
+              key_code = "f2";
+            };
+            to = [ { consumer_key_code = "display_brightness_increment"; } ];
+          }
+          {
+            from = {
+              key_code = "f3";
+            };
+            to = [ { apple_vendor_keyboard_key_code = "mission_control"; } ];
+          }
+          {
+            from = {
+              key_code = "f4";
+            };
+            to = [ { apple_vendor_keyboard_key_code = "spotlight"; } ];
+          }
+          {
+            from = {
+              key_code = "f5";
+            };
+            to = [ { consumer_key_code = "dictation"; } ];
+          }
+          {
+            from = {
+              key_code = "f6";
+            };
+            to = [ { key_code = "f6"; } ];
+          }
+          {
+            from = {
+              key_code = "f7";
+            };
+            to = [ { consumer_key_code = "rewind"; } ];
+          }
+          {
+            from = {
+              key_code = "f8";
+            };
+            to = [ { consumer_key_code = "play_or_pause"; } ];
+          }
+          {
+            from = {
+              key_code = "f9";
+            };
+            to = [ { consumer_key_code = "fast_forward"; } ];
+          }
+          {
+            from = {
+              key_code = "f10";
+            };
+            to = [ { consumer_key_code = "mute"; } ];
+          }
+          {
+            from = {
+              key_code = "f11";
+            };
+            to = [ { consumer_key_code = "volume_decrement"; } ];
+          }
+          {
+            from = {
+              key_code = "f12";
+            };
+            to = [ { consumer_key_code = "volume_increment"; } ];
+          }
         ];
         name = "Default profile";
         parameters = {

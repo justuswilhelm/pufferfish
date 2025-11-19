@@ -3,7 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Modules used to debug networking
-{ specialArgs, pkgs, lib, ... }:
+{
+  specialArgs,
+  pkgs,
+  lib,
+  ...
+}:
 {
   environment.systemPackages = with pkgs; [
     tcpdump
@@ -31,7 +36,11 @@
 
   services.opensnitch.rules =
     let
-      tracerouteProtocols = [ "udp" "udp6" "icmp" ];
+      tracerouteProtocols = [
+        "udp"
+        "udp6"
+        "icmp"
+      ];
       makeTracerouteRule = protocol: {
         name = "Allow traceroute ${protocol}";
         created = "1970-01-01T00:00:00Z";
@@ -43,16 +52,24 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "regexp"; operand = "process.path"; data = "^${lib.getBin pkgs.traceroute}/bin/traceroute$|^traceroute$"; }
-            { type = "simple"; operand = "protocol"; data = protocol; }
+            {
+              type = "regexp";
+              operand = "process.path";
+              data = "^${lib.getBin pkgs.traceroute}/bin/traceroute$|^traceroute$";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = protocol;
+            }
           ];
         };
       };
     in
-    lib.listToAttrs (map
-      (protocol: {
+    lib.listToAttrs (
+      map (protocol: {
         name = "traceroute-${protocol}";
         value = makeTracerouteRule protocol;
-      })
-      tracerouteProtocols);
+      }) tracerouteProtocols
+    );
 }

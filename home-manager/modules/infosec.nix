@@ -135,7 +135,10 @@ in
       ]
     ))
     pkgs.jwt-cli
-    pkgs.sage
+    (pkgs.sage.override {
+      extraPythonPackages = ps: with ps; [ seaborn ];
+      requireSageTests = false;
+    })
 
     # PHP
     # ===

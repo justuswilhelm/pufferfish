@@ -2,8 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 {
-  vale =
-    (final: previous: rec {
+  vale = (
+    final: previous: rec {
       valeWithStyles = previous.vale.withStyles (s: [
         s.alex
         s.google
@@ -14,7 +14,10 @@
       ]);
       vale-ls = previous.symlinkJoin {
         name = "vale-ls-with-styles-${previous.vale-ls.version}";
-        paths = [ previous.vale-ls valeWithStyles ];
+        paths = [
+          previous.vale-ls
+          valeWithStyles
+        ];
         nativeBuildInputs = [ previous.makeBinaryWrapper ];
         postBuild = ''
           wrapProgram "$out/bin/vale-ls" \
@@ -24,5 +27,6 @@
           inherit (previous.vale-ls.meta) mainProgram;
         };
       };
-    });
+    }
+  );
 }

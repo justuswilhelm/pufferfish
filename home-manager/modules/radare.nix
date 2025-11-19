@@ -2,12 +2,21 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.programs.radare2;
   radare = pkgs.symlinkJoin {
     name = "radare2";
-    paths = [ pkgs.radare2 pkgs.meson pkgs.ninja ];
+    paths = [
+      pkgs.radare2
+      pkgs.meson
+      pkgs.ninja
+    ];
   };
 in
 {

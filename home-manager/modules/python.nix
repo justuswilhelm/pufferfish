@@ -2,7 +2,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   pdbrcpy = pkgs.writeTextFile {
     name = "pdbrc.py";
@@ -57,14 +62,13 @@ in
     ];
 
     home.file.".pdbrc" = lib.mkIf cfg.enable {
-      text =
-        ''
-          import os
-          with open(os.path.expanduser("${pdbrcpy}")) as _f: _f = _f.read()
-          exec(_f)
-          del _f
-        ''
-        + cfg.extraConfig;
+      text = ''
+        import os
+        with open(os.path.expanduser("${pdbrcpy}")) as _f: _f = _f.read()
+        exec(_f)
+        del _f
+      ''
+      + cfg.extraConfig;
     };
 
     # Ensure .local/bin is in PATH for pipx installed apps

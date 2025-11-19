@@ -2,7 +2,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 {
   # https://nixos.wiki/wiki/OpenSnitch
   # https://github.com/evilsocket/opensnitch/wiki/Rules
@@ -23,9 +28,21 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-timesyncd"; }
-            { type = "simple"; operand = "protocol"; data = "udp"; }
-            { type = "regexp"; operand = "dest.port"; data = "^(53|123)$"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-timesyncd";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "udp";
+            }
+            {
+              type = "regexp";
+              operand = "dest.port";
+              data = "^(53|123)$";
+            }
           ];
         };
       };
@@ -41,9 +58,21 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved"; }
-            { type = "simple"; operand = "protocol"; data = "udp"; }
-            { type = "regexp"; operand = "dest.port"; data = "^(53|5353)$"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "udp";
+            }
+            {
+              type = "regexp";
+              operand = "dest.port";
+              data = "^(53|5353)$";
+            }
           ];
         };
       };
@@ -95,9 +124,21 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.git}/libexec/git-core/git-remote-http"; }
-            { type = "simple"; operand = "protocol"; data = "tcp"; }
-            { type = "simple"; operand = "dest.port"; data = "443"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.git}/libexec/git-core/git-remote-http";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "tcp";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "443";
+            }
           ];
         };
       };
@@ -113,8 +154,16 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "simple"; operand = "process.path"; data = "${lib.getBin pkgs.nix}/bin/nix"; }
-            { type = "regexp"; operand = "dest.port"; data = "^(53|443)$"; }
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.nix}/bin/nix";
+            }
+            {
+              type = "regexp";
+              operand = "dest.port";
+              data = "^(53|443)$";
+            }
           ];
         };
       };
@@ -130,9 +179,21 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "network"; operand = "dest.network"; data = "10.0.0.0/16"; }
-            { type = "regexp"; operand = "dest.port"; data = "^600\\d\\d$"; }
-            { type = "simple"; operand = "protocol"; data = "udp"; }
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "10.0.0.0/16";
+            }
+            {
+              type = "regexp";
+              operand = "dest.port";
+              data = "^600\\d\\d$";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "udp";
+            }
             {
               type = "simple";
               operand = "process.path";
@@ -153,10 +214,26 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "network"; operand = "dest.network"; data = "10.0.0.0/16"; }
-            { type = "simple"; operand = "dest.port"; data = "22"; }
-            { type = "simple"; operand = "user.id"; data = "1000"; }
-            { type = "simple"; operand = "protocol"; data = "tcp"; }
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "10.0.0.0/16";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "22";
+            }
+            {
+              type = "simple";
+              operand = "user.id";
+              data = "1000";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "tcp";
+            }
             {
               type = "simple";
               operand = "process.path";
@@ -177,10 +254,26 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "network"; operand = "dest.network"; data = "10.0.0.0/16"; }
-            { type = "simple"; operand = "user.id"; data = "1000"; }
-            { type = "simple"; operand = "dest.port"; data = "22"; }
-            { type = "simple"; operand = "protocol"; data = "tcp"; }
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "10.0.0.0/16";
+            }
+            {
+              type = "simple";
+              operand = "user.id";
+              data = "1000";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "22";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "tcp";
+            }
             {
               type = "simple";
               operand = "process.path";

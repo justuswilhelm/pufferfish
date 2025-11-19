@@ -3,7 +3,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # TODO use Nix module syntax here
-{ lib, config, pkgs, specialArgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  specialArgs,
+  ...
+}:
 let
   applicationsDirectory = "/Users/${specialArgs.name}/Applications";
   # We need to convince macOS to open this as a proper app, not as a child of
@@ -160,26 +166,23 @@ let
       }
       {
         "if".app-id = "org.libreoffice.script";
-        "if".window-title-regex-substring = lib.strings.concatMapStringsSep
-          "|"
-          (s: "^(${s})$")
-          [
-            "(Format|Insert) Cells"
-            "Text Import .+"
-            "Hyperlink"
-            "Save Document"
-            "Delete Contents"
-            "Rename Sheet"
-            "Confirmation"
-            "Page Style: .+"
-            "Chart (Area|Type|Wall)"
-            "Data (Table|Ranges)"
-            "(X|Y) Axis"
-            "Axes"
-            "Legend"
-            "Titles"
-            "Find And Replace"
-          ];
+        "if".window-title-regex-substring = lib.strings.concatMapStringsSep "|" (s: "^(${s})$") [
+          "(Format|Insert) Cells"
+          "Text Import .+"
+          "Hyperlink"
+          "Save Document"
+          "Delete Contents"
+          "Rename Sheet"
+          "Confirmation"
+          "Page Style: .+"
+          "Chart (Area|Type|Wall)"
+          "Data (Table|Ranges)"
+          "(X|Y) Axis"
+          "Axes"
+          "Legend"
+          "Titles"
+          "Find And Replace"
+        ];
         run = [ "layout floating" ];
       }
       {
