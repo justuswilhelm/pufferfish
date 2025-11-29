@@ -169,7 +169,7 @@ in
                 from = {
                   key_code = "right_command";
                 };
-                to = [ { key_code = "left_option"; } ];
+                to = [ { key_code = "right_option"; } ];
               }
               {
                 from = {
