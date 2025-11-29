@@ -29,7 +29,10 @@ let
         authorize with admins_policy
 
 
-        root * ${home}/mediawiki
+        @title path_regexp title ^/wiki/(?<pagename>.*)$
+        rewrite @title /mediawiki/index.php
+        redir / /wiki/Main_Page
+        root * ${home}/www
         php_fastcgi unix//${config.services.caddy.phpFpmSock}
         file_server
       }
