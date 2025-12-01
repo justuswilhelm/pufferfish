@@ -10,6 +10,7 @@
 
     # File, media conversion, Graphics stuff
     pkgs.graphviz
+    pkgs.mscgen
     pkgs.imagemagick
 
     # Networking
