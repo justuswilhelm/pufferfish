@@ -15,13 +15,13 @@ let
 in
 {
   imports = [
-    ./modules/aider.nix
     ./modules/alacritty.nix
     ./modules/business.nix
     ./modules/cmus.nix
     ./modules/fd.nix
     ./modules/http.nix
     ./modules/karabiner.nix
+    ./modules/llm-gens.nix
     ./modules/neomutt.nix
     ./modules/infosec.nix
     ./modules/packages.nix
