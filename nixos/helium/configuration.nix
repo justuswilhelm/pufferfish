@@ -41,6 +41,7 @@
 
     ./blockchains.nix
     ./hhack.nix
+    ./virtualisation.nix
   ];
 
   boot = {
