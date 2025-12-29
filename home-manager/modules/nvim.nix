@@ -47,6 +47,11 @@
       nvim-lspconfig
       # hrsh7th/cmp-nvim-lsp
       cmp-nvim-lsp
+
+      # Snippets
+      # --------
+      luasnip
+
       # Search and file jump
       # --------------------
       # ibhagwan/fzf-lua
