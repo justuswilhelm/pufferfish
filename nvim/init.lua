@@ -15,11 +15,7 @@ vim.call("plug#begin", "~/.config/nvim/plugged")
 
 -- Language specific
 -- -----------------
-Plug("evanleck/vim-svelte", {branch = "main"})
 Plug("guersam/vim-j", {['for'] = "j"})
-Plug("leafgarland/typescript-vim")
-Plug("pangloss/vim-javascript")
-Plug("nvim-orgmode/orgmode")
 -- Commenting these out -- add back if needed Justus 2023-11-15
 -- TODO Still needed? Justus 2023-03-10
 -- Plug("elzr/vim-json", {['for'] = "json"})
@@ -34,13 +30,6 @@ Plug("TobinPalmer/pastify.nvim")
 -- tmux interaction
 -- ----------------
 Plug("epeli/slimux")
-
--- Autocomplete
--- ------------
-Plug("hrsh7th/nvim-cmp", {commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01"})
-Plug("hrsh7th/cmp-buffer")
-Plug("hrsh7th/cmp-path")
-Plug("hrsh7th/cmp-cmdline")
 vim.call('plug#end')
 
 -- Slimux
