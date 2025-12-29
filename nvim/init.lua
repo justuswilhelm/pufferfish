@@ -301,9 +301,8 @@ ack.setup()
 vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
 vim.keymap.set('n', '<leader>ag', ":<C-u>Ack ")
 -- Search for the current file
-vim.keymap.set('n', '<leader>af', function()
-    ack.Ack('grep', vim.fn.expand('%:t'))
-end)
+vim.keymap.set('n', '<leader>af',
+               function() ack.Ack('grep', vim.fn.expand('%:t')) end)
 -- Search for word under cursor
 vim.keymap.set('n', '<leader>aw', function()
     local word = vim.fn.expand('<C-R><C-W>')
