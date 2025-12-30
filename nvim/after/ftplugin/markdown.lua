@@ -8,9 +8,15 @@
 -- 4. Paste
 -- 5. Jump to Mark
 -- `paste code fence`
-vim.keymap.set("n", "<leader>pcf", "o```<esc>mao```<esc>kp`a", {buffer = true})
+vim.keymap.set("n", "<leader>pcf", "o```<esc>mao```<esc>kp`a", {
+    buffer = true,
+    desc = "Paste buffer contents inside a ``` code fence"
+})
 -- `paste plain link`
-vim.keymap.set("n", "<leader>ppl", "i<<esc>pa><esc>", {buffer = true})
+vim.keymap.set("n", "<leader>ppl", "i<<esc>pa><esc>", {
+    buffer = true,
+    desc = "Paste buffer contents inside a <> plain link"
+})
 -- xmap ic :<c-u>call search('```')<cr> \| normal! lvi)<cr>
 -- select line after ```: https://stackoverflow.com/a/60549604
 local function select_inside_fence()
@@ -31,8 +37,11 @@ local function select_inside_fence()
     end
     vim.cmd(string.format('normal! %sGVo%sG', prev + 1, next - 1))
 end
-vim.keymap.set({'x', 'o'}, 'ic', select_inside_fence,
-               {silent = true, buffer = true})
+vim.keymap.set({'x', 'o'}, 'ic', select_inside_fence, {
+    silent = true,
+    buffer = true,
+    desc = "Select code inside a ``` code fence. Example: Press 'vic' inside a code fence to select its contents in visual line mode"
+})
 
 -- Don't conceal
 vim.g.markdown_syntax_conceal = 0
