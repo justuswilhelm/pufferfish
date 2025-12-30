@@ -1,7 +1,6 @@
 -- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
 --
 -- SPDX-License-Identifier: GPL-3.0-or-later
-
 -- Paste clipboard contents with code fence
 -- 1. Write code fence.
 -- 2. Mark.
@@ -9,9 +8,9 @@
 -- 4. Paste
 -- 5. Jump to Mark
 -- `paste code fence`
-vim.keymap.set("n", "<leader>pcf", "o```<esc>mao```<esc>kp`a", {buffer=true})
+vim.keymap.set("n", "<leader>pcf", "o```<esc>mao```<esc>kp`a", {buffer = true})
 -- `paste plain link`
-vim.keymap.set("n", "<leader>ppl", "i<<esc>pa><esc>", {buffer=true})
+vim.keymap.set("n", "<leader>ppl", "i<<esc>pa><esc>", {buffer = true})
 -- xmap ic :<c-u>call search('```')<cr> \| normal! lvi)<cr>
 -- select line after ```: https://stackoverflow.com/a/60549604
 local function select_inside_fence()
