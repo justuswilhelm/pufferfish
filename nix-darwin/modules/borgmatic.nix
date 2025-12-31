@@ -2,7 +2,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   borgmatic = pkgs.borgmatic;
   statePath = "/private/var/lib/borgmatic";
@@ -153,6 +158,7 @@ let
 
       # Too big
       "Users/${config.system.primaryUser}/annex/Movies"
+      "Users/${config.system.primaryUser}/annex/kiwix"
     ];
     exclude_caches = true;
     exclude_nodump = true;
@@ -175,14 +181,20 @@ let
     repositories = [ ];
 
     checks = [
-      { name = "repository"; frequency = "1 month"; }
-      { name = "archives"; frequency = "1 month"; }
+      {
+        name = "repository";
+        frequency = "1 month";
+      }
+      {
+        name = "archives";
+        frequency = "1 month";
+      }
       # Copied from nixos borg config
       {
         name = "spot";
         frequency = "2 weeks";
         count_tolerance_percentage = 5;
-        data_sample_percentage =    0.00001;
+        data_sample_percentage = 0.00001;
         data_tolerance_percentage = 0.000005;
         # pkgs.xxHash only exposes xxhsum, not xxh64sum. xxh64 is the default option, htough
         xxh64sum_command = "${pkgs.xxHash}/bin/xxhsum";
@@ -213,7 +225,9 @@ let
         when = [ "create" ];
         states = [ "finish" ];
         run = [
-          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 0 "{repository} OK")
+          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 0
+            "{repository} OK"
+          )
         ];
       }
       {
@@ -222,7 +236,9 @@ let
         when = [ "create" ];
         run = [
           # The output can contain `'` characters, and that messes with bash
-          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 2 "{repository} ERROR during create {error}")
+          (config.services.nagios.nsca.send_shortcut "lithium.local" "borgmatic.{repository_label}" 2
+            "{repository} ERROR during create {error}"
+          )
         ];
       }
     ];
@@ -231,23 +247,23 @@ let
   borgmaticHelium = "helium";
   borgmaticHeliumHost = "${borgmaticHelium}.local";
   borgmaticHeliumUser = "${config.networking.hostName}-borgbackup";
-  borgmaticHeliumConfig =
-    lib.attrsets.recursiveUpdate borgmaticConfig {
-      repositories = [
-        {
-          path = "ssh://${borgmaticHeliumUser}@${borgmaticHeliumHost}/srv/borgbackup/${config.networking.hostName}";
-          label = borgmaticHelium;
-        }
-      ];
-      commands = borgmaticConfig.commands ++ [
-        {
-          before = "action";
-          run = [ "/sbin/ping -q -c 1 ${borgmaticHeliumHost} > /dev/null || exit 75" ];
-        }
-      ];
-    };
+  borgmaticHeliumConfig = lib.attrsets.recursiveUpdate borgmaticConfig {
+    repositories = [
+      {
+        path = "ssh://${borgmaticHeliumUser}@${borgmaticHeliumHost}/srv/borgbackup/${config.networking.hostName}";
+        label = borgmaticHelium;
+      }
+    ];
+    commands = borgmaticConfig.commands ++ [
+      {
+        before = "action";
+        run = [ "/sbin/ping -q -c 1 ${borgmaticHeliumHost} > /dev/null || exit 75" ];
+      }
+    ];
+  };
 
-  makeYaml = config:
+  makeYaml =
+    config:
     let
       yamlFormat = pkgs.formats.yaml { };
       cfg = yamlFormat.generate "config.yaml" config;
@@ -269,136 +285,153 @@ with lib;
     enable = mkEnableOption "borgmatic backup service";
   };
 
-  config = mkIf config.services.borgmatic.enable
-    {
-      environment.systemPackages = [ pkgs.borgbackup borgmatic unmountSnapshot ];
+  config = mkIf config.services.borgmatic.enable {
+    environment.systemPackages = [
+      pkgs.borgbackup
+      borgmatic
+      unmountSnapshot
+    ];
 
-      environment.etc."borgmatic/base/borgmatic_base.yaml".source = makeYaml borgmaticConfig;
-      environment.etc."borgmatic.d/${borgmaticHelium}.yaml".source = makeYaml borgmaticHeliumConfig;
-      environment.etc."ssh/ssh_config.d/borgmatic.conf".text = ''
-        Match host="*.repo.borgbase.com"
-          ServerAliveInterval 10
-          ServerAliveCountMax 30
-          UserKnownHostsFile=${statePath}/ssh/known_hosts
-          IdentityFile ${statePath}/ssh/id_rsa
-          IdentitiesOnly yes
-        Match host="${borgmaticHeliumHost}" user="${borgmaticHeliumUser}"
-          ServerAliveInterval 10
-          ServerAliveCountMax 30
-          UserKnownHostsFile=${statePath}/ssh/known_hosts
-          IdentityFile ${statePath}/ssh/id_rsa
-          IdentitiesOnly yes
-      '';
+    environment.etc."borgmatic/base/borgmatic_base.yaml".source = makeYaml borgmaticConfig;
+    environment.etc."borgmatic.d/${borgmaticHelium}.yaml".source = makeYaml borgmaticHeliumConfig;
+    environment.etc."ssh/ssh_config.d/borgmatic.conf".text = ''
+      Match host="*.repo.borgbase.com"
+        ServerAliveInterval 10
+        ServerAliveCountMax 30
+        UserKnownHostsFile=${statePath}/ssh/known_hosts
+        IdentityFile ${statePath}/ssh/id_rsa
+        IdentitiesOnly yes
+      Match host="${borgmaticHeliumHost}" user="${borgmaticHeliumUser}"
+        ServerAliveInterval 10
+        ServerAliveCountMax 30
+        UserKnownHostsFile=${statePath}/ssh/known_hosts
+        IdentityFile ${statePath}/ssh/id_rsa
+        IdentitiesOnly yes
+    '';
 
-      services.newsyslog.modules.borgmatic = {
-        ${logPath} = {
-          mode = "640";
-          count = 10;
-          size = "*";
-          when = "$D0";
-          flags = "J";
-        };
-        ${maintainLogPath} = {
-          mode = "640";
-          count = 10;
-          size = "*";
-          when = "$D0";
-          flags = "J";
-        };
+    services.newsyslog.modules.borgmatic = {
+      ${logPath} = {
+        mode = "640";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
       };
-
-      services.nagios.objectDefs =
-        let
-          # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/freshness.html
-          cfg = pkgs.writeText "borgmatic.cfg" ''
-            define service {
-              name generic-borgmatic
-
-              use generic-service
-              active_checks_enabled 0
-              freshness_threshold 86400  ; 24 hours
-              check_freshness 1
-              check_command check_dummy!2 "Haven't heard from this borgmatic backup in a while "
-
-              register 0 ; this is a template
-            }
-            define service {
-              use generic-borgmatic
-              host_name lithium.local
-              service_description borgmatic.helium
-              freshness_threshold 1209600 ; 2 weeks
-              display_name Borgmatic on Helium
-            }
-            define service {
-              use generic-borgmatic
-              host_name lithium.local
-              service_description borgmatic.borgbase
-              display_name Borgmatic on BorgBase
-            }
-          '';
-        in
-        lib.optional config.services.nagios.enable cfg;
-
-      launchd.daemons.borgmatic = {
-        path = [ borgmatic pkgs.moreutils pkgs.coreutils ];
-        script = ''
-          timeout --kill-after=${toString killAfter}s \
-            --signal INT ${toString timeout}s \
-            /usr/bin/caffeinate -s borgmatic create 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
-        '';
-        serviceConfig = {
-          # Borgmatic's syslog doesn't appear to work on macOS.
-          # We might be missing out on some error messages
-          # All logged to stdout now using `ts`
-          StandardOutPath = logPath;
-          # Start in the state path
-          WorkingDirectory = statePath;
-          # Run every 'every' hours
-          StartCalendarInterval =
-            let
-              every = 3;
-              range = lib.lists.range 0 (24 / every - 1);
-            in
-            map (h: { Hour = h * every; Minute = 0; }) range;
-          # Performance
-          ProcessType = "Background";
-          # LowPriorityBackgroundIO = true;
-          # Maybe:
-          # NetworkState = true;
-          # So that we don't try to back up when not connected to the network
-          # LowPriorityIO = true;
-        };
-      };
-
-      launchd.daemons.borgmatic-maintain = {
-        path = [ borgmatic pkgs.moreutils pkgs.coreutils ];
-        script = ''
-          timeout --kill-after=${toString killAfter}s \
-            --signal INT ${toString timeout}s \
-            /usr/bin/caffeinate -s borgmatic prune compact check 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
-        '';
-        serviceConfig = {
-          # Borgmatic's syslog doesn't appear to work on macOS.
-          # We might be missing out on some error messages
-          # All logged to stdout now using `ts`
-          StandardOutPath = maintainLogPath;
-          # Start in the state path
-          WorkingDirectory = statePath;
-          # Run some other time than the main process
-          StartCalendarInterval = { Hour = 14; Minute = 0; };
-          # Performance
-          ProcessType = "Background";
-        };
-      };
-
-      system.activationScripts.preActivation = {
-        text = ''
-          mkdir -p "$(dirname ${logPath})" ${statePath}
-          chmod go= ${statePath}
-
-          # Validate borgbase.yaml, which we don't version control
-          ${borgmatic}/bin/borgmatic config validate --config /etc/borgmatic.d/borgbase.yaml
-        '';
+      ${maintainLogPath} = {
+        mode = "640";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
       };
     };
+
+    services.nagios.objectDefs =
+      let
+        # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/freshness.html
+        cfg = pkgs.writeText "borgmatic.cfg" ''
+          define service {
+            name generic-borgmatic
+
+            use generic-service
+            active_checks_enabled 0
+            freshness_threshold 86400  ; 24 hours
+            check_freshness 1
+            check_command check_dummy!2 "Haven't heard from this borgmatic backup in a while "
+
+            register 0 ; this is a template
+          }
+          define service {
+            use generic-borgmatic
+            host_name lithium.local
+            service_description borgmatic.helium
+            freshness_threshold 1209600 ; 2 weeks
+            display_name Borgmatic on Helium
+          }
+          define service {
+            use generic-borgmatic
+            host_name lithium.local
+            service_description borgmatic.borgbase
+            display_name Borgmatic on BorgBase
+          }
+        '';
+      in
+      lib.optional config.services.nagios.enable cfg;
+
+    launchd.daemons.borgmatic = {
+      path = [
+        borgmatic
+        pkgs.moreutils
+        pkgs.coreutils
+      ];
+      script = ''
+        timeout --kill-after=${toString killAfter}s \
+          --signal INT ${toString timeout}s \
+          /usr/bin/caffeinate -s borgmatic create 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+      '';
+      serviceConfig = {
+        # Borgmatic's syslog doesn't appear to work on macOS.
+        # We might be missing out on some error messages
+        # All logged to stdout now using `ts`
+        StandardOutPath = logPath;
+        # Start in the state path
+        WorkingDirectory = statePath;
+        # Run every 'every' hours
+        StartCalendarInterval =
+          let
+            every = 3;
+            range = lib.lists.range 0 (24 / every - 1);
+          in
+          map (h: {
+            Hour = h * every;
+            Minute = 0;
+          }) range;
+        # Performance
+        ProcessType = "Background";
+        # LowPriorityBackgroundIO = true;
+        # Maybe:
+        # NetworkState = true;
+        # So that we don't try to back up when not connected to the network
+        # LowPriorityIO = true;
+      };
+    };
+
+    launchd.daemons.borgmatic-maintain = {
+      path = [
+        borgmatic
+        pkgs.moreutils
+        pkgs.coreutils
+      ];
+      script = ''
+        timeout --kill-after=${toString killAfter}s \
+          --signal INT ${toString timeout}s \
+          /usr/bin/caffeinate -s borgmatic prune compact check 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+      '';
+      serviceConfig = {
+        # Borgmatic's syslog doesn't appear to work on macOS.
+        # We might be missing out on some error messages
+        # All logged to stdout now using `ts`
+        StandardOutPath = maintainLogPath;
+        # Start in the state path
+        WorkingDirectory = statePath;
+        # Run some other time than the main process
+        StartCalendarInterval = {
+          Hour = 14;
+          Minute = 0;
+        };
+        # Performance
+        ProcessType = "Background";
+      };
+    };
+
+    system.activationScripts.preActivation = {
+      text = ''
+        mkdir -p "$(dirname ${logPath})" ${statePath}
+        chmod go= ${statePath}
+
+        # Validate borgbase.yaml, which we don't version control
+        ${borgmatic}/bin/borgmatic config validate --config /etc/borgmatic.d/borgbase.yaml
+      '';
+    };
+  };
 }

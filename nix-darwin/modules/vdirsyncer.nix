@@ -2,7 +2,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -54,7 +59,11 @@ in
       lib.optional config.services.nagios.enable nagiosCfg;
 
     launchd.user.agents.vdirsyncer = {
-      path = [ pkgs.coreutils pkgs.moreutils vdirsyncer ];
+      path = [
+        pkgs.coreutils
+        pkgs.moreutils
+        vdirsyncer
+      ];
       script = ''
         (
           if ! /sbin/ping -q -c 1 example.com > /dev/null

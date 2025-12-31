@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services.skhd = {
     enable = true;
     # https://github.com/koekeishiya/skhd/issues/1
@@ -13,7 +14,9 @@
       ''
         play : ${cmus-remote} -u
         rewind : ${cmus-remote} -r
+        previous : ${cmus-remote} -r
         fast : ${cmus-remote} -n
+        next : ${cmus-remote} -n
       '';
   };
 }

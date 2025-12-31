@@ -18,4 +18,3 @@ pkgs.stdenv.mkDerivation rec {
     cp src/nsca src/send_nsca $out/bin
   '';
 }
-

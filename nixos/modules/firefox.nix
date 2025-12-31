@@ -15,7 +15,11 @@ in
   services.opensnitch = {
     rules =
       let
-        processPath = { type = "regexp"; operand = "process.path"; data = firefoxBin; };
+        processPath = {
+          type = "regexp";
+          operand = "process.path";
+          data = firefoxBin;
+        };
       in
       {
         forbid-mozilla = {
@@ -47,7 +51,11 @@ in
             operand = "list";
             list = [
               processPath
-              { type = "simple"; operand = "dest.port"; data = "443"; }
+              {
+                type = "simple";
+                operand = "dest.port";
+                data = "443";
+              }
             ];
           };
         };
@@ -65,8 +73,16 @@ in
             operand = "list";
             list = [
               processPath
-              { type = "simple"; operand = "dest.port"; data = "80"; }
-              { type = "network"; operand = "dest.network"; data = "10.0.0.0/8"; }
+              {
+                type = "simple";
+                operand = "dest.port";
+                data = "80";
+              }
+              {
+                type = "network";
+                operand = "dest.network";
+                data = "10.0.0.0/8";
+              }
             ];
           };
         };
@@ -83,7 +99,11 @@ in
             operand = "list";
             list = [
               processPath
-              { type = "simple"; operand = "dest.port"; data = "80"; }
+              {
+                type = "simple";
+                operand = "dest.port";
+                data = "80";
+              }
             ];
           };
         };

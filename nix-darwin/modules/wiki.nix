@@ -2,14 +2,17 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   username = "wiki";
   groupname = "wiki";
   home = "/var/lib/wiki";
   logPath = "/var/log/${username}";
-  host = "localhost";
-  port = 18200;
   caddyHost = "lithium.local";
   caddyPort = 10106;
 
@@ -18,9 +21,21 @@ let
     https://${caddyHost}:${toString caddyPort} {
       import certs
 
-      root * ${home}/mediawiki
-      php_fastcgi unix//${config.services.caddy.phpFpmSock}
-      file_server
+      route /auth* {
+        authenticate with myportal
+      }
+
+      route {
+        authorize with admins_policy
+
+
+        @title path_regexp title ^/wiki/(?<pagename>.*)$
+        rewrite @title /mediawiki/index.php
+        redir / /wiki/Main_Page
+        root * ${home}/www
+        php_fastcgi unix//${config.services.caddy.phpFpmSock}
+        file_server
+      }
 
       log {
         format console
@@ -43,6 +58,8 @@ in
   users.knownGroups = [ "wiki" ];
   users.knownUsers = [ "wiki" ];
 
+  environment.etc."wiki/LocalSettings.php".source = ./wiki/LocalSettings.php;
+
   services.nagios.objectDefs =
     let
       healthEndpoint = "/index.php?title=Main_Page";
@@ -52,7 +69,7 @@ in
             host_name ${caddyHost}
             service_description mediawiki
             display_name MediaWiki (Caddy)
-            check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --expect='HTTP/2 200' --url=${healthEndpoint}
+            check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --expect='HTTP/2 302' --url=${healthEndpoint}
         }
       '';
     in
@@ -64,11 +81,27 @@ in
   };
 
   system.activationScripts.postActivation = {
-    text = ''
+    text = let
+      localSettingsSrc = "/etc/wiki/LocalSettings.php";
+      localSettingsDest = "${home}/www/mediawiki/LocalSettings.php";
+    in
+    ''
       mkdir -p ${logPath} ${home}
       chown caddy:caddy ${logPath} ${home}
       chmod 750 ${home}
       chmod 750 ${logPath}
+
+      if test -L "${localSettingsDest}"; then
+        if test "$(readlink "${localSettingsDest}")" != "${localSettingsSrc}"; then
+          echo "Error: ${localSettingsDest} is a symbolic link but points to the wrong location"
+          exit 1
+        fi
+      elif test -e "${localSettingsDest}"; then
+        echo "Error: ${localSettingsDest} exists but is not a symbolic link"
+        exit 1
+      else
+        ln -s "${localSettingsSrc}" "${localSettingsDest}"
+      fi
     '';
   };
 }

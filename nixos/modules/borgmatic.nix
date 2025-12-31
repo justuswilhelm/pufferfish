@@ -2,14 +2,23 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.services.borgmatic;
   yamlFormat = pkgs.formats.yaml { };
   # Share this with other modules
   # Or use nixos configuration module
   borgmatic-config = {
-    source_directories = [ "/home" "/etc" "/var" ];
+    source_directories = [
+      "/home"
+      "/etc"
+      "/var"
+    ];
     exclude_patterns = cfg.extra_exclude_patterns;
     encryption_passcommand = "${pkgs.coreutils}/bin/cat /etc/borgmatic/passphrase";
     ssh_command = "ssh -i /etc/borgmatic/id_rsa";
@@ -20,8 +29,14 @@ let
     keep_yearly = 1;
 
     checks = [
-      { name = "repository"; frequency = "1 month"; }
-      { name = "archives"; frequency = "1 month"; }
+      {
+        name = "repository";
+        frequency = "1 month";
+      }
+      {
+        name = "archives";
+        frequency = "1 month";
+      }
       {
         name = "spot";
         frequency = "2 weeks";
@@ -41,7 +56,8 @@ let
         path = "/srv/borgbackup/${config.networking.hostName}";
       }
     ];
-  } // borgmatic-config;
+  }
+  // borgmatic-config;
 in
 {
   options = {
@@ -66,11 +82,31 @@ in
         type = "list";
         operand = "list";
         list = [
-          { type = "regexp"; operand = "process.path"; data = "${lib.getBin pkgs.openssh}/bin/ssh"; }
-          { type = "regexp"; operand = "dest.host"; data = ".*\\.repo\\.borgbase\\.com"; }
-          { type = "simple"; operand = "dest.port"; data = "22"; }
-          { type = "simple"; operand = "user.id"; data = "0"; }
-          { type = "simple"; operand = "protocol"; data = "tcp"; }
+          {
+            type = "regexp";
+            operand = "process.path";
+            data = "${lib.getBin pkgs.openssh}/bin/ssh";
+          }
+          {
+            type = "regexp";
+            operand = "dest.host";
+            data = ".*\\.repo\\.borgbase\\.com";
+          }
+          {
+            type = "simple";
+            operand = "dest.port";
+            data = "22";
+          }
+          {
+            type = "simple";
+            operand = "user.id";
+            data = "0";
+          }
+          {
+            type = "simple";
+            operand = "protocol";
+            data = "tcp";
+          }
         ];
       };
     };

@@ -3,7 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # TODO make this a nix module
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   radicaleState = "/var/lib/radicale";
   logPath = "/var/log/radicale/radicale.log";
@@ -14,21 +19,23 @@ let
   # TODO check if this value can't be refactored somehow
   caddyHost = "lithium.local";
   port = 18110;
-  radicaleConfig = pkgs.writeText "config" (lib.generators.toINI { } {
-    server = {
-      hosts = "127.0.0.1:${toString port}";
-    };
+  radicaleConfig = pkgs.writeText "config" (
+    lib.generators.toINI { } {
+      server = {
+        hosts = "127.0.0.1:${toString port}";
+      };
 
-    auth = {
-      type = "htpasswd";
-      htpasswd_filename = "${radicaleState}/users";
-      htpasswd_encryption = "bcrypt";
-    };
+      auth = {
+        type = "htpasswd";
+        htpasswd_filename = "${radicaleState}/users";
+        htpasswd_encryption = "bcrypt";
+      };
 
-    storage = {
-      filesystem_folder = "${radicaleState}/collections";
-    };
-  });
+      storage = {
+        filesystem_folder = "${radicaleState}/collections";
+      };
+    }
+  );
 
   caddyConfig = ''
     # Radicale
@@ -70,7 +77,9 @@ in
       '';
     in
     lib.optional config.services.nagios.enable cfg;
-  users.groups.radicale = { gid = 1020; };
+  users.groups.radicale = {
+    gid = 1020;
+  };
   users.users.radicale = {
     description = "Radicale User";
     gid = 1020;
@@ -118,4 +127,3 @@ in
     '';
   };
 }
-

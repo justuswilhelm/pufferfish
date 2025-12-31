@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Programs used to interact with the web
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = [
     pkgs.httrack
     pkgs.curl

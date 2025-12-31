@@ -33,11 +33,7 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
                 --max-depth 5 \
                 . $where
         end |
-        # SPDX-SnippetBegin
-        # SPDX-License-Identifier: CC-BY-SA-4.0
-        # SPDX-SnippetCopyrightText: Digital Trauma
-        # sort -uk2 | sort -n | cut -f2- |
-        # SPDX-SnippetEnd
+        perl -ne 'print unless $seen{$_}++'  |
         fzf --scheme=history --query=$query
     )
         echo "Couldn't determine new tmux session directory" >/dev/stderr

@@ -136,7 +136,7 @@ in
     ))
     pkgs.jwt-cli
     (pkgs.sage.override {
-      extraPythonPackages = ps: with ps; [ seaborn];
+      extraPythonPackages = ps: with ps; [ seaborn ];
       requireSageTests = false;
     })
 

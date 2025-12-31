@@ -2,7 +2,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -28,14 +33,21 @@ in
     };
 
     launchd.user.agents.sync-git-annex = {
-      path = [ pkgs.python3 pkgs.moreutils pkgs.fd pkgs.git pkgs.git-annex pkgs.openssh ];
+      path = [
+        pkgs.python3
+        pkgs.moreutils
+        pkgs.fd
+        pkgs.git
+        pkgs.git-annex
+        pkgs.openssh
+      ];
       # TODO consider adding timeout
       script = ''
         /Users/${config.system.primaryUser}/.dotfiles/bin/sync-git-annex --non-interactive \
           2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
       '';
       serviceConfig = {
-        StartCalendarInterval = [{ Minute = 0; }];
+        StartCalendarInterval = [ { Minute = 0; } ];
         UserName = config.system.primaryUser;
         StandardOutPath = logPath;
       };

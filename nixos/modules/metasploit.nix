@@ -64,10 +64,12 @@ in
   services.postgresql = {
     enable = true;
     ensureDatabases = [ "msf" ];
-    ensureUsers = [{
-      name = "msf";
-      ensureDBOwnership = true;
-    }];
+    ensureUsers = [
+      {
+        name = "msf";
+        ensureDBOwnership = true;
+      }
+    ];
     authentication = ''
       local msf all peer map=msf
       host msf all 127.0.0.1/32 trust

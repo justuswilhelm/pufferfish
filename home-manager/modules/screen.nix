@@ -2,7 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ lib, pkgs, config, options, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  options,
+  ...
+}:
 {
   home.file.".screenrc".text = ''
     defscrolblack ${toString (10 * 1000 * 1000)}

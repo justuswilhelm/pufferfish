@@ -6,30 +6,35 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, specialArgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  specialArgs,
+  ...
+}:
 
 {
-  imports =
-    [
-      ../modules/compat.nix
-      ../modules/infosec.nix
-      ../modules/firefox.nix
-      ../modules/man.nix
-      ../modules/network-debug.nix
-      ../modules/networkd.nix
-      ../modules/nix.nix
-      ../modules/opensnitch.nix
-      ../modules/openvpn.nix
-      ../modules/pipewire.nix
-      ../modules/sway.nix
-      ../modules/wlan.nix
-      ../modules/yubikey.nix
+  imports = [
+    ../modules/compat.nix
+    ../modules/infosec.nix
+    ../modules/firefox.nix
+    ../modules/man.nix
+    ../modules/network-debug.nix
+    ../modules/networkd.nix
+    ../modules/nix.nix
+    ../modules/opensnitch.nix
+    ../modules/openvpn.nix
+    ../modules/pipewire.nix
+    ../modules/sway.nix
+    ../modules/wlan.nix
+    ../modules/yubikey.nix
 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./networking.nix
-      # ./fluentd.nix
-    ];
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./networking.nix
+    # ./fluentd.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
