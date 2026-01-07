@@ -119,12 +119,6 @@ in
               }
               {
                 from = {
-                  key_code = "grave_accent_and_tilde";
-                };
-                to = [ { key_code = "vk_none"; } ];
-              }
-              {
-                from = {
                   key_code = "non_us_backslash";
                 };
                 to = [ { key_code = "grave_accent_and_tilde"; } ];
@@ -192,6 +186,18 @@ in
                   key_code = "return_or_enter";
                 };
                 to = [ { key_code = "vk_none"; } ];
+              }
+              {
+                from = {
+                  consumer_key_code = "scan_previous_track";
+                };
+                to = [ { key_code = "rewind"; } ];
+              }
+              {
+                from = {
+                  consumer_key_code = "scan_next_track";
+                };
+                to = [ { key_code = "fastforward"; } ];
               }
             ];
             treat_as_built_in_keyboard = false;
