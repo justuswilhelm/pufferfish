@@ -6,4 +6,4 @@
 # Format lua scripts inside my dotfiles
 set -e
 
-lua-format --in-place "$DOTFILES"/nvim/**.lua
+find "$DOTFILES/nvim" -name '*.lua' -print0 | xargs -0 lua-format --verbose --in-place

@@ -1,0 +1,43 @@
+{
+    "name": "snippets",
+    "contributes": {
+        "snippets": [
+            {
+                "language": "all",
+                "path": "./global.json"
+            },
+            {
+                "language": "editorconfig",
+                "path": "./editorconfig.json"
+            },
+            {
+                "language": "ledger",
+                "path": "./ledger.json"
+            },
+            {
+                "language": "lua",
+                "path": "./lua.json"
+            },
+            {
+                "language": "markdown",
+                "path": "./markdown.json"
+            },
+            {
+                "language": "org",
+                "path": "./org.json"
+            },
+            {
+                "language": "python",
+                "path": "./python.json"
+            },
+            {
+                "language": "svelte",
+                "path": "./svelte.json"
+            },
+            {
+                "language": "typescript",
+                "path": "./typescript.json"
+            }
+        ]
+    }
+}

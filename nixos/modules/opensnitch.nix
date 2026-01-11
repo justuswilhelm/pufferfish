@@ -53,6 +53,7 @@
         enabled = true;
         action = "allow";
         duration = "always";
+        precedence = true;
         operator = {
           type = "list";
           operand = "list";
@@ -72,6 +73,42 @@
               operand = "dest.port";
               data = "^(53|5353)$";
             }
+          ];
+        };
+      };
+      allow-local-dns = {
+        name = "allow-local-dns";
+        description = "Allow processes to access 127.0.0.0/24 53/udp";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        precedence = true;
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "network"; operand = "dest.network"; data = "127.0.0.0/24"; }
+            { type = "simple"; operand = "protocol"; data = "udp"; }
+            { type = "simple"; operand = "dest.port"; data = "53"; }
+          ];
+        };
+      };
+      forbid-other-dns = {
+        name = "deny-other-dns";
+        description = "Forbid other processes from sending on 53/udp";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "reject";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            { type = "simple"; operand = "protocol"; data = "udp"; }
+            { type = "simple"; operand = "dest.port"; data = "53"; }
           ];
         };
       };

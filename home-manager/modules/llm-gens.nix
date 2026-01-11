@@ -31,6 +31,10 @@ in
   programs.git.ignores = [ ".aider*" ];
 
   home.packages = [
+    pkgs.llm
+
+    pkgs.goose-cli
+
     pkgs.pipx
     (pkgs.writeShellApplication {
       name = "aid";
