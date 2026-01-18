@@ -23,7 +23,7 @@ let
       "github.com/aksdb/caddy-cgi/v2@v2.2.5"
       "github.com/greenpau/caddy-security@v1.1.29"
     ];
-    hash = "sha256-9V1q8g4MRNnZRn2a2lAJCbBe/jK3pvTfufWxzT8Jg0M=";
+    hash = "sha256-wTCn3U23snBWzFu7bfDz9+UgARzYv/AoUH8ypsku22I=";
   };
   caddyCookieLifetime = 60 * 60 * 24 * 3;
   caddyConfig = pkgs.writeText "Caddyfile" (
