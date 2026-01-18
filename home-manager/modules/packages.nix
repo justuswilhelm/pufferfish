@@ -32,7 +32,7 @@
     pkgs.hugo
 
     # Compilers, Interpreters, VMs
-    pkgs.nodejs_20
+    pkgs.nodejs_24
     pkgs.go
     pkgs.j
 
