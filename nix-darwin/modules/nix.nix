@@ -13,4 +13,5 @@
     extra-sandbox-paths = [ "/nix/store" ];
   };
   nix.optimise.automatic = true;
+  environment.systemPackages = [ pkgs.nix-tree ];
 }
