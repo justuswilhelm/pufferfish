@@ -26,10 +26,6 @@ in
     pkgs.binwalk
     pkgs.nasm
 
-    # Debugger
-    # ========
-    pkgs.qemu
-
     # Networking
     # ==========
     pkgs.whois
