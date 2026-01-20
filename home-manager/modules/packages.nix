@@ -30,6 +30,7 @@
     # Build tools
     pkgs.cmake
     pkgs.hugo
+    pkgs.gettext
 
     # Compilers, Interpreters, VMs
     pkgs.nodejs_24
