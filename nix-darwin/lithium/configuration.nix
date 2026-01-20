@@ -42,10 +42,6 @@ in
   environment.systemPackages = [
     # Hot key mapping
     pkgs.skhd
-    # TODO re-check these packages after some time passes
-    # Databases
-    # Not sure if this needs to be available outside somehow
-    pkgs.postgresql_15
 
     # Shell
     # Not sure if this needs to be available outside somehow
