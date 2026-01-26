@@ -56,7 +56,7 @@ def can_ping_remote(remote_url: str) -> bool:
         return True
 
 
-def main(remote: str, non_interactive: bool):
+def main(remote: str, non_interactive: bool, push: bool):
     if remote:
         logger.info("Syncing with remote '%s'", remote)
     else:
@@ -111,8 +111,10 @@ def main(remote: str, non_interactive: bool):
 
         logger.info("git-annex at '%s': Starting sync", annex)
 
+        cmd = ["git", "annex", "sync", "--content", "--no-commit"]
         # Prefer pull over push because other remotes might be offline
-        cmd = ["git", "annex", "sync", "--content", "--no-commit", "--no-push"]
+        if not push:
+            cmd = [*cmd, "--no-push"]
         if remote:
             cmd = [*cmd, remote]
 
@@ -149,5 +151,10 @@ if __name__ == "__main__":
         action="store_true",
         help="Skip prompts and continue automatically)",
     )
+    parser.add_argument(
+        "--push",
+        action="store_true",
+        help="Push to remotes",
+    )
     args = parser.parse_args()
-    main(args.remote, args.non_interactive)
+    main(args.remote, args.non_interactive, args.push)
