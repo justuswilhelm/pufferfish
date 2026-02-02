@@ -14,9 +14,7 @@
       ''
         play : ${cmus-remote} -u
         rewind : ${cmus-remote} -r
-        previous : ${cmus-remote} -r
         fast : ${cmus-remote} -n
-        next : ${cmus-remote} -n
       '';
   };
 }

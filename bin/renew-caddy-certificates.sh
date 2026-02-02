@@ -8,15 +8,6 @@
 
 set -e
 
-# Want 600
-umask 077
-# Create a CSR
-sudo -u caddy openssl ecparam \
-  -name prime256v1 \
-  -genkey \
-  -noout \
-  -out /var/lib/caddy/secrets/lithium-server.key
-
 # Want 644
 umask 033
 sudo -u caddy openssl req -new \
@@ -26,8 +17,22 @@ sudo -u caddy openssl req -new \
   -nodes \
   -key /var/lib/caddy/secrets/lithium-server.key \
   -out /var/lib/caddy/certs/lithium-server.csr
+echo "Created CSR"
 
-# Sign the CSR
+# Want 600
+umask 077
+echo "\
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature
+extendedKeyUsage = serverAuth
+subjectAltName = DNS:lithium.local
+issuerAltName = issuer:copy\
+" | sudo -u lithium-ca tee /var/lib/lithium-ca/signed/lithium-server.ext
+echo "Created extension:"
+stat /var/lib/lithium-ca/signed/lithium-server.ext
+
 sudo -u lithium-ca openssl x509 \
   -req \
   -sha256 \
@@ -37,10 +42,10 @@ sudo -u lithium-ca openssl x509 \
   -CAcreateserial \
   -extfile /var/lib/lithium-ca/signed/lithium-server.ext \
   -out /var/lib/lithium-ca/signed/lithium-server.crt
+echo "Signed CSR"
 
-# Move the cert into the new location
-sudo install -m 644 -o caddy /var/lib/lithium-ca/signed/lithium-server.crt /var/lib/caddy/certs/
+sudo install -v -m 644 -o caddy /var/lib/lithium-ca/signed/lithium-server.crt /var/lib/caddy/certs/
+echo "Installed certificate"
 
-# Restart caddy
-echo "Restarting caddy"
-sudo launchctl kill 15 system/net.jwpconsulting.caddy -k -p
+sudo launchctl kickstart -kp system/net.jwpconsulting.caddy
+echo "Restarted caddy"

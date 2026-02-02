@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
+# This file contains modules that are safe to import by default
 
 {
   lib,
@@ -11,6 +12,7 @@
 }:
 {
   imports = [
+    ./modules/cmus.nix
     ./modules/direnv.nix
     ./modules/fish.nix
     ./modules/fonts.nix

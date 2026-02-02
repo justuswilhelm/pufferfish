@@ -25,6 +25,7 @@
     ../modules/nix.nix
     ../modules/opensnitch.nix
     ../modules/openvpn.nix
+    ../modules/packages.nix
     ../modules/pipewire.nix
     ../modules/sway.nix
     ../modules/wlan.nix

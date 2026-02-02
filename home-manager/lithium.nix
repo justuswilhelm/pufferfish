@@ -17,7 +17,6 @@ in
   imports = [
     ./modules/alacritty.nix
     ./modules/business.nix
-    ./modules/cmus.nix
     ./modules/fd.nix
     ./modules/http.nix
     ./modules/karabiner.nix
@@ -26,7 +25,6 @@ in
     ./modules/infosec.nix
     ./modules/packages.nix
     ./modules/pomoglorbo.nix
-    ./modules/cmus.nix
     ./modules/rust.nix
     ./modules/text-proc.nix
     ./modules/timewarrior.nix
