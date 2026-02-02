@@ -11,6 +11,7 @@
   ...
 }:
 let
+  # Aider config
   yamlFormat = pkgs.formats.yaml { };
   config = {
     # https://aider.chat/docs/leaderboards/
@@ -23,6 +24,11 @@ let
     # Fixed Git identity retrieval to respect global configuration, by Akira Komamura.
     git = true;
     analytics = false;
+    # auto-lint is very fragile
+    auto-lint = false;
+    # nixpkgs Aider means we can't update it
+    check-update = false;
+    show-release-notes = false;
   };
   isLinux = lib.strings.hasSuffix "-linux" specialArgs.system;
 in
