@@ -35,7 +35,8 @@
     # Compilers, Interpreters, VMs
     pkgs.nodejs_24
     pkgs.go
-    pkgs.j
+    # pkgs.j
+    pkgs.ngn-k
 
     # TUIs
     pkgs.htop

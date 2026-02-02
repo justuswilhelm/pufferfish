@@ -35,20 +35,6 @@ in
 
     pkgs.goose-cli
 
-    pkgs.pipx
-    (pkgs.writeShellApplication {
-      name = "aid";
-      runtimeInputs = lib.optionals isLinux [
-        pkgs.stdenv.cc.cc.lib
-        pkgs.glibc
-        pkgs.ungoogled-chromium
-        pkgs.bash
-      ];
-      text = ''
-        ${lib.optionalString isLinux ''export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:$${LD_LIBRARY_PATH:-}"''}
-        export SHELL=bash
-        pipx run aider-chat "$@"
-      '';
-    })
+    pkgs.aider-chat-with-playwright
   ];
 }
