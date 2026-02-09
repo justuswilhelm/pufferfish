@@ -1,6 +1,10 @@
 {
     "markdown link": {
-        "prefix": ["link"],
+        "prefix": ["lnk"],
         "body": ["[${1:label}](${2:url})"]
+    },
+    "reference": {
+        "prefix": ["ref"],
+        "body": ["[^${1:label}]: <${2:url}> \"{$3:title}\""]
     }
 }

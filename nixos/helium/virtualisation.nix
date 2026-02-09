@@ -6,12 +6,27 @@
   config,
   lib,
   pkgs,
+  specialArgs,
   ...
 }:
 {
   # virt-manager
-  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd = {
+  enable = true;
+    qemu = {
+    # Try fixing tpm issue
+      swtpm.enable = true;
+    };
+  };
   programs.virt-manager.enable = true;
+
+  # Try fixing group issue
+  users.users.${specialArgs.name} = {
+    extraGroups = [
+      "libvirtd"
+    ];
+  };
+
 
   # Thanks to:
   # https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/

@@ -9,8 +9,6 @@
     extraGroups = [
       # Enable sudo
       "wheel"
-      # allow using virtd
-      "libvirtd"
       # For serial port
       # https://wiki.nixos.org/wiki/Serial_Console#Unprivileged_access_to_serial_device
       "dialout"

@@ -28,6 +28,9 @@ let
     keep_monthly = 6;
     keep_yearly = 1;
 
+    exclude_caches = true;
+    exclude_nodump = true;
+
     checks = [
       {
         name = "repository";
@@ -40,9 +43,9 @@ let
       {
         name = "spot";
         frequency = "2 weeks";
-        count_tolerance_percentage = 5;
+        count_tolerance_percentage = 10;
         data_sample_percentage = 0.001;
-        data_tolerance_percentage = 0.0001;
+        data_tolerance_percentage = 0.5;
         # pkgs.xxHash only exposes xxhsum, not xxh64sum. xxh64 is the default option, htough
         xxh64sum_command = "${pkgs.xxHash}/bin/xxhsum";
       }

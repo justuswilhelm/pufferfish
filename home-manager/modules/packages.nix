@@ -24,7 +24,7 @@
 
     # Linters, Formatters
     # Removed en-science because it was marked unfree in nixpkgs 24.11
-    pkgs.nixpkgs-fmt
+    pkgs.nixfmt-rfc-style
     pkgs.nodePackages.prettier
 
     # Build tools
