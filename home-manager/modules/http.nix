@@ -9,5 +9,6 @@
     pkgs.httrack
     pkgs.curl
     pkgs.wget
+    pkgs.rtorrent
   ];
 }
