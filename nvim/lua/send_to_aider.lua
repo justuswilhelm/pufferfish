@@ -6,23 +6,20 @@
 local M = {}
 
 -- Define patterns to match for aider panes
-M.AIDER_PATTERNS = {"aid", "aider"}
+M.AIDER_PATTERNS = {"aider"}
 
--- Get the current buffer's path relative to the current working directory
+-- Get the current buffer's path relative to project root
 function M.get_relative_path()
-    -- This always returns a string
-    local cwd = vim.fn.getcwd()
-
-    -- This always returns a name
-    local current_buffer = vim.api.nvim_buf_get_name(0)
-
-    -- This always returns an absolute path
-    local current_buffer_abs = vim.fs.abspath(current_buffer)
-
-    -- This always returns a relative path
-    local relative_path = vim.fs.relpath(cwd, current_buffer_abs)
-
-    return relative_path
+    -- Either get root directory based on .git
+    local cwd = vim.fs.root(0, '.git')
+    if not cwd then
+        -- Or get the current working directory
+        cwd = vim.fn.getcwd()
+    end
+    -- Absolute path of current buffer
+    local current_buffer_abs = vim.fs.abspath(vim.api.nvim_buf_get_name(0))
+    -- Path to current buffer relative to working directory
+    return vim.fs.relpath(cwd, current_buffer_abs)
 end
 
 -- Generic function to send text to aider
@@ -33,9 +30,9 @@ function M.send_aider_command(text)
         return
     end
 
-    -- Find aider pane
+    -- Find aider pane in current session
     local list_panes_cmd = {
-        "tmux", "list-panes", "-F",
+        "tmux", "list-panes", "-s", "-F",
         "#{pane_title} [#{session_name}:#{window_index}.#{pane_index}]"
     }
     local result = vim.system(list_panes_cmd, {text = true}):wait()
