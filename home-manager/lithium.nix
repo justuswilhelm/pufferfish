@@ -33,11 +33,6 @@ in
     ./home.nix
   ];
 
-  programs.cmus = {
-    enable = true;
-    output_plugin = "coreaudio";
-  };
-
   programs.tmux = {
     pasteCommand = "pbpaste";
     copyCommand = "pbcopy";
