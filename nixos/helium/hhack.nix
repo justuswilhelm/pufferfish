@@ -11,6 +11,8 @@
     pkgs.urjtag
     pkgs.openocd
     pkgs.libftdi
+    # uname -a says 6.12.64 Justus 2026-02-12
+    pkgs.linuxKernel.packages.linux_6_12.usbip
   ];
   services.udev = {
     enable = true;
