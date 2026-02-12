@@ -33,6 +33,11 @@
   home.packages = [
     pkgs.tor-browser
     pkgs.signal-desktop
+
+    pkgs.gimp
+    pkgs.inkscape
+    pkgs.nautilus
+    pkgs.dia
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
