@@ -87,7 +87,10 @@ in
     };
 
     launchd.user.agents.mpd = {
-      path = [ pkgs.mpd pkgs.moreutils ];
+      path = [
+        pkgs.mpd
+        pkgs.moreutils
+      ];
       script = ''
         exec ${pkgs.mpd}/bin/mpd --no-daemon --stderr /etc/mpd.conf 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
       '';
@@ -99,7 +102,10 @@ in
     };
 
     launchd.user.agents.ympd = {
-      path = [ pkgs.ympd pkgs.moreutils ];
+      path = [
+        pkgs.ympd
+        pkgs.moreutils
+      ];
       script = ''
         exec ${pkgs.ympd}/bin/ympd --host localhost --port ${toString cfg.port} --webport ${toString cfg.webPort} 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
       '';

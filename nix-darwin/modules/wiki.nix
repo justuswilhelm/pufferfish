@@ -81,27 +81,28 @@ in
   };
 
   system.activationScripts.postActivation = {
-    text = let
-      localSettingsSrc = "/etc/wiki/LocalSettings.php";
-      localSettingsDest = "${home}/www/mediawiki/LocalSettings.php";
-    in
-    ''
-      mkdir -p ${logPath} ${home}
-      chown caddy:caddy ${logPath} ${home}
-      chmod 750 ${home}
-      chmod 750 ${logPath}
+    text =
+      let
+        localSettingsSrc = "/etc/wiki/LocalSettings.php";
+        localSettingsDest = "${home}/www/mediawiki/LocalSettings.php";
+      in
+      ''
+        mkdir -p ${logPath} ${home}
+        chown caddy:caddy ${logPath} ${home}
+        chmod 750 ${home}
+        chmod 750 ${logPath}
 
-      if test -L "${localSettingsDest}"; then
-        if test "$(readlink "${localSettingsDest}")" != "${localSettingsSrc}"; then
-          echo "Error: ${localSettingsDest} is a symbolic link but points to the wrong location"
+        if test -L "${localSettingsDest}"; then
+          if test "$(readlink "${localSettingsDest}")" != "${localSettingsSrc}"; then
+            echo "Error: ${localSettingsDest} is a symbolic link but points to the wrong location"
+            exit 1
+          fi
+        elif test -e "${localSettingsDest}"; then
+          echo "Error: ${localSettingsDest} exists but is not a symbolic link"
           exit 1
+        else
+          ln -s "${localSettingsSrc}" "${localSettingsDest}"
         fi
-      elif test -e "${localSettingsDest}"; then
-        echo "Error: ${localSettingsDest} exists but is not a symbolic link"
-        exit 1
-      else
-        ln -s "${localSettingsSrc}" "${localSettingsDest}"
-      fi
-    '';
+      '';
   };
 }

@@ -12,9 +12,9 @@
 {
   # virt-manager
   virtualisation.libvirtd = {
-  enable = true;
+    enable = true;
     qemu = {
-    # Try fixing tpm issue
+      # Try fixing tpm issue
       swtpm.enable = true;
     };
   };
@@ -26,7 +26,6 @@
       "libvirtd"
     ];
   };
-
 
   # Thanks to:
   # https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/

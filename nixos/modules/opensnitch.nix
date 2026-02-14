@@ -89,9 +89,21 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "network"; operand = "dest.network"; data = "127.0.0.0/24"; }
-            { type = "simple"; operand = "protocol"; data = "udp"; }
-            { type = "simple"; operand = "dest.port"; data = "53"; }
+            {
+              type = "network";
+              operand = "dest.network";
+              data = "127.0.0.0/24";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "udp";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "53";
+            }
           ];
         };
       };
@@ -107,8 +119,16 @@
           type = "list";
           operand = "list";
           list = [
-            { type = "simple"; operand = "protocol"; data = "udp"; }
-            { type = "simple"; operand = "dest.port"; data = "53"; }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "udp";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "53";
+            }
           ];
         };
       };

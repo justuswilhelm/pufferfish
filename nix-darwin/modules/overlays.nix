@@ -20,10 +20,10 @@
           rev = "e066c4b4b89832d690abebe3973744ccdf6e3bcb";
           sha256 = "sha256-hN5H35S/Zy9sW9yyBuDs0QWvtxvdAqavQAXE1EFzemc=";
         };
-  patches = [
-    ./repl-license-path.patch
-    ./repl-argv-1.patch
-  ];
+        patches = [
+          ./repl-license-path.patch
+          ./repl-argv-1.patch
+        ];
         meta.platforms = oldAttrs.meta.platforms ++ [ "aarch64-darwin" ];
       });
     })
