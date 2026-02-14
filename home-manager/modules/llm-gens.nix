@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+# SPDX-FileCopyrightText: 2014-2026 Justus Perlwitz
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -16,7 +16,7 @@ let
   config = {
     # https://aider.chat/docs/leaderboards/
     # openai/gpt-5 has high latency. Switched back to claude-sonnet-4
-    model = "openrouter/anthropic/claude-sonnet-4";
+    model = "openrouter/anthropic/claude-sonnet-4.5";
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
