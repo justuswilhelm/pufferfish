@@ -25,6 +25,7 @@ in
     pkgs.xxd
     pkgs.binwalk
     pkgs.nasm
+    pkgs.tio
 
     # Networking
     # ==========
