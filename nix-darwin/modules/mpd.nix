@@ -14,6 +14,15 @@ let
   mpdLogPath = "/Users/${config.system.primaryUser}/Library/Logs/mpd/mpd.log";
   ympdLogPath = "/Users/${config.system.primaryUser}/Library/Logs/mpd/ympd.log";
 
+  # Internal ports
+  streamPort = 20300;
+  mpdPort = 6600;
+  webPort = 18080;
+
+  # External
+  caddyHost = "lithium.local";
+  caddyPort = 10200;
+
   mpdConfigFile = pkgs.writeText "mpd.conf" ''
     music_directory    "${cfg.musicDirectory}"
     playlist_directory "${cfg.dataDir}/playlists"
@@ -23,8 +32,8 @@ let
     state_file         "${cfg.dataDir}/state"
     sticker_file       "${cfg.dataDir}/sticker.sql"
 
-    bind_to_address    "localhost"
-    port               "${toString cfg.port}"
+    bind_to_address    "127.0.0.1"
+    port               "${toString mpdPort}"
 
     max_output_buffer_size "32768"
 
@@ -33,22 +42,22 @@ let
         name           "CoreAudio"
         mixer_type     "software"
     }
+
+    audio_output {
+        type           "httpd"
+        name           "httpd on port ${toString streamPort}"
+        always_on "yes"
+        encoder        "flac"
+        port           "${toString streamPort}"
+        bind_to_address "localhost"
+        bitrate        "192"
+        format         "44100:16:2"
+        max_clients    "0"
+    }
   '';
 in
 {
   options.services.mpd = {
-    port = lib.mkOption {
-      type = lib.types.port;
-      default = 6600;
-      description = "Port for MPD to listen on";
-    };
-
-    webPort = lib.mkOption {
-      type = lib.types.port;
-      default = 18080;
-      description = "Port for YMPD web interface";
-    };
-
     musicDirectory = lib.mkOption {
       type = lib.types.str;
       default = "~/annex/Music/Music_Files/";
@@ -67,7 +76,28 @@ in
     environment.systemPackages = [
       pkgs.mpc
       pkgs.ashuffle
+      pkgs.rmpc
     ];
+
+    services.caddy.extraConfig = ''
+    # MPD Web Interface and Stream
+    https://${caddyHost}:${toString caddyPort} {
+      import certs
+
+      handle_path /stream {
+        reverse_proxy localhost:${toString streamPort}
+      }
+
+      handle /* {
+        reverse_proxy localhost:${toString webPort}
+      }
+
+      log {
+        format console
+        output file ${config.services.caddy.logPath}/mpd.log
+      }
+    }
+  '';
 
     services.newsyslog.modules.mpd = {
       ${mpdLogPath} = {
@@ -98,6 +128,7 @@ in
         RunAtLoad = true;
         KeepAlive = true;
         StandardOutPath = mpdLogPath;
+        ProcessType = "Interactive";
       };
     };
 
@@ -107,7 +138,7 @@ in
         pkgs.moreutils
       ];
       script = ''
-        exec ${pkgs.ympd}/bin/ympd --host localhost --port ${toString cfg.port} --webport ${toString cfg.webPort} 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+        exec ${pkgs.ympd}/bin/ympd --host localhost --port ${toString mpdPort} --webport ${toString webPort} 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
       '';
       serviceConfig = {
         RunAtLoad = true;
