@@ -14,6 +14,11 @@
     };
   };
 
+  programs.fzf = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
   xdg.configFile = {
     "fish/functions" = {
       source = ../../fish/functions;
