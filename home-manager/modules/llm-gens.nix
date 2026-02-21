@@ -16,7 +16,7 @@ let
   config = {
     # https://aider.chat/docs/leaderboards/
     # openai/gpt-5 has high latency. Switched back to claude-sonnet-4
-    model = "openrouter/anthropic/claude-sonnet-4.5";
+    model = "openrouter/anthropic/claude-sonnet-4";
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
@@ -37,10 +37,10 @@ in
   programs.git.ignores = [ ".aider*" ];
 
   home.packages = [
-    pkgs.llm
+    (pkgs.llm.withPlugins {llm-openrouter=true;} )
 
     pkgs.goose-cli
 
-    pkgs.aider-chat-with-playwright
+    pkgs.aider-chat
   ];
 }
