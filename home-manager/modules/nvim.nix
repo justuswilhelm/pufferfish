@@ -83,7 +83,7 @@
       # treesitter
       # ----------
       # nvim-treesitter/nvim-treesitter
-      nvim-treesitter.withAllGrammars
+      (nvim-treesitter.withPlugins (p: [ p.c p.rust p.lua p.svelte p.typescript p.java p.nix p.python p.html p.javascript ] ))
       # kylechui/nvim-surround
       # works with treesitter
       nvim-surround
