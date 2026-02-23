@@ -13,18 +13,6 @@ function projectify --description "Launch a Projectify tmux session"
         tsa $session
         return
     end
-
-    # Editor for frontend
-    tmux new-session -c "$projectify_path/frontend" -d -s $session -n frontend
-    tmux send-keys -t "$session:frontend" nvim C-m
-
-    tmux split-window -c "$projectify_path/frontend" -h -t "$session:frontend"
-    tmux send-keys -t "$session:frontend" "git status" C-m
-
-    # Serve frontend
-    tmux new-window -c "$projectify_path/frontend" -t $session -n frontend-serve
-    tmux send-keys -t "$session:frontend-serve" "npm run dev" C-m
-
     # Editor for backend
     tmux new-window -c "$projectify_path/backend" -t $session -n backend
     tmux send-keys -t "$session:backend" "poetry run nvim" C-m
@@ -43,7 +31,7 @@ function projectify --description "Launch a Projectify tmux session"
     tmux send-keys -t "$session:shell" "git status" C-m
 
     # Go to first window
-    tmux select-window -t "$session:frontend"
+    tmux select-window -t "$session:backend"
 
     # Attach
     tsa $session
