@@ -15,8 +15,7 @@ let
   yamlFormat = pkgs.formats.yaml { };
   config = {
     # https://aider.chat/docs/leaderboards/
-    # openai/gpt-5 has high latency. Switched back to claude-sonnet-4
-    model = "openrouter/anthropic/claude-sonnet-4";
+    model = "openrouter/anthropic/claude-sonnet-4.6";
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
