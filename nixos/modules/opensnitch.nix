@@ -162,31 +162,6 @@
           ];
         };
       };
-      nix = {
-        name = "allow-nix";
-        description = "Allow nix";
-        created = "1970-01-01T00:00:00Z";
-        updated = "1970-01-01T00:00:00Z";
-        enabled = true;
-        action = "allow";
-        duration = "always";
-        operator = {
-          type = "list";
-          operand = "list";
-          list = [
-            {
-              type = "simple";
-              operand = "process.path";
-              data = "${lib.getBin pkgs.nix}/bin/nix";
-            }
-            {
-              type = "regexp";
-              operand = "dest.port";
-              data = "^(53|443)$";
-            }
-          ];
-        };
-      };
       mosh-client = {
         name = "allow-mosh-client";
         description = "Allow mosh-client to local network on UDP ports 60000-60100";
