@@ -24,7 +24,6 @@ let
     ${cfg.qemu.verbatimConfig}
   '';
   networkConfigFile = pkgs.writeText "network.conf" ''
-    firewall_backend = "${cfg.firewallBackend}"
   '';
 
   dirName = "libvirt";
@@ -382,18 +381,6 @@ in
         Whether to configure OpenSSH to use the [SSH Proxy](https://libvirt.org/ssh-proxy.html).
       '';
     };
-
-    firewallBackend = mkOption {
-      type = types.enum [
-        "iptables"
-        "nftables"
-      ];
-      default = if config.networking.nftables.enable then "nftables" else "iptables";
-      defaultText = lib.literalExpression "if config.networking.nftables.enable then \"nftables\" else \"iptables\"";
-      description = ''
-        The backend used to setup virtual network firewall rules.
-      '';
-    };
   };
 
   ###### implementation
@@ -412,7 +399,6 @@ in
       etc."qemu/bridge.conf".text = lib.concatMapStringsSep "\n" (e: "allow ${e}") cfg.allowedBridges;
       systemPackages = with pkgs; [
         libressl.nc
-        config.networking.firewall.package
         cfg.package
         cfg.qemu.package
       ];
@@ -432,8 +418,6 @@ in
     programs.ssh.extraConfig = mkIf cfg.sshProxy ''
       Include ${cfg.package}/etc/ssh/ssh_config.d/30-libvirt-ssh-proxy.conf
     '';
-
-    services.firewalld.packages = [ cfg.package ];
 
     systemd.packages = [ cfg.package ];
 
