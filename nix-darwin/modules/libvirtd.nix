@@ -429,13 +429,6 @@ in
       group = "qemu-libvirtd";
     };
 
-    security.wrappers.qemu-bridge-helper = {
-      setuid = true;
-      owner = "root";
-      group = "root";
-      source = "${cfg.qemu.package}/libexec/qemu-bridge-helper";
-    };
-
     programs.ssh.extraConfig = mkIf cfg.sshProxy ''
       Include ${cfg.package}/etc/ssh/ssh_config.d/30-libvirt-ssh-proxy.conf
     '';
