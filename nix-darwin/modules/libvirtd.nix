@@ -372,15 +372,16 @@ in
       etc.ethertypes.source = "${pkgs.iptables}/etc/ethertypes";
     };
 
-    users.groups.libvirtd.gid = config.ids.gids.libvirtd;
-
-    # libvirtd runs qemu as this user and group by default
-    users.extraGroups.qemu-libvirtd.gid = config.ids.gids.qemu-libvirtd;
-    users.extraUsers.qemu-libvirtd = {
-      uid = config.ids.uids.qemu-libvirtd;
-      isNormalUser = false;
-      group = "qemu-libvirtd";
+    users.groups.libvirtd.gid = 1101;
+    users.groups.qemu-libvirtd.gid = 1107;
+    users.users.qemu-libvirtd = {
+      uid = 1107;
+      isHidden = true;
+      home = "/var/lib/qemu-libvirtd";
+      gid = 1107;
     };
+    users.knownGroups = [ "libvirtd" "qemu-libvirtd" ];
+    users.knownUsers = [ "qemu-libvirtd" ];
 
     programs.ssh.extraConfig = mkIf cfg.sshProxy ''
       Include ${cfg.package}/etc/ssh/ssh_config.d/30-libvirt-ssh-proxy.conf
