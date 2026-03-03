@@ -212,7 +212,7 @@ let
       mkdir -p $out
       cp ${cfg.qemu.package}/share/qemu/firmware/*.json $out
       substituteInPlace $out/*.json \
-        --replace-fail "${cfg.qemu.package}/share/qemu/" "/run/${dirName}/nix-ovmf/"
+        --replace-fail "${cfg.qemu.package}/share/qemu/" "/var/run/${dirName}/nix-ovmf/"
     '';
   };
 
@@ -478,10 +478,10 @@ in
 
         # stable (not GC'able as in /nix/store) paths for using in <emulator> section of xml configs
         for emulator in ${cfg.package}/libexec/libvirt_lxc ${cfg.qemu.package}/bin/qemu-kvm ${cfg.qemu.package}/bin/qemu-system-*; do
-          ln -s --force "$emulator" /run/${dirName}/nix-emulators/
+          ln -s --force "$emulator" /var/run/${dirName}/nix-emulators/
         done
 
-        ln -s --force ${cfg.qemu.package}/bin/qemu-pr-helper /run/${dirName}/nix-helpers/
+        ln -s --force ${cfg.qemu.package}/bin/qemu-pr-helper /var/run/${dirName}/nix-helpers/
 
         # Symlink to OVMF firmware code and variable template images distributed with QEMU
         readarray -t firmware_files < <(
@@ -489,7 +489,7 @@ in
             '[.[] | .mapping.executable.filename, .mapping."nvram-template".filename] | unique | .[]' \
           ${cfg.qemu.package}/share/qemu/firmware/*
         )
-        cp -sfv "''${firmware_files[@]}" /run/${dirName}/nix-ovmf
+        cp -sfv "''${firmware_files[@]}" /var/run/${dirName}/nix-ovmf
 
         # Symlink hooks to /var/lib/libvirt
         ${concatStringsSep "\n" (
