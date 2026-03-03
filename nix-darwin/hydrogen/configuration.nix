@@ -6,7 +6,6 @@
   specialArgs,
   config,
   pkgs,
-  projectify,
   ...
 }:
 let
