@@ -12,7 +12,6 @@ with lib;
 let
 
   cfg = config.virtualisation.libvirtd;
-  vswitch = config.virtualisation.vswitch;
   configFile = pkgs.writeText "libvirtd.conf" ''
     ${cfg.extraConfig}
   '';
@@ -456,7 +455,7 @@ in
     systemd.services.libvirtd = {
       wantedBy = [ "multi-user.target" ];
       requires = [ "libvirtd-config.service" ];
-      after = [ "libvirtd-config.service" ] ++ optional vswitch.enable "ovs-vswitchd.service";
+      after = [ "libvirtd-config.service" ];
 
       environment.LIBVIRTD_ARGS = escapeShellArgs (
         [
@@ -472,7 +471,6 @@ in
         cfg.qemu.package
         pkgs.netcat
       ] # libvirtd requires qemu-img to manage disk images
-      ++ optional vswitch.enable vswitch.package
       ++ optional cfg.qemu.swtpm.enable cfg.qemu.swtpm.package;
 
       serviceConfig = {
