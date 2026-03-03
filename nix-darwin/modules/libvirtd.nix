@@ -14,8 +14,6 @@ let
   cfg = config.virtualisation.libvirtd;
   vswitch = config.virtualisation.vswitch;
   configFile = pkgs.writeText "libvirtd.conf" ''
-    auth_unix_ro = "polkit"
-    auth_unix_rw = "polkit"
     ${cfg.extraConfig}
   '';
   qemuConfigFile = pkgs.writeText "qemu.conf" ''
@@ -404,11 +402,6 @@ in
 
     assertions = [
       {
-        assertion = config.security.polkit.enable;
-        message = "The libvirtd module currently requires Polkit to be enabled ('security.polkit.enable = true').";
-      }
-
-      {
         assertion = ((lib.filterAttrs (n: v: v != null) cfg.qemu.ovmf) == { });
         message = "The 'virtualisation.libvirtd.qemu.ovmf' submodule has been removed. All OVMF images distributed with QEMU are now available by default.";
       }
@@ -610,18 +603,6 @@ in
         "L+ /var/lib/qemu/vhost-user - - - - ${vhostUserCollection}/share/qemu/vhost-user"
         "L+ /var/lib/qemu/firmware - - - - ${qemuOvmfMetadata}"
       ];
-
-    security.polkit = {
-      enable = true;
-      extraConfig = ''
-        polkit.addRule(function(action, subject) {
-          if (action.id == "org.libvirt.unix.manage" &&
-            subject.isInGroup("libvirtd")) {
-            return polkit.Result.YES;
-          }
-        });
-      '';
-    };
 
     system.nssModules = optional (cfg.nss.enable or cfg.nss.enableGuest) cfg.package;
     system.nssDatabases.hosts = mkMerge [
