@@ -6,7 +6,6 @@
   specialArgs,
   config,
   pkgs,
-  projectify,
   ...
 }:
 let
@@ -26,7 +25,6 @@ in
     ../modules/offlineimap.nix
     ../modules/openssh.nix
     ../modules/overlays.nix
-    ../modules/projectify.nix
     ../modules/radicale.nix
     ../modules/security.nix
     ../modules/skhd.nix
@@ -73,11 +71,6 @@ in
   services.tor = {
     enable = true;
     # https://git-annex.branchable.com/tips/enable_tor_on_nixos/
-  };
-
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_17;
   };
 
   services.nagios = {

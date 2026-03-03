@@ -21,10 +21,6 @@
       url = "git+https://codeberg.org/justusw/Pomoglorbo.git?ref=refs/tags/2025.8.21";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    projectify = {
-      url = "git+https://github.com/jwpconsulting/projectify.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     utils.url = "github:numtide/flake-utils";
   };
 
@@ -35,7 +31,6 @@
       home-manager,
       nixpkgs,
       pomoglorbo,
-      projectify,
       utils,
       disko,
       agenix,
@@ -188,7 +183,6 @@
               nixpkgs.overlays = [
                 (final: previous: {
                   inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
-                  inherit (projectify.outputs.packages.${system}) projectify-frontend-node projectify-backend;
                 })
               ];
             }
