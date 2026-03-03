@@ -27,6 +27,7 @@ let
 
   dirName = "libvirt";
   subDirs = list: [ dirName ] ++ map (e: "${dirName}/${e}") list;
+  libvirtLogDir = "/var/log/libvirt";
 
   swtpmModule = types.submodule {
     options = {
@@ -385,10 +386,35 @@ in
       Include ${cfg.package}/etc/ssh/ssh_config.d/30-libvirt-ssh-proxy.conf
     '';
 
-    systemd.packages = [ cfg.package ];
+    services.newsyslog.modules.libvirt = {
+      "${libvirtLogDir}/libvirtd.log" = {
+        owner = "root";
+        group = "wheel";
+        mode = "600";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+      "${libvirtLogDir}/libvirtd-config.log" = {
+        owner = "root";
+        group = "wheel";
+        mode = "600";
+        count = 10;
+        size = "*";
+        when = "$D0";
+        flags = "J";
+      };
+    };
 
-    systemd.services.libvirtd-config = {
-      description = "Libvirt Virtual Machine Management Daemon - configuration";
+    launchd.daemons.libvirtd-config = {
+      path = [
+        cfg.package
+        cfg.qemu.package
+        pkgs.moreutils
+      ];
+
+      # description = "Libvirt Virtual Machine Management Daemon - configuration";
       script = ''
         # Copy default libvirt network config .xml files to /var/lib
         # Files modified by the user will not be overwritten
@@ -437,113 +463,71 @@ in
             )}
           '') (attrNames cfg.hooks)
         )}
-      '';
+      '' + " 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'";
 
       serviceConfig = {
-        Type = "oneshot";
-        RuntimeDirectoryPreserve = "yes";
-        LogsDirectory = subDirs [ "qemu" ];
-        RuntimeDirectory = subDirs [
-          "nix-emulators"
-          "nix-helpers"
-          "nix-ovmf"
-        ];
-        StateDirectory = subDirs [ "dnsmasq" ];
+        RunAtLoad = true;
+        StandardOutPath = "${libvirtLogDir}/libvirtd-config.log";
+        StandardErrorPath = "${libvirtLogDir}/libvirtd-config.log";
       };
     };
 
-    systemd.services.libvirtd = {
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "libvirtd-config.service" ];
-      after = [ "libvirtd-config.service" ];
-
-      environment.LIBVIRTD_ARGS = escapeShellArgs (
+    launchd.daemons.libvirtd = {
+      # wantedBy = [ "multi-user.target" ];
+      # requires = [ "libvirtd-config.service" ];
+      # after = [ "libvirtd-config.service" ];
+      script = escapeShellArgs (
         [
+          "${cfg.package}/sbin/libvirtd"
           "--config"
           configFile
           "--timeout"
           "120" # from ${libvirt}/var/lib/sysconfig/libvirtd
         ]
         ++ cfg.extraOptions
-      );
+      ) + " 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'";
 
       path = [
         cfg.qemu.package
         pkgs.netcat
+        cfg.package
+        pkgs.moreutils
       ] # libvirtd requires qemu-img to manage disk images
       ++ optional cfg.qemu.swtpm.enable cfg.qemu.swtpm.package;
 
       serviceConfig = {
-        Type = "notify";
-        KillMode = "process"; # when stopping, leave the VMs alone
-        Restart = "no";
-        OOMScoreAdjust = "-999";
+        KeepAlive = true;
+        StandardOutPath = "${libvirtLogDir}/libvirtd.log";
+        StandardErrorPath = "${libvirtLogDir}/libvirtd.log";
       };
-      restartIfChanged = false;
-
-      enableStrictShellChecks = true;
     };
 
-    systemd.services.virtchd = {
-      path = [ pkgs.cloud-hypervisor ];
+    system.activationScripts.postActivation = {
+      text = ''
+        echo "Ensuring libvirt directories exist"
+        mkdir -vp ${libvirtLogDir} /var/lib/${dirName} /var/run/${dirName}
+        chown -v root:wheel ${libvirtLogDir}
+        chown -v root:wheel /var/lib/${dirName} /var/run/${dirName}
+        chmod -v u+rwx,g=rx,o= /var/lib/${dirName}
+        chmod -v u+rwx,g=rx,o= /var/run/${dirName}
+
+        echo "Setting up vhost-user and firmware directories"
+        mkdir -vp /var/lib/qemu
+        ${let
+          vhostUserCollection = pkgs.buildEnv {
+            name = "vhost-user";
+            paths = cfg.qemu.vhostUserPackages;
+            pathsToLink = [ "/share/qemu/vhost-user" ];
+          };
+        in ''
+          ln -sfv ${vhostUserCollection}/share/qemu/vhost-user /var/lib/qemu/vhost-user
+          ln -sfv ${qemuOvmfMetadata} /var/lib/qemu/firmware
+        ''}
+
+        echo "Restarting libvirtd services"
+        launchctl kickstart -k system/${config.launchd.labelPrefix}.libvirtd-config
+        launchctl kickstart -k system/${config.launchd.labelPrefix}.libvirtd
+      '';
     };
-
-    systemd.services.libvirt-guests = {
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "libvirtd.service" ];
-      after = [ "libvirtd.service" ];
-      path = with pkgs; [
-        coreutils
-        gawk
-        cfg.package
-      ];
-      restartIfChanged = false;
-
-      environment.ON_BOOT = "${cfg.onBoot}";
-      environment.ON_SHUTDOWN = "${cfg.onShutdown}";
-      environment.PARALLEL_SHUTDOWN = "${toString cfg.parallelShutdown}";
-      environment.SHUTDOWN_TIMEOUT = "${toString cfg.shutdownTimeout}";
-      environment.START_DELAY = "${toString cfg.startDelay}";
-    };
-
-    systemd.sockets.virtlogd = {
-      description = "Virtual machine log manager socket";
-      wantedBy = [ "sockets.target" ];
-      listenStreams = [ "/run/${dirName}/virtlogd-sock" ];
-    };
-
-    systemd.services.virtlogd = {
-      description = "Virtual machine log manager";
-      serviceConfig.ExecStart = "@${cfg.package}/sbin/virtlogd virtlogd";
-      restartIfChanged = false;
-    };
-
-    systemd.sockets.virtlockd = {
-      description = "Virtual machine lock manager socket";
-      wantedBy = [ "sockets.target" ];
-      listenStreams = [ "/run/${dirName}/virtlockd-sock" ];
-    };
-
-    systemd.services.virtlockd = {
-      description = "Virtual machine lock manager";
-      serviceConfig.ExecStart = "@${cfg.package}/sbin/virtlockd virtlockd";
-      restartIfChanged = false;
-    };
-
-    # https://libvirt.org/daemons.html#monolithic-systemd-integration
-    systemd.sockets.libvirtd.wantedBy = [ "sockets.target" ];
-
-    systemd.tmpfiles.rules =
-      let
-        vhostUserCollection = pkgs.buildEnv {
-          name = "vhost-user";
-          paths = cfg.qemu.vhostUserPackages;
-          pathsToLink = [ "/share/qemu/vhost-user" ];
-        };
-      in
-      [
-        "L+ /var/lib/qemu/vhost-user - - - - ${vhostUserCollection}/share/qemu/vhost-user"
-        "L+ /var/lib/qemu/firmware - - - - ${qemuOvmfMetadata}"
-      ];
   };
 }
