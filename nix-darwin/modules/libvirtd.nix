@@ -174,31 +174,6 @@ let
     };
   };
 
-  nssModule = types.submodule {
-    options = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          This option enables the older libvirt NSS module. This method uses
-          DHCP server records, therefore is dependent on the hostname provided
-          by the guest.
-          Please see <https://libvirt.org/nss.html> for more information.
-        '';
-      };
-
-      enableGuest = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          This option enables the newer libvirt_guest NSS module. This module
-          uses the libvirt guest name instead of the hostname of the guest.
-          Please see <https://libvirt.org/nss.html> for more information.
-        '';
-      };
-    };
-  };
-
   qemuOvmfMetadata = pkgs.stdenv.mkDerivation {
     name = "qemu-ovmf-metadata";
     version = cfg.qemu.package.version;
@@ -363,14 +338,6 @@ in
       default = { };
       description = ''
         Hooks related options.
-      '';
-    };
-
-    nss = mkOption {
-      type = nssModule;
-      default = { };
-      description = ''
-        libvirt NSS module options.
       '';
     };
 
@@ -580,12 +547,5 @@ in
         "L+ /var/lib/qemu/vhost-user - - - - ${vhostUserCollection}/share/qemu/vhost-user"
         "L+ /var/lib/qemu/firmware - - - - ${qemuOvmfMetadata}"
       ];
-
-    system.nssModules = optional (cfg.nss.enable or cfg.nss.enableGuest) cfg.package;
-    system.nssDatabases.hosts = mkMerge [
-      # ensure that the NSS modules come between mymachines (which is 400) and resolve (which is 501)
-      (mkIf cfg.nss.enable (mkOrder 430 [ "libvirt" ]))
-      (mkIf cfg.nss.enableGuest (mkOrder 432 [ "libvirt_guest" ]))
-    ];
   };
 }
