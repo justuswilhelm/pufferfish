@@ -13,6 +13,44 @@ let
 
   cfg = config.virtualisation.libvirtd;
   configFile = pkgs.writeText "libvirtd.conf" ''
+    listen_tcp = 0
+    unix_sock_group = "libvirt"
+
+    # Set the UNIX socket permissions for the R/O socket. This is used
+    # for monitoring VM status only
+    #
+    # Default allows any user. If setting group ownership may want to
+    # restrict this to:
+    unix_sock_ro_perms = "0777"
+
+    # Set the UNIX socket permissions for the R/W socket. This is used
+    # for full management of VMs
+    #
+    # Default allows only root. If PolicyKit is enabled on the socket,
+    # the default will change to allow everyone (eg, 0777)
+    #
+    # If not using PolicyKit and setting group ownership for access
+    # control then you may want to relax this to:
+    unix_sock_rw_perms = "0770"
+
+    # Set the UNIX socket permissions for the admin interface socket.
+    #
+    # Default allows only owner (root), do not change it unless you are
+    # sure to whom you are exposing the access to
+    unix_sock_admin_perms = "0700"
+
+    # To restrict monitoring of domains you may wish to enable
+    # an authentication mechanism here
+    auth_unix_ro = "none"
+
+    # Set an authentication scheme for UNIX read-write sockets
+    # By default socket permissions only allow root. If PolicyKit
+    # support was compiled into libvirt, the default will be to
+    # use 'polkit' auth.
+    #
+    # If the unix_sock_rw_perms are changed you may wish to enable
+    # an authentication mechanism here
+    auth_unix_rw = "none"
     ${cfg.extraConfig}
   '';
   qemuConfigFile = pkgs.writeText "qemu.conf" ''
@@ -364,21 +402,22 @@ in
     environment = {
       # this file is expected in /etc/qemu and not sysconfdir (/var/lib)
       etc."qemu/bridge.conf".text = lib.concatMapStringsSep "\n" (e: "allow ${e}") cfg.allowedBridges;
+      etc."libvirt/libvirtd.conf".source = configFile;
       systemPackages = with pkgs; [
         libressl.nc
         cfg.package
         cfg.qemu.package
       ];
-      etc.ethertypes.source = "${pkgs.iptables}/etc/ethertypes";
+      # etc.ethertypes.source = "${pkgs.iptables}/etc/ethertypes";
     };
 
-    users.groups.libvirtd.gid = 1101;
-    users.groups.qemu-libvirtd.gid = 1107;
+    users.groups.libvirtd.gid = 1113;
+    users.groups.qemu-libvirtd.gid = 1114;
     users.users.qemu-libvirtd = {
-      uid = 1107;
+      uid = 1114;
       isHidden = true;
       home = "/var/lib/qemu-libvirtd";
-      gid = 1107;
+      gid = 1114;
     };
     users.knownGroups = [ "libvirtd" "qemu-libvirtd" ];
     users.knownUsers = [ "qemu-libvirtd" ];
@@ -480,8 +519,6 @@ in
       script = escapeShellArgs (
         [
           "${cfg.package}/sbin/libvirtd"
-          "--config"
-          configFile
           "--timeout"
           "120" # from ${libvirt}/var/lib/sysconfig/libvirtd
         ]
@@ -493,6 +530,7 @@ in
         pkgs.netcat
         cfg.package
         pkgs.moreutils
+        pkgs.dnsmasq
       ] # libvirtd requires qemu-img to manage disk images
       ++ optional cfg.qemu.swtpm.enable cfg.qemu.swtpm.package;
 
@@ -508,7 +546,8 @@ in
         echo "Ensuring libvirt directories exist"
         mkdir -vp ${libvirtLogDir} /var/lib/${dirName} /var/run/${dirName}
         chown -v root:wheel ${libvirtLogDir}
-        chown -v root:wheel /var/lib/${dirName} /var/run/${dirName}
+        chown -v root:wheel /var/lib/${dirName}
+        chown -v root:libvirtd /var/run/${dirName}
         chmod -v u+rwx,g=rx,o= /var/lib/${dirName}
         chmod -v u+rwx,g=rx,o= /var/run/${dirName}
 

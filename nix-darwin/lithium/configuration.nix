@@ -87,6 +87,8 @@ in
     ];
   };
 
+  virtualisation.libvirtd.enable = true;
+
   # services.karabiner-elements.enable = true;
 
   programs.fish = {
