@@ -132,7 +132,6 @@ in
       ]
     ))
     pkgs.jwt-cli
-    pkgs.sage.override
 
     # PHP
     # ===
