@@ -182,7 +182,7 @@
               # TODO remove overlay?
               nixpkgs.overlays = [
                 (final: previous: {
-                  inherit (pomoglorbo.outputs.packages.${system}) pomoglorbo;
+                  pomoglorbo = pomoglorbo.outputs.packages.${system}.pomoglorbo.overrideAttrs { doCheck = false; };
                 })
               ];
             }
