@@ -133,6 +133,9 @@ in
     matchBlocks."gitlab.com" = {
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
     };
+    includes = [
+      "~/.ssh/extra"
+    ];
   };
 
   home.stateVersion = "24.05";

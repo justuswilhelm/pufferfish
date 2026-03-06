@@ -1,12 +1,11 @@
 # SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
+# nix-darwin configuration for lithium MacBook Air M2
 
 {
   specialArgs,
   config,
   pkgs,
-  projectify,
   ...
 }:
 let
@@ -26,7 +25,6 @@ in
     ../modules/offlineimap.nix
     ../modules/openssh.nix
     ../modules/overlays.nix
-    ../modules/projectify.nix
     ../modules/radicale.nix
     ../modules/security.nix
     ../modules/skhd.nix
@@ -75,11 +73,6 @@ in
     # https://git-annex.branchable.com/tips/enable_tor_on_nixos/
   };
 
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_17;
-  };
-
   services.nagios = {
     enable = true;
     enableWebInterface = true;
@@ -93,6 +86,8 @@ in
       ./nagios/hosts.cfg
     ];
   };
+
+  virtualisation.libvirtd.enable = true;
 
   # services.karabiner-elements.enable = true;
 
