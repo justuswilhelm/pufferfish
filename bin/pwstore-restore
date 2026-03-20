@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Restore a pwstore archive created with bin/pwstore-dump
+# Compare with tar --compare --file $dest --directory $PASSWORD_STORE_DIR
+set -e
+src="$1"
+dest="$2"
+tmpdest="$(mktemp -d)"
+
+if test "$#" != 2; then
+    echo "Usage $0 [SOURCE.gpg] [DEST/]"
+    exit 1
+fi
+
+if test ! -f "$src"; then
+    echo "No archive file found at $src"
+    exit 1
+fi
+
+if test ! -d "$dest"; then
+    echo "No restore directory at $dest"
+    exit 1
+fi
+
+gpg --verify "$src"
+
+tar --file "$src" --directory "$tmpdest" --verbose --extract

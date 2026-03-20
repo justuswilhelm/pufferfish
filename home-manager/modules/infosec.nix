@@ -25,10 +25,7 @@ in
     pkgs.xxd
     pkgs.binwalk
     pkgs.nasm
-
-    # Debugger
-    # ========
-    pkgs.qemu
+    pkgs.tio
 
     # Networking
     # ==========
@@ -135,10 +132,6 @@ in
       ]
     ))
     pkgs.jwt-cli
-    (pkgs.sage.override {
-      extraPythonPackages = ps: with ps; [ seaborn ];
-      requireSageTests = false;
-    })
 
     # PHP
     # ===

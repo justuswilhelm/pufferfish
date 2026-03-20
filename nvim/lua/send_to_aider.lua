@@ -1,29 +1,25 @@
 -- SPDX-FileCopyrightText: 2015-2025 Justus Perlwitz
 --
 -- SPDX-License-Identifier: GPL-3.0-or-later
-
 -- Send_to_aider
 -- =============
 local M = {}
 
 -- Define patterns to match for aider panes
-M.AIDER_PATTERNS = {"aid", "aider"}
+M.AIDER_PATTERNS = {"aider"}
 
--- Get the current buffer's path relative to the current working directory
+-- Get the current buffer's path relative to project root
 function M.get_relative_path()
-    -- This always returns a string
-    local cwd = vim.fn.getcwd()
-
-    -- This always returns a name
-    local current_buffer = vim.api.nvim_buf_get_name(0)
-
-    -- This always returns an absolute path
-    local current_buffer_abs = vim.fs.abspath(current_buffer)
-
-    -- This always returns a relative path
-    local relative_path = vim.fs.relpath(cwd, current_buffer_abs)
-
-    return relative_path
+    -- Either get root directory based on .git
+    local cwd = vim.fs.root(0, '.git')
+    if not cwd then
+        -- Or get the current working directory
+        cwd = vim.fn.getcwd()
+    end
+    -- Absolute path of current buffer
+    local current_buffer_abs = vim.fs.abspath(vim.api.nvim_buf_get_name(0))
+    -- Path to current buffer relative to working directory
+    return vim.fs.relpath(cwd, current_buffer_abs)
 end
 
 -- Generic function to send text to aider
@@ -34,9 +30,9 @@ function M.send_aider_command(text)
         return
     end
 
-    -- Find aider pane
+    -- Find aider pane in current session
     local list_panes_cmd = {
-        "tmux", "list-panes", "-F",
+        "tmux", "list-panes", "-s", "-F",
         "#{pane_title} [#{session_name}:#{window_index}.#{pane_index}]"
     }
     local result = vim.system(list_panes_cmd, {text = true}):wait()
@@ -74,41 +70,38 @@ function M.send_aider_command(text)
     end
 
     -- Generate a random-ish buffer name
-    local buffer_name = string.format("send-to-aider-%06d", math.random(100000, 999999))
+    local buffer_name = string.format("send-to-aider-%06d",
+                                      math.random(100000, 999999))
 
     -- Load text into tmux buffer via stdin
     local load_cmd = {"tmux", "load-buffer", "-b", buffer_name, "-"}
-    local load_result = vim.system(load_cmd, { text = true, stdin = text }):wait()
+    local load_result = vim.system(load_cmd, {text = true, stdin = text}):wait()
 
     if load_result.code ~= 0 then
-        vim.notify(string.format(
-            "Failed to load buffer to tmux: %s",
-            load_result.stderr
-        ), vim.log.levels.ERROR)
+        vim.notify(string.format("Failed to load buffer to tmux: %s",
+                                 load_result.stderr), vim.log.levels.ERROR)
         return
     end
 
     -- Paste buffer into target pane
-    local paste_cmd = {"tmux", "paste-buffer", "-dpr", "-b", buffer_name, "-t", pane_id}
-    local paste_result = vim.system(paste_cmd, { text = true }):wait()
+    local paste_cmd = {
+        "tmux", "paste-buffer", "-dpr", "-b", buffer_name, "-t", pane_id
+    }
+    local paste_result = vim.system(paste_cmd, {text = true}):wait()
 
     if paste_result.code ~= 0 then
-        vim.notify(string.format(
-            "Failed to paste buffer to tmux: %s",
-            paste_result.stderr
-        ), vim.log.levels.ERROR)
+        vim.notify(string.format("Failed to paste buffer to tmux: %s",
+                                 paste_result.stderr), vim.log.levels.ERROR)
         return
     end
 
     -- Send Enter key
     local enter_cmd = {"tmux", "send-keys", "-t", pane_id, "C-m"}
-    local enter_result = vim.system(enter_cmd, { text = true }):wait()
+    local enter_result = vim.system(enter_cmd, {text = true}):wait()
 
     if enter_result.code ~= 0 then
-        vim.notify(string.format(
-            "Failed to send enter key to tmux: %s",
-            enter_result.stderr
-        ), vim.log.levels.ERROR)
+        vim.notify(string.format("Failed to send enter key to tmux: %s",
+                                 enter_result.stderr), vim.log.levels.ERROR)
         return
     end
 end
@@ -166,18 +159,14 @@ function M.send_selection_to_aider()
 end
 
 function M.setup()
-    vim.keymap.set('n', '<Leader>aba', M.add_to_aider, {
-        desc = "Add current buffer to aider"
-    })
-    vim.keymap.set('n', '<Leader>abr', M.add_to_aider_read_only, {
-        desc = "Add current buffer to aider as read-only"
-    })
-    vim.keymap.set('n', '<Leader>abd', M.drop_from_aider, {
-        desc = "Drop current buffer from aider"
-    })
-    vim.keymap.set('v', '<Leader>abs', M.send_selection_to_aider, {
-        desc = "Send current selection to aider"
-    })
+    vim.keymap.set('n', '<Leader>aba', M.add_to_aider,
+                   {desc = "Add current buffer to aider"})
+    vim.keymap.set('n', '<Leader>abr', M.add_to_aider_read_only,
+                   {desc = "Add current buffer to aider as read-only"})
+    vim.keymap.set('n', '<Leader>abd', M.drop_from_aider,
+                   {desc = "Drop current buffer from aider"})
+    vim.keymap.set('v', '<Leader>abs', M.send_selection_to_aider,
+                   {desc = "Send current selection to aider"})
 end
 
 return M

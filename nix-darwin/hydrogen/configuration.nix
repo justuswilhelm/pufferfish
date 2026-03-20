@@ -1,12 +1,11 @@
 # SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
+# nix-darwin configuration for hydrogen MacBook Air M1
 
 {
   specialArgs,
   config,
   pkgs,
-  projectify,
   ...
 }:
 let

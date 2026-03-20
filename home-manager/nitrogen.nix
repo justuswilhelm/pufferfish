@@ -13,7 +13,6 @@ let
 in
 {
   imports = [
-    ./modules/aider.nix
     ./modules/design.nix
     ./modules/firefox.nix
     ./modules/foot.nix
@@ -22,6 +21,7 @@ in
     # ./modules/infosec.nix
     # ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
+    ./modules/llm-gens.nix
     ./modules/packages.nix
     ./modules/ssh.nix
     ./modules/sway.nix

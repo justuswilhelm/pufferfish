@@ -3,8 +3,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Packages used for mangling text
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
+  programs.fzf = {
+    enable = true;
+  };
   home.packages = [
     pkgs.jq
     pkgs.miller

@@ -199,7 +199,7 @@ in
 
   options = {
     services.nagios = {
-      enable = mkEnableOption ''[Nagios](https://www.nagios.org/) to monitor your system or network'';
+      enable = mkEnableOption "[Nagios](https://www.nagios.org/) to monitor your system or network";
 
       objectDefs = mkOption {
         description = ''

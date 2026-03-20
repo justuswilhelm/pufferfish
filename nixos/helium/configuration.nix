@@ -41,6 +41,7 @@
 
     ./blockchains.nix
     ./hhack.nix
+    ./virtualisation.nix
   ];
 
   boot = {
@@ -112,6 +113,7 @@
   };
   programs.mosh.enable = true;
   programs.tmux.enable = true;
+  programs.iotop.enable = true;
 
   environment.systemPackages = [
     pkgs.tree

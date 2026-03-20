@@ -18,7 +18,7 @@ in
         en-computers
       ]
     ))
-    (pkgs.hunspellWithDicts [ pkgs.hunspellDicts.en-us ])
+    (pkgs.hunspell.withDicts (d: [ d.en-us ]))
     pkgs.valeWithStyles
   ];
 }

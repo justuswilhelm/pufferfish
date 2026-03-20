@@ -10,7 +10,6 @@
 }:
 {
   imports = [
-    ./modules/aider.nix
     ./modules/firefox.nix
     ./modules/foot.nix
     ./modules/gdb.nix
@@ -18,6 +17,7 @@
     ./modules/infosec.nix
     ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
+    ./modules/llm-gens.nix
     # TODO Investigate if this fix is needed on NixOS
     ./modules/locale-fix.nix
     ./modules/mitmproxy.nix
@@ -33,6 +33,11 @@
   home.packages = [
     pkgs.tor-browser
     pkgs.signal-desktop
+
+    pkgs.gimp
+    pkgs.inkscape
+    pkgs.nautilus
+    pkgs.dia
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";

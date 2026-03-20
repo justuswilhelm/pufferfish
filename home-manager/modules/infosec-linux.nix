@@ -106,5 +106,6 @@
 
     # Debugger
     # ========
+    pkgs.qemu
   ];
 }

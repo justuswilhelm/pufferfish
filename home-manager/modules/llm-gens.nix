@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+# SPDX-FileCopyrightText: 2014-2026 Justus Perlwitz
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -11,6 +11,7 @@
   ...
 }:
 let
+  # Aider config
   yamlFormat = pkgs.formats.yaml { };
   config = {
     # https://aider.chat/docs/leaderboards/
@@ -23,6 +24,11 @@ let
     # Fixed Git identity retrieval to respect global configuration, by Akira Komamura.
     git = true;
     analytics = false;
+    # auto-lint is very fragile
+    auto-lint = false;
+    # nixpkgs Aider means we can't update it
+    check-update = false;
+    show-release-notes = false;
   };
   isLinux = lib.strings.hasSuffix "-linux" specialArgs.system;
 in
@@ -31,20 +37,10 @@ in
   programs.git.ignores = [ ".aider*" ];
 
   home.packages = [
-    pkgs.pipx
-    (pkgs.writeShellApplication {
-      name = "aid";
-      runtimeInputs = lib.optionals isLinux [
-        pkgs.stdenv.cc.cc.lib
-        pkgs.glibc
-        pkgs.ungoogled-chromium
-        pkgs.bash
-      ];
-      text = ''
-        ${lib.optionalString isLinux ''export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib64:${pkgs.stdenv.cc.cc.lib}/lib:$${LD_LIBRARY_PATH:-}"''}
-        export SHELL=bash
-        pipx run aider-chat "$@"
-      '';
-    })
+    (pkgs.llm.withPlugins {llm-openrouter=true;} )
+
+    pkgs.goose-cli
+
+    pkgs.aider-chat
   ];
 }

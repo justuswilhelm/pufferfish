@@ -15,17 +15,14 @@ vim.call("plug#begin", "~/.config/nvim/plugged")
 
 -- Language specific
 -- -----------------
-Plug("evanleck/vim-svelte", {branch = "main"})
 Plug("guersam/vim-j", {['for'] = "j"})
-Plug("leafgarland/typescript-vim")
-Plug("pangloss/vim-javascript")
-Plug("nvim-orgmode/orgmode")
 -- Commenting these out -- add back if needed Justus 2023-11-15
 -- TODO Still needed? Justus 2023-03-10
 -- Plug("elzr/vim-json", {['for'] = "json"})
 -- Plug("dag/vim-fish", {['for'] = "fish"})
 -- Plug("tpope/vim-markdown", {['for'] = "markdown"})
 Plug("supercollider/scvim")
+Plug("kirasok/cmp-hledger")
 
 -- Improve general editor behavior
 -- -------------------------------
@@ -34,19 +31,6 @@ Plug("TobinPalmer/pastify.nvim")
 -- tmux interaction
 -- ----------------
 Plug("epeli/slimux")
-
--- Autocomplete
--- ------------
-Plug("hrsh7th/nvim-cmp", {commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01"})
-Plug("hrsh7th/cmp-buffer")
-Plug("hrsh7th/cmp-path")
-Plug("hrsh7th/cmp-cmdline")
-
--- Snippets
--- --------
-Plug("hrsh7th/vim-vsnip")
-Plug("hrsh7th/vim-vsnip-integ")
-Plug("hrsh7th/cmp-vsnip")
 vim.call('plug#end')
 
 -- Slimux
@@ -80,11 +64,6 @@ vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, {silent = true})
 -- ========
 local cmp = require 'cmp'
 cmp.setup.filetype({"rust", "python", "svelte", "typescript"}, {
-    snippet = {
-        expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        end
-    },
     preselect = cmp.PreselectMode.None,
     window = {
         completion = cmp.config.window.bordered(),
@@ -99,8 +78,7 @@ cmp.setup.filetype({"rust", "python", "svelte", "typescript"}, {
         ['<CR>'] = cmp.mapping.confirm({select = false})
     }),
     sources = cmp.config.sources({
-        {name = 'buffer'}, {name = 'vsnip'}, {name = 'nvim_lsp'},
-        {name = 'orgmode'}
+        {name = 'buffer'}, {name = 'nvim_lsp'}, {name = 'orgmode'}, {name = "hledger"},
     }, {{name = 'buffer'}})
 })
 
@@ -265,26 +243,25 @@ vim.keymap.set('n', '<leader>gm', ":Git commit<CR>")
 vim.keymap.set('n', '<leader>gdd', ":Git diff<CR>")
 vim.keymap.set('n', '<leader>gdc', ":Git diff --cached<CR>")
 
--- vim-vsnip
--- =========
-vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snippets/")
-vim.cmd([[
-imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
-]])
--- XXX This one didn't work well
--- vim.keymap.set(
---     "i", "<Tab>",
---     "vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'",
---     -- This one doesn't work very well either ...
---     -- function()
---     --     if vim.fn["vsnip#available"](1) then
---     --         return "<Plug>(vsnip-export-or-jump)"
---     --     else
---     --         return "<Tab>"
---     --     end
---     -- end,
---     {expr=true}
--- )
+-- LuaSnip
+-- =============
+-- https://github.com/garymjr/nvim-snippets?tab=readme-ov-file#installation
+local ls = require("luasnip")
+-- To debug, add this line and run :source and then
+-- :lua require("luasnip").log.open()
+-- ls.log.set_loglevel("info")
+
+vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump(1) end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+
+vim.keymap.set({"i", "s"}, "<C-E>", function()
+    if ls.choice_active() then ls.change_choice(1) end
+end, {silent = true})
+
+local snippet_loader = require("luasnip.loaders.from_vscode")
+local snippet_dir = vim.fn.expand("~/.config/nvim/snippets/")
+snippet_loader.lazy_load({paths = {snippet_dir}})
 
 -- Svelte
 -- ======
@@ -301,9 +278,8 @@ ack.setup()
 vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
 vim.keymap.set('n', '<leader>ag', ":<C-u>Ack ")
 -- Search for the current file
-vim.keymap.set('n', '<leader>af', function()
-    ack.Ack('grep', vim.fn.expand('%:t'))
-end)
+vim.keymap.set('n', '<leader>af',
+               function() ack.Ack('grep', vim.fn.expand('%:t')) end)
 -- Search for word under cursor
 vim.keymap.set('n', '<leader>aw', function()
     local word = vim.fn.expand('<C-R><C-W>')
@@ -350,7 +326,7 @@ vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
 -- ==========
 vim.g.ledger_accounts_cmd = "hledger accounts"
 vim.g.ledger_is_hledger = true
-vim.g.ledger_fuzzy_account_completion = 1
+-- vim.g.ledger_fuzzy_account_completion = 1
 
 -- Pastifiy.nvim
 -- =============

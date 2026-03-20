@@ -9,7 +9,13 @@
   ];
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    matchBlocks."*".addKeysToAgent = "yes";
+    # Fix the following warning:
+    # > trace: warning: debian profile: `programs.ssh` default values will be removed in the future.
+    # > Consider setting `programs.ssh.enableDefaultConfig` to false,
+    # > and manually set the default values you want to keep at
+    # > `programs.ssh.matchBlocks."*"`.
+    enableDefaultConfig = false;
     extraOptionOverrides = {
       ConnectTimeout = "5";
       IdentitiesOnly = "yes";

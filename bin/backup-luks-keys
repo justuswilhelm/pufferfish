@@ -5,6 +5,8 @@
 #
 # Back up LUKS keys on the current system and print out instructions on
 # how to add this to pass using the pass-file extension
+# Example:
+# bin/backup-luks-keys DESTINATION $USER
 import tempfile
 from pathlib import Path
 import subprocess
@@ -83,7 +85,7 @@ def main(out_path: str, user: str) -> None:
 
     print(f'''Now run the following as user '{user}':
 
-find {out_path} -print0 | xargs --null --replace=FILE -n1 sh -c "pass file add FILE fde/$hostname"''')
+find {out_path} -print0 | xargs --null --replace=FILE -n1 sh -c "pass file add FILE fde/$(hostname)"''')
 
 
 if __name__ == "__main__":

@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Archive, encrypt, and sign contents of password store
+# Uses .gpg-id to derive recipient and key used for signing
+set -e
+dest="$1"
+src=$PASSWORD_STORE_DIR
+tar_file="$(mktemp -d)/backup.tar.gz"
+encrypted_file="$(mktemp -d)/backup.gpg"
+receiver=$(cat "$src/.gpg-id")
+sign_key="$receiver"
+
+if test -z "$dest"; then
+    echo "Usage: $0 [backup destination]"
+    exit 1
+fi
+
+if test ! -d "$dest"; then
+    echo "Destination $dest must be a directory"
+    exit 1
+fi
+
+if test ! -e "$src"; then
+    echo "Couldn't find source directory $src"
+    exit 1
+fi
+
+echo "Creating archive at $tar_file for files in $src"
+tar --create --directory "$src" --file "$tar_file" .
+
+echo "Signing and encrypting archive at $tar_file to $encrypted_file"
+
+# GPG is slow because it tries to compress files. Passing --compress-algo none
+# speeds it up
+# https://security.stackexchange.com/a/56209
+gpg --sign --encrypt \
+    --recipient "$receiver" \
+    --compress-algo none \
+    --default-key "$sign_key" \
+    --output "$encrypted_file" \
+    "$tar_file"
+
+# creating an intermediate file first because it speeds
+# up gpg when working with removable media
+output_file="$dest/$(date -Idate)-pwstore-backup.gpg"
+mv --verbose "$encrypted_file" "$output_file"
+sync

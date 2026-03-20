@@ -23,6 +23,7 @@
     ./modules/git.nix
     ./modules/gpg-agent.nix
     ./modules/gpg.nix
+    ./modules/infosec.nix
     # ./modules/linux-packages.nix
     ./modules/man.nix
     ./modules/nvim.nix

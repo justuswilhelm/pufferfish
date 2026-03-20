@@ -37,6 +37,15 @@
       # hynek/vim-python-pep8-indent
       # If this isn't enabled, indentation on the next line is wrong.
       vim-python-pep8-indent
+      # evanleck/vim-svelte
+      vim-svelte
+      # nvim-orgmode/orgmode
+      orgmode
+      # leafgarland/typescript-vim
+      typescript-vim
+      # pangloss/vim-javascript
+      vim-javascript
+
       # Ascii stuff
       # -----------
       # jbyuki/venn.nvim
@@ -47,6 +56,22 @@
       nvim-lspconfig
       # hrsh7th/cmp-nvim-lsp
       cmp-nvim-lsp
+
+      # Autocomplete
+      # ------------
+      # hrsh7th/nvim-cmp
+      nvim-cmp
+      # hrsh7th/cmp-buffer
+      cmp-buffer
+      # hrsh7th/cmp-path
+      cmp-path
+      # hrsh7th/cmp-cmdline
+      cmp-cmdline
+
+      # Snippets
+      # --------
+      luasnip
+
       # Search and file jump
       # --------------------
       # ibhagwan/fzf-lua
@@ -58,7 +83,7 @@
       # treesitter
       # ----------
       # nvim-treesitter/nvim-treesitter
-      nvim-treesitter.withAllGrammars
+      (nvim-treesitter.withPlugins (p: [ p.c p.rust p.lua p.svelte p.typescript p.java p.nix p.python p.html p.javascript ] ))
       # kylechui/nvim-surround
       # works with treesitter
       nvim-surround
