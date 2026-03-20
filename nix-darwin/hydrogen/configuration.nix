@@ -21,7 +21,7 @@ in
     ../modules/nix.nix
     ../modules/openssh.nix
     ../modules/overlays.nix
-    ../modules/security.nix
+    # ../modules/security.nix
     ../modules/skhd.nix
     ../modules/user.nix
   ];
