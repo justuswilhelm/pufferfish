@@ -26,11 +26,16 @@ end
 function M.send_aider_command(text)
     -- Check TMUX environment
     if vim.env.TMUX == nil then
-        vim.notify("Must run inside Tmux session.", vim.log.levels.ERROR)
+        print_error("Must run inside Tmux session.")
         return
     end
 
     -- Find aider pane in current session
+    -- Sample output:
+    -- # tmux list-panes -s -F "#{pane_title} [#{session_name}:#{window_index}.#{pane_index}]"
+    -- [lithium] nvim ~/.dotfiles [dotfiles:0.0]
+    -- [lithium] tmux list-panes -s - ~/.dotfiles [dotfiles:0.1]
+    -- [lithium] aider ~/.dotfiles [dotfiles:0.2]
     local list_panes_cmd = {
         "tmux", "list-panes", "-s", "-F",
         "#{pane_title} [#{session_name}:#{window_index}.#{pane_index}]"
@@ -50,7 +55,7 @@ function M.send_aider_command(text)
     for _, pane_line in ipairs(panes) do
         for _, pattern in ipairs(M.AIDER_PATTERNS) do
             if pane_line:match(pattern) then
-                pane_id = pane_line:match("%[(.+)%]")
+                pane_id = pane_line:match("%[([^[]+:.+%..+)%]$")
                 if not pane_id then
                     vim.notify(string.format(
                                    "Couldn't find full pane path in line %s",
