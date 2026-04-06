@@ -40,6 +40,7 @@ in
         pkgs.git
         pkgs.git-annex
         pkgs.openssh
+        pkgs.moreutils
       ];
       # TODO consider adding timeout
       script = ''
