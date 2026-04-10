@@ -59,9 +59,38 @@ in
             ];
           };
         };
-        firefox-allow-local-80 = {
+        # TODO refactor this
+        # Right now, the OpenSnitch UI rejects the LAN dest.network
+        firefox-allow-lan-192-80 = {
           name = "002-allow-firefox-local-http";
-          description = "Allow local Firefox connections to :80";
+          description = "Allow local Firefox connections to 192.0.0.0/8 :80";
+          created = "1970-01-01T00:00:00Z";
+          updated = "1970-01-01T00:00:00Z";
+          enabled = true;
+          action = "allow";
+          duration = "always";
+          precedence = true;
+          operator = {
+            type = "list";
+            operand = "list";
+            list = [
+              processPath
+              {
+                type = "simple";
+                operand = "dest.port";
+                data = "80";
+              }
+              {
+                type = "network";
+                operand = "dest.network";
+                data = "192.0.0.0/8";
+              }
+            ];
+          };
+        };
+        firefox-allow-lan-10-80 = {
+          name = "002-allow-firefox-local-http";
+          description = "Allow local Firefox connections to 10.0.0.0/24 :80";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
           enabled = true;
