@@ -17,7 +17,6 @@ in
   imports = [
     ./modules/alacritty.nix
     ./modules/business.nix
-    ./modules/cmus.nix
     ./modules/fd.nix
     ./modules/http.nix
     ./modules/karabiner.nix
@@ -26,7 +25,6 @@ in
     ./modules/infosec.nix
     ./modules/packages.nix
     ./modules/pomoglorbo.nix
-    ./modules/cmus.nix
     ./modules/rust.nix
     ./modules/text-proc.nix
     ./modules/timewarrior.nix
@@ -34,11 +32,6 @@ in
 
     ./home.nix
   ];
-
-  programs.cmus = {
-    enable = true;
-    output_plugin = "coreaudio";
-  };
 
   programs.tmux = {
     pasteCommand = "pbpaste";
@@ -140,6 +133,9 @@ in
     matchBlocks."gitlab.com" = {
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
     };
+    includes = [
+      "~/.ssh/extra"
+    ];
   };
 
   home.stateVersion = "24.05";

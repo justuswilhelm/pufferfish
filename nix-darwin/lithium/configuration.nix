@@ -1,12 +1,11 @@
 # SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
+# nix-darwin configuration for lithium MacBook Air M2
 
 {
   specialArgs,
   config,
   pkgs,
-  projectify,
   ...
 }:
 let
@@ -21,11 +20,11 @@ in
     ../modules/disable-rcd.nix
     ../modules/gpg-agent.nix
     ../modules/man.nix
+    ../modules/mpd.nix
     ../modules/nix.nix
     ../modules/offlineimap.nix
     ../modules/openssh.nix
     ../modules/overlays.nix
-    ../modules/projectify.nix
     ../modules/radicale.nix
     ../modules/security.nix
     ../modules/skhd.nix
@@ -42,10 +41,6 @@ in
   environment.systemPackages = [
     # Hot key mapping
     pkgs.skhd
-    # TODO re-check these packages after some time passes
-    # Databases
-    # Not sure if this needs to be available outside somehow
-    pkgs.postgresql_15
 
     # Shell
     # Not sure if this needs to be available outside somehow
@@ -76,11 +71,6 @@ in
   services.tor = {
     enable = true;
     # https://git-annex.branchable.com/tips/enable_tor_on_nixos/
-  };
-
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_15;
   };
 
   services.nagios = {

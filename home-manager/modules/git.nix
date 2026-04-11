@@ -16,13 +16,7 @@
   ];
   programs.git = {
     enable = true;
-    delta = {
-      enable = true;
-      options = {
-        light = true;
-      };
-    };
-    extraConfig = {
+    settings = {
       pull = {
         rebase = false;
       };
@@ -74,6 +68,13 @@
         path = "${config.xdg.configHome}/git/user";
       }
     ];
+  };
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      light = true;
+    };
   };
   programs.fish.shellAbbrs = {
     # Git abbreviations

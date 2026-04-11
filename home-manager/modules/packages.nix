@@ -30,15 +30,16 @@
     # Build tools
     pkgs.cmake
     pkgs.hugo
+    pkgs.gettext
 
     # Compilers, Interpreters, VMs
-    pkgs.nodejs_20
+    pkgs.nodejs_24
     pkgs.go
-    pkgs.j
+    # pkgs.j
+    pkgs.ngn-k
 
     # TUIs
     pkgs.htop
-    pkgs.fzf
     # Broken,
     # https://github.com/NixOS/nixpkgs/issues/299091
     # pkgs.ncdu

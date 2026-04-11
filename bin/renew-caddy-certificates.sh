@@ -19,6 +19,20 @@ sudo -u caddy openssl req -new \
   -out /var/lib/caddy/certs/lithium-server.csr
 echo "Created CSR"
 
+# Want 600
+umask 077
+echo "\
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature
+extendedKeyUsage = serverAuth
+subjectAltName = DNS:lithium.local
+issuerAltName = issuer:copy\
+" | sudo -u lithium-ca tee /var/lib/lithium-ca/signed/lithium-server.ext
+echo "Created extension:"
+stat /var/lib/lithium-ca/signed/lithium-server.ext
+
 sudo -u lithium-ca openssl x509 \
   -req \
   -sha256 \

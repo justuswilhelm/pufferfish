@@ -9,12 +9,12 @@
     # https://github.com/koekeishiya/skhd/issues/1
     skhdConfig =
       let
-        cmus-remote = "${pkgs.cmus}/bin/cmus-remote";
+        mpc = "${pkgs.mpc}/bin/mpc";
       in
       ''
-        play : ${cmus-remote} -u
-        rewind : ${cmus-remote} -r
-        fast : ${cmus-remote} -n
+        play : ${mpc} toggle
+        rewind : ${mpc} prev
+        fast : ${mpc} next
       '';
   };
 }
