@@ -66,6 +66,8 @@ in
       AppleFontSmoothing = 0;
       "com.apple.keyboard.fnState" = true;
       NSDocumentSaveNewDocumentsToCloud = false;
+      # defaults write -g NSMenuEnableActionImages -bool NO
+      # NSMenuEnableActionImages = false;
     };
     # XXX broken with
     # ~$defaults write com.apple.universalaccess reduceMotion -bool true
