@@ -23,9 +23,7 @@ function projectify --description "Launch a Projectify tmux session"
 
     # Serve backend django server
     tmux new-window -c "$projectify_path" -t $session -n django-serve
-    tmux send-keys -t "$session:django-serve" "uv run ./manage.py runserver" C-m
-    tmux split-window -c "$projectify_path" -v -t "$session:django-serve"
-    tmux send-keys -t "$session:django-serve" "npm run dev" C-m
+    tmux send-keys -t "$session:django-serve" "uv run honcho start" C-m
 
     # Open root folder
     tmux new-window -c "$projectify_path" -t $session -n shell

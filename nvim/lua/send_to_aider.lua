@@ -8,6 +8,9 @@ local M = {}
 -- Define patterns to match for aider panes
 M.AIDER_PATTERNS = {"aider"}
 
+-- Print an error
+function print_errror(text) vim.notify(text, vim.log.levels.ERROR) end
+
 -- Get the current buffer's path relative to project root
 function M.get_relative_path()
     -- Either get root directory based on .git
@@ -26,11 +29,16 @@ end
 function M.send_aider_command(text)
     -- Check TMUX environment
     if vim.env.TMUX == nil then
-        vim.notify("Must run inside Tmux session.", vim.log.levels.ERROR)
+        print_error("Must run inside Tmux session.")
         return
     end
 
     -- Find aider pane in current session
+    -- Sample output:
+    -- # tmux list-panes -s -F "#{pane_title} [#{session_name}:#{window_index}.#{pane_index}]"
+    -- [lithium] nvim ~/.dotfiles [dotfiles:0.0]
+    -- [lithium] tmux list-panes -s - ~/.dotfiles [dotfiles:0.1]
+    -- [lithium] aider ~/.dotfiles [dotfiles:0.2]
     local list_panes_cmd = {
         "tmux", "list-panes", "-s", "-F",
         "#{pane_title} [#{session_name}:#{window_index}.#{pane_index}]"
@@ -38,34 +46,40 @@ function M.send_aider_command(text)
     local result = vim.system(list_panes_cmd, {text = true}):wait()
 
     if result.code ~= 0 then
-        vim.notify(
-            string.format("Failed to list tmux panes: %s", result.stderr),
-            vim.log.levels.ERROR)
+        print_error(
+            string.format("Failed to list tmux panes: %s", result.stderr))
         return
     end
 
     local panes = vim.split(result.stdout, '\n', {trimempty = true})
     local pane_id
 
+    -- TODO error if this finds multiple aider panes
+    local matches = {}
     for _, pane_line in ipairs(panes) do
         for _, pattern in ipairs(M.AIDER_PATTERNS) do
             if pane_line:match(pattern) then
-                pane_id = pane_line:match("%[(.+)%]")
+                pane_id = pane_line:match("%[([^[]+:.+%..+)%]$")
                 if not pane_id then
-                    vim.notify(string.format(
-                                   "Couldn't find full pane path in line %s",
-                                   pane_line), vim.log.levels.ERROR)
+                    print_error(string.format(
+                                    "Couldn't find full pane path in line %s",
+                                    pane_line))
                     return
                 end
-                break
+                table.insert(matches, pane_id)
             end
         end
     end
 
-    if not pane_id then
-        vim.notify(string.format(
-                       'Aider pane not found in current window. Available panes:\n%s',
-                       table.concat(panes)), vim.log.levels.ERROR)
+    if table.getn(matches) == 0 then
+        print_error(string.format(
+                        'Aider pane not found in current tmux session. Available panes:\n%s',
+                        table.concat(panes)))
+        return
+    elseif table.getn(matches) > 1 then
+        print_error(string.format(
+                        'Several aider panes found in current tmux session. Available panes:\n%s',
+                        table.concat(panes)))
         return
     end
 
@@ -78,8 +92,8 @@ function M.send_aider_command(text)
     local load_result = vim.system(load_cmd, {text = true, stdin = text}):wait()
 
     if load_result.code ~= 0 then
-        vim.notify(string.format("Failed to load buffer to tmux: %s",
-                                 load_result.stderr), vim.log.levels.ERROR)
+        print_error(string.format("Failed to load buffer to tmux: %s",
+                                  load_result.stderr))
         return
     end
 
@@ -90,8 +104,8 @@ function M.send_aider_command(text)
     local paste_result = vim.system(paste_cmd, {text = true}):wait()
 
     if paste_result.code ~= 0 then
-        vim.notify(string.format("Failed to paste buffer to tmux: %s",
-                                 paste_result.stderr), vim.log.levels.ERROR)
+        print_error(string.format("Failed to paste buffer to tmux: %s",
+                                  paste_result.stderr))
         return
     end
 
@@ -100,8 +114,8 @@ function M.send_aider_command(text)
     local enter_result = vim.system(enter_cmd, {text = true}):wait()
 
     if enter_result.code ~= 0 then
-        vim.notify(string.format("Failed to send enter key to tmux: %s",
-                                 enter_result.stderr), vim.log.levels.ERROR)
+        print_error(string.format("Failed to send enter key to tmux: %s",
+                                  enter_result.stderr))
         return
     end
 end
@@ -151,7 +165,7 @@ function M.send_selection_to_aider()
     local text = get_visual_selection()
 
     if text == '' then
-        vim.notify("No selection found", vim.log.levels.ERROR)
+        print_error("No selection found", vim.log.levels.ERROR)
         return
     end
 

@@ -78,7 +78,8 @@ cmp.setup.filetype({"rust", "python", "svelte", "typescript"}, {
         ['<CR>'] = cmp.mapping.confirm({select = false})
     }),
     sources = cmp.config.sources({
-        {name = 'buffer'}, {name = 'nvim_lsp'}, {name = 'orgmode'}, {name = "hledger"},
+        {name = 'buffer'}, {name = 'nvim_lsp'}, {name = 'orgmode'},
+        {name = "hledger"}
     }, {{name = 'buffer'}})
 })
 
