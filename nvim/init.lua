@@ -22,7 +22,7 @@ Plug("guersam/vim-j", {['for'] = "j"})
 -- Plug("dag/vim-fish", {['for'] = "fish"})
 -- Plug("tpope/vim-markdown", {['for'] = "markdown"})
 Plug("supercollider/scvim")
-Plug("kirasok/cmp-hledger")
+Plug("ledger/vim-ledger", {["commit"] = "4f2d93dd914f625e2d3db47d97bd9f428fedd68f"})
 
 -- Improve general editor behavior
 -- -------------------------------
@@ -79,7 +79,6 @@ cmp.setup.filetype({"rust", "python", "svelte", "typescript"}, {
     }),
     sources = cmp.config.sources({
         {name = 'buffer'}, {name = 'nvim_lsp'}, {name = 'orgmode'},
-        {name = "hledger"}
     }, {{name = 'buffer'}})
 })
 
@@ -327,7 +326,7 @@ vim.keymap.set("n", "<Leader>k", "<Plug>(easymotion-k)")
 -- ==========
 vim.g.ledger_accounts_cmd = "hledger accounts"
 vim.g.ledger_is_hledger = true
--- vim.g.ledger_fuzzy_account_completion = 1
+vim.g.ledger_fuzzy_account_completion = 1
 
 -- Pastifiy.nvim
 -- =============

@@ -30,8 +30,6 @@
       # -----------------
       # mrcjkb/rustaeceanvim
       rustaceanvim
-      # ledger/vim-ledger
-      vim-ledger
       # othree/html5.vim
       html5-vim
       # hynek/vim-python-pep8-indent
