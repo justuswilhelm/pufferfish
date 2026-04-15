@@ -3,6 +3,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # git throw throws your repository to another computer on the same network
+# Example:
+# git throw nitrogen.local
+#
+# Pushes the contents of this Git repository to a remote called nitrogen.local
+# at the same path inside its home directory.
+# If you have ~/projects/top-secret on your computer, it creates
+# ~/projects/top-secret on nitrogen.local
 #
 # TODO detect if annex, otherwise skip `git annex sync`
 # TODO make this work even if annex isn't enabled. We can't push if the remote
@@ -26,8 +33,15 @@ def main():
     )
     parser.add_argument("remote")
     remote = parser.parse_args().remote
+
+    # Find root directory of current repository
+    find_root_dir = run(
+        ["git", "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE, text=True
+    )
+    root_dir = Path(find_root_dir.stdout.rstrip())
+    print(f"Assuming root directory of current repository is at '{root_dir}'")
     # Only works if at home
-    dir = f"~/{Path.cwd().relative_to(Path.home())}"
+    dir = f"~/{root_dir.relative_to(Path.home())}"
     print(f"Using path '{dir}' for remote repository directory")
 
     remote_name = re.sub(r"\.local$", "", remote)
@@ -36,9 +50,6 @@ def main():
     try:
         run(["git", "remote", "get-url", remote_name])
     except Exception:
-        print(f"Remote with name '{remote_name}' already exists")
-        print("Still running git annex sync...")
-    else:
         remote_url = f"ssh://{os.environ['USER']}@{remote}/{dir}"
 
         print(f"Using address '{remote_url}' for remote '{remote}'")
@@ -46,8 +57,11 @@ def main():
         print(f"SSH'ing into remote '{remote}' to create repository at path '{dir}'")
         run(["ssh", remote, f"git init {dir}"])
         run(["git", "remote", "add", remote_name, remote_url])
+    else:
+        print(f"Remote with name '{remote_name}' already exists")
+        print("Still running git annex sync...")
 
-    subprocess.run(["git", "annex", "sync"], check=True)
+    subprocess.run(["git", "annex", "sync", remote_name], check=True)
 
 
 if __name__ == "__main__":
