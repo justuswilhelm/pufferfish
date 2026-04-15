@@ -275,7 +275,7 @@ vim.g.svelte_preprocessors = {"ts", "typescript"}
 local ack = require('ack')
 ack.setup()
 -- Search for selected text
-vim.keymap.set('v', '<leader>ag', ":<C-u>Ack! \"<C-R><C-W>\"<CR>")
+vim.keymap.set('v', '<leader>ag', '"ay:<C-u>Ack! \"<C-R>a\"<CR>')
 vim.keymap.set('n', '<leader>ag', ":<C-u>Ack ")
 -- Search for the current file
 vim.keymap.set('n', '<leader>af',
