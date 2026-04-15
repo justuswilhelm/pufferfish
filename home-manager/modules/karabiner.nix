@@ -105,8 +105,8 @@ in
             identifiers = {
               is_keyboard = true;
               is_pointing_device = false;
-              product_id = 0;
-              vendor_id = 0;
+              product_id = 641;
+              vendor_id = 1452;
             };
             ignore = false;
             manipulate_caps_lock_led = true;

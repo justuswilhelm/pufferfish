@@ -18,6 +18,7 @@ in
     ./modules/alacritty.nix
     ./modules/cmus.nix
     ./modules/fd.nix
+    ./modules/karabiner.nix
     ./modules/infosec.nix
     ./modules/packages.nix
 
@@ -54,8 +55,6 @@ in
   programs.git.ignores = [ ".DS_Store" ];
 
   xdg.cacheHome = "${config.home.homeDirectory}/Library/Caches";
-
-  xdg.configFile."karabiner/karabiner.json".source = ../karabiner/karabiner.json;
 
   # From ./modules/gpg-agent.nix
   services.gpg-agent = {

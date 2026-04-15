@@ -10,13 +10,16 @@
     pkgs.ncdu
     pkgs.file
 
+    # GUI tools
+    # =========
+    pkgs.zeal
+    # Markdown writer
+    pkgs.kdePackages.ghostwriter
+
     # Nix
     # ===
     # Not available on Darwin
     pkgs.cntr
-
-    # Remote desktop
-    # ==============
 
     # TTY tools
     # =========
