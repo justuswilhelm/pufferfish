@@ -39,7 +39,7 @@ let
       extra_headers = {
         anthropic-beta = "prompt-caching-2024-07-31,pdfs-2024-09-25,output-128k-2025-02-19";
         };
-      max_tokens = 1000000;
+      max_tokens = 640000;
     };
     cache_control = true;
     editor_model_name = "openrouter/anthropic/claude-haiku-4.5";
