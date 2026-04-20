@@ -43,6 +43,7 @@ in
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
+  programs.cmus.enable = true;
 
   home.file.".xkb/symbols/${modelName}".text = ''
     default partial alphanumeric_keys
