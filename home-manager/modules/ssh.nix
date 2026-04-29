@@ -9,7 +9,8 @@
   ];
   programs.ssh = {
     enable = true;
-    matchBlocks."*".addKeysToAgent = "yes";
+    # Not sure if we want to do that
+    # matchBlocks."*".addKeysToAgent = "yes";
     # Fix the following warning:
     # > trace: warning: debian profile: `programs.ssh` default values will be removed in the future.
     # > Consider setting `programs.ssh.enableDefaultConfig` to false,
