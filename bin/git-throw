@@ -34,6 +34,12 @@ def main():
     parser.add_argument("remote")
     remote = parser.parse_args().remote
 
+    # Check if remote is reachable
+    try:
+        run(["ping", "-c", "1", "-W", "3", remote])
+    except subprocess.SubprocessError as e:
+        raise RuntimeError(f"Couldn't reach remote at {remote}") from e
+
     # Find root directory of current repository
     find_root_dir = run(
         ["git", "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE, text=True
@@ -61,7 +67,7 @@ def main():
         print(f"Remote with name '{remote_name}' already exists")
         print("Still running git annex sync...")
 
-    subprocess.run(["git", "annex", "sync", remote_name], check=True)
+    subprocess.run(["git", "annex", "sync", "--no-content", remote_name])
 
 
 if __name__ == "__main__":
