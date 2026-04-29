@@ -98,18 +98,15 @@ in
           ];
         };
         devices = [
+          # Findings when messing around with setings:
+          # ignore is false by default
+          # manipulate_caps_lock_led is true by default
           # Internal keyboard
           {
-            disable_built_in_keyboard_if_exists = false;
-            fn_function_keys = [ ];
             identifiers = {
               is_keyboard = true;
-              is_pointing_device = false;
-              product_id = 641;
-              vendor_id = 1452;
+              is_built_in_keyboard = true;
             };
-            ignore = false;
-            manipulate_caps_lock_led = true;
             simple_modifications = [
               {
                 from = {
@@ -130,7 +127,6 @@ in
                 to = [ { key_code = "vk_none"; } ];
               }
             ];
-            treat_as_built_in_keyboard = false;
           }
           # External USB keyboard from FILCO
           {
@@ -139,8 +135,8 @@ in
             identifiers = {
               is_keyboard = true;
               is_pointing_device = false;
-              product_id = 6148;
-              vendor_id = 12029;
+              product_id = lib.fromHexString "0x1804";
+              vendor_id = lib.fromHexString "0x2efd";
             };
             ignore = false;
             manipulate_caps_lock_led = true;
@@ -209,8 +205,8 @@ in
             identifiers = {
               is_keyboard = true;
               is_pointing_device = false;
-              product_id = 666;
-              vendor_id = 76;
+              product_id = lib.fromHexString "0x29a";
+              vendor_id = lib.fromHexString "0x4c";
             };
             ignore = false;
             manipulate_caps_lock_led = true;
