@@ -5,23 +5,27 @@
 # Configuration used for testing devices
 { ... }:
 let
-  ifName = "enp0s20f0u2c2";
-  extraIfname = "enp0s20f0u6";
+  # Connect devices to this interface to intercept their traffic
+  # and feed into certmitm
+  ifName = "enp0s20f0u11u4";
   # Private testing segment
   router = "10.128.0.10";
+  # This computer controls this
   privateSubnet = "${router}/24";
   # External network on extIfName
   privateSubnetGateway = "10.0.48.1/24";
   extIfName = "enp7s0";
+  # Actual (internet) outward facing CNS server
   dnsServer = "10.0.48.1";
 in
 {
   systemd.network = {
     networks = {
+      # Network used for certmitm
       "30-usb-ethernet" = {
         matchConfig = {
           Type = "ether";
-          Driver = [ "cdc_ncm" ];
+          Driver = [ "ax88179_178a" ];
         };
         networkConfig = {
           DHCP = "no";
@@ -39,20 +43,6 @@ in
             Scope = "link";
           }
         ];
-      };
-      "31-usb-ethernet-2" = {
-        matchConfig = {
-          Type = "ether";
-          Driver = [ "ax88179_178a" ];
-        };
-        networkConfig = {
-          DHCP = "no";
-          DefaultRouteOnDevice = false;
-          MulticastDNS = "no";
-          IPv4Forwarding = true;
-          IPv6Forwarding = true;
-          Address = [ "10.128.128.125/24" ];
-        };
       };
     };
   };
