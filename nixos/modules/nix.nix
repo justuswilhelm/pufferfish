@@ -11,7 +11,6 @@
 }:
 {
   nix = {
-    package = pkgs.nixVersions.stable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -22,34 +21,63 @@
       options = "--delete-older-than 30d";
     };
   };
-  environment.systemPackages = [
-    pkgs.nix-tree
-  ];
+  environment.systemPackages = [ pkgs.nix-tree ];
 
-  # OpenSnitch firewall rules for nix
-  services.opensnitch.rules.nix = {
-    name = "allow-nix";
-    description = "Allow nix";
-    created = "1970-01-01T00:00:00Z";
-    updated = "1970-01-01T00:00:00Z";
-    enabled = true;
-    action = "allow";
-    duration = "always";
-    operator = {
-      type = "list";
-      operand = "list";
-      list = [
-        {
-          type = "simple";
-          operand = "process.path";
-          data = "${lib.getBin config.nix.package}/bin/nix";
-        }
-        {
-          type = "regexp";
-          operand = "dest.port";
-          data = "^(53|443)$";
-        }
-      ];
+  services.opensnitch.rules = {
+    nix = {
+      name = "allow-nix";
+      description = "Allow nix";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          {
+            type = "simple";
+            operand = "process.path";
+            data = "${lib.getBin config.nix.package}/bin/nix";
+          }
+          {
+            type = "regexp";
+            operand = "dest.port";
+            data = "^(53|443)$";
+          }
+        ];
+      };
+    };
+    curl-tarballs = {
+      name = "allow-curl-tarballs-nixos-org";
+      description = "Allow curl to access tarballs.nixos.org";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          {
+            type = "simple";
+            operand = "dest.host";
+            data = "tarballs.nixos.org";
+          }
+          {
+            type = "simple";
+            operand = "dest.port";
+            data = "443";
+          }
+          {
+            type = "simple";
+            operand = "process.path";
+            data = "${lib.getBin pkgs.curl}/bin/curl";
+          }
+        ];
+      };
     };
   };
 }
