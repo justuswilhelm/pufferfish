@@ -65,9 +65,7 @@ in
             timeout 21600 'systemctl poweroff'
         # Wayland copy-pasting, part of debian
         wl-paste -t text --watch clipman store --no-persist
-
-        # Make sure we have graphical-session.target
-        systemctl start --user sway-session.target
+        systemctl start --user opensnitch-ui.service
     }
   '';
   xdg.configFile."sway/config.d/colors".text = ''
