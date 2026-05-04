@@ -116,6 +116,7 @@ let
       # Temp
       "private/var/tmp"
       "tmp/"
+      "/tmp/borgmatic-*/borgmatic/bootstrap/manifest.json"
       "private/var/folders"
 
       # These programs should have been using a XDG cache
@@ -158,6 +159,8 @@ let
 
       # Too big
       "Users/${config.system.primaryUser}/annex/Movies"
+      # Too many files
+      "Users/${config.system.primaryUser}/annex/Music"
       "Users/${config.system.primaryUser}/annex/kiwix"
     ];
     exclude_caches = true;
@@ -388,11 +391,11 @@ with lib;
           }) range;
         # Performance
         ProcessType = "Background";
-        # LowPriorityBackgroundIO = true;
+        LowPriorityBackgroundIO = true;
+        LowPriorityIO = true;
         # Maybe:
         # NetworkState = true;
         # So that we don't try to back up when not connected to the network
-        # LowPriorityIO = true;
       };
     };
 
@@ -421,6 +424,8 @@ with lib;
         };
         # Performance
         ProcessType = "Background";
+        LowPriorityBackgroundIO = true;
+        LowPriorityIO = true;
       };
     };
 

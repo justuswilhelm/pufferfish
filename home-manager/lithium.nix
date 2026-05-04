@@ -119,19 +119,21 @@ in
     '';
 
   programs.ssh = {
-    matchBlocks."throwaway.local" = {
-      identityFile = "~/.ssh/id_rsa_yubikey.pub";
-      port = 2222;
-    };
     # TODO refactor all of these, since I'm using the same path among all devices
     matchBlocks."*.local" = {
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
     };
     matchBlocks."github.com" = {
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
+      user = "git";
+    };
+    matchBlocks."codeberg.org" = {
+      identityFile = "~/.ssh/id_rsa_yubikey.pub";
+      user = "git";
     };
     matchBlocks."gitlab.com" = {
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
+      user = "git";
     };
     includes = [
       "~/.ssh/extra"

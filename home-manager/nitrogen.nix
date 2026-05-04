@@ -43,6 +43,7 @@ in
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
+  programs.cmus.enable = true;
 
   home.file.".xkb/symbols/${modelName}".text = ''
     default partial alphanumeric_keys
@@ -109,6 +110,11 @@ in
         position = 7;
       };
     };
+
+  programs.thunderbird = {
+    enable = true;
+    profiles.private = {isDefault = true;};
+  };
 
   home.stateVersion = "24.05";
 }

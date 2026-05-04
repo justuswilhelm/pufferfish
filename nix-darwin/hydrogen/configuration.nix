@@ -14,20 +14,16 @@ let
 in
 {
   imports = [
+    ../modules/aerospace.nix
+    ../modules/disable-rcd.nix
     ../modules/gpg-agent.nix
     ../modules/nix.nix
     ../modules/openssh.nix
-    ../modules/aerospace.nix
-    ../modules/skhd.nix
     ../modules/overlays.nix
+    # ../modules/security.nix
+    ../modules/skhd.nix
+    ../modules/user.nix
   ];
-  users.users."${name}" = {
-    description = name;
-    shell = pkgs.fish;
-    home = "/Users/${name}";
-    inherit uid;
-  };
-  system.primaryUser = name;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -43,16 +39,11 @@ in
     ];
   };
 
-  # Rid ourselves of Apple Music automatically launching
-  # https://apple.stackexchange.com/questions/372948/how-can-i-prevent-music-app-from-starting-automatically-randomly/373557#373557
-  # Does this actually work? Might have to revisit this
-  # Other sources say this works:
-  # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
-  # But unload is deprecated in newer versions of launchd
-  system.activationScripts.disable-rcd = {
+  # Try to cancel things that wake up my computer
+  # https://discussions.apple.com/thread/255494014?sortBy=rank
+  system.activationScripts.pmset-cancelall = {
     text = ''
-      sudo -u ${name} launchctl bootout gui/${builtins.toString uid}/com.apple.rcd || echo "Already booted out"
-      sudo -u ${name} launchctl disable gui/${builtins.toString uid}/com.apple.rcd || echo "Already disabled"
+      pmset schedule cancelall
     '';
   };
 
@@ -99,19 +90,8 @@ in
       CreateDesktop = false;
       FXEnableExtensionChangeWarning = false;
     };
-    loginwindow = {
-      GuestEnabled = false;
-    };
-    screensaver.askForPassword = true;
-    screensaver.askForPasswordDelay = null;
-    ".GlobalPreferences" = {
-      "com.apple.mouse.scaling" = 0.5;
-    };
   };
   system.startup.chime = false;
-
-  power.sleep.computer = 3;
-  power.sleep.display = 3;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
