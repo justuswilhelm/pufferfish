@@ -11,6 +11,7 @@
       reload = "exec fish";
       # Ls shortcut with color, humanized, list-based output
       l = "ls -lhaG";
+      dotfiles = "cd $DOTFILES";
     };
   };
 
