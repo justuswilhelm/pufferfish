@@ -113,7 +113,9 @@ in
 
   programs.thunderbird = {
     enable = true;
-    profiles.private = {isDefault = true;};
+    profiles.private = {
+      isDefault = true;
+    };
   };
 
   home.stateVersion = "24.05";
