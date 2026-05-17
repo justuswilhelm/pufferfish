@@ -114,38 +114,33 @@ let
   '';
 
   # TODO refactor to make this a machine config
-  caddyHost = "lithium.local";
+  caddyHost = "localhost";
   caddyPort = 10103;
 
+  # Put fcgiwrapSock somewhere caddy can access it
+  fcgiwrapSock = "${nagiosRw}/fcgiwrap.sock";
   caddyConfig = ''
-    https://${caddyHost}:${toString caddyPort} {
-      import certs
-
-      route /auth* {
-        authenticate with myportal
-      }
-
-      route {
-        authorize with admins_policy
-
-        handle_path ${urlPath}/cgi-bin/* {
-          # nagios looks for REMOTE_USER header
-          # https://github.com/NagiosEnterprises/nagioscore/blob/2706fa7a451afe48bd4dc240d72d23fdcec0d9ef/cgi/cgiauth.c#L38
-          # temp_ptr = getenv("REMOTE_USER");
-          # https://github.com/aksdb/caddy-cgi?tab=readme-ov-file#execute-dynamic-script
-          cgi /*.cgi ${pkgs.nagios}/sbin{path} {
-            env NAGIOS_CGI_CONFIG=/etc/nagios/nagios.cgi.conf REMOTE_USER=nagiosadmin
+    http://${caddyHost}:${toString caddyPort} {
+      handle_path ${urlPath}/cgi-bin/* {
+        # nagios looks for REMOTE_USER env var
+        # https://github.com/NagiosEnterprises/nagioscore/blob/2706fa7a451afe48bd4dc240d72d23fdcec0d9ef/cgi/cgiauth.c#L38
+        # temp_ptr = getenv("REMOTE_USER");
+        reverse_proxy unix/${fcgiwrapSock} {
+          transport fastcgi {
+            env NAGIOS_CGI_CONFIG /etc/nagios/nagios.cgi.conf
+            env REMOTE_USER nagiosadmin
+            env SCRIPT_FILENAME ${pkgs.nagios}/sbin{path}
           }
         }
-
-        handle_path ${urlPath}/* {
-          root * ${pkgs.nagios}/share
-          php_fastcgi unix//${config.services.caddy.phpFpmSock}
-          file_server
-        }
-        redir / ${urlPath}/
-        redir ${urlPath} ${urlPath}/
       }
+
+      handle_path ${urlPath}/* {
+        root * ${pkgs.nagios}/share
+        php_fastcgi unix//${config.services.caddy.phpFpmSock}
+        file_server
+      }
+      redir / ${urlPath}/
+      redir ${urlPath} ${urlPath}/
 
       log {
         format console
@@ -395,7 +390,7 @@ in
               host_name ${caddyHost}
               service_description nagios-web
               display_name Nagios Web Interface
-              check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --url=${urlPath}/ --expect='HTTP/2 302'
+              check_command check_curl!-p ${toString caddyPort} --url=${urlPath}/ --expect='HTTP/2 302'
           }
         '';
       in
@@ -429,7 +424,33 @@ in
       cfg.package
       pkgs.monitoring-plugins
       cfg.nsca.package
+      pkgs.fcgiwrap
     ];
+
+    launchd.daemons.fcgiwrap = {
+      path = [
+        pkgs.moreutils
+        pkgs.coreutils
+      ];
+      serviceConfig = {
+        KeepAlive = true;
+        UserName = "nagios";
+        GroupName = "nagios-cmd";
+        WorkingDirectory = nagiosRw;
+        StandardOutPath = "${nagiosLogDir}/fcgiwrap.log";
+      };
+      script = ''
+        (
+          if [[ -e "${fcgiwrapSock}" ]]; then
+            rm -fv ${fcgiwrapSock}
+          fi
+          umask 007
+          ${pkgs.fcgiwrap}/sbin/fcgiwrap -s unix:${fcgiwrapSock}
+          # stat ${fcgiwrapSock}
+        ) 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+      '';
+    };
+
     launchd.daemons.nagios = {
       path = [
         cfg.package
@@ -481,6 +502,9 @@ in
 
         echo "Restarting nagios"
         launchctl kickstart -k system/${config.launchd.labelPrefix}.nagios
+
+        echo "Restarting fcgiwrap"
+        launchctl kickstart -k system/${config.launchd.labelPrefix}.fcgiwrap
 
         mkdir -vp ${nagiosNscaState} ${nagiosNscaLogDir}
         chown -v ${cfg.nsca.user}:${cfg.nsca.group} ${nagiosNscaState} ${nagiosNscaLogDir}

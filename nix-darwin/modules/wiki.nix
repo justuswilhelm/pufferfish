@@ -13,29 +13,18 @@ let
   groupname = "wiki";
   home = "/var/lib/wiki";
   logPath = "/var/log/${username}";
-  caddyHost = "lithium.local";
+  caddyHost = "localhost";
   caddyPort = 10106;
 
   caddyConfig = ''
     # MediaWiki
-    https://${caddyHost}:${toString caddyPort} {
-      import certs
-
-      route /auth* {
-        authenticate with myportal
-      }
-
-      route {
-        authorize with admins_policy
-
-
-        @title path_regexp title ^/wiki/(?<pagename>.*)$
-        rewrite @title /mediawiki/index.php
-        redir / /wiki/Main_Page
-        root * ${home}/www
-        php_fastcgi unix//${config.services.caddy.phpFpmSock}
-        file_server
-      }
+    http://${caddyHost}:${toString caddyPort} {
+      @title path_regexp title ^/wiki/(?<pagename>.*)$
+      rewrite @title /mediawiki/index.php
+      redir / /wiki/Main_Page
+      root * ${home}/www
+      php_fastcgi unix//${config.services.caddy.phpFpmSock}
+      file_server
 
       log {
         format console
@@ -69,7 +58,7 @@ in
             host_name ${caddyHost}
             service_description mediawiki
             display_name MediaWiki (Caddy)
-            check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --expect='HTTP/2 302' --url=${healthEndpoint}
+            check_command check_curl!-p ${toString caddyPort} --expect='HTTP/2 302' --url=${healthEndpoint}
         }
       '';
     in
