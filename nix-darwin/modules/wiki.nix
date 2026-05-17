@@ -55,7 +55,7 @@ in
             host_name ${caddyHost}
             service_description mediawiki
             display_name MediaWiki (Caddy)
-            check_command check_curl!-p ${toString caddyPort} --expect='HTTP/2 302' --url=${healthEndpoint}
+            check_command check_curl!-p ${toString caddyPort} --expect='HTTP/1.1 200' --url=${healthEndpoint}
         }
       '';
     in

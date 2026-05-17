@@ -387,7 +387,7 @@ in
               host_name ${caddyHost}
               service_description nagios-web
               display_name Nagios Web Interface
-              check_command check_curl!-p ${toString caddyPort} --url=${urlPath}/ --expect='HTTP/2 302'
+              check_command check_curl!-p ${toString caddyPort} --url=${urlPath}/ --expect='HTTP/1.1 200'
           }
         '';
       in
