@@ -143,7 +143,7 @@ let
         let
           pomoglorbo = "${pkgs.pomoglorbo}/bin/pomoglorbo";
         in
-          lib.mkIf (pkgs ? pomoglorbo) "exec-and-forget ${pomoglorbo} start";
+        lib.mkIf (pkgs ? pomoglorbo) "exec-and-forget ${pomoglorbo} start";
     };
     # https://nikitabobko.github.io/AeroSpace/guide#callbacks
     on-window-detected = [

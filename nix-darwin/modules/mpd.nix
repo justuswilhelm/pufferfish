@@ -80,21 +80,21 @@ in
     ];
 
     services.caddy.extraConfig = ''
-    # MPD Web Interface and Stream
-    https://${caddyHost}:${toString caddyPort} {
-      import certs
+      # MPD Web Interface and Stream
+      https://${caddyHost}:${toString caddyPort} {
+        import certs
 
-      handle_path /stream {
-        reverse_proxy localhost:${toString streamPort}
+        handle_path /stream {
+          reverse_proxy localhost:${toString streamPort}
+        }
+
+        handle /* {
+          reverse_proxy localhost:${toString webPort}
+        }
+
+        log
       }
-
-      handle /* {
-        reverse_proxy localhost:${toString webPort}
-      }
-
-      log
-    }
-  '';
+    '';
 
     services.newsyslog.modules.mpd = {
       ${mpdLogPath} = {

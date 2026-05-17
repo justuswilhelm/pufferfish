@@ -31,11 +31,13 @@
     # The original derivation is coupled to systemd?
     # https://github.com/NixOS/nixpkgs/blob/nixos-25.11/pkgs/by-name/fc/fcgiwrap/package.nix#L44
     (final: previous: {
-      fcgiwrap = previous.fcgiwrap.overrideAttrs (f: p: {
-        configureFlags = [];
-        meta.platforms = previous.lib.platforms.all;
-        buildInputs = [ previous.fcgi ];
-      });
+      fcgiwrap = previous.fcgiwrap.overrideAttrs (
+        f: p: {
+          configureFlags = [ ];
+          meta.platforms = previous.lib.platforms.all;
+          buildInputs = [ previous.fcgi ];
+        }
+      );
     })
   ];
 }
