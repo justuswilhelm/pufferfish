@@ -56,7 +56,7 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
     begin
         grep --invert-match $rlpath $hist_file
         echo $rlpath
-    end > $new_hist_file
+    end >$new_hist_file
     mv $new_hist_file $hist_file
 
     echo $rlpath
