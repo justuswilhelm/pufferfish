@@ -142,10 +142,7 @@ let
       redir / ${urlPath}/
       redir ${urlPath} ${urlPath}/
 
-      log {
-        format console
-        output file ${config.services.caddy.logPath}/nagios.log
-      }
+      log
     }
   '';
 

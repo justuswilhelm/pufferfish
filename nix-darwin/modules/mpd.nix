@@ -92,10 +92,7 @@ in
         reverse_proxy localhost:${toString webPort}
       }
 
-      log {
-        format console
-        output file ${config.services.caddy.logPath}/mpd.log
-      }
+      log
     }
   '';
 

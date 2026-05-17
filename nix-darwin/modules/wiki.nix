@@ -26,10 +26,7 @@ let
       php_fastcgi unix//${config.services.caddy.phpFpmSock}
       file_server
 
-      log {
-        format console
-        output file ${config.services.caddy.logPath}/wiki.log
-      }
+      log
     }
   '';
 in

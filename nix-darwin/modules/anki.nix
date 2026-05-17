@@ -30,10 +30,7 @@ let
 
       reverse_proxy ${host}:${toString port}
 
-      log {
-        format console
-        output file ${config.services.caddy.logPath}/anki.log
-      }
+      log
     }
   '';
 in
