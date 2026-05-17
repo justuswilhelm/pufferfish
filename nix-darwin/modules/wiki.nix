@@ -48,7 +48,7 @@ in
 
   services.nagios.objectDefs =
     let
-      healthEndpoint = "/index.php?title=Main_Page";
+      healthEndpoint = "/wiki/Main_Page";
       wikiNagios = pkgs.writeText "wiki.cfg" ''
         define service {
             use generic-service
