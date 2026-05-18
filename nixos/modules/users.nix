@@ -4,6 +4,7 @@
 
 { specialArgs, pkgs, ... }:
 {
+  programs.fish.enable = true;
   users.users.${specialArgs.name} = {
     isNormalUser = true;
     extraGroups = [
