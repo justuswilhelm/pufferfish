@@ -66,9 +66,9 @@
   environment.systemPackages = [
     # For growpart
     pkgs.cloud-utils
-    pkgs.pipx
-    # club-3090 needs pyyaml
-    (pkgs.python3.withPackages (p: [ p.pyyaml ]))
+
+    # club-3090 needs huggingface and pyyaml
+    (pkgs.python3.withPackages (p: [ p.pyyaml p.huggingface-hub ]))
   ];
 
   nixpkgs.config = {
@@ -80,49 +80,28 @@
     ];
   };
 
-  # hardware.graphics = {
-  #   enable = true;
-  # };
+  # TODO find out if this is really needed
+  hardware.graphics = {
+    enable = true;
+    # Fix the following Nix build error
+    # > Option enableNvidia on x86_64 requires 32-bit support libraries
+    enable32Bit = true;
+  };
   services.xserver.videoDrivers = [ "nvidia" ];
-  # hardware.nvidia uses the "stable" nvidiaPackages by default
+  # hardware.nvidia uses the nvidiaPackages.stable by default
   hardware.nvidia = {
     modesetting.enable = true;
     nvidiaSettings = true;
     open = false;
-    powerManagement = {
-      enable = false;
-      finegrained = false;
-    };
+    # enabling powermanagement is relevant if your VM can suspend
+    # See also https://download.nvidia.com/XFree86/Linux-x86_64/435.17/README/powermanagement.html
   };
   hardware.nvidia-container-toolkit.enable = true;
-  systemd.services.docker.path = [
-    # Fix this error:
-    # docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]
-    pkgs.nvidia-container-toolkit.tools
-    # Fix the following error:
-    # Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running prestart hook #0: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'
-    pkgs.libnvidia-container
-  ];
-
-  # Generate nvidia-container-toolkit config
-  # environment.etc."nvidia-container-runtime/config.toml".text = ''
-  #   [nvidia-container-cli]
-  #   ldconfig = "@${pkgs.glibc.bin}/bin/ldconfig"
-
-  #   [nvidia-container-runtime]
-  #   debug = "/var/log/nvidia-container-runtime.log"
-  # '';
-
-  # Enable NVIDIA Container Toolkit for Docker GPU support
   virtualisation.docker = {
     enable = true;
-    daemon.settings = {
-      runtimes = {
-        nvidia = {
-          path = "${pkgs.nvidia-container-toolkit.tools}/bin/nvidia-container-runtime";
-        };
-      };
-    };
+    # This gets a deprecated warning, but it still appears to do things
+    # https://github.com/NixOS/nixpkgs/blob/d7a713c0b7e47c908258e71cba7a2d77cc8d71d5/nixos/modules/services/hardware/nvidia-container-toolkit/default.nix#L145
+    enableNvidia = true;
   };
 
   services.qemuGuest.enable = true;
