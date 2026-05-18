@@ -545,6 +545,34 @@ curl http://helium-cuda.local:8020/v1/chat/completions \
   --json '{"model":"qwen3.6-27b-autoround","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
 ```
 
+# VM autostart
+
+Here's how to configure libvirt to start the VM automatically. Check
+if libvirt hasn't already marked it as *autostart*:
+
+```bash
+virsh -c qemu:///system list --autostart
+```
+
+It's not listed here, so the answer is no:
+
+```
+ Id   Name   State
+--------------------
+```
+
+Enable *autostart* with the following command:
+
+```
+~/.dotfiles!+(1)main$virsh -c qemu:///system autostart helium-cuda
+```
+
+`virsh` then prints the following:
+
+```
+Domain 'helium-cuda' marked as autostarted
+```
+
 # Appendix
 
 ## Remove VM
@@ -555,4 +583,64 @@ Remove the `helium-cuda` VM with these two commands:
 virsh -c qemu:///system destroy helium-cuda
 # --nvram flag needed because of UEFI
 virsh -c qemu:///system undefine helium-cuda --nvram
+```
+
+## Benchmark
+
+Run the following command on the host:
+
+```bash
+ssh helium-cuda.local cd club-3090 \; scripts/bench.sh
+```
+
+Benchmark output:
+
+```
+[autodetect] using running container=vllm-qwen36-27b url=http://localhost:8020  (skip: PREFLIGHT_NO_AUTODETECT=1)
+
+========== NARRATIVE (prompt=65 chars, max_tokens=1000) ==========
+=== warmups (3) ===
+  warm-1     wall= 22.74s  ttft=  9326ms  toks=1000  wall_TPS= 43.98  decode_TPS= 74.56
+  warm-2     wall= 28.12s  ttft= 13858ms  toks=1000  wall_TPS= 35.57  decode_TPS= 70.13
+  warm-3     wall= 27.24s  ttft= 13751ms  toks=1000  wall_TPS= 36.71  decode_TPS= 74.14
+
+=== measured (5) ===
+  run-1      wall= 27.73s  ttft= 13548ms  toks=1000  wall_TPS= 36.06  decode_TPS= 70.51
+  run-2      wall= 27.72s  ttft= 14073ms  toks=1000  wall_TPS= 36.07  decode_TPS= 73.26
+  run-3      wall= 22.68s  ttft=  8901ms  toks=1000  wall_TPS= 44.09  decode_TPS= 72.56
+  run-4      wall= 22.72s  ttft=  8373ms  toks=1000  wall_TPS= 44.02  decode_TPS= 69.71
+  run-5      wall= 21.88s  ttft=  7841ms  toks=1000  wall_TPS= 45.71  decode_TPS= 71.24
+
+=== summary [narrative] (n=5) ===
+  wall_TPS       mean=  41.19   std=  4.73   CV=11.5%   min=36.06   max=45.71
+  decode_TPS     mean=  71.46   std=  1.45   CV= 2.0%   min=69.71   max=73.26
+  TTFT          mean= 10547ms  std= 3008ms  min=7841ms  max=14073ms
+  PP tok/s       mean=   2.00   std=  2.09   CV=104.6%   min=0.00   max=5.00
+
+========== CODE (prompt=78 chars, max_tokens=800) ==========
+=== warmups (3) ===
+  warm-1     wall= 13.32s  ttft=  5173ms  toks= 782  wall_TPS= 58.69  decode_TPS= 95.95
+  warm-2     wall= 17.01s  ttft=  8721ms  toks= 800  wall_TPS= 47.02  decode_TPS= 96.48
+  warm-3     wall= 12.51s  ttft=  4684ms  toks= 768  wall_TPS= 61.41  decode_TPS= 98.18
+
+=== measured (5) ===
+  run-1      wall= 16.96s  ttft=  8730ms  toks= 800  wall_TPS= 47.18  decode_TPS= 97.24
+  run-2      wall= 16.50s  ttft=  8449ms  toks= 800  wall_TPS= 48.50  decode_TPS= 99.42
+  run-3      wall=  7.03s  ttft=    97ms  toks= 683  wall_TPS= 97.20  decode_TPS= 98.57
+  run-4      wall=  5.41s  ttft=    98ms  toks= 493  wall_TPS= 91.05  decode_TPS= 92.72
+  run-5      wall=  4.10s  ttft=    98ms  toks= 395  wall_TPS= 96.30  decode_TPS= 98.67
+
+=== summary [code] (n=5) ===
+  wall_TPS       mean=  76.05   std= 25.86   CV=34.0%   min=47.18   max=97.20
+  decode_TPS     mean=  97.32   std=  2.69   CV= 2.8%   min=92.72   max=99.42
+  TTFT          mean=  3495ms  std= 4652ms  min=97ms  max=8730ms
+  PP tok/s       mean=   3.00   std=  1.12   CV=37.3%   min=2.50   max=5.00
+
+=== GPU state ===
+0, 87 %, 21002 MiB, 24564 MiB, 445.46 W, 85
+
+=== Last 3 SpecDecoding metrics ===
+(APIServer pid=1) INFO 05-18 11:19:54 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.42, Accepted throughput: 67.60 tokens/s, Drafted throughput: 83.70 tokens/s, Accepted: 676 tokens, Drafted: 837 tokens, Per-position acceptance rate: 0.921, 0.828, 0.674, Avg Draft acceptance rate: 80.8%
+(APIServer pid=1) INFO 05-18 11:20:04 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.52, Accepted throughput: 69.90 tokens/s, Drafted throughput: 83.10 tokens/s, Accepted: 699 tokens, Drafted: 831 tokens, Per-position acceptance rate: 0.942, 0.859, 0.722, Avg Draft acceptance rate: 84.1%
+(APIServer pid=1) INFO 05-18 11:20:14 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.38, Accepted throughput: 67.00 tokens/s, Drafted throughput: 84.29 tokens/s, Accepted: 670 tokens, Drafted: 843 tokens, Per-position acceptance rate: 0.929, 0.811, 0.644, Avg Draft acceptance rate: 79.5%
 ```
