@@ -45,5 +45,6 @@
   virtualisation.spiceUSBRedirection.enable = true;
   environment.systemPackages = [
     pkgs.pciutils
+    pkgs.guestfs-tools
   ];
 }
