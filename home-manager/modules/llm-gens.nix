@@ -75,8 +75,10 @@ let
 in
 {
   home.file.".aider.conf.yml".source = yamlFormat.generate ".aider.conf.yml" config;
-  home.file.".aider.model.metadata.json".source = jsonFormat.generate ".aider.model.metadata.json" modelMetadata;
-  home.file.".aider.model.settings.yml".source = yamlFormat.generate ".aider.model.settings.yml" modelConfig;
+  home.file.".aider.model.metadata.json".source =
+    jsonFormat.generate ".aider.model.metadata.json" modelMetadata;
+  home.file.".aider.model.settings.yml".source =
+    yamlFormat.generate ".aider.model.settings.yml" modelConfig;
   programs.git.ignores = [ ".aider*" ];
 
   home.packages = [

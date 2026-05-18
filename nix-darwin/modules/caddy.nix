@@ -16,16 +16,7 @@ let
   statePath = "/var/lib/caddy";
   caStatePath = "/var/lib/lithium-ca";
 
-  caddy = pkgs.caddy.withPlugins {
-    plugins = [
-      # caddy-cgi v2.2.6 relies on go 1.24.0
-      # caddy-cgi v2.2.5 works with go 1.23.6
-      "github.com/aksdb/caddy-cgi/v2@v2.2.5"
-      "github.com/greenpau/caddy-security@v1.1.29"
-    ];
-    hash = "sha256-5TH0c+2bdpJcAMz/rO5BLiWI6niBa4pSwsJJpBh1+6k=";
-  };
-  caddyCookieLifetime = 60 * 60 * 24 * 3;
+  caddy = pkgs.caddy;
   caddyConfig = pkgs.writeText "Caddyfile" (
     ''
       {
@@ -36,49 +27,6 @@ let
         # automation.
         # https://caddyserver.com/docs/caddyfile/options#auto-https
         auto_https off
-
-        # https://docs.authcrunch.com/docs/authenticate/local/local
-        security {
-          local identity store localdb {
-            realm local
-            path ${statePath}/secrets/users.json
-          }
-
-          authentication portal myportal {
-            enable identity store localdb
-
-            # The cookie should stay valid longer than the auth token
-            # to redirect to the log in page if needed
-            cookie lifetime ${toString (caddyCookieLifetime * 2)}
-
-            crypto default token lifetime ${toString caddyCookieLifetime}
-            crypto key sign-verify {env.JWT_SHARED_KEY}
-          }
-          authorization policy admins_policy {
-            set auth url https://lithium.local:10103/auth
-
-            crypto key verify {env.JWT_SHARED_KEY}
-
-            allow roles authp/admin
-
-            set user identity subject
-
-            enable strip token
-
-            inject header "Remote-User" from subject
-
-            acl rule {
-              comment allow admins
-              match role authp/admin
-              allow stop log info
-            }
-            acl rule {
-              comment default deny
-              match any
-              deny log warn
-            }
-          }
-        }
       }
 
       (certs) {
@@ -195,7 +143,7 @@ in
     environment.etc."caddy/php-fpm.cfg".enable = cfg.enablePhp;
 
     services.newsyslog.modules.caddy = {
-      "${logPath}/caddy.stderr.log" = {
+      "${logPath}/caddy.log" = {
         owner = "caddy";
         group = "caddy";
         mode = "640";
@@ -204,7 +152,7 @@ in
         when = "$D0";
         flags = "J";
       };
-      "${logPath}/phpfpm.stderr.log" = {
+      "${logPath}/phpfpm.log" = {
         owner = "caddy";
         group = "caddy";
         mode = "640";
@@ -244,7 +192,7 @@ in
       '';
       serviceConfig = {
         KeepAlive = true;
-        StandardErrorPath = "${logPath}/caddy.stderr.log";
+        StandardErrorPath = "${logPath}/caddy.log";
         UserName = "caddy";
         GroupName = "caddy";
       };
@@ -255,7 +203,7 @@ in
         UserName = "caddy";
         GroupName = "caddy";
         KeepAlive = true;
-        StandardErrorPath = "${logPath}/phpfpm.stderr.log";
+        StandardErrorPath = "${logPath}/phpfpm.log";
         WorkingDirectory = statePath;
       };
       command = "php-fpm -y /etc/caddy/php-fpm.cfg -c /etc/caddy/php.ini";

@@ -12,7 +12,9 @@
     sandbox = true;
     extra-sandbox-paths = [ "/nix/store" ];
   };
-  nix.optimise.automatic = true;
+  # Don't optimise storage. This creates a /nix/store/.links directory
+  # with an enormous amount of files
+  nix.optimise.automatic = false;
   environment.systemPackages = [
     pkgs.nix-tree
     # Profile nix-darwin evaluation for the current system:

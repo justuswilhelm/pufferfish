@@ -7,7 +7,8 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
     or return
 
     if test "$_flag_where"
-        set where "$_flag_where"
+        set where (realpath "$_flag_where")
+        echo "Assuming where=$where" >/dev/stderr
     else
         set where "$PWD"
     end
@@ -17,17 +18,33 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
     set hist_file $XDG_STATE_HOME/pufferfish/jump.hist
 
     if ! mkdir -vp (dirname $hist_file)
-        echo "Couldn't make directory for hist_file $hist_file" >/dev/stderr
+        echo "Couldn't make directory for hist_file '$hist_file'" >/dev/stderr
         return 1
     end
 
     if test ! -e $hist_file
         touch $hist_file
+        echo "Created new hist_file '$hist_file'" >/dev/stderr
+    end
+
+    # clean up history
+    set hist_file_clean (mktemp -d)/hist_file
+    for line in (cat $hist_file)
+        if test -e $line
+            echo $line
+        else
+            echo "Removing line '$line' from hist_file '$hist_file'" >/dev/stderr
+            set has_cleaned_hist_file 1
+        end
+    end >$hist_file_clean
+    if set -q has_cleaned_hist_file
+        echo "Removed at least one line from hist_file '$hist_file'" >/dev/stderr
+        mv -v $hist_file_clean $hist_file
     end
 
     if ! set dir (
         begin
-            tac $hist_file
+            tac $hist_file | grep "$where"
             fd \
                 --type directory \
                 --max-depth 5 \
@@ -36,7 +53,7 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
         perl -ne 'print unless $seen{$_}++'  |
         fzf --scheme=history --query=$query
     )
-        echo "Couldn't determine new tmux session directory" >/dev/stderr
+        echo "fzf didn't exit correctly" >/dev/stderr
         return 1
     end
 
@@ -46,7 +63,7 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
     end
 
     if ! set rlpath (realpath $dir)/
-        echo "Could not determine directory $dir's realpath" >/dev/stderr
+        echo "Couldn't determine directory $dir's realpath" >/dev/stderr
         return 1
     end
 

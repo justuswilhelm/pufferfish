@@ -13,34 +13,20 @@ let
   groupname = "wiki";
   home = "/var/lib/wiki";
   logPath = "/var/log/${username}";
-  caddyHost = "lithium.local";
+  caddyHost = "localhost";
   caddyPort = 10106;
 
   caddyConfig = ''
     # MediaWiki
-    https://${caddyHost}:${toString caddyPort} {
-      import certs
+    http://${caddyHost}:${toString caddyPort} {
+      @title path_regexp title ^/wiki/(?<pagename>.*)$
+      rewrite @title /mediawiki/index.php
+      redir / /wiki/Main_Page
+      root * ${home}/www
+      php_fastcgi unix//${config.services.caddy.phpFpmSock}
+      file_server
 
-      route /auth* {
-        authenticate with myportal
-      }
-
-      route {
-        authorize with admins_policy
-
-
-        @title path_regexp title ^/wiki/(?<pagename>.*)$
-        rewrite @title /mediawiki/index.php
-        redir / /wiki/Main_Page
-        root * ${home}/www
-        php_fastcgi unix//${config.services.caddy.phpFpmSock}
-        file_server
-      }
-
-      log {
-        format console
-        output file ${config.services.caddy.logPath}/wiki.log
-      }
+      log
     }
   '';
 in
@@ -62,14 +48,14 @@ in
 
   services.nagios.objectDefs =
     let
-      healthEndpoint = "/index.php?title=Main_Page";
+      healthEndpoint = "/wiki/Main_Page";
       wikiNagios = pkgs.writeText "wiki.cfg" ''
         define service {
             use generic-service
             host_name ${caddyHost}
             service_description mediawiki
             display_name MediaWiki (Caddy)
-            check_command check_curl!-p ${toString caddyPort} --ssl=1.3 --expect='HTTP/2 302' --url=${healthEndpoint}
+            check_command check_curl!-p ${toString caddyPort} --expect='HTTP/1.1 200' --url=${healthEndpoint}
         }
       '';
     in
