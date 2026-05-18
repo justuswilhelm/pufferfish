@@ -29,7 +29,7 @@
           {
             type = "regexp";
             operand = "dest.port";
-            data = "^(993|8080|9000|9001)$";
+            data = "^(443|993|8080|9000|9001|18360)$";
           }
           {
             type = "simple";
