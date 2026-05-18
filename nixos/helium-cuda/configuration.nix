@@ -80,7 +80,6 @@
     ];
   };
 
-  # TODO find out if this is really needed
   hardware.graphics = {
     enable = true;
     # Fix the following Nix build error
