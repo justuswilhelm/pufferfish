@@ -35,8 +35,9 @@ let
     # nixpkgs Aider means we can't update it
     check-update = false;
     show-release-notes = false;
-    #
-    openai-api-base = "http://debian-gpu.local:8020/v1";
+    # local cuda model, see
+    # docs/helium-cuda.md
+    openai-api-base = "http://helium-cuda.local:8020/v1";
     openai-api-key = "none";
   };
   # https://aider.chat/docs/config/adv-model-settings.html#context-window-size-and-token-costs
