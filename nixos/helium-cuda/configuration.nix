@@ -1,0 +1,131 @@
+# SPDX-FileCopyrightText: 2026 Justus Perlwitz
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+{
+  config,
+  specialArgs,
+  modulesPath,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+
+    ../modules/networkd.nix
+    ../modules/openssh.nix
+    ../modules/users.nix
+
+    ./build.nix
+  ];
+
+  boot.loader.systemd-boot.enable = true;
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    autoResize = true;
+    fsType = "ext4";
+  };
+
+  boot.kernelParams = ["console=ttyS0"];
+  boot.loader.grub.device = lib.mkDefault "/dev/vda";
+
+  programs.fish.shellInit = ''
+    fish_add_path $HOME/.local/bin
+    set -x MODEL_DIR $HOME/models
+  '';
+
+  users.users = {
+    ${specialArgs.name} = {
+      password = "password";
+      # Rootless Docker, why not!
+      extraGroups = [ "docker" ];
+      openssh.authorizedKeys.keys = [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYV4dnCrWcJambeu0a6OG1mQFdkKaGzmWVzbkqyV/h31rM9tBLbjUTOB/4h/LFiiKo7MLC7L8zUbhtcloGWnyUWXFZOiD1CL4RVB3UH3td6VYBvTvWbob+mYG2YCnaj2wRWYS//qA+GJXWqcmr6HiNGTpQGzbj+zRl1QKJsltF4+MUedjQadgRsF4HEr71QyQLM6/lZOlPb13HuQKtI7WOhL/YHpEz/E9dYHdAuwTzhCJ1+g34IMXD4+QizVEz3eNd2yW6t9IdQl+9QzhkJgvUP1o9NgKeJ4u9YRCvK4DbgyYE5e5/0qO8YCG5ODjc5Lj33/sN+F4tmOIj6x7PNMUAxy4NPyvXwO2weRLXWgns8+zCd3/xnL6fv0ORONOc48cf1M2wpxeZ0x8q+oNdPd7T5Esj8Peo+EXZ0TZp95NoOKwn6+mssPXjtB9aNh6VHfUDirkwJadBq30b5rn5JsLuYSiCVwk1iO5DioQJFdpJW1jaahBTo9uLv3ZyteFEDE8vNZVRWcNX61jp0aP9cXklrXGdfJRj4YEISWlPZqCfP1OBiT9HrxEqk+3pMO7elmRQaUWNPKNsLKQOUKIpRNH12DlA0676ToYVCAHIPCPvYC8DZ4XLmk33/jQ3mmj6tLTeRE+DySbfSNscoyqZ2VWbCt7GPA34Prbr1BjdWi2Cbw== cardno:20_137_860"
+      ];
+    };
+    root = {
+      openssh.authorizedKeys.keys = [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYV4dnCrWcJambeu0a6OG1mQFdkKaGzmWVzbkqyV/h31rM9tBLbjUTOB/4h/LFiiKo7MLC7L8zUbhtcloGWnyUWXFZOiD1CL4RVB3UH3td6VYBvTvWbob+mYG2YCnaj2wRWYS//qA+GJXWqcmr6HiNGTpQGzbj+zRl1QKJsltF4+MUedjQadgRsF4HEr71QyQLM6/lZOlPb13HuQKtI7WOhL/YHpEz/E9dYHdAuwTzhCJ1+g34IMXD4+QizVEz3eNd2yW6t9IdQl+9QzhkJgvUP1o9NgKeJ4u9YRCvK4DbgyYE5e5/0qO8YCG5ODjc5Lj33/sN+F4tmOIj6x7PNMUAxy4NPyvXwO2weRLXWgns8+zCd3/xnL6fv0ORONOc48cf1M2wpxeZ0x8q+oNdPd7T5Esj8Peo+EXZ0TZp95NoOKwn6+mssPXjtB9aNh6VHfUDirkwJadBq30b5rn5JsLuYSiCVwk1iO5DioQJFdpJW1jaahBTo9uLv3ZyteFEDE8vNZVRWcNX61jp0aP9cXklrXGdfJRj4YEISWlPZqCfP1OBiT9HrxEqk+3pMO7elmRQaUWNPKNsLKQOUKIpRNH12DlA0676ToYVCAHIPCPvYC8DZ4XLmk33/jQ3mmj6tLTeRE+DySbfSNscoyqZ2VWbCt7GPA34Prbr1BjdWi2Cbw== cardno:20_137_860"
+      ];
+    };
+  };
+  services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
+
+  nix.settings = {
+    substituters = [
+      "https://cache.nixos-cuda.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+    ];
+  };
+
+  programs.git.enable = true;
+  environment.systemPackages = [
+    # For growpart
+    pkgs.cloud-utils
+    pkgs.pipx
+    # club-3090 needs pyyaml
+    (pkgs.python3.withPackages (p: [ p.pyyaml ]))
+  ];
+
+  nixpkgs.config = {
+    cudaSupport = true;
+    allowUnfree = true;
+    nvidia.acceptLicense = true;
+    allowUnfreePackages = [
+      "nvidia-x11"
+    ];
+  };
+
+  # hardware.graphics = {
+  #   enable = true;
+  # };
+  services.xserver.videoDrivers = [ "nvidia" ];
+  # hardware.nvidia uses the "stable" nvidiaPackages by default
+  hardware.nvidia = {
+    modesetting.enable = true;
+    nvidiaSettings = true;
+    open = false;
+    powerManagement = {
+      enable = false;
+      finegrained = false;
+    };
+  };
+  hardware.nvidia-container-toolkit.enable = true;
+  systemd.services.docker.path = [
+    # Fix this error:
+    # docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]
+    pkgs.nvidia-container-toolkit.tools
+    # Fix the following error:
+    # Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running prestart hook #0: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'
+    pkgs.libnvidia-container
+  ];
+
+  # Generate nvidia-container-toolkit config
+  # environment.etc."nvidia-container-runtime/config.toml".text = ''
+  #   [nvidia-container-cli]
+  #   ldconfig = "@${pkgs.glibc.bin}/bin/ldconfig"
+
+  #   [nvidia-container-runtime]
+  #   debug = "/var/log/nvidia-container-runtime.log"
+  # '';
+
+  # Enable NVIDIA Container Toolkit for Docker GPU support
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      runtimes = {
+        nvidia = {
+          path = "${pkgs.nvidia-container-toolkit.tools}/bin/nvidia-container-runtime";
+        };
+      };
+    };
+  };
+
+  services.qemuGuest.enable = true;
+
+  system.stateVersion = "25.11";
+}

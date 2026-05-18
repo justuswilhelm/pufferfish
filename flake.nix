@@ -62,6 +62,31 @@
               }
             ];
           };
+        helium-cuda =
+          let
+            name = "debian";
+            hostName = "helium-cuda";
+            system = "x86_64-linux";
+            specialArgs = { inherit system name; };
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system specialArgs;
+            modules = [
+              ./nixos/${hostName}/configuration.nix
+              { networking = { inherit hostName; }; }
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+                # TODO check if homeDirectory still needed
+                home-manager.extraSpecialArgs = {
+                  homeDirectory = "/home/${name}";
+                }
+                // specialArgs;
+              }
+            ];
+          };
         lithium-nixos =
           let
             name = "debian";
