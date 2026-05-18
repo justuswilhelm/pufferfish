@@ -46,5 +46,6 @@
   environment.systemPackages = [
     pkgs.pciutils
     pkgs.guestfs-tools
+    pkgs.virt-viewer
   ];
 }
