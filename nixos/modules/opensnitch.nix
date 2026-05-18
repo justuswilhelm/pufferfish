@@ -292,6 +292,43 @@
           data = "${lib.getBin pkgs.nmap}/bin/nmap";
         };
       };
+      # Home configuration installs aider, not possible to configure OpenSnitch
+      # from home configuration.
+      aider-github-config = {
+        name = "allow-aider-github-config";
+        description = "Allow Aider to access raw.githubusercontent.com";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "regexp";
+              operand = "process.command";
+              data = "/etc/profiles/per-user/[^/]+/bin/aider";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "443";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "tcp";
+            }
+            {
+              type = "simple";
+              operand = "dest.host";
+              data = "raw.githubusercontent.com";
+            }
+          ];
+        };
+      };
     };
   };
 }
