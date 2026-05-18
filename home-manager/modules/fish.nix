@@ -6,7 +6,7 @@
 {
   programs.fish = {
     enable = true;
-    shellAbbrs = {
+    shellAliases = {
       # Reload fish session. Useful if config.fish has changed.
       reload = "exec fish";
       # Ls shortcut with color, humanized, list-based output
