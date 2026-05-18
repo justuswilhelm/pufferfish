@@ -32,7 +32,6 @@
   boot.loader.grub.device = lib.mkDefault "/dev/vda";
 
   programs.fish.shellInit = ''
-    fish_add_path $HOME/.local/bin
     set -x MODEL_DIR $HOME/models
   '';
 
@@ -104,6 +103,39 @@
   };
 
   services.qemuGuest.enable = true;
+
+  systemd.services.club-3090-vllm = {
+    description = "Launch vLLM";
+    serviceConfig = {
+      User = specialArgs.name;
+      WorkingDirectory = "/home/${specialArgs.name}/club-3090";
+    };
+    environment.MODEL_DIR = "/home/${specialArgs.name}/models";
+    path = [
+      (pkgs.python3.withPackages (p: [ p.pyyaml p.huggingface-hub ]))
+      # It's a bash script
+      pkgs.bash
+      config.virtualisation.docker.package
+      # Fix this:
+      #  [preflight] ERROR: 'nvidia-smi' not found — no NVIDIA driver detected.
+      config.hardware.nvidia.package
+      # Fix this:
+      # [preflight] WARN:  Your club-3090 checkout is 97 commit(s) behind origin/master.
+      # [preflight]          (last origin fetch: just now)
+      pkgs.git
+      # Fix this:
+      # /home/debian/club-3090/scripts/preflight.sh: line 47: awk: command not found
+      pkgs.gawk
+      # Fix this:
+      # [switch] waiting for http://localhost:8020/v1/models (container=vllm-qwen36-27b, timeout 600s)...
+      # /home/debian/club-3090/scripts/switch.sh: line 317: curl: command not found
+      pkgs.curl
+    ];
+    script = ''
+      ./scripts/launch.sh --variant vllm/default
+    '';
+    wantedBy = [ "multi-user.target" ];
+  };
 
   system.stateVersion = "25.11";
 }
