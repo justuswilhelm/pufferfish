@@ -637,6 +637,8 @@ virsh -c qemu:///system undefine helium-cuda --nvram
 
 ## Benchmark
 
+### vllm-qwen36-27b
+
 Run the following command on the host:
 
 ```bash
@@ -693,6 +695,67 @@ Benchmark output:
 (APIServer pid=1) INFO 05-18 11:19:54 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.42, Accepted throughput: 67.60 tokens/s, Drafted throughput: 83.70 tokens/s, Accepted: 676 tokens, Drafted: 837 tokens, Per-position acceptance rate: 0.921, 0.828, 0.674, Avg Draft acceptance rate: 80.8%
 (APIServer pid=1) INFO 05-18 11:20:04 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.52, Accepted throughput: 69.90 tokens/s, Drafted throughput: 83.10 tokens/s, Accepted: 699 tokens, Drafted: 831 tokens, Per-position acceptance rate: 0.942, 0.859, 0.722, Avg Draft acceptance rate: 84.1%
 (APIServer pid=1) INFO 05-18 11:20:14 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.38, Accepted throughput: 67.00 tokens/s, Drafted throughput: 84.29 tokens/s, Accepted: 670 tokens, Drafted: 843 tokens, Per-position acceptance rate: 0.929, 0.811, 0.644, Avg Draft acceptance rate: 79.5%
+```
+
+### llama-cpp-qwen36-27b
+
+```
+ssh helium-cuda.local cd club-3090 \; scripts/bench.sh
+```
+
+```
+[autodetect] using running container=llama-cpp-qwen36-27b url=http://localhost:8020  (skip: PREFLIGHT_NO_AUTODETECT=1)
+
+========== NARRATIVE (prompt=65 chars, max_tokens=1000) ==========
+=== warmups (3) ===
+  warm-1     wall= 24.12s  ttft=   182ms  toks=1000  wall_TPS= 41.46  decode_TPS= 41.77
+  warm-2     wall= 24.29s  ttft=   147ms  toks=1000  wall_TPS= 41.17  decode_TPS= 41.42
+  warm-3     wall= 24.39s  ttft=   153ms  toks=1000  wall_TPS= 40.99  decode_TPS= 41.25
+
+=== measured (5) ===
+  run-1      wall= 24.36s  ttft=   148ms  toks=1000  wall_TPS= 41.05  decode_TPS= 41.30
+  run-2      wall= 24.37s  ttft=   146ms  toks=1000  wall_TPS= 41.04  decode_TPS= 41.29
+  run-3      wall= 24.35s  ttft=   147ms  toks=1000  wall_TPS= 41.07  decode_TPS= 41.32
+  run-4      wall= 24.41s  ttft=   146ms  toks=1000  wall_TPS= 40.97  decode_TPS= 41.22
+  run-5      wall= 24.38s  ttft=   152ms  toks=1000  wall_TPS= 41.01  decode_TPS= 41.27
+
+=== summary [narrative] (n=5) ===
+  wall_TPS       mean=  41.03   std=  0.04   CV= 0.1%   min=40.97   max=41.07
+  decode_TPS     mean=  41.28   std=  0.04   CV= 0.1%   min=41.22   max=41.32
+  TTFT          mean=   148ms  std=    2ms  min=146ms  max=152ms
+  PP tok/s       n/a (long-prompt fallback below)
+
+========== CODE (prompt=78 chars, max_tokens=800) ==========
+=== warmups (3) ===
+  warm-1     wall= 17.53s  ttft=   145ms  toks= 718  wall_TPS= 40.95  decode_TPS= 41.29
+  warm-2     wall= 19.54s  ttft=   144ms  toks= 800  wall_TPS= 40.95  decode_TPS= 41.26
+  warm-3     wall= 18.02s  ttft=   144ms  toks= 738  wall_TPS= 40.96  decode_TPS= 41.29
+
+=== measured (5) ===
+  run-1      wall= 17.35s  ttft=   144ms  toks= 710  wall_TPS= 40.91  decode_TPS= 41.26
+  run-2      wall= 19.55s  ttft=   148ms  toks= 800  wall_TPS= 40.92  decode_TPS= 41.23
+  run-3      wall=  9.30s  ttft=   148ms  toks= 378  wall_TPS= 40.65  decode_TPS= 41.31
+  run-4      wall= 18.15s  ttft=   144ms  toks= 739  wall_TPS= 40.71  decode_TPS= 41.03
+  run-5      wall= 13.55s  ttft=   151ms  toks= 552  wall_TPS= 40.74  decode_TPS= 41.19
+
+=== summary [code] (n=5) ===
+  wall_TPS       mean=  40.79   std=  0.12   CV= 0.3%   min=40.65   max=40.92
+  decode_TPS     mean=  41.21   std=  0.10   CV= 0.3%   min=41.03   max=41.31
+  TTFT          mean=   147ms  std=    3ms  min=144ms  max=151ms
+  PP tok/s       n/a (long-prompt fallback below)
+
+========== PROMPT-PROCESSING (fallback target=10000 prompt tokens, max_tokens=16) ==========
+=== measured (1) ===
+  run-1      wall=  9.78s  ttft=  9382ms  prompt_toks= 13179  PP_tok/s=1404.65
+
+=== summary [prompt-processing] (n=1) ===
+  PP tok/s       mean=1404.65   std=  0.00   CV= 0.0%   min=1404.65   max=1404.65
+  TTFT          mean=  9382ms  std=    0ms  min=9382ms  max=9382ms
+
+=== GPU state ===
+0, 99 %, 22748 MiB, 24564 MiB, 446.23 W, 85
+
+=== Last 3 SpecDecoding metrics ===
 ```
 
 ## Network settings
