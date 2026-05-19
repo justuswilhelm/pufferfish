@@ -2,7 +2,7 @@
 title: Helium-cuda set up
 ---
 
-![qwen3.6-27b on vLLM drawing a pelican](helium-cuda-pelican.svg)
+![qwen3.6-27b on llamacpp drawing a pelican](helium-cuda-pelican.svg)
 
 This document contains commands and expected outputs that you'll encounter
 while setting up the helium-cuda VM.
