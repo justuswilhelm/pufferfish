@@ -141,7 +141,7 @@
       pkgs.curl
     ];
     script = ''
-      ./scripts/launch.sh --variant vllm/default
+      ./scripts/launch.sh --variant llamacpp/default
     '';
     wantedBy = [ "multi-user.target" ];
   };

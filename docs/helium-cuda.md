@@ -573,6 +573,43 @@ Enable *autostart* with the following command:
 Domain 'helium-cuda' marked as autostarted
 ```
 
+# CUDA OOM error
+
+```
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]     return original_fwd(
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]            ^^^^^^^^^^^^^
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fla/ops/chunk.py", line 89, in chunk_gated_delta_rule_fwd
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]     h, v_new, final_state = chunk_gated_delta_rule_fwd_h(
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fla/ops/chunk_delta_h.py", line 337, in chunk_gated_delta_rule_fwd_h
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]     v_new = torch.empty_like(u) if save_new_value else None
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]             ^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138] torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 46.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 32.56 MiB is free. Process 3881 has 23.51 GiB memory in use. Of the allocated memory 22.90 GiB is allocated by PyTorch, with 24.00 MiB allocated in private pools (e.g., CUDA Graphs), and 237.94 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+```
+
+vLLM is unstable. The club-3090 configuration maintainer documents this
+here: <https://github.com/noonghunna/club-3090/blob/master/docs/CLIFFS.md>
+
+I'll try `vllm/minimal` instead. Nope, still crashes.
+Try `llamacpp/default`.
+
+```
+hf download unsloth/Qwen3.6-27B-GGUF \
+  Qwen3.6-27B-UD-Q3_K_XL.gguf mmproj-F16.gguf \
+  --local-dir $MODEL_DIR/qwen3.6-27b-gguf/unsloth-q3kxl
+mv $MODEL_DIR/qwen3.6-27b-gguf/unsloth-q3kxl/mmproj-F16.gguf $MODEL_DIR/qwen3.6-27b-gguf/
+```
+
+# Configure static IP
+
+Give `helium-cuda` a static IP address to make it easier to reach from other networks.
+
+Source: <https://serverfault.com/a/1169799>
+
+```
+virsh -c qemu:///system net-update default add ip-dhcp-host '<host mac="52:54:00:73:87:fd" name="helium-cuda" ip="192.168.122.17"/>'
+```
+
 # Appendix
 
 ## Remove VM
@@ -754,17 +791,17 @@ Wi-Fi ID: 1c:57:dc:51:e9:3b
 Home network setup:
 
 ```
-  .-------------. 10.0.48.0/20  .---------------.
-  | Ubiquiti AP |   Ethernet    | helium        |
-  | 10.0.48.1   |  <--------->  | 10.0.56.202   |
-  .-------------.               | 192.168.122.1 |
-        ^                       .---------------.
+  .-------------. 10.0.48.0/20  .----------------------.
+  | Ubiquiti AP |   Ethernet    | helium               |
+  | 10.0.48.1   |  <--------->  | enp7s0/10.0.56.202   |
+  .-------------.               | virbr0/192.168.122.1 |
+        ^                       .----------------------.
         |                            ^
         | WLAN                       | Bridge
         | 10.0.48.0/20               | 192.168.122.0/24
         v                            v
- .-------------.                .----------------.
- | lithium     |                | helium-cuda    |
- | 10.0.55.216 |                | 192.168.122.17 |
- .-------------.                .----------------.
+ .-----------------.            .-----------------------.
+ | lithium         |            | helium-cuda           |
+ | en0/10.0.55.216 |            | enp1s0/192.168.122.17 |
+ .-----------------.            .-----------------------.
 ```
