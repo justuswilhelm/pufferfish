@@ -44,7 +44,9 @@ let
   # https://aider.chat/docs/config/adv-model-settings.html#context-window-size-and-token-costs
   modelMetadata = {
     ${self-hosted-model} = {
-      max_tokens = 8192;
+      # vllm/long-text has 180k max context
+      # llamacpp/default has 262000 max context
+      max_tokens = 262000;
       input_cost_per_token = 0;
       output_cost_per_token = 0;
     };
@@ -53,7 +55,7 @@ let
   modelConfig = [
     {
       name = self-hosted-model;
-      edit_format = "udiff";
+      edit_format = "diff";
       use_repo_map = true;
       editor_edit_format = "editor-diff";
     }
