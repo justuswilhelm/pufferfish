@@ -644,3 +644,127 @@ Benchmark output:
 (APIServer pid=1) INFO 05-18 11:20:04 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.52, Accepted throughput: 69.90 tokens/s, Drafted throughput: 83.10 tokens/s, Accepted: 699 tokens, Drafted: 831 tokens, Per-position acceptance rate: 0.942, 0.859, 0.722, Avg Draft acceptance rate: 84.1%
 (APIServer pid=1) INFO 05-18 11:20:14 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.38, Accepted throughput: 67.00 tokens/s, Drafted throughput: 84.29 tokens/s, Accepted: 670 tokens, Drafted: 843 tokens, Per-position acceptance rate: 0.929, 0.811, 0.644, Avg Draft acceptance rate: 79.5%
 ```
+
+## Network settings
+
+On `helium` host, print IP addresses:
+
+```
+echo "virbr0 enp7s0" | xargs -n1 ip address show
+```
+
+```
+2: enp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether d8:bb:c1:d0:35:7c brd ff:ff:ff:ff:ff:ff
+    altname enxd8bbc1d0357c
+    inet 10.0.56.202/20 metric 1024 brd 10.0.63.255 scope global dynamic enp7s0
+       valid_lft 85926sec preferred_lft 85926sec
+4: virbr0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 52:54:00:78:12:67 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+       valid_lft forever preferred_lft forever
+    inet6 2001:db8:ca2:2::1/64 scope global
+       valid_lft forever preferred_lft forever
+    inet6 fe80::5054:ff:fe78:1267/64 scope link proto kernel_ll
+       valid_lft forever preferred_lft forever
+```
+
+Print `helium` routes:
+
+```
+~/.dotfiles!+(1)main$ip route
+```
+
+Output:
+
+```
+default via 10.0.48.1 dev enp7s0 proto dhcp src 10.0.56.202 metric 1024
+10.0.48.0/20 dev enp7s0 proto kernel scope link src 10.0.56.202 metric 1024
+10.0.48.1 dev enp7s0 proto dhcp scope link src 10.0.56.202 metric 1024
+192.168.122.0/24 dev virbr0 proto kernel scope link src 192.168.122.1
+```
+
+Interfaces on `helium-cuda` guest:
+
+```
+ssh helium-cuda.local ip address show enp1s0
+```
+
+```
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:73:87:fd brd ff:ff:ff:ff:ff:ff
+    altname enx5254007387fd
+    inet 192.168.122.17/24 metric 1024 brd 192.168.122.255 scope global dynamic enp1s0
+       valid_lft 3223sec preferred_lft 3223sec
+```
+
+Print `helium-cuda` routes:
+
+```
+~/.dotfiles!+(1)main$ssh helium-cuda.local ip route show
+```
+
+Output:
+
+```
+default via 192.168.122.1 dev enp1s0 proto dhcp src 192.168.122.17 metric 1024
+192.168.122.0/24 dev enp1s0 proto kernel scope link src 192.168.122.17 metric 1024
+192.168.122.1 dev enp1s0 proto dhcp scope link src 192.168.122.17 metric 1024
+```
+
+On `lithium` computer in the same network. Print `en0` (WLAN card) interface configuration
+
+```
+ifconfig en0
+```
+
+Output:
+
+```
+en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+        options=6460<TSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+        ether 8a:20:9e:c4:16:47
+        inet6 fe80::103b:e19:cecc:1447%en0 prefixlen 64 secured scopeid 0xb
+        inet 10.0.55.216 netmask 0xfffff000 broadcast 10.0.63.255
+        nd6 options=201<PERFORMNUD,DAD>
+        media: autoselect
+        status: active
+```
+
+Print network setup information. `en0` maps to the service name "Wi-Fi".
+
+```
+networksetup -getinfo Wi-Fi
+```
+
+Output:
+
+```
+DHCP Configuration
+IP address: 10.0.55.216
+Subnet mask: 255.255.240.0
+Router: 10.0.48.1
+Client ID:
+IPv6: Automatic
+IPv6 IP address: none
+IPv6 Router: none
+Wi-Fi ID: 1c:57:dc:51:e9:3b
+```
+
+Home network setup:
+
+```
+  .-------------. 10.0.48.0/20  .---------------.
+  | Ubiquiti AP |   Ethernet    | helium        |
+  | 10.0.48.1   |  <--------->  | 10.0.56.202   |
+  .-------------.               | 192.168.122.1 |
+        ^                       .---------------.
+        |                            ^
+        | WLAN                       | Bridge
+        | 10.0.48.0/20               | 192.168.122.0/24
+        v                            v
+ .-------------.                .----------------.
+ | lithium     |                | helium-cuda    |
+ | 10.0.55.216 |                | 192.168.122.17 |
+ .-------------.                .----------------.
+```
