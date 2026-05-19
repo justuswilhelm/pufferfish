@@ -15,6 +15,7 @@ let
   yamlFormat = pkgs.formats.yaml { };
   jsonFormat = pkgs.formats.json { };
   self-hosted-model = "openai/qwen3.6-27b-autoround";
+  self-hosted-model-url = "http://helium.local:8020/v1";
   # https://aider.chat/docs/config/aider_conf.html
   config = {
     # https://aider.chat/docs/leaderboards/
@@ -37,7 +38,7 @@ let
     show-release-notes = false;
     # local cuda model, see
     # docs/helium-cuda.md
-    openai-api-base = "http://helium-cuda.local:8020/v1";
+    openai-api-base = self-hosted-model-url;
     openai-api-key = "none";
   };
   # https://aider.chat/docs/config/adv-model-settings.html#context-window-size-and-token-costs
@@ -72,14 +73,26 @@ let
       accepts_settings = [ "thinking_tokens" ];
     }
   ];
-  isLinux = lib.strings.hasSuffix "-linux" specialArgs.system;
+  llmExtraModels = [
+    {
+      model_id = "qwen";
+      model_name = "qwen3.6-27b-autoround";
+      api_base = self-hosted-model-url;
+    }
+  ];
 in
 {
+  # Aider configuration files
   home.file.".aider.conf.yml".source = yamlFormat.generate ".aider.conf.yml" config;
   home.file.".aider.model.metadata.json".source =
     jsonFormat.generate ".aider.model.metadata.json" modelMetadata;
   home.file.".aider.model.settings.yml".source =
     yamlFormat.generate ".aider.model.settings.yml" modelConfig;
+
+  # llm configuration files
+  xdg.configFile."io.datasette.llm/extra-openai-models.yaml".source =
+    yamlFormat.generate "extra-openai-models.yaml" llmExtraModels;
+
   programs.git.ignores = [ ".aider*" ];
 
   home.packages = [

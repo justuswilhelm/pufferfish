@@ -610,6 +610,17 @@ Source: <https://serverfault.com/a/1169799>
 virsh -c qemu:///system net-update default add ip-dhcp-host '<host mac="52:54:00:73:87:fd" name="helium-cuda" ip="192.168.122.17"/>'
 ```
 
+# Expose over network
+
+
+```
+ssh lithium.local 'curl --silent http://helium.local:8020/v1/chat/completions --json \'{"model":"qwen3.6-27b-autoround","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}\''
+```
+
+```
+{"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"<think>\n\n</think>\n\nThe capital of France is **Paris**."}}],"created":1779163797,"model":"Qwen3.6-27B-UD-Q3_K_XL.gguf","system_fingerprint":"b9209-0caf2a1d4","object":"chat.completion","usage":{"completion_tokens":9,"prompt_tokens":16,"total_tokens":25,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-tDhL6nRqHi5OFBDbFSNEe9EkIpZdiPwi","timings":{"cache_n":0,"prompt_n":16,"prompt_ms":88.175,"prompt_per_token_ms":5.5109375,"prompt_per_second":181.4573291749362,"predicted_n":9,"predicted_ms":196.808,"predicted_per_token_ms":21.867555555555555,"predicted_per_second":45.72984838014715}}
+```
+
 # Appendix
 
 ## Remove VM
