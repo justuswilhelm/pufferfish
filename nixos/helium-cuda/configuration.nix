@@ -13,12 +13,21 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
 
+    ../modules/network-debug.nix
     ../modules/networkd.nix
     ../modules/openssh.nix
     ../modules/users.nix
-
-    ./build.nix
   ];
+  # Build qemu qcow image
+  system.build.qcow = lib.mkForce (import "${toString modulesPath}/../lib/make-disk-image.nix" {
+    inherit lib config pkgs;
+    diskSize = "auto";
+    additionalSpace = "20G";
+    format = "qcow2";
+    baseName = "helium-cuda";
+    installBootLoader = true;
+    partitionTableType = "hybrid";
+  });
 
   boot.loader.systemd-boot.enable = true;
 

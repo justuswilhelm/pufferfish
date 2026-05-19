@@ -74,17 +74,6 @@
             modules = [
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
             ];
           };
         lithium-nixos =
