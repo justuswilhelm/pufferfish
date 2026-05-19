@@ -71,7 +71,10 @@
   };
 
   programs.git.enable = true;
+  programs.neovim.enable = true;
   environment.systemPackages = [
+    # troubleshoot space issues
+    pkgs.ncdu
     # For growpart
     pkgs.cloud-utils
 
