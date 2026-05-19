@@ -9,7 +9,7 @@ local M = {}
 M.AIDER_PATTERNS = {"aider"}
 
 -- Print an error
-function print_errror(text) vim.notify(text, vim.log.levels.ERROR) end
+function print_error(text) vim.notify(text, vim.log.levels.ERROR) end
 
 -- Get the current buffer's path relative to project root
 function M.get_relative_path()
