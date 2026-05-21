@@ -15,6 +15,7 @@
 
     ../modules/network-debug.nix
     ../modules/networkd.nix
+    ../modules/nix.nix
     ../modules/openssh.nix
     ../modules/users.nix
   ];
@@ -116,37 +117,39 @@
 
   services.qemuGuest.enable = true;
 
-  systemd.services.club-3090-vllm = {
-    description = "Launch vLLM";
+  networking.firewall.allowedTCPPorts = [
+    # llm server
+    8020
+  ];
+
+  systemd.services.llm-server = {
+    description = "LLM Server";
     serviceConfig = {
+      Type = "simple";
       User = specialArgs.name;
-      WorkingDirectory = "/home/${specialArgs.name}/club-3090";
+      WorkingDirectory = "/home/${specialArgs.name}/TurboQuant";
     };
     environment.MODEL_DIR = "/home/${specialArgs.name}/models";
     path = [
-      (pkgs.python3.withPackages (p: [ p.pyyaml p.huggingface-hub ]))
-      # It's a bash script
-      pkgs.bash
-      config.virtualisation.docker.package
-      # Fix this:
-      #  [preflight] ERROR: 'nvidia-smi' not found — no NVIDIA driver detected.
-      config.hardware.nvidia.package
-      # Fix this:
-      # [preflight] WARN:  Your club-3090 checkout is 97 commit(s) behind origin/master.
-      # [preflight]          (last origin fetch: just now)
-      pkgs.git
-      # Fix this:
-      # /home/debian/club-3090/scripts/preflight.sh: line 47: awk: command not found
-      pkgs.gawk
-      # Fix this:
-      # [switch] waiting for http://localhost:8020/v1/models (container=vllm-qwen36-27b, timeout 600s)...
-      # /home/debian/club-3090/scripts/switch.sh: line 317: curl: command not found
-      pkgs.curl
+      config.nix.package
     ];
     script = ''
-      ./scripts/launch.sh --variant llamacpp/default
+      nix develop --command ./build/bin/llama-server \
+        -m $MODEL_DIR/gguf/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf \
+        --host 0.0.0.0 --port 8020 \
+        --gpu-layers 30 \
+        --flash-attn on \
+        --jinja \
+        -np 1 \
+        -c 262144 \
+        --cache-type-k tbqp3 \
+        --cache-type-v tbq3 \
+        --mmproj $MODEL_DIR/gguf/mmproj-F16.gguf \
+        --no-mmproj-offload \
+        --ubatch-size 288
     '';
     wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
   };
 
   system.stateVersion = "25.11";
