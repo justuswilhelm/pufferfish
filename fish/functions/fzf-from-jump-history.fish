@@ -39,7 +39,7 @@ function fzf-from-jump-history -d "Fuzzy find a directory and append it to the j
     end >$hist_file_clean
     if set -q has_cleaned_hist_file
         echo "Removed at least one line from hist_file '$hist_file'" >/dev/stderr
-        mv -v $hist_file_clean $hist_file
+        mv -v $hist_file_clean $hist_file >/dev/stderr
     end
 
     if ! set dir (
