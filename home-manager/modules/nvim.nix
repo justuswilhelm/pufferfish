@@ -85,6 +85,7 @@
         p.c
         p.rust
         p.lua
+        p.toml
         p.svelte
         p.typescript
         p.java
