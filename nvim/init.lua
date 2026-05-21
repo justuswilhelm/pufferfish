@@ -161,7 +161,10 @@ require('nvim-treesitter.configs').setup {
         additional_vim_regex_highlighting = {
             "diff", "gitcommit", "svelte", "org"
         },
-        ensure_installed = {"lua", "rust", "toml"}
+        -- See `home-manager/modules/nvim.nix`:
+        -- (nvim-treesitter.withPlugins (p: [
+        -- Instead of:
+        -- ensure_installed = {"lua", "rust", "toml"}
         -- disable = { "sh" },
     }
     -- indent = {
