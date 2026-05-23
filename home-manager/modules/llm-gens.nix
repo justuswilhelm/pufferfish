@@ -14,7 +14,7 @@ let
   # Aider config
   yamlFormat = pkgs.formats.yaml { };
   jsonFormat = pkgs.formats.json { };
-  self-hosted-model = "openai/qwen3.6-27b-autoround";
+  self-hosted-model = "openai/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf";
   self-hosted-model-url = "http://helium.local:8020/v1";
   # https://aider.chat/docs/config/aider_conf.html
   config = {
@@ -42,13 +42,24 @@ let
     openai-api-key = "none";
   };
   # https://aider.chat/docs/config/adv-model-settings.html#context-window-size-and-token-costs
+  # See the following JSON document, too:
+  # https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
   modelMetadata = {
-    ${self-hosted-model} = {
-      # vllm/long-text has 180k max context
-      # llamacpp/default has 262000 max context
-      max_tokens = 262000;
+    ${self-hosted-model} = rec {
+      # https://github.com/stephan271/Gemma4OnRTX3090#expected-performance
+      # > Max Context Limit one slot 262144
+      # No idea what "one slot" means, but here we go:
+      max_tokens = 262144;
+      max_input_tokens = max_tokens;
+      max_output_tokens = max_tokens;
       input_cost_per_token = 0;
       output_cost_per_token = 0;
+      mode = "chat";
+      # supports_tool_choice = true;
+      # > Gemma 4 supports function calling with a dedicated tool-call protocol using custom special tokens (<|tool_call>, <tool_call|>, etc.).
+      supports_function_calling = true;
+      supports_vision = true;
+      # supports_reasoning = true;
     };
   };
   # https://aider.chat/docs/config/adv-model-settings.html#default-model-settings
@@ -77,9 +88,11 @@ let
   ];
   llmExtraModels = [
     {
-      model_id = "qwen";
-      model_name = "qwen3.6-27b-autoround";
+      model_id = "gemma";
+      model_name = self-hosted-model;
       api_base = self-hosted-model-url;
+      vision = true;
+      supports_schema = true;
     }
   ];
 in

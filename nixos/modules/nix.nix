@@ -23,7 +23,7 @@
   };
   environment.systemPackages = [ pkgs.nix-tree ];
 
-  services.opensnitch.rules = {
+  services.opensnitch.rules = lib.mkIf config.services.opensnitch.enable {
     nix = {
       name = "allow-nix";
       description = "Allow nix";

@@ -612,15 +612,204 @@ Source: <https://serverfault.com/a/1169799>
 virsh -c qemu:///system net-update default add ip-dhcp-host '<host mac="52:54:00:73:87:fd" name="helium-cuda" ip="192.168.122.17"/>'
 ```
 
-# Expose over network
+# Try Gemma4
 
+Source: <https://github.com/stephan271/Gemma4OnRTX3090>
+
+Run this on helium-cuda to download the model files:
+
+```bash
+hf download unsloth/gemma-4-26B-A4B-it-GGUF gemma-4-26B-A4B-it-UD-Q5_K_M.gguf --local-dir $MODEL_DIR/gguf
+hf download unsloth/gemma-4-26B-A4B-it-GGUF mmproj-F16.gguf --local-dir $MODEL_DIR/gguf
+```
+
+Output:
 
 ```
-ssh lithium.local 'curl --silent http://helium.local:8020/v1/chat/completions --json \'{"model":"qwen3.6-27b-autoround","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}\''
+Downloading 'gemma-4-26B-A4B-it-UD-Q5_K_M.gguf' to '/home/debian/models/.cache/huggingface/download/xnx00LZ_7OM6rEXlN-VB4hxazw0=.f2fe28fc1d82e7c74f47d570a8c8847513fe2712a1b3a5bcd869031d952c4936.incomplete'
+gemma-4-26B-A4B-it-UD-Q5_K_M.gguf: 100%|████████████████████████████| 21.2G/21.2G [03:55<00:00, 89.8MB/s]
+Download complete. Moving file to /home/debian/models/gguf/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf
+/home/debian/models/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf
+Downloading 'mmproj-F16.gguf' to '/home/debian/models/.cache/huggingface/download/m8b1Xv1pKxmeruwmZcGk-WIpJJY=.418a6d8723067cd712235facbbc5cba6c8fbbd413fc1292d2aace5a027d5a42f.incomplete'
+mmproj-F16.gguf: 100%|██████████████████████████████████████████████| 1.19G/1.19G [00:16<00:00, 74.4MB/s]
+Download complete. Moving file to /home/debian/models/gguf/mmproj-F16.gguf
+/home/debian/models/gguf/mmproj-F16.gguf
 ```
 
 ```
-{"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"<think>\n\n</think>\n\nThe capital of France is **Paris**."}}],"created":1779163797,"model":"Qwen3.6-27B-UD-Q3_K_XL.gguf","system_fingerprint":"b9209-0caf2a1d4","object":"chat.completion","usage":{"completion_tokens":9,"prompt_tokens":16,"total_tokens":25,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-tDhL6nRqHi5OFBDbFSNEe9EkIpZdiPwi","timings":{"cache_n":0,"prompt_n":16,"prompt_ms":88.175,"prompt_per_token_ms":5.5109375,"prompt_per_second":181.4573291749362,"predicted_n":9,"predicted_ms":196.808,"predicted_per_token_ms":21.867555555555555,"predicted_per_second":45.72984838014715}}
+debian@helium-cuda ~/TurboQuant (main)> ls -lah $MODEL_DIR/gguf
+total 21G
+drwxr-xr-x 2 debian users 4.0K May 21 07:04 .
+drwxr-xr-x 5 debian users 4.0K May 21 07:04 ..
+-rw-r--r-- 1 debian users  20G May 21 02:55 gemma-4-26B-A4B-it-UD-Q5_K_M.gguf
+-rw-r--r-- 1 debian users 1.2G May 21 02:55 mmproj-F16.gguf
+```
+
+On `helium-cuda`, git-clone llama.cpp fork:
+
+```bash
+# On helium-cuda
+git clone https://github.com/AmesianX/TurboQuant.git $HOME/TurboQuant
+```
+
+On `helium`, copy a build shell to `helium-cuda`:
+
+```bash
+# On helium
+rsync nixos/helium-cuda/cuda-flake.nix helium-cuda.local:~/TurboQuant/flake.nix
+```
+
+On `helium-cuda`, prepare the TurboQuant llama.cpp fork build:
+
+```bash
+# On helium-cuda
+cd $HOME/TurboQuant
+nix develop --command cmake -B build -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=86 -DCMAKE_BUILD_TYPE=Release
+```
+
+Output:
+
+```
+CMAKE_BUILD_TYPE=Release
+-- Setting GGML_NATIVE_DEFAULT to OFF
+-- Warning: ccache not found - consider installing it for faster compilation or disable this warning with GGML_CCACHE=OFF
+-- CMAKE_SYSTEM_PROCESSOR: x86_64
+-- GGML_SYSTEM_ARCH: x86
+-- Including CPU backend
+-- x86 detected
+-- Adding CPU backend variant ggml-cpu:
+-- CUDA Toolkit found
+-- Using CMAKE_CUDA_ARCHITECTURES=86 CMAKE_CUDA_ARCHITECTURES_NATIVE=86-real
+-- Could NOT find NCCL (missing: NCCL_LIBRARY NCCL_INCLUDE_DIR)
+-- Warning: NCCL not found, performance for multiple CUDA GPUs will be suboptimal
+-- CUDA host compiler is GNU 14.3.0
+-- Including CUDA backend
+-- ggml version: 0.10.0
+-- ggml commit:  cb3c258c6
+-- Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_CRYPTO_LIBRARY OPENSSL_INCLUDE_DIR)
+CMake Warning at vendor/cpp-httplib/CMakeLists.txt:152 (message):
+  OpenSSL not found, HTTPS support disabled
+
+
+-- Generating embedded license file for target: llama-common
+-- Configuring done (0.6s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/debian/TurboQuant/build
+```
+
+Build:
+
+```bash
+nix develop --command cmake --build build --config Release -j$(nproc)
+```
+
+Output:
+
+```
+[  2%] Building C object examples/gguf-hash/CMakeFiles/xxhash.dir/deps/xxhash/xxhash.c.o
+...
+[100%] Linking CXX executable ../../bin/llama-server
+[100%] Built target llama-server
+```
+
+See [llama-server CMake build output](#llama-server-cmake-build-output) for more expected output.
+
+Run `llama-server`:
+
+```bash
+# On helium-cuda
+nix develop --command ./build/bin/llama-server \
+  -m $MODEL_DIR/gguf/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf \
+  --host 0.0.0.0 --port 8020 \
+  --gpu-layers 30 \
+  --flash-attn on \
+  --jinja \
+  -np 1 \
+  -c 262144 \
+  --cache-type-k tbqp3 \
+  --cache-type-v tbq3 \
+  --mmproj $MODEL_DIR/gguf/mmproj-F16.gguf \
+  --no-mmproj-offload \
+  --ubatch-size 288
+```
+
+Output:
+
+```
+...
+main: model loaded
+main: server is listening on http://0.0.0.0:8020
+main: starting the main loop...
+srv  update_slots: all slots are idle
+```
+
+See the appendix for the full start output
+
+# Try over network
+
+![Screenshot showing llama.cpp in web ui](./helium-cuda-web-ui.png)
+
+Open <http://helium.local:8020> in a browser and test the web ui.
+
+The model name is `gemma-4-26B-A4B-it-UD-Q5_K_M.gguf`
+
+Test on helium:
+
+```
+curl --silent http://helium.local:8020/v1/chat/completions --json '{"messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
+```
+
+Output:
+
+```json
+{"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"The capital of France is **Paris**.","reasoning_content":"The user is asking for the capital of France.\n\"Capital of France?\"\nThe capital of France is Paris.\nProvide the direct answer."}}],"created":1779348181,"model":"gemma-4-26B-A4B-it-UD-Q5_K_M.gguf","system_fingerprint":"b9037-cb3c258c6","object":"chat.completion","usage":{"completion_tokens":43,"prompt_tokens":20,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-nHB6kcRKeXem6zZCCGvmJXrdel0fjJcH","timings":{"cache_n":0,"prompt_n":20,"prompt_ms":58.87,"prompt_per_token_ms":2.9435,"prompt_per_second":339.7316120264991,"predicted_n":43,"predicted_ms":505.089,"predicted_per_token_ms":11.74625581395349,"predicted_per_second":85.13351112378214}}
+```
+
+Observe log output with `journalctl -f -u llm-server.service`:
+
+```
+May 21 07:22:52 helium-cuda llm-server-start[59332]: srv  log_server_r: done request: POST /v1/chat/completions 192.168.122.1 200
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv  params_from_: Chat format: peg-gemma4
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.323
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv  get_availabl: updating prompt cache
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv   prompt_save:  - saving prompt with length 62, total state size = 12.346 MiB
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv          load:  - looking for better prompt, base f_keep = 0.323, sim = 1.000
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv        update:  - cache state: 3 prompts, 412.317 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv        update:    - prompt 0x555557954890:     202 tokens, checkpoints:  0,    40.221 MiB
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv        update:    - prompt 0x5555574c8f10:    2104 tokens, checkpoints:  1,   359.750 MiB
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv        update:    - prompt 0x55556c423640:      62 tokens, checkpoints:  0,    12.346 MiB
+May 21 07:23:00 helium-cuda llm-server-start[59332]: srv  get_availabl: prompt cache update took 10.08 ms
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> ?temp-ext -> dist
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot launch_slot_: id  0 | task 2069 | processing task, is_child = 0
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot update_slots: id  0 | task 2069 | new prompt, n_ctx_slot = 262144, n_keep = 0, task.n_tokens = 20
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot update_slots: id  0 | task 2069 | n_past = 20, slot.prompt.tokens.size() = 62, seq_id = 0, pos_min = 0, n_swa = 1024
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot update_slots: id  0 | task 2069 | forcing full prompt re-processing due to lack of cache data (likely due to SWA or hybrid/recurrent memory, see https://github.com/ggml-org/llama.cpp/pull/13194#issuecomment-2868343055)
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot update_slots: id  0 | task 2069 | n_tokens = 0, memory_seq_rm [0, end)
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot update_slots: id  0 | task 2069 | prompt processing progress, n_tokens = 16, batch.n_tokens = 16, progress = 0.800000
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot update_slots: id  0 | task 2069 | n_tokens = 16, memory_seq_rm [16, end)
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot init_sampler: id  0 | task 2069 | init sampler, took 0.01 ms, tokens: text = 20, total = 20
+May 21 07:23:00 helium-cuda llm-server-start[59332]: slot update_slots: id  0 | task 2069 | prompt processing done, n_tokens = 20, batch.n_tokens = 4
+May 21 07:23:01 helium-cuda llm-server-start[59332]: slot print_timing: id  0 | task 2069 |
+May 21 07:23:01 helium-cuda llm-server-start[59332]: prompt eval time =      58.87 ms /    20 tokens (    2.94 ms per token,   339.73 tokens per second)
+May 21 07:23:01 helium-cuda llm-server-start[59332]:        eval time =     505.09 ms /    43 tokens (   11.75 ms per token,    85.13 tokens per second)
+May 21 07:23:01 helium-cuda llm-server-start[59332]:       total time =     563.96 ms /    63 tokens
+May 21 07:23:01 helium-cuda llm-server-start[59332]: slot      release: id  0 | task 2069 | stop processing: n_tokens = 62, truncated = 0
+May 21 07:23:01 helium-cuda llm-server-start[59332]: srv  update_slots: all slots are idle
+May 21 07:23:01 helium-cuda llm-server-start[59332]: srv  log_server_r: done request: POST /v1/chat/completions 192.168.122.1 200
+```
+
+Try on `lithium`:
+
+```bash
+ssh lithium.local '
+  curl --silent \
+    http://helium.local:8020/v1/chat/completions \
+    --json \'{"messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}\'
+'
+```
+
+```json
+{"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"The capital of France is **Paris**.","reasoning_content":"The user is asking for the capital of France.\nThe capital of France is Paris.\nState the answer clearly."}}],"created":1779348242,"model":"gemma-4-26B-A4B-it-UD-Q5_K_M.gguf","system_fingerprint":"b9037-cb3c258c6","object":"chat.completion","usage":{"completion_tokens":37,"prompt_tokens":20,"total_tokens":57,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-mnSEazloxGWoxNTNIkdwcbKT3cJ8jdHT","timings":{"cache_n":0,"prompt_n":20,"prompt_ms":59.676,"prompt_per_token_ms":2.9838,"prompt_per_second":335.14310610630736,"predicted_n":37,"predicted_ms":435.782,"predicted_per_token_ms":11.777891891891892,"predicted_per_second":84.9048377399709}}⏎
 ```
 
 # Appendix
@@ -1154,4 +1343,361 @@ GPU 00000000:05:00.0
             Used GPU Memory               : 22686 MiB
     Capabilities
         EGM                                            : disabled
+```
+
+## llama-sever CUDA driver stub
+
+You need to run your commands with `nix develop` when you see the following
+warning on `helium-cuda` with `llama-server`:
+
+```
+ggml_cuda_init: failed to initialize CUDA: CUDA driver is a stub library
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+...
+```
+
+## llama-server cmake build output
+
+Here's some of the lines that the cmake build prints for llama-server:
+
+```
+[  2%] Building C object examples/gguf-hash/CMakeFiles/xxhash.dir/deps/xxhash/xxhash.c.o
+[  2%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-alloc.c.o
+[  2%] Building CXX object tools/mtmd/CMakeFiles/llama-gemma3-cli.dir/deprecation-warning.cpp.o
+[  2%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml.c.o
+[  2%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend-meta.cpp.o
+[  2%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-opt.cpp.o
+[  2%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml.cpp.o
+[  2%] Building C object examples/gguf-hash/CMakeFiles/sha256.dir/deps/sha256/sha256.c.o
+[  2%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-threading.cpp.o
+[  2%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend.cpp.o
+[  2%] Building CXX object vendor/cpp-httplib/CMakeFiles/cpp-httplib.dir/httplib.cpp.o
+[  2%] Building CXX object tools/mtmd/CMakeFiles/llama-minicpmv-cli.dir/deprecation-warning.cpp.o
+[  3%] Building C object examples/gguf-hash/CMakeFiles/sha1.dir/deps/sha1/sha1.c.o
+[  3%] Building CXX object tools/mtmd/CMakeFiles/llama-qwen2vl-cli.dir/deprecation-warning.cpp.o
+...
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu(988): warning #177-D: variable "signs" was declared but never referenced
+      static constexpr uint8_t signs[32] = {
+                               ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu(848): warning #177-D: function "tbq_q_wht_kernel" was declared but never referenced
+                   void tbq_q_wht_kernel(float * __restrict__ Q, int64_t n_rows, int64_t row_stride) {
+                        ^
+
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu(930): warning #177-D: function "tbq_output_iwht_kernel" was declared but never referenced
+                   void tbq_output_iwht_kernel(float * __restrict__ dst, int64_t n_rows, int64_t row_stride) {
+                        ^
+
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu(968): warning #177-D: function "dequantize_row_tbqp3_4_to_f16_cuda" was declared but never referenced
+  static void dequantize_row_tbqp3_4_to_f16_cuda(const void * vx, half * y, int64_t k, cudaStream_t stream) {
+              ^
+
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu(972): warning #177-D: function "dequantize_row_tbqp4_4_to_f16_cuda" was declared but never referenced
+  static void dequantize_row_tbqp4_4_to_f16_cuda(const void * vx, half * y, int64_t k, cudaStream_t stream) {
+              ^
+
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu:958:6: warning: no previous declaration for ‘void tbq_q_wht12_cuda(const float*, float*, float*, int64_t, int64_t, int64_t, cudaStream_t)’ [-Wmissing-declarations]
+  958 | void tbq_q_wht12_cuda(const float * Q_src, float * Q_wht1, float * Q_wht2, int64_t DKQ, int64_t n_rows, int64_t row_stride, cudaStream_t stream) {
+      |      ^~~~~~~~~~~~~~~~
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu: In function ‘void tbq_q_wht12_cuda(const float*, float*, float*, int64_t, int64_t, int64_t, cudaStream_t)’:
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu:958:81: warning: unused parameter ‘DKQ’ [-Wunused-parameter]
+  958 | void tbq_q_wht12_cuda(const float * Q_src, float * Q_wht1, float * Q_wht2, int64_t DKQ, int64_t n_rows, int64_t row_stride, cudaStream_t stream) {
+      |                                                                         ~~~~~~~~^~~
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu: At global scope:
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu:1008:6: warning: no previous declaration for ‘void tbqp3_v_spatial_f16_cuda(const void*, half*, int64_t, cudaStream_t)’ [-Wmissing-declarations]
+ 1008 | void tbqp3_v_spatial_f16_cuda(const void * vx, half * y, int64_t k, cudaStream_t stream) {
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/debian/TurboQuant/ggml/src/ggml-cuda/convert.cu:1011:6: warning: no previous declaration for ‘void tbqp4_v_spatial_f16_cuda(const void*, half*, int64_t, cudaStream_t)’ [-Wmissing-declarations]
+ 1011 | void tbqp4_v_spatial_f16_cuda(const void * vx, half * y, int64_t k, cudaStream_t stream) {
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+[ 12%] Building CUDA object ggml/src/ggml-cuda/CMakeFiles/ggml-cuda.dir/im2col.cu.o
+/home/debian/TurboQuant/ggml/src/ggml-cuda/cpy-utils.cuh(865): warning #20044-D: extern declaration of the entity g_amx3_lambda is treated as a static definition
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+...
+[ 43%] Building CUDA object ggml/src/ggml-cuda/CMakeFiles/ggml-cuda.dir/template-instances/fattn-vec-instance-tbqp4_4-asym576x512.cu.o
+[ 43%] Linking CUDA shared library ../../../bin/libggml-cuda.so
+[ 43%] Built target ggml-cuda
+...
+[ 99%] Built target llama-tts
+[100%] Building CXX object tools/server/CMakeFiles/llama-server.dir/server-models.cpp.o
+[100%] Building CXX object tools/server/CMakeFiles/llama-server.dir/server.cpp.o
+[100%] Building CXX object tools/server/CMakeFiles/llama-server.dir/server-http.cpp.o
+[100%] Linking CXX executable ../../bin/llama-cli
+[100%] Built target llama-cli
+[100%] Linking CXX executable ../bin/test-chat
+[100%] Built target test-chat
+[100%] Linking CXX executable ../../bin/llama-server
+[100%] Built target llama-server
+```
+
+## Full gemma4 llama-server startup log
+
+```
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 24112 MiB):
+  Device 0: NVIDIA GeForce RTX 3090 Ti, compute capability 8.6, VMM: yes, VRAM: 24112 MiB
+build_info: b9037-cb3c258c6
+system_info: n_threads = 16 (n_threads_batch = 16) / 16 | CUDA : ARCHS = 860 | USE_GRAPHS = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 |
+init: using 15 threads for HTTP server
+start: binding port with default address family
+main: loading model
+srv    load_model: loading model '/home/debian/models/gguf/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf'
+common_init_result: fitting params to device memory, for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on
+common_params_fit_impl: getting device memory data for initial parameters:
+common_memory_breakdown_print: | memory breakdown [MiB]  | total    free     self   model   context   compute       unaccounted |
+common_memory_breakdown_print: |   - CUDA0 (RTX 3090 Ti) | 24112 = 23841 + (21261 = 19511 +    1278 +     472) + 17592186023425 |
+common_memory_breakdown_print: |   - Host                |                   1701 =  1392 +      12 +     297                   |
+common_params_fit_impl: projected to use 21261 MiB of device memory vs. 23841 MiB of free device memory
+common_params_fit_impl: will leave 2579 >= 1024 MiB of free device memory, no changes needed
+common_fit_params: successfully fit params to free device memory
+common_fit_params: fitting params to free memory took 0.57 seconds
+llama_model_load_from_file_impl: using device CUDA0 (NVIDIA GeForce RTX 3090 Ti) (0000:05:00.0) - 23841 MiB free
+llama_model_loader: loaded meta data with 60 key-value pairs and 658 tensors from /home/debian/models/gguf/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = gemma4
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                     general.sampling.top_k i32              = 64
+llama_model_loader: - kv   3:                     general.sampling.top_p f32              = 0.950000
+llama_model_loader: - kv   4:                      general.sampling.temp f32              = 1.000000
+llama_model_loader: - kv   5:                               general.name str              = Gemma-4-26B-A4B-It
+llama_model_loader: - kv   6:                           general.finetune str              = it
+llama_model_loader: - kv   7:                           general.basename str              = Gemma-4-26B-A4B-It
+llama_model_loader: - kv   8:                       general.quantized_by str              = Unsloth
+llama_model_loader: - kv   9:                         general.size_label str              = 26B-A4B
+llama_model_loader: - kv  10:                            general.license str              = apache-2.0
+llama_model_loader: - kv  11:                       general.license.link str              = https://ai.google.dev/gemma/docs/gemm...
+llama_model_loader: - kv  12:                           general.repo_url str              = https://huggingface.co/unsloth
+llama_model_loader: - kv  13:                   general.base_model.count u32              = 1
+llama_model_loader: - kv  14:                  general.base_model.0.name str              = Gemma 4 26B A4B It
+llama_model_loader: - kv  15:          general.base_model.0.organization str              = Google
+llama_model_loader: - kv  16:              general.base_model.0.repo_url str              = https://huggingface.co/google/gemma-4...
+llama_model_loader: - kv  17:                               general.tags arr[str,2]       = ["unsloth", "image-text-to-text"]
+llama_model_loader: - kv  18:                         gemma4.block_count u32              = 30
+llama_model_loader: - kv  19:                      gemma4.context_length u32              = 262144
+llama_model_loader: - kv  20:                    gemma4.embedding_length u32              = 2816
+llama_model_loader: - kv  21:                 gemma4.feed_forward_length u32              = 2112
+llama_model_loader: - kv  22:                gemma4.attention.head_count u32              = 16
+llama_model_loader: - kv  23:             gemma4.attention.head_count_kv arr[i32,30]      = [8, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 2, ...
+llama_model_loader: - kv  24:                      gemma4.rope.freq_base f32              = 1000000.000000
+llama_model_loader: - kv  25:                  gemma4.rope.freq_base_swa f32              = 10000.000000
+llama_model_loader: - kv  26:    gemma4.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  27:                        gemma4.expert_count u32              = 128
+llama_model_loader: - kv  28:                   gemma4.expert_used_count u32              = 8
+llama_model_loader: - kv  29:                gemma4.attention.key_length u32              = 512
+llama_model_loader: - kv  30:              gemma4.attention.value_length u32              = 512
+llama_model_loader: - kv  31:             gemma4.final_logit_softcapping f32              = 30.000000
+llama_model_loader: - kv  32:            gemma4.attention.sliding_window u32              = 1024
+llama_model_loader: - kv  33:          gemma4.attention.shared_kv_layers u32              = 0
+llama_model_loader: - kv  34:    gemma4.embedding_length_per_layer_input u32              = 0
+llama_model_loader: - kv  35:    gemma4.attention.sliding_window_pattern arr[bool,30]     = [true, true, true, true, true, false,...
+llama_model_loader: - kv  36:            gemma4.attention.key_length_swa u32              = 256
+llama_model_loader: - kv  37:          gemma4.attention.value_length_swa u32              = 256
+llama_model_loader: - kv  38:          gemma4.expert_feed_forward_length u32              = 704
+llama_model_loader: - kv  39:                gemma4.rope.dimension_count u32              = 512
+llama_model_loader: - kv  40:            gemma4.rope.dimension_count_swa u32              = 256
+llama_model_loader: - kv  41:                       tokenizer.ggml.model str              = gemma4
+llama_model_loader: - kv  42:                      tokenizer.ggml.tokens arr[str,262144]  = ["<pad>", "<eos>", "<bos>", "<unk>", ...
+llama_model_loader: - kv  43:                      tokenizer.ggml.scores arr[f32,262144]  = [-1000.000000, -1000.000000, -1000.00...
+llama_model_loader: - kv  44:                  tokenizer.ggml.token_type arr[i32,262144]  = [3, 1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  45:                      tokenizer.ggml.merges arr[str,514906]  = ["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n \n", ...
+llama_model_loader: - kv  46:                tokenizer.ggml.bos_token_id u32              = 2
+llama_model_loader: - kv  47:                tokenizer.ggml.eos_token_id u32              = 106
+llama_model_loader: - kv  48:            tokenizer.ggml.unknown_token_id u32              = 3
+llama_model_loader: - kv  49:            tokenizer.ggml.padding_token_id u32              = 0
+llama_model_loader: - kv  50:               tokenizer.ggml.mask_token_id u32              = 4
+llama_model_loader: - kv  51:                    tokenizer.chat_template str              = {%- macro format_parameters(propertie...
+llama_model_loader: - kv  52:            tokenizer.ggml.add_space_prefix bool             = false
+llama_model_loader: - kv  53:               tokenizer.ggml.add_bos_token bool             = true
+llama_model_loader: - kv  54:               general.quantization_version u32              = 2
+llama_model_loader: - kv  55:                          general.file_type u32              = 17
+llama_model_loader: - kv  56:                      quantize.imatrix.file str              = gemma-4-26B-A4B-it-GGUF/imatrix_unslo...
+llama_model_loader: - kv  57:                   quantize.imatrix.dataset str              = unsloth_calibration_gemma-4-26B-A4B-i...
+llama_model_loader: - kv  58:             quantize.imatrix.entries_count u32              = 295
+llama_model_loader: - kv  59:              quantize.imatrix.chunks_count u32              = 141
+llama_model_loader: - type  f32:  392 tensors
+llama_model_loader: - type q8_0:  236 tensors
+llama_model_loader: - type q5_K:   30 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = Q5_K - Medium
+print_info: file size   = 19.68 GiB (6.70 BPW)
+load: 0 unused tokens
+load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
+load: control-looking token:      1 '<eos>' was not control-type; this is probably a bug in the model. its type will be overridden
+load: printing all EOG tokens:
+load:   - 1 ('<eos>')
+load:   - 50 ('<|tool_response>')
+load:   - 106 ('<turn|>')
+load:   - 212 ('</s>')
+load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list
+load: special tokens cache size = 24
+load: token to piece cache size = 1.9445 MB
+print_info: arch                  = gemma4
+print_info: vocab_only            = 0
+print_info: no_alloc              = 0
+print_info: n_ctx_train           = 262144
+print_info: n_embd                = 2816
+print_info: n_embd_inp            = 2816
+print_info: n_layer               = 30
+print_info: n_head                = 16
+print_info: n_head_kv             = [8, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 2]
+print_info: n_rot                 = 512
+print_info: n_swa                 = 1024
+print_info: is_swa_any            = 1
+print_info: n_embd_head_k         = 512
+print_info: n_embd_head_v         = 512
+print_info: n_gqa                 = [2, 2, 2, 2, 2, 8, 2, 2, 2, 2, 2, 8, 2, 2, 2, 2, 2, 8, 2, 2, 2, 2, 2, 8, 2, 2, 2, 2, 2, 8]
+print_info: n_embd_k_gqa          = [2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024]
+print_info: n_embd_v_gqa          = [2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024, 2048, 2048, 2048, 2048, 2048, 1024]
+print_info: f_norm_eps            = 0.0e+00
+print_info: f_norm_rms_eps        = 1.0e-06
+print_info: f_clamp_kqv           = 0.0e+00
+print_info: f_max_alibi_bias      = 0.0e+00
+print_info: f_logit_scale         = 0.0e+00
+print_info: f_attn_scale          = 1.0e+00
+print_info: n_ff                  = 2112
+print_info: n_expert              = 128
+print_info: n_expert_used         = 8
+print_info: n_expert_groups       = 0
+print_info: n_group_used          = 0
+print_info: causal attn           = 1
+print_info: pooling type          = -1
+print_info: rope type             = 2
+print_info: rope scaling          = linear
+print_info: freq_base_train       = 1000000.0
+print_info: freq_scale_train      = 1
+print_info: freq_base_swa         = 10000.0
+print_info: freq_scale_swa        = 1
+print_info: n_embd_head_k_swa     = 256
+print_info: n_embd_head_v_swa     = 256
+print_info: n_rot_swa             = 256
+print_info: n_ctx_orig_yarn       = 262144
+print_info: rope_yarn_log_mul     = 0.0000
+print_info: rope_finetuned        = unknown
+print_info: model type            = 26B.A4B
+print_info: model params          = 25.23 B
+print_info: general.name          = Gemma-4-26B-A4B-It
+print_info: vocab type            = BPE
+print_info: n_vocab               = 262144
+print_info: n_merges              = 514906
+print_info: BOS token             = 2 '<bos>'
+print_info: EOS token             = 106 '<turn|>'
+print_info: UNK token             = 3 '<unk>'
+print_info: PAD token             = 0 '<pad>'
+print_info: MASK token            = 4 '<mask>'
+print_info: LF token              = 107 '
+'
+print_info: EOG token             = 1 '<eos>'
+print_info: EOG token             = 50 '<|tool_response>'
+print_info: EOG token             = 106 '<turn|>'
+print_info: max token length      = 93
+load_tensors: loading model tensors, this can take a while... (mmap = true, direct_io = false)
+load_tensors: offloading output layer to GPU
+load_tensors: offloading 29 repeating layers to GPU
+load_tensors: offloaded 30/31 layers to GPU
+load_tensors:   CPU_Mapped model buffer size =  1392.48 MiB
+load_tensors:        CUDA0 model buffer size = 19511.07 MiB
+.......................................................................
+common_init_result: added <eos> logit bias = -inf
+common_init_result: added <|tool_response> logit bias = -inf
+common_init_result: added <turn|> logit bias = -inf
+common_init_result: TurboQuant head_dim signals — key=512 val=512 computed=176 mla_k=0 mla_v=0 swa_k=256
+common_init_result: [P1✓ P5✗] key_length=512 but n_embd/n_head=176 — using P1
+operator(): TurboQuant auto-mapped tbqp3_0 → tbqp3_0 (head_dim=512, 256-block × 2)
+operator(): TurboQuant auto-mapped tbq3_0 → tbq3_0 (head_dim=512, 256-block × 2)
+llama_context: constructing llama_context
+llama_context: n_seq_max     = 1
+llama_context: n_ctx         = 262144
+llama_context: n_ctx_seq     = 262144
+llama_context: n_batch       = 2048
+llama_context: n_ubatch      = 288
+llama_context: causal_attn   = 1
+llama_context: flash_attn    = enabled
+llama_context: kv_unified    = false
+llama_context: freq_base     = 1000000.0
+llama_context: freq_scale    = 1
+llama_context:  CUDA_Host  output buffer size =     1.00 MiB
+llama_kv_cache_iswa: creating non-SWA KV cache, size = 262144 cells
+llama_kv_cache:      CUDA0 KV buffer size =   990.00 MiB
+llama_kv_cache: size =  990.00 MiB (262144 cells,   5 layers,  1/1 seqs), K (tbqp3_0):  500.00 MiB, V (tbq3_0):  490.00 MiB
+llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 512
+llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 512
+llama_kv_cache_iswa: creating     SWA KV cache, size = 1536 cells
+llama_kv_cache_iswa: SWA K+V upgraded to f16 for quality (SWA cache is small)
+llama_kv_cache:        CPU KV buffer size =    12.00 MiB
+llama_kv_cache:      CUDA0 KV buffer size =   288.00 MiB
+llama_kv_cache: size =  300.00 MiB (  1536 cells,  25 layers,  1/1 seqs), K (f16):  150.00 MiB, V (f16):  150.00 MiB
+llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 256
+llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 256
+sched_reserve: reserving ...
+sched_reserve: resolving fused Gated Delta Net support:
+sched_reserve: fused Gated Delta Net (autoregressive) enabled
+sched_reserve: fused Gated Delta Net (chunked) enabled
+sched_reserve:      CUDA0 compute buffer size =   472.13 MiB
+sched_reserve:  CUDA_Host compute buffer size =   297.29 MiB
+sched_reserve: graph nodes  = 2647
+sched_reserve: graph splits = 25 (with bs=288), 2 (with bs=1)
+sched_reserve: reserve took 57.42 ms, sched copies = 1
+common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+clip_model_loader: model name:   Gemma-4-26B-A4B-It
+clip_model_loader: description:
+clip_model_loader: GGUF version: 3
+clip_model_loader: alignment:    32
+clip_model_loader: n_tensors:    356
+clip_model_loader: n_kv:         30
+
+clip_model_loader: has vision encoder
+clip_ctx: CLIP using CPU backend
+load_hparams: projector:          gemma4v
+load_hparams: n_embd:             1152
+load_hparams: n_head:             16
+load_hparams: n_ff:               4304
+load_hparams: n_layer:            27
+load_hparams: ffn_op:             gelu_quick
+load_hparams: projection_dim:     2816
+
+--- vision hparams ---
+load_hparams: image_size:         224
+load_hparams: patch_size:         16
+load_hparams: has_llava_proj:     0
+load_hparams: minicpmv_version:   0
+load_hparams: n_merge:            3
+load_hparams: n_wa_pattern: 0
+load_hparams: image_min_pixels:   580608
+load_hparams: image_max_pixels:   645120
+
+load_hparams: model size:         1137.77 MiB
+load_hparams: metadata size:      0.12 MiB
+warmup: warmup with image size = 768 x 768
+alloc_compute_meta:        CPU compute buffer size =   140.50 MiB
+alloc_compute_meta: graph splits = 1, nodes = 1569
+warmup: flash attention is enabled
+srv    load_model: loaded multimodal model, '/home/debian/models/gguf/mmproj-F16.gguf'
+srv    load_model: initializing slots, n_slots = 1
+no implementations specified for speculative decoding
+slot   load_model: id  0 | task -1 | new slot, n_ctx = 262144
+srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+srv    load_model: use `--cache-ram 0` to disable the prompt cache
+srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+srv          init: init: --cache-idle-slots requires --kv-unified, disabling
+init: chat template, example_format: '<|turn>system
+<|think|>
+You are a helpful assistant<turn|>
+<|turn>user
+Hello<turn|>
+<|turn>model
+Hi there<turn|>
+<|turn>user
+How are you?<turn|>
+<|turn>model
+'
+srv          init: init: chat template, thinking = 1
+main: model loaded
+main: server is listening on http://0.0.0.0:8020
+main: starting the main loop...
+srv  update_slots: all slots are idle
 ```
