@@ -105,8 +105,14 @@ in
     yamlFormat.generate ".aider.model.settings.yml" modelConfig;
 
   # llm configuration files
-  xdg.configFile."io.datasette.llm/extra-openai-models.yaml".source =
-    yamlFormat.generate "extra-openai-models.yaml" llmExtraModels;
+  xdg.configFile."io.datasette.llm/extra-openai-models.yaml" = {
+    source = yamlFormat.generate "extra-openai-models.yaml" llmExtraModels;
+    enable = pkgs.stdenv.hostPlatform != "aarch64-darwin";
+  };
+  home.file."Library/Application Support/io.datasette.llm/extra-openai-models.yaml" = {
+    source = yamlFormat.generate "extra-openai-models.yaml" llmExtraModels;
+    enable = pkgs.stdenv.hostPlatform == "aarch64-darwin";
+  };
 
   programs.git.ignores = [ ".aider*" ];
 
