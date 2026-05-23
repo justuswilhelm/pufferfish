@@ -160,7 +160,7 @@ require('nvim-treesitter.configs').setup {
         -- code block highlights that do not have ts grammar
         additional_vim_regex_highlighting = {
             "diff", "gitcommit", "svelte", "org"
-        },
+        }
         -- See `home-manager/modules/nvim.nix`:
         -- (nvim-treesitter.withPlugins (p: [
         -- Instead of:
