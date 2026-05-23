@@ -10,9 +10,6 @@
   osConfig,
   ...
 }:
-let
-  applicationSupport = "${config.home.homeDirectory}/Library/Application Support";
-in
 {
   imports = [
     ./modules/alacritty.nix
