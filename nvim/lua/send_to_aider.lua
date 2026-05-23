@@ -5,11 +5,22 @@
 -- =============
 local M = {}
 
--- Define patterns to match for aider panes
-M.AIDER_PATTERNS = {"aider"}
-
--- Print an error
 function print_error(text) vim.notify(text, vim.log.levels.ERROR) end
+
+-- Check if path is a file
+function validate_path(path)
+    local stat = vim.uv.fs_stat(path)
+    if not stat then
+        print_error(string.format("Path '%s' does not exist.", path))
+        return false
+    end
+    if stat.type ~= "file" then
+        print_error(string.format(
+                        "Can't add path '%s' because it's not a file.", path))
+        return false
+    end
+    return true
+end
 
 -- Get the current buffer's path relative to project root
 function M.get_relative_path()
@@ -19,13 +30,18 @@ function M.get_relative_path()
         -- Or get the current working directory
         cwd = vim.fn.getcwd()
     end
+
     -- Absolute path of current buffer
     local current_buffer_abs = vim.fs.abspath(vim.api.nvim_buf_get_name(0))
     -- Path to current buffer relative to working directory
-    return vim.fs.relpath(cwd, current_buffer_abs)
+    local current_buffer_rel = vim.fs.relpath(cwd, current_buffer_abs)
+
+    return current_buffer_rel
 end
 
 -- Generic function to send text to aider
+-- Validates that there's exactly one aider pane in the current tmux
+-- sessin
 function M.send_aider_command(text)
     -- Check TMUX environment
     if vim.env.TMUX == nil then
@@ -54,20 +70,17 @@ function M.send_aider_command(text)
     local panes = vim.split(result.stdout, '\n', {trimempty = true})
     local pane_id
 
-    -- TODO error if this finds multiple aider panes
     local matches = {}
     for _, pane_line in ipairs(panes) do
-        for _, pattern in ipairs(M.AIDER_PATTERNS) do
-            if pane_line:match(pattern) then
-                pane_id = pane_line:match("%[([^[]+:.+%..+)%]$")
-                if not pane_id then
-                    print_error(string.format(
-                                    "Couldn't find full pane path in line %s",
-                                    pane_line))
-                    return
-                end
-                table.insert(matches, pane_id)
+        if pane_line:match("aider") then
+            pane_id = pane_line:match("%[([^[]+:.+%..+)%]$")
+            if not pane_id then
+                print_error(string.format(
+                                "Couldn't find full pane path in line %s",
+                                pane_line))
+                return
             end
+            table.insert(matches, pane_id)
         end
     end
 
@@ -120,25 +133,27 @@ function M.send_aider_command(text)
     end
 end
 
--- Function to add current buffer path to aider
+-- add current buffer path to aider
 function M.add_to_aider()
     local relative_path = M.get_relative_path()
+    if not validate_path(relative_path) then return end
     M.send_aider_command(string.format("/add %s", relative_path))
 end
 
--- Function to add current buffer path to aider, read-only
+-- add current buffer path to aider, read-only
 function M.add_to_aider_read_only()
     local relative_path = M.get_relative_path()
+    if not validate_path(relative_path) then return end
     M.send_aider_command(string.format("/read-only %s", relative_path))
 end
 
--- Function to drop current buffer path from aider
+-- drop current buffer path from aider
 function M.drop_from_aider()
     local relative_path = M.get_relative_path()
     M.send_aider_command(string.format("/drop %s", relative_path))
 end
 
--- Function to get visual selection in pure Lua
+-- get current visual selection
 local function get_visual_selection()
     -- https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-2495851785
     local current_clipboard_content = vim.fn.getreg('"')
@@ -153,22 +168,19 @@ local function get_visual_selection()
     if #text > 0 then
         return text
     else
-        return ''
+        return nil
     end
 end
 
--- Function to send current visual selection to aider
+-- Send current visual selection to aider
 function M.send_selection_to_aider()
     -- Maybe do this:
     -- M.add_to_aider()
-
     local text = get_visual_selection()
-
-    if text == '' then
+    if not text then
         print_error("No selection found", vim.log.levels.ERROR)
         return
     end
-
     M.send_aider_command(text)
 end
 
