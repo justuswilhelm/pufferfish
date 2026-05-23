@@ -135,9 +135,6 @@ in
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
       user = "git";
     };
-    includes = [
-      "~/.ssh/extra"
-    ];
   };
 
   home.stateVersion = "24.05";

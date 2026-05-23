@@ -60,14 +60,12 @@ in
         # Turn display off after 2 minutes and 5 seconds
         swayidle -w \
             timeout 120 '${config.home.homeDirectory}/.dotfiles/bin/lock-screen swayidle' \
-            timeout 125 'swaymsg "output * dpms off"' \
-            resume 'swaymsg "output * dpms on"' \
+            timeout 125 'swaymsg "output * power off"' \
+            resume 'swaymsg "output * power on"' \
             timeout 21600 'systemctl poweroff'
         # Wayland copy-pasting, part of debian
         wl-paste -t text --watch clipman store --no-persist
-
-        # Make sure we have graphical-session.target
-        systemctl start --user sway-session.target
+        systemctl start --user opensnitch-ui.service
     }
   '';
   xdg.configFile."sway/config.d/colors".text = ''

@@ -34,4 +34,4 @@ else
     set image_flag --color ff6e67
 end
 
-exec swaylock --show-failed-attempts $image_flag
+exec swaylock --daemonize --show-failed-attempts $image_flag

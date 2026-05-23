@@ -26,5 +26,8 @@
       # hosts
       PasswordAuthentication = "no";
     };
+    includes = [
+      "~/.ssh/extra"
+    ];
   };
 }

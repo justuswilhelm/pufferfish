@@ -47,7 +47,6 @@ in
     # DNS
     # ===
     pkgs.dig
-    pkgs.dnsrecon
 
     # Packet sniffing
     # ===============

@@ -174,6 +174,36 @@
     ../../nix/lithium-ca.crt
   ];
 
+  # Git server
+  # ==========
+  # Source:
+  # https://wiki.nixos.org/wiki/Git#Serve_Git_repos_via_SSH
+  # Run
+  # sudo -u git bash -c "umask 077; mkdir ~/git-shell-commands"
+  # users.groups.git = {};
+  # users.users.git = {
+  #   isSystemUser = true;
+  #   group = "git";
+  #   home = "/var/lib/git-server";
+  #   createHome = true;
+  #   shell = "${pkgs.git}/bin/git-shell";
+  #   openssh.authorizedKeys.keys = [
+  # Paste SSH keys here
+  #   ];
+  # };
+  # services.openssh = {
+  #   enable = true;
+  #   extraConfig = ''
+  #     Match user git
+  #       AllowTcpForwarding no
+  #       AllowAgentForwarding no
+  #       PasswordAuthentication no
+  #       KbdInteractiveAuthentication no
+  #       PermitTTY no
+  #       X11Forwarding no
+  #   '';
+  # };
+
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #

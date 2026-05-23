@@ -1,0 +1,1157 @@
+---
+title: Helium-cuda set up
+---
+
+![qwen3.6-27b on llamacpp drawing a pelican](helium-cuda-pelican.svg)
+
+This document contains commands and expected outputs that you'll encounter
+while setting up the helium-cuda VM.
+
+# Find PCI device information
+
+See: <https://www.theseus-os.com/Theseus/book/running/virtual_machine/pci_passthrough.html>
+
+I already know that my GPU has the PCI path `01:00`.
+
+```bash
+sudo lspci -vnn -s 01:00
+```
+
+```
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA102 [GeForce RTX 3090 Ti] [10de:2203] (rev a1) (prog-if 00 [VGA controller])
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:5091]
+	Flags: fast devsel, IRQ 16, IOMMU group 19
+	Memory at 81000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at 6000000000 (64-bit, prefetchable) [size=32G]
+	Memory at 6800000000 (64-bit, prefetchable) [size=32M]
+	I/O ports at 5000 [size=128]
+	Expansion ROM at 82000000 [disabled] [size=512K]
+	Capabilities: <access denied>
+	Kernel driver in use: vfio-pci
+	Kernel modules: nvidiafb, nouveau
+
+01:00.1 Audio device [0403]: NVIDIA Corporation GA102 High Definition Audio Controller [10de:1aef] (rev a1)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:5091]
+	Flags: bus master, fast devsel, latency 0, IRQ 17, IOMMU group 19
+	Memory at 82080000 (32-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+```
+
+Note the following values from the `lspci` output:
+
+1. VGA compatible controller
+  1. `slot_info`: 0000:01:00.0
+  2. `vendor_id`: 10de
+  3. `device_code`: 2203
+2. Audio device
+  1. `slot_info`: 0000:01:00.1
+  2. `vendor_id`: 10de
+  3. `device_code`: 1aef
+
+I've found that forwarding both devices works better for PCI forwarding.
+
+# Libvirt PCI name
+
+Here's how to find the name for the two devices in libvirt. You need
+these names to set up PCI forwarding. The `slot_info` 0000:01:00.0
+becomes `pci_0000_01`.
+
+Run this command:
+
+```
+virsh nodedev-list | grep pci_0000_01
+```
+
+You should see the following:
+
+```
+pci_0000_01_00_0
+pci_0000_01_00_1
+```
+
+# Virt-install invocation
+
+These instructions use virt-install to automate loading a NixOS image
+into a virtual machine.
+
+Here's what the virt-install `--help` help says about PCI forwarding:
+
+> Device Options
+>
+> --host-device=HOSTDEV
+> Attach a physical host device to the guest. Some example values for HOSTDEV:
+> --host-device pci_0000_00_1b_0
+>     A node device name via libvirt, as shown by 'virsh nodedev-list'
+> --host-device 001.003
+>     USB by bus, device (via lsusb).
+> --host-device 0x1234:0x5678
+>     USB by vendor, product (via lsusb).
+> --host-device 1f.01.02
+>     PCI device (via lspci).
+> --soundhw MODEL
+> Attach a virtual audio device to the guest. MODEL specifies the emulated sound card model. Possible values are ich6, ac97, es1370, sb16, pcspk, or default. 'default' will be AC97 if the hypervisor supports it, otherwise it will be ES1370 .
+
+Source: <https://linux.die.net/man/1/virt-install>
+
+For PCI forwarding, you need the `--host-device` flag.
+
+# Build qcow2 image
+
+Build a qcow2 image to load into virt-install:
+
+```bash
+cp --no-preserve=all $(nix build .#nixosConfigurations.helium-cuda.config.system.build.qcow --print-out-paths --no-link)/helium-cuda.qcow2 .
+```
+
+```bash
+file nixos.qcow2
+```
+
+You should see the following:
+
+```
+nixos.qcow2: QEMU QCOW Image (v3), 27473739776 bytes (v3), 27473739776 bytes
+```
+
+Build the image and create a new virtual machine with `virt-install`:
+
+```
+cp --no-preserve=all $(nix build .#nixosConfigurations.helium-cuda.config.system.build.qcow --print-out-paths --no-link)/helium-cuda.qcow2 .
+virt-install --connect qemu:///system \
+  --import \
+  --name helium-cuda \
+  --memory 60000 \
+  --vcpus 16 \
+  --disk helium-cuda.qcow2 \
+  --os-variant nixos-unstable \
+  --network default \
+  --host-device pci_0000_01_00_0 \
+  --host-device pci_0000_01_00_1 \
+  --boot uefi
+```
+
+Once VM starts up, test
+
+```bash
+ssh helium-cuda.local uname -a
+```
+
+Should output:
+
+```
+Linux helium-cuda 6.12.87 #1-NixOS SMP PREEMPT_DYNAMIC Fri May  8 06:39:25 UTC 2026 x86_64 GNU/Linux
+```
+
+Print NVIDIA driver information:
+
+```bash
+ssh helium-cuda.local nvidia-smi
+```
+
+Should output:
+
+```
+Mon May 18 07:08:44 2026
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.172.08             Driver Version: 570.172.08     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3090 Ti     Off |   00000000:05:00.0 Off |                  Off |
+| 32%   46C    P0            N/A  /  450W |       0MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+```
+
+# Add debian user to docker group
+
+Next, try vLLM.
+
+```
+Welcome to fish, the friendly interactive shell
+Type help for instructions on how to use fish
+debian@helium-cuda ~> docker run --runtime nvidia --gpus all \
+                              -v ~/.cache/huggingface:/root/.cache/huggingface \
+                              -p 8000:8000 \
+                              --ipc=host \
+                              vllm/vllm-openai:latest \
+                              --model Qwen/Qwen3-0.6B
+docker: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Head "http://%2Fvar%2Frun%2Fdocker.sock/_ping": dial unix /var/run/docker.sock: connect: permission denied
+```
+
+Learn that you need to add debian to docker group.
+Update configuration, copy new configuration:
+
+```bash
+nixos-rebuild --flake .#helium-cuda switch --target-host root@helium-cuda.local
+```
+
+# Grow VM disk image
+
+Try one more time:
+
+```
+ssh helium-cuda.local docker run --runtime nvidia --gpus all \
+  -v ~/.cache/huggingface:/root/.cache/huggingface \
+  -p 8000:8000 \
+  --ipc=host \
+  vllm/vllm-openai:latest \
+  --model Qwen/Qwen3-0.6B
+```
+
+Source: <https://docs.vllm.ai/en/stable/deployment/docker/>
+
+After a while:
+
+```
+
+9c682ea8589b: Download complete
+7fdb1261272c: Verifying Checksum
+7fdb1261272c: Download complete
+7fdb1261272c: Pull complete
+docker: failed to register layer: write /usr/local/lib/python3.12/dist-packages/flashinfer_jit_cache/jit_cache/single_decode_with_kv_cache_dtype_q_f16_dtype_kv_e4m3_dtype_o_f16_head_dim_qk_128_head_dim_vo_128_posenc_0_use_swa_False_use_logits_cap_False/single_decode_with_kv_cache_dtype_q_f16_dtype_kv_e4m3_dtype_o_f16_head_dim_qk_128_head_dim_vo_128_posenc_0_use_swa_False_use_logits_cap_False.so: no space left on device
+```
+
+Run the following command on the host. You don't need to shut down the VM.
+
+```bash
+virsh -c qemu:///system blockresize helium-cuda $PWD/helium-cuda.qcow2 --size 100G
+```
+
+On the guest, run these commands as root:
+
+```bash
+growpart /dev/vda 3
+resize2fs /dev/vda3
+lsblk
+```
+
+Here's the expected output for these three commands:
+
+```
+[root@helium-cuda:~]# growpart /dev/vda 3
+CHANGED: partition=3 start=526336 old: size=54728704 end=55255039 new: size=209188831 end=209715166
+
+[root@helium-cuda:~]# resize2fs /dev/vda3
+resize2fs 1.47.3 (8-Jul-2025)
+Filesystem at /dev/vda3 is mounted on /; on-line resizing required
+old_desc_blocks = 4, new_desc_blocks = 13
+The filesystem on /dev/vda3 is now 26148603 (4k) blocks long.
+
+
+[root@helium-cuda:~]# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+vda    253:0    0  100G  0 disk
+├─vda1 253:1    0  249M  0 part /boot
+├─vda2 253:2    0 1007K  0 part
+└─vda3 253:3    0 99.7G  0 part /nix/store
+                                /
+```
+
+# Test vLLM again
+
+Run this command on the host:
+
+```bash
+ssh helium-cuda.local docker run --gpus all \
+  -v ~/.cache/huggingface:/root/.cache/huggingface \
+  -p 8000:8000 \
+  --rm --interactive \
+  --name vllm --ipc=host \
+  vllm/vllm-openai:latest --model Qwen/Qwen3-0.6B
+```
+
+vLLM spins for a while and then prints the following:
+
+```
+(EngineCore pid=151) INFO 05-18 08:00:26 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=151) INFO 05-18 08:00:26 [core.py:299] init engine (profile, create kv cache, warmup model) took 18.03 s (compilation: 10.69 s)
+(EngineCore pid=151) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(EngineCore pid=151) INFO 05-18 08:00:28 [vllm.py:886] Asynchronous scheduling is enabled.
+(EngineCore pid=151) INFO 05-18 08:00:28 [kernel.py:212] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(APIServer pid=1) INFO 05-18 08:00:28 [api_server.py:613] Supported tasks: ['generate']
+(APIServer pid=1) WARNING 05-18 08:00:28 [model.py:1454] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 0.6, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=1) INFO 05-18 08:00:31 [hf.py:483] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=1) INFO 05-18 08:00:32 [api_server.py:617] Starting vLLM server on http://0.0.0.0:8000
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:37] Available routes are:
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /docs, Methods: HEAD, GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /tokenize, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /detokenize, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /load, Methods: GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /version, Methods: GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /health, Methods: GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /metrics, Methods: GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/models, Methods: GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /ping, Methods: GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /ping, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /invocations, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/responses, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/completions, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/messages, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /generative_scoring, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=1) INFO 05-18 08:00:32 [launcher.py:46] Route: /v1/completions/render, Methods: POST
+```
+
+On the host, list all available models with the following command:
+
+```bash
+curl http://helium-cuda.local:8000/v1/models
+```
+
+This should print the following
+
+```json
+{"object":"list","data":[{"id":"Qwen/Qwen3-0.6B","object":"model","created":1779091304,"owned_by":"vllm","root":"Qwen/Qwen3-0.6B","parent":null,"max_model_len":40960,"permission":[{"id":"modelperm-be5911bf71c7917c","object":"model_permission","created":1779091304,"allow_create_engine":false,"allow_sampling":true,"allow_logprobs":true,"allow_search_indices":false,"allow_view":true,"allow_fine_tuning":false,"organization":"*","group":null,"is_blocking":false}]}]}⏎
+```
+
+Ask the `Qwen/Qwen3-0.6B` model what the capital of Crance is with this
+curl command:
+
+
+```bash
+curl http://helium-cuda.local:8000/v1/chat/completions \
+  --json '{"model":"Qwen/Qwen3-0.6B","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
+```
+
+You should see the following:
+
+```
+{"id":"chatcmpl-8d6890852231f4b1","object":"chat.completion","created":1779091337,"prompt_routed_experts":null,"model":"Qwen/Qwen3-0.6B","choices":[{"index":0,"message":{"role":"assistant","content":"<think>\nOkay, the user is asking about the capital of France. I know the answer is Paris. But maybe they want more details. Let me check if there's any other information they might be interested in. France's capital is indeed Paris. I should confirm that and maybe mention some key points about the capital to provide a comprehensive answer.\n</think>\n\nThe capital of France is **Paris**. It is a major city in northern France, known for its historical significance and cultural importance.","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning":null},"logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"routed_experts":null}],"service_tier":null,"system_fingerprint":"vllm-0.21.0-60f1139f","usage":{"prompt_tokens":12,"total_tokens":111,"completion_tokens":99,"prompt_tokens_details":null},"prompt_logprobs":null,"prompt_token_ids":null,"prompt_text":null,"kv_transfer_params":null}⏎
+```
+
+# Club-3090
+
+Next, set up club-3090. Connect to `helium-cuda.local` with ssh.
+
+```bash
+ssh helium-cuda.local
+```
+
+Run these commands:
+```
+git clone https://github.com/noonghunna/club-3090.git
+cd club-3090
+```
+
+Verify that your user already has the `MODEL_DIR` environment variable set
+by running the following:
+
+```bash
+echo $MODEL_DIR
+```
+
+This should print the following:
+
+```
+/home/debian/models
+```
+
+Now run the club-3090 setup withe the following command:
+
+```bash
+scripts/setup.sh qwen3.6-27b
+```
+
+This should print the following:
+
+```
+[preflight] checking environment...
+[preflight] docker:  28.5.2 (compose v2 ok)
+[preflight] gpu:     1× detected
+[preflight]            GPU 0: NVIDIA GeForce RTX 3090 Ti (UUID: GPU-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+[preflight] disk:    61 GB free at /home/debian/models (need ~25 GB)
+[preflight] WARNING: HF_TOKEN is not set in the environment.
+[preflight]          Qwen3.6-27B is T&C-gated on HuggingFace; downloads will fail without a token.
+[preflight]          Fix: visit https://huggingface.co/settings/tokens, create a read token,
+[preflight]               accept the model T&C at https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct
+[preflight]               (and any other Qwen3-Next variant you'll use),
+[preflight]               then export HF_TOKEN=hf_... in your shell or .env file.
+[preflight] ok.
+
+Setup root:   /home/debian/club-3090
+Model dir:    /home/debian/models
+[genesis] Already cloned at /home/debian/club-3090/models/qwen3.6-27b/vllm/patches/genesis — fetching + checking out 7b9fd319 ...
+HEAD is now at 7b9fd31 release(v7.72.2): PN70 schema subset filter + Proxmox VE installer caveat
+[genesis] Pinned to 7b9fd319 (7b9fd31)
+[model]   Using 'hf download' (hf_transfer if available) ...
+/home/debian/.local/share/pipx/venvs/huggingface-hub/lib/python3.13/site-packages/huggingface_hub/constants.py:277: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+Ignored error while writing commit hash to /home/debian/.cache/huggingface/hub/models--Lorbus--Qwen3.6-27B-int4-AutoRound/refs/main: [Errno 13] Permission denied: '/home/debian/.cache/huggingface/hub/models--Lorbus--Qwen3.6-27B-int4-AutoRound'.
+Downloading (incomplete total...): 0.00B [00:00, ?B/s]                                                                   Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Downloading (incomplete total...):   1%|▏                                            | 83.9M/16.2G [00:02<06:16, 42.7MB/s]
+Fetching 22 files:   5%|███                                                                | 1/22 [00:00<00:05,  3.54it/s]
+...
+[done]    11 shards SHA-verified.
+          Genesis pinned at 7b9fd319 (7b9fd31).
+
+[dflash]  Skipping DFlash draft model. Set WITH_DFLASH_DRAFT=1 to fetch
+          z-lab/Qwen3.6-27B-DFlash (~1.75 GB; required only for dual-dflash composes).
+
+[setup] ✓ Qwen 3.6 27B downloaded.
+[setup] Next: bash scripts/launch.sh
+
+Next — single-card vLLM (default):
+  cd models/qwen3.6-27b/vllm/compose && docker compose up -d
+  docker logs -f vllm-qwen36-27b
+
+Or dual-card vLLM (Marlin patched files already vendored in-repo):
+  cd models/qwen3.6-27b/vllm/compose && docker compose -f dual/docker-compose.yml up -d
+
+Sanity test (after 'Application startup complete'):
+  curl -sf http://localhost:8020/v1/chat/completions \
+    -H 'Content-Type: application/json' \
+    -d '{"model":"qwen3.6-27b-autoround","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
+```
+
+# Launching vLLM
+
+Launch the club-3090 vLLM with the following command:
+
+```bash
+scripts/launch.sh --variant vllm/default
+```
+
+# Disappearing vLLM container
+
+```
+[preflight] checking environment...
+[preflight] docker:  28.5.2 (compose v2 ok)
+[preflight] gpu:     1× detected
+[preflight]            GPU 0: NVIDIA GeForce RTX 3090 Ti (UUID: GPU-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+[preflight] ok.
+
+
+[launch] selected variant: vllm/default
+
+[switch] no club-3090 container running
+[preflight] hardware: vllm/default TP=1 requires >=24 GB; auto-selected GPU 0 (24 GB, sm_8.6)
+[switch] bringing up: vllm/default  (models/qwen3.6-27b/vllm/compose/single/docker-compose.yml)
+[switch] vLLM nightly SHA: 01d4d1ad375dc5854779c593eee093bcebb0cada
+[+] Running 1/1
+ ✘ vllm-qwen36-27b Error manifest for vllm/vllm-openai:nightly-01d4d1ad375dc5854779c593eee...                        1.8s
+Error response from daemon: manifest for vllm/vllm-openai:nightly-01d4d1ad375dc5854779c593eee093bcebb0cada not found: manifest unknown: manifest unknown
+```
+
+Try an older club-3090 version:
+
+```bash
+git reset --hard v0.7.2
+# HEAD is now at d116ba9 feat(launch): add hardware topology advisor
+```
+
+Run the club-3090 vLLM launcher again.
+
+```bash
+scripts/launch.sh --variant vllm/default
+```
+
+This should output the following:
+
+```
+[preflight] checking environment...
+[preflight] docker:  28.5.2 (compose v2 ok)
+[preflight] gpu:     1× detected
+[preflight]            GPU 0: NVIDIA GeForce RTX 3090 Ti (UUID: GPU-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+...
+[preflight] WARN:  Your club-3090 checkout is 97 commit(s) behind origin/master.
+[preflight]          (last origin fetch: just now)
+[preflight]        Master may have new configs, patches, or Genesis pin bumps.
+[preflight]        Easy upgrade:  bash scripts/update.sh
+[preflight]        (Will refuse if you have local edits — commit or stash first.)
+[preflight]        Skip this check:  PREFLIGHT_NO_FETCH=1 bash scripts/launch.sh
+[preflight] ok.
+
+
+[launch] selected variant: vllm/default
+
+...
+[+] Running 2/2
+ ✔ Network single_default     Created                                                                                0.1s
+ ✔ Container vllm-qwen36-27b  Started                                                                                0.6s
+[switch] waiting for http://localhost:8020/v1/models (container=vllm-qwen36-27b, timeout 600s)...
+[switch]   28s — Resolved architecture: Qwen3_5ForConditionalGeneration
+[switch]   32s — Resolved architecture: Qwen3_5MTP
+[switch]   56s — Loading weights
+[switch]   60s elapsed, still waiting...
+[switch]   80s — Capturing CUDA graphs
+[switch]   92s — Application startup complete
+[switch] ✓ ready (92s)
+[switch] done. Try:  curl -s http://localhost:8020/v1/models | jq .
+
+[launch] running verify-full.sh against the new server (URL=http://localhost:8020, CONTAINER=vllm-qwen36-27b)...
+
+Running FULL functional test against http://localhost:8020
+  model=qwen3.6-27b-autoround  container=vllm-qwen36-27b  engine=vllm
+
+[1/8] Server reachable on /v1/models ...
+  ✓ server is serving
+[2/8] Genesis patches applied ...
+  ✓ Genesis patches applied (apply_all completed clean)
+[3/8] Basic completion — capital of France ...
+  ✓ reply contains 'Paris'
+[4/8] Tool calling ...
+  ✓ tool_calls[] populated with get_weather
+[5/8] Streaming (SSE) ...
+  ✓ streamed 10 chunks, 72 chars:  Staring at the code, One missing semicolon hides, Found it, joy returns. ...
+[6/8] Thinking / reasoning mode ...
+  ✓ reasoning 603 chars, content 3 chars (finish=stop)
+    reasoning: Here's a thinking process:  1.  **Analyze User Input:**    -...
+    content:     4...
+[7/8] Output quality / cascade detection (2K-token completion) ...
+  ✓ output OK — 9154 chars, variety=0.670, max_line_repeat=0, finish=stop
+[8/8] MTP acceptance length threshold ...
+  ✓ MTP acceptance length = 2.50 (>=2.0 — spec-decode contributing)
+
+All checks passed. Stack is ready for full-functionality use.
+
+[launch] done. Endpoint: http://localhost:8020
+[launch] sample request:
+  curl -sf http://localhost:8020/v1/chat/completions \
+    -H 'Content-Type: application/json' \
+    -d '{"model":"qwen3.6-27b-autoround","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
+
+[launch] switch later with:  bash scripts/switch.sh <variant>
+[launch] list variants:      bash scripts/switch.sh --list
+```
+
+Note the model name `qwen3.6-27b-autoround`.
+
+Test the model on the host with the following command:
+
+```bash
+curl http://helium-cuda.local:8020/v1/chat/completions \
+  --json '{"model":"qwen3.6-27b-autoround","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
+```
+
+# VM autostart
+
+Here's how to configure libvirt to start the VM automatically. Check
+if libvirt hasn't already marked it as *autostart*:
+
+```bash
+virsh -c qemu:///system list --autostart
+```
+
+It's not listed here, so the answer is no:
+
+```
+ Id   Name   State
+--------------------
+```
+
+Enable *autostart* with the following command:
+
+```
+~/.dotfiles!+(1)main$virsh -c qemu:///system autostart helium-cuda
+```
+
+`virsh` then prints the following:
+
+```
+Domain 'helium-cuda' marked as autostarted
+```
+
+# CUDA OOM error
+
+```
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]     return original_fwd(
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]            ^^^^^^^^^^^^^
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fla/ops/chunk.py", line 89, in chunk_gated_delta_rule_fwd
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]     h, v_new, final_state = chunk_gated_delta_rule_fwd_h(
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fla/ops/chunk_delta_h.py", line 337, in chunk_gated_delta_rule_fwd_h
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]     v_new = torch.empty_like(u) if save_new_value else None
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138]             ^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=78) ERROR 05-19 00:53:24 [core.py:1138] torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 46.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 32.56 MiB is free. Process 3881 has 23.51 GiB memory in use. Of the allocated memory 22.90 GiB is allocated by PyTorch, with 24.00 MiB allocated in private pools (e.g., CUDA Graphs), and 237.94 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+```
+
+vLLM is unstable. The club-3090 configuration maintainer documents this
+here: <https://github.com/noonghunna/club-3090/blob/master/docs/CLIFFS.md>
+
+I'll try `vllm/minimal` instead. Nope, still crashes.
+Try `llamacpp/default`.
+
+```
+hf download unsloth/Qwen3.6-27B-GGUF \
+  Qwen3.6-27B-UD-Q3_K_XL.gguf mmproj-F16.gguf \
+  --local-dir $MODEL_DIR/qwen3.6-27b-gguf/unsloth-q3kxl
+mv $MODEL_DIR/qwen3.6-27b-gguf/unsloth-q3kxl/mmproj-F16.gguf $MODEL_DIR/qwen3.6-27b-gguf/
+```
+
+# Configure static IP
+
+Give `helium-cuda` a static IP address to make it easier to reach from other networks.
+
+Source: <https://serverfault.com/a/1169799>
+
+```
+virsh -c qemu:///system net-update default add ip-dhcp-host '<host mac="52:54:00:73:87:fd" name="helium-cuda" ip="192.168.122.17"/>'
+```
+
+# Expose over network
+
+
+```
+ssh lithium.local 'curl --silent http://helium.local:8020/v1/chat/completions --json \'{"model":"qwen3.6-27b-autoround","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}\''
+```
+
+```
+{"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"<think>\n\n</think>\n\nThe capital of France is **Paris**."}}],"created":1779163797,"model":"Qwen3.6-27B-UD-Q3_K_XL.gguf","system_fingerprint":"b9209-0caf2a1d4","object":"chat.completion","usage":{"completion_tokens":9,"prompt_tokens":16,"total_tokens":25,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-tDhL6nRqHi5OFBDbFSNEe9EkIpZdiPwi","timings":{"cache_n":0,"prompt_n":16,"prompt_ms":88.175,"prompt_per_token_ms":5.5109375,"prompt_per_second":181.4573291749362,"predicted_n":9,"predicted_ms":196.808,"predicted_per_token_ms":21.867555555555555,"predicted_per_second":45.72984838014715}}
+```
+
+# Appendix
+
+## Remove VM
+
+Remove the `helium-cuda` VM with these two commands:
+
+```bash
+virsh -c qemu:///system destroy helium-cuda
+# --nvram flag needed because of UEFI
+virsh -c qemu:///system undefine helium-cuda --nvram
+```
+
+## Benchmark
+
+### vllm-qwen36-27b
+
+Run the following command on the host:
+
+```bash
+ssh helium-cuda.local cd club-3090 \; scripts/bench.sh
+```
+
+Benchmark output:
+
+```
+[autodetect] using running container=vllm-qwen36-27b url=http://localhost:8020  (skip: PREFLIGHT_NO_AUTODETECT=1)
+
+========== NARRATIVE (prompt=65 chars, max_tokens=1000) ==========
+=== warmups (3) ===
+  warm-1     wall= 22.74s  ttft=  9326ms  toks=1000  wall_TPS= 43.98  decode_TPS= 74.56
+  warm-2     wall= 28.12s  ttft= 13858ms  toks=1000  wall_TPS= 35.57  decode_TPS= 70.13
+  warm-3     wall= 27.24s  ttft= 13751ms  toks=1000  wall_TPS= 36.71  decode_TPS= 74.14
+
+=== measured (5) ===
+  run-1      wall= 27.73s  ttft= 13548ms  toks=1000  wall_TPS= 36.06  decode_TPS= 70.51
+  run-2      wall= 27.72s  ttft= 14073ms  toks=1000  wall_TPS= 36.07  decode_TPS= 73.26
+  run-3      wall= 22.68s  ttft=  8901ms  toks=1000  wall_TPS= 44.09  decode_TPS= 72.56
+  run-4      wall= 22.72s  ttft=  8373ms  toks=1000  wall_TPS= 44.02  decode_TPS= 69.71
+  run-5      wall= 21.88s  ttft=  7841ms  toks=1000  wall_TPS= 45.71  decode_TPS= 71.24
+
+=== summary [narrative] (n=5) ===
+  wall_TPS       mean=  41.19   std=  4.73   CV=11.5%   min=36.06   max=45.71
+  decode_TPS     mean=  71.46   std=  1.45   CV= 2.0%   min=69.71   max=73.26
+  TTFT          mean= 10547ms  std= 3008ms  min=7841ms  max=14073ms
+  PP tok/s       mean=   2.00   std=  2.09   CV=104.6%   min=0.00   max=5.00
+
+========== CODE (prompt=78 chars, max_tokens=800) ==========
+=== warmups (3) ===
+  warm-1     wall= 13.32s  ttft=  5173ms  toks= 782  wall_TPS= 58.69  decode_TPS= 95.95
+  warm-2     wall= 17.01s  ttft=  8721ms  toks= 800  wall_TPS= 47.02  decode_TPS= 96.48
+  warm-3     wall= 12.51s  ttft=  4684ms  toks= 768  wall_TPS= 61.41  decode_TPS= 98.18
+
+=== measured (5) ===
+  run-1      wall= 16.96s  ttft=  8730ms  toks= 800  wall_TPS= 47.18  decode_TPS= 97.24
+  run-2      wall= 16.50s  ttft=  8449ms  toks= 800  wall_TPS= 48.50  decode_TPS= 99.42
+  run-3      wall=  7.03s  ttft=    97ms  toks= 683  wall_TPS= 97.20  decode_TPS= 98.57
+  run-4      wall=  5.41s  ttft=    98ms  toks= 493  wall_TPS= 91.05  decode_TPS= 92.72
+  run-5      wall=  4.10s  ttft=    98ms  toks= 395  wall_TPS= 96.30  decode_TPS= 98.67
+
+=== summary [code] (n=5) ===
+  wall_TPS       mean=  76.05   std= 25.86   CV=34.0%   min=47.18   max=97.20
+  decode_TPS     mean=  97.32   std=  2.69   CV= 2.8%   min=92.72   max=99.42
+  TTFT          mean=  3495ms  std= 4652ms  min=97ms  max=8730ms
+  PP tok/s       mean=   3.00   std=  1.12   CV=37.3%   min=2.50   max=5.00
+
+=== GPU state ===
+0, 87 %, 21002 MiB, 24564 MiB, 445.46 W, 85
+
+=== Last 3 SpecDecoding metrics ===
+(APIServer pid=1) INFO 05-18 11:19:54 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.42, Accepted throughput: 67.60 tokens/s, Drafted throughput: 83.70 tokens/s, Accepted: 676 tokens, Drafted: 837 tokens, Per-position acceptance rate: 0.921, 0.828, 0.674, Avg Draft acceptance rate: 80.8%
+(APIServer pid=1) INFO 05-18 11:20:04 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.52, Accepted throughput: 69.90 tokens/s, Drafted throughput: 83.10 tokens/s, Accepted: 699 tokens, Drafted: 831 tokens, Per-position acceptance rate: 0.942, 0.859, 0.722, Avg Draft acceptance rate: 84.1%
+(APIServer pid=1) INFO 05-18 11:20:14 [metrics.py:101] SpecDecoding metrics: Mean acceptance length: 3.38, Accepted throughput: 67.00 tokens/s, Drafted throughput: 84.29 tokens/s, Accepted: 670 tokens, Drafted: 843 tokens, Per-position acceptance rate: 0.929, 0.811, 0.644, Avg Draft acceptance rate: 79.5%
+```
+
+### llama-cpp-qwen36-27b
+
+```
+ssh helium-cuda.local cd club-3090 \; scripts/bench.sh
+```
+
+```
+[autodetect] using running container=llama-cpp-qwen36-27b url=http://localhost:8020  (skip: PREFLIGHT_NO_AUTODETECT=1)
+
+========== NARRATIVE (prompt=65 chars, max_tokens=1000) ==========
+=== warmups (3) ===
+  warm-1     wall= 24.12s  ttft=   182ms  toks=1000  wall_TPS= 41.46  decode_TPS= 41.77
+  warm-2     wall= 24.29s  ttft=   147ms  toks=1000  wall_TPS= 41.17  decode_TPS= 41.42
+  warm-3     wall= 24.39s  ttft=   153ms  toks=1000  wall_TPS= 40.99  decode_TPS= 41.25
+
+=== measured (5) ===
+  run-1      wall= 24.36s  ttft=   148ms  toks=1000  wall_TPS= 41.05  decode_TPS= 41.30
+  run-2      wall= 24.37s  ttft=   146ms  toks=1000  wall_TPS= 41.04  decode_TPS= 41.29
+  run-3      wall= 24.35s  ttft=   147ms  toks=1000  wall_TPS= 41.07  decode_TPS= 41.32
+  run-4      wall= 24.41s  ttft=   146ms  toks=1000  wall_TPS= 40.97  decode_TPS= 41.22
+  run-5      wall= 24.38s  ttft=   152ms  toks=1000  wall_TPS= 41.01  decode_TPS= 41.27
+
+=== summary [narrative] (n=5) ===
+  wall_TPS       mean=  41.03   std=  0.04   CV= 0.1%   min=40.97   max=41.07
+  decode_TPS     mean=  41.28   std=  0.04   CV= 0.1%   min=41.22   max=41.32
+  TTFT          mean=   148ms  std=    2ms  min=146ms  max=152ms
+  PP tok/s       n/a (long-prompt fallback below)
+
+========== CODE (prompt=78 chars, max_tokens=800) ==========
+=== warmups (3) ===
+  warm-1     wall= 17.53s  ttft=   145ms  toks= 718  wall_TPS= 40.95  decode_TPS= 41.29
+  warm-2     wall= 19.54s  ttft=   144ms  toks= 800  wall_TPS= 40.95  decode_TPS= 41.26
+  warm-3     wall= 18.02s  ttft=   144ms  toks= 738  wall_TPS= 40.96  decode_TPS= 41.29
+
+=== measured (5) ===
+  run-1      wall= 17.35s  ttft=   144ms  toks= 710  wall_TPS= 40.91  decode_TPS= 41.26
+  run-2      wall= 19.55s  ttft=   148ms  toks= 800  wall_TPS= 40.92  decode_TPS= 41.23
+  run-3      wall=  9.30s  ttft=   148ms  toks= 378  wall_TPS= 40.65  decode_TPS= 41.31
+  run-4      wall= 18.15s  ttft=   144ms  toks= 739  wall_TPS= 40.71  decode_TPS= 41.03
+  run-5      wall= 13.55s  ttft=   151ms  toks= 552  wall_TPS= 40.74  decode_TPS= 41.19
+
+=== summary [code] (n=5) ===
+  wall_TPS       mean=  40.79   std=  0.12   CV= 0.3%   min=40.65   max=40.92
+  decode_TPS     mean=  41.21   std=  0.10   CV= 0.3%   min=41.03   max=41.31
+  TTFT          mean=   147ms  std=    3ms  min=144ms  max=151ms
+  PP tok/s       n/a (long-prompt fallback below)
+
+========== PROMPT-PROCESSING (fallback target=10000 prompt tokens, max_tokens=16) ==========
+=== measured (1) ===
+  run-1      wall=  9.78s  ttft=  9382ms  prompt_toks= 13179  PP_tok/s=1404.65
+
+=== summary [prompt-processing] (n=1) ===
+  PP tok/s       mean=1404.65   std=  0.00   CV= 0.0%   min=1404.65   max=1404.65
+  TTFT          mean=  9382ms  std=    0ms  min=9382ms  max=9382ms
+
+=== GPU state ===
+0, 99 %, 22748 MiB, 24564 MiB, 446.23 W, 85
+
+=== Last 3 SpecDecoding metrics ===
+```
+
+## Network settings
+
+On `helium` host, print IP addresses:
+
+```
+echo "virbr0 enp7s0" | xargs -n1 ip address show
+```
+
+```
+2: enp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether d8:bb:c1:d0:35:7c brd ff:ff:ff:ff:ff:ff
+    altname enxd8bbc1d0357c
+    inet 10.0.56.202/20 metric 1024 brd 10.0.63.255 scope global dynamic enp7s0
+       valid_lft 85926sec preferred_lft 85926sec
+4: virbr0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 52:54:00:78:12:67 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+       valid_lft forever preferred_lft forever
+    inet6 2001:db8:ca2:2::1/64 scope global
+       valid_lft forever preferred_lft forever
+    inet6 fe80::5054:ff:fe78:1267/64 scope link proto kernel_ll
+       valid_lft forever preferred_lft forever
+```
+
+Print `helium` routes:
+
+```
+~/.dotfiles!+(1)main$ip route
+```
+
+Output:
+
+```
+default via 10.0.48.1 dev enp7s0 proto dhcp src 10.0.56.202 metric 1024
+10.0.48.0/20 dev enp7s0 proto kernel scope link src 10.0.56.202 metric 1024
+10.0.48.1 dev enp7s0 proto dhcp scope link src 10.0.56.202 metric 1024
+192.168.122.0/24 dev virbr0 proto kernel scope link src 192.168.122.1
+```
+
+Interfaces on `helium-cuda` guest:
+
+```
+ssh helium-cuda.local ip address show enp1s0
+```
+
+```
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:73:87:fd brd ff:ff:ff:ff:ff:ff
+    altname enx5254007387fd
+    inet 192.168.122.17/24 metric 1024 brd 192.168.122.255 scope global dynamic enp1s0
+       valid_lft 3223sec preferred_lft 3223sec
+```
+
+Print `helium-cuda` routes:
+
+```
+~/.dotfiles!+(1)main$ssh helium-cuda.local ip route show
+```
+
+Output:
+
+```
+default via 192.168.122.1 dev enp1s0 proto dhcp src 192.168.122.17 metric 1024
+192.168.122.0/24 dev enp1s0 proto kernel scope link src 192.168.122.17 metric 1024
+192.168.122.1 dev enp1s0 proto dhcp scope link src 192.168.122.17 metric 1024
+```
+
+On `lithium` computer in the same network. Print `en0` (WLAN card) interface configuration
+
+```
+ifconfig en0
+```
+
+Output:
+
+```
+en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+        options=6460<TSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+        ether 8a:20:9e:c4:16:47
+        inet6 fe80::103b:e19:cecc:1447%en0 prefixlen 64 secured scopeid 0xb
+        inet 10.0.55.216 netmask 0xfffff000 broadcast 10.0.63.255
+        nd6 options=201<PERFORMNUD,DAD>
+        media: autoselect
+        status: active
+```
+
+Print network setup information. `en0` maps to the service name "Wi-Fi".
+
+```
+networksetup -getinfo Wi-Fi
+```
+
+Output:
+
+```
+DHCP Configuration
+IP address: 10.0.55.216
+Subnet mask: 255.255.240.0
+Router: 10.0.48.1
+Client ID:
+IPv6: Automatic
+IPv6 IP address: none
+IPv6 Router: none
+Wi-Fi ID: 1c:57:dc:51:e9:3b
+```
+
+Home network setup:
+
+```
+  .-------------. 10.0.48.0/20  .----------------------.
+  | Ubiquiti AP |   Ethernet    | helium               |
+  | 10.0.48.1   |  <--------->  | enp7s0/10.0.56.202   |
+  .-------------.               | virbr0/192.168.122.1 |
+        ^                       .----------------------.
+        |                            ^
+        | WLAN                       | Bridge
+        | 10.0.48.0/20               | 192.168.122.0/24
+        v                            v
+ .-----------------.            .-----------------------.
+ | lithium         |            | helium-cuda           |
+ | en0/10.0.55.216 |            | enp1s0/192.168.122.17 |
+ .-----------------.            .-----------------------.
+```
+
+I've added an Apache HTTP server-based reverse proxy. Now `lithium` in the
+chart can reach `helium-cuda` on `http://helium.local:8020`.
+
+## nvidia-smi output
+
+Print all kinds of nvidia-smi info:
+
+```
+ssh helium-cuda.local nvidia-smi -q
+```
+
+Output:
+
+```
+==============NVSMI LOG==============
+
+Timestamp                                              : Tue May 19 04:06:19 2026
+Driver Version                                         : 580.142
+CUDA Version                                           : 13.0
+
+Attached GPUs                                          : 1
+GPU 00000000:05:00.0
+    Product Name                                       : NVIDIA GeForce RTX 3090 Ti
+    Product Brand                                      : GeForce
+    Product Architecture                               : Ampere
+    Display Mode                                       : Requested functionality has been deprecated
+    Display Attached                                   : No
+    Display Active                                     : Disabled
+    Persistence Mode                                   : Disabled
+    Addressing Mode                                    : None
+    MIG Mode
+        Current                                        : N/A
+        Pending                                        : N/A
+    Accounting Mode                                    : Disabled
+    Accounting Mode Buffer Size                        : 4000
+    Driver Model
+        Current                                        : N/A
+        Pending                                        : N/A
+    Serial Number                                      : N/A
+    GPU UUID                                           : GPU-b54a952b-c1a3-5e2f-2e2e-0c99355a7454
+    GPU PDI                                            : 0x145c8e416b389d3e
+    Minor Number                                       : 0
+    VBIOS Version                                      : 94.02.A0.00.11
+    MultiGPU Board                                     : No
+    Board ID                                           : 0x500
+    Board Part Number                                  : N/A
+    GPU Part Number                                    : 2203-350-A1
+    FRU Part Number                                    : N/A
+    Platform Info
+        Chassis Serial Number                          : N/A
+        Slot Number                                    : N/A
+        Tray Index                                     : N/A
+        Host ID                                        : N/A
+        Peer Type                                      : N/A
+        Module Id                                      : 1
+        GPU Fabric GUID                                : N/A
+    Inforom Version
+        Image Version                                  : G002.0000.00.03
+        OEM Object                                     : 2.0
+        ECC Object                                     : 6.16
+        Power Management Object                        : N/A
+    Inforom BBX Object Flush
+        Latest Timestamp                               : N/A
+        Latest Duration                                : N/A
+    GPU Operation Mode
+        Current                                        : N/A
+        Pending                                        : N/A
+    GPU C2C Mode                                       : N/A
+    GPU Virtualization Mode
+        Virtualization Mode                            : Pass-Through
+        Host VGPU Mode                                 : N/A
+        vGPU Heterogeneous Mode                        : N/A
+    GPU Recovery Action                                : None
+    GSP Firmware Version                               : 580.142
+    IBMNPU
+        Relaxed Ordering Mode                          : N/A
+    PCI
+        Bus                                            : 0x05
+        Device                                         : 0x00
+        Domain                                         : 0x0000
+        Base Classcode                                 : 0x3
+        Sub Classcode                                  : 0x0
+        Device Id                                      : 0x220310DE
+        Bus Id                                         : 00000000:05:00.0
+        Sub System Id                                  : 0x50911462
+        GPU Link Info
+            PCIe Generation
+                Max                                    : 4
+                Current                                : 1
+                Device Current                         : 1
+                Device Max                             : 4
+                Host Max                               : N/A
+            Link Width
+                Max                                    : 16x
+                Current                                : 16x
+        Bridge Chip
+            Type                                       : N/A
+            Firmware                                   : N/A
+        Replays Since Reset                            : 0
+        Replay Number Rollovers                        : 0
+        Tx Throughput                                  : 878 KB/s
+        Rx Throughput                                  : 537 KB/s
+        Atomic Caps Outbound                           : N/A
+        Atomic Caps Inbound                            : N/A
+    Fan Speed                                          : 32 %
+    Performance State                                  : P8
+    Clocks Event Reasons
+        Idle                                           : Active
+        Applications Clocks Setting                    : Not Active
+        SW Power Cap                                   : Not Active
+        HW Slowdown                                    : Not Active
+            HW Thermal Slowdown                        : Not Active
+            HW Power Brake Slowdown                    : Not Active
+        Sync Boost                                     : Not Active
+        SW Thermal Slowdown                            : Not Active
+        Display Clock Setting                          : Not Active
+    Clocks Event Reasons Counters
+        SW Power Capping                               : 85032867 us
+        Sync Boost                                     : 0 us
+        SW Thermal Slowdown                            : 0 us
+        HW Thermal Slowdown                            : 0 us
+        HW Power Braking                               : 0 us
+    Sparse Operation Mode                              : N/A
+    FB Memory Usage
+        Total                                          : 24564 MiB
+        Reserved                                       : 452 MiB
+        Used                                           : 22700 MiB
+        Free                                           : 1414 MiB
+    BAR1 Memory Usage
+        Total                                          : 32768 MiB
+        Used                                           : 22700 MiB
+        Free                                           : 10068 MiB
+    Conf Compute Protected Memory Usage
+        Total                                          : 0 MiB
+        Used                                           : 0 MiB
+        Free                                           : 0 MiB
+    Compute Mode                                       : Default
+    Utilization
+        GPU                                            : 0 %
+        Memory                                         : 0 %
+        Encoder                                        : 0 %
+        Decoder                                        : 0 %
+        JPEG                                           : 0 %
+        OFA                                            : 0 %
+    Encoder Stats
+        Active Sessions                                : 0
+        Average FPS                                    : 0
+        Average Latency                                : 0
+    FBC Stats
+        Active Sessions                                : 0
+        Average FPS                                    : 0
+        Average Latency                                : 0
+    DRAM Encryption Mode
+        Current                                        : N/A
+        Pending                                        : N/A
+    ECC Mode
+        Current                                        : Disabled
+        Pending                                        : Disabled
+    ECC Errors
+        Volatile
+            SRAM Correctable                           : N/A
+            SRAM Uncorrectable Parity                  : N/A
+            SRAM Uncorrectable SEC-DED                 : N/A
+            DRAM Correctable                           : N/A
+            DRAM Uncorrectable                         : N/A
+        Aggregate
+            SRAM Correctable                           : N/A
+            SRAM Uncorrectable Parity                  : N/A
+            SRAM Uncorrectable SEC-DED                 : N/A
+            DRAM Correctable                           : N/A
+            DRAM Uncorrectable                         : N/A
+            SRAM Threshold Exceeded                    : N/A
+        Aggregate Uncorrectable SRAM Sources
+            SRAM L2                                    : N/A
+            SRAM SM                                    : N/A
+            SRAM Microcontroller                       : N/A
+            SRAM PCIE                                  : N/A
+            SRAM Other                                 : N/A
+        Channel Repair Pending                         : No
+        TPC Repair Pending                             : No
+    Retired Pages
+        Single Bit ECC                                 : N/A
+        Double Bit ECC                                 : N/A
+        Pending Page Blacklist                         : N/A
+    Remapped Rows
+        Correctable Error                              : 0
+        Uncorrectable Error                            : 0
+        Pending                                        : No
+        Remapping Failure Occurred                     : No
+        Bank Remap Availability Histogram
+            Max                                        : 192 bank(s)
+            High                                       : 0 bank(s)
+            Partial                                    : 0 bank(s)
+            Low                                        : 0 bank(s)
+            None                                       : 0 bank(s)
+    Temperature
+        GPU Current Temp                               : 45 C
+        GPU T.Limit Temp                               : N/A
+        GPU Shutdown Temp                              : 97 C
+        GPU Slowdown Temp                              : 94 C
+        GPU Max Operating Temp                         : 92 C
+        GPU Target Temperature                         : 83 C
+        Memory Current Temp                            : N/A
+        Memory Max Operating Temp                      : N/A
+    GPU Power Readings
+        Average Power Draw                             : 24.78 W
+        Instantaneous Power Draw                       : 24.74 W
+        Current Power Limit                            : 450.00 W
+        Requested Power Limit                          : 450.00 W
+        Default Power Limit                            : 450.00 W
+        Min Power Limit                                : 100.00 W
+        Max Power Limit                                : 450.00 W
+    GPU Memory Power Readings
+        Average Power Draw                             : N/A
+        Instantaneous Power Draw                       : N/A
+    Module Power Readings
+        Average Power Draw                             : N/A
+        Instantaneous Power Draw                       : N/A
+        Current Power Limit                            : N/A
+        Requested Power Limit                          : N/A
+        Default Power Limit                            : N/A
+        Min Power Limit                                : N/A
+        Max Power Limit                                : N/A
+    Power Smoothing                                    : N/A
+    Workload Power Profiles
+        Requested Profiles                             : N/A
+        Enforced Profiles                              : N/A
+    Clocks
+        Graphics                                       : 210 MHz
+        SM                                             : 210 MHz
+        Memory                                         : 405 MHz
+        Video                                          : 555 MHz
+    Applications Clocks
+        Graphics                                       : N/A
+        Memory                                         : N/A
+    Default Applications Clocks
+        Graphics                                       : N/A
+        Memory                                         : N/A
+    Deferred Clocks
+        Memory                                         : N/A
+    Max Clocks
+        Graphics                                       : 2115 MHz
+        SM                                             : 2115 MHz
+        Memory                                         : 10501 MHz
+        Video                                          : 1965 MHz
+    Max Customer Boost Clocks
+        Graphics                                       : N/A
+    Clock Policy
+        Auto Boost                                     : N/A
+        Auto Boost Default                             : N/A
+    Fabric
+        State                                          : N/A
+        Status                                         : N/A
+        CliqueId                                       : N/A
+        ClusterUUID                                    : N/A
+        Health
+            Summary                                    : N/A
+            Bandwidth                                  : N/A
+            Route Recovery in progress                 : N/A
+            Route Unhealthy                            : N/A
+            Access Timeout Recovery                    : N/A
+            Incorrect Configuration                    : N/A
+            Partition Assigned                         : N/A
+    Processes
+        GPU instance ID                   : N/A
+        Compute instance ID               : N/A
+        Process ID                        : 2203
+            Type                          : C
+            Name                          : /app/llama-server
+            Used GPU Memory               : 22686 MiB
+    Capabilities
+        EGM                                            : disabled
+```
