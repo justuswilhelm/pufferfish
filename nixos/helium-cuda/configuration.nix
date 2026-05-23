@@ -20,15 +20,17 @@
     ../modules/users.nix
   ];
   # Build qemu qcow image
-  system.build.qcow = lib.mkForce (import "${toString modulesPath}/../lib/make-disk-image.nix" {
-    inherit lib config pkgs;
-    diskSize = "auto";
-    additionalSpace = "20G";
-    format = "qcow2";
-    baseName = "helium-cuda";
-    installBootLoader = true;
-    partitionTableType = "hybrid";
-  });
+  system.build.qcow = lib.mkForce (
+    import "${toString modulesPath}/../lib/make-disk-image.nix" {
+      inherit lib config pkgs;
+      diskSize = "auto";
+      additionalSpace = "20G";
+      format = "qcow2";
+      baseName = "helium-cuda";
+      installBootLoader = true;
+      partitionTableType = "hybrid";
+    }
+  );
 
   boot.loader.systemd-boot.enable = true;
 
@@ -38,7 +40,7 @@
     fsType = "ext4";
   };
 
-  boot.kernelParams = ["console=ttyS0"];
+  boot.kernelParams = [ "console=ttyS0" ];
   boot.loader.grub.device = lib.mkDefault "/dev/vda";
 
   programs.fish.shellInit = ''
@@ -80,7 +82,10 @@
     pkgs.cloud-utils
 
     # club-3090 needs huggingface and pyyaml
-    (pkgs.python3.withPackages (p: [ p.pyyaml p.huggingface-hub ]))
+    (pkgs.python3.withPackages (p: [
+      p.pyyaml
+      p.huggingface-hub
+    ]))
   ];
 
   nixpkgs.config = {
