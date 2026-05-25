@@ -57,19 +57,27 @@ in
   # docs/helium-cuda.md
   services.httpd = {
     enable = true;
-    virtualHosts."helium-cuda"= {
+    virtualHosts."helium-cuda" = {
       hostName = "helium.local";
-      listen = [ { ip = "*"; port = 8020; } ];
+      listen = [
+        {
+          ip = "*";
+          port = 8020;
+        }
+      ];
       locations."/" = {
         proxyPass = "http://helium-cuda.local:8020/";
       };
     };
   };
   networking.firewall.interfaces.${extIfName} = {
-    allowedTCPPorts  = [ 8020 ];
+    allowedTCPPorts = [ 8020 ];
   };
   networking.firewall.interfaces.${bridgeName} = {
     # Allow DNS, DHCP from guest domains
-    allowedUDPPorts  = [ 53 67 ];
+    allowedUDPPorts = [
+      53
+      67
+    ];
   };
 }
