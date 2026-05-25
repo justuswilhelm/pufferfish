@@ -25,13 +25,14 @@
 
   services.opensnitch.rules = lib.mkIf config.services.opensnitch.enable {
     nix = {
-      name = "allow-nix";
-      description = "Allow nix";
+      name = "nix-allow-dns-https";
+      description = "Allow nix proess DNS, https";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";
       enabled = true;
       action = "allow";
       duration = "always";
+      precedence = true;
       operator = {
         type = "list";
         operand = "list";
@@ -50,8 +51,8 @@
       };
     };
     curl-tarballs = {
-      name = "allow-curl-tarballs-nixos-org";
-      description = "Allow curl to access tarballs.nixos.org";
+      name = "nix-allow-curl-domains";
+      description = "Allow Nix's curl to access allowed domains";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";
       enabled = true;
@@ -62,9 +63,9 @@
         operand = "list";
         list = [
           {
-            type = "simple";
+            type = "regexp";
             operand = "dest.host";
-            data = "tarballs.nixos.org";
+            data = "^((cache|tarballs)\\.nixos\\.org|github\\.com)$";
           }
           {
             type = "simple";

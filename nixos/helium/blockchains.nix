@@ -26,8 +26,8 @@
         };
       in
       {
-        "000-bitcoind-allowlist" = {
-          name = "allow-bitcoind-allowlist";
+        bitcoind-000-allow-some-ports-tcp = {
+          name = "bitcoind-000-allow-some-ports-tcp";
           description = "bitcoind TCP to specific ports";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
@@ -53,9 +53,9 @@
             ];
           };
         };
-        "001-bitcoind-deny-rest" = {
-          name = "reject-bitcoind-deny-rest";
-          description = "Deny all other bitcoind connections";
+        bitcoind-reject-rest = {
+          name = "bitcoind-001-reject-other-connect";
+          description = "Reject all other bitcoind connections";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
           enabled = true;

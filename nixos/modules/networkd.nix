@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-{ ... }:
+{ lib, config, pkgs, ... }:
 {
   # systemd networkd and resolved config
   systemd.network = {
@@ -47,4 +47,66 @@
     # mDNS
     5353
   ];
+  services.opensnitch.rules = lib.mkIf config.services.opensnitch.enable {
+      allow-systemd-resolved-udp = {
+        name = "systemd-allow-resolved-udp";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        precedence = true;
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "udp";
+            }
+            {
+              type = "regexp";
+              operand = "dest.port";
+              data = "^(53|5353)$";
+            }
+          ];
+        };
+      };
+      allow-systemd-resolved-udp-6 = {
+        name = "systemd-allow-resolved-udp-6";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        precedence = true;
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "simple";
+              operand = "process.path";
+              data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "udp6";
+            }
+            {
+              type = "regexp";
+              operand = "dest.port";
+              data = "^(53|5353)$";
+            }
+          ];
+        };
+      };
+    };
 }
