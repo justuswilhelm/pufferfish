@@ -254,8 +254,12 @@
             agenix.packages.${system}.default
             luaformatter
             reuse
+            nixfmt-tree
           ];
         };
+        # Format .nix files in this repository with the following command:
+        # nix fmt
+        formatter = pkgs.nixfmt-tree;
         packages.disko-install = disko.outputs.packages.${system}.disko-install;
       }
     );
