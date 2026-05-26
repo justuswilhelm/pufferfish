@@ -24,9 +24,9 @@
   environment.systemPackages = [ pkgs.nix-tree ];
 
   services.opensnitch.rules = lib.mkIf config.services.opensnitch.enable {
-    nix = {
-      name = "nix-allow-dns-https";
-      description = "Allow nix proess DNS, https";
+    nix-dns = {
+      name = "nix-allow-dns";
+      description = "Allow nix DNS";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";
       enabled = true;
@@ -45,7 +45,42 @@
           {
             type = "regexp";
             operand = "dest.port";
-            data = "^(53|443)$";
+            data = "^(53|5353)$";
+          }
+          {
+            type = "simple";
+            operand = "protocol";
+            data = "udp";
+          }
+        ];
+      };
+    };
+    nix-https = {
+      name = "nix-allow-https";
+      description = "Allow nix proess HTTPS";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          {
+            type = "simple";
+            operand = "process.path";
+            data = "${lib.getBin config.nix.package}/bin/nix";
+          }
+          {
+            type = "simple";
+            operand = "protocol";
+            data = "tcp";
+          }
+          {
+            type = "simple";
+            operand = "dest.port";
+            data = "443";
           }
         ];
       };
