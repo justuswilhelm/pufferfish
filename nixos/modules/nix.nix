@@ -24,7 +24,7 @@
   environment.systemPackages = [ pkgs.nix-tree ];
 
   services.opensnitch.rules = lib.mkIf config.services.opensnitch.enable {
-    nix-dns = {
+    nix-allow-dns = {
       name = "nix-allow-dns";
       description = "Allow nix DNS";
       created = "1970-01-01T00:00:00Z";
@@ -40,7 +40,7 @@
           {
             type = "simple";
             operand = "process.path";
-            data = "${lib.getBin config.nix.package}/bin/nix";
+            data = "${lib.getBin config.nix.package.nix-cli}/bin/nix";
           }
           {
             type = "regexp";
@@ -55,9 +55,9 @@
         ];
       };
     };
-    nix-https = {
+    nix-allow-https = {
       name = "nix-allow-https";
-      description = "Allow nix proess HTTPS";
+      description = "Allow the nix process HTTPS";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";
       enabled = true;
@@ -70,7 +70,7 @@
           {
             type = "simple";
             operand = "process.path";
-            data = "${lib.getBin config.nix.package}/bin/nix";
+            data = "${lib.getBin config.nix.package.nix-cli}/bin/nix";
           }
           {
             type = "simple";
@@ -85,7 +85,7 @@
         ];
       };
     };
-    curl-tarballs = {
+    nix-allow-curl-domains = {
       name = "nix-allow-curl-domains";
       description = "Allow Nix's curl to access allowed domains";
       created = "1970-01-01T00:00:00Z";
@@ -100,7 +100,7 @@
           {
             type = "regexp";
             operand = "dest.host";
-            data = "^((cache|tarballs)\\.nixos\\.org|github\\.com)$";
+            data = "^((cache|tarballs)\\.nixos\\.org|raw.githubusercontent\\.com)$";
           }
           {
             type = "simple";

@@ -53,7 +53,36 @@
     5353
   ];
   services.opensnitch.rules = lib.mkIf config.services.opensnitch.enable {
-    allow-systemd-resolved-udp = {
+    systemd-allow-resolved-dhcp = {
+      name = "systemd-allow-resolved-dhcp";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          {
+            type = "simple";
+            operand = "process.path";
+            data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved";
+          }
+          {
+            type = "simple";
+            operand = "protocol";
+            data = "udp";
+          }
+          {
+            type = "simple";
+            operand = "dest.port";
+            data = "67";
+          }
+        ];
+      };
+    };
+    systemd-allow-resolved-udp = {
       name = "systemd-allow-resolved-udp";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";
@@ -83,7 +112,7 @@
         ];
       };
     };
-    allow-systemd-resolved-udp-6 = {
+    systemd-allow-resolved-udp-6 = {
       name = "systemd-allow-resolved-udp-6";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";

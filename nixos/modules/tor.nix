@@ -16,12 +16,13 @@
 
   # OpenSnitch rule allowing tor to connect to port 993 as user 35 for 12h
   services.opensnitch.rules = {
-    allow-tor-993 = {
-      name = "allow-12h-list-nixstoreih1fgmdrbqc1cp5ljpfyc1k2nx84asgp-tor-04816bintor-993-35";
-      created = "2025-09-18T13:17:51.000000Z";
+    tor-allow-tcp-ports = {
+      name = "tor-allow-tcp-ports";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
       enabled = true;
       action = "allow";
-      duration = "12h";
+      duration = "always";
       operator = {
         type = "list";
         operand = "list";
@@ -44,7 +45,7 @@
           {
             type = "simple";
             operand = "process.path";
-            data = "${lib.getBin pkgs.tor}/bin/tor";
+            data = "${lib.getBin config.services.tor.package}/bin/tor";
           }
         ];
       };
