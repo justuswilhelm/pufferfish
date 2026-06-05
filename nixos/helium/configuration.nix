@@ -110,6 +110,8 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
   };
   programs.mosh.enable = true;
   programs.tmux.enable = true;
@@ -117,7 +119,6 @@
 
   environment.systemPackages = [
     pkgs.tree
-    pkgs.vim
   ];
 
   services.postgresql = {
