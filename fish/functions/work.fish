@@ -15,7 +15,7 @@ function work -d "(git) Create a '\$name' worktree and cd there" -a name
         echo "Created worktree with name $name at destination $dest"
     end
 
-    if ! cd $destination
+    if ! cd $dest
         echo "Couldn't change directory into destination $dest"
     end
 end
