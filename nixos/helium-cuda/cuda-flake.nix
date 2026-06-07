@@ -52,12 +52,19 @@
           uv
         ];
 
-        LD_LIBRARY_PATH = nixpkgs.lib.makeLibraryPath [ nvidiaPackage ];
+        LD_LIBRARY_PATH = nixpkgs.lib.makeLibraryPath [
+          nvidiaPackage
+          # When you run pytorch it complains about a missing
+          # libstdc++
+          pkgs.stdenv.cc.cc.lib
+        ];
         CUDA_PATH = pkgs.cudatoolkit;
         EXTRA_LDFLAGS = "-L/lib -L${nvidiaPackage}/lib";
         EXTRA_CCFLAGS = "-I/usr/include";
         CMAKE_PREFIX_PATH = "${pkgs.fmt.dev}";
         PKG_CONFIG_PATH = "${pkgs.fmt.dev}/lib/pkgconfig";
+        # For vLLM
+        TRITON_LIBCUDA_PATH = "${pkgs.glibc.bin}/bin/ldconfig";
       };
     };
 }
