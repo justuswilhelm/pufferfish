@@ -113,11 +113,11 @@ in
             operand = "process.path";
             data = "${lib.getBin config.services.httpd.package}/bin/httpd";
           }
-            {
-              type = "simple";
-              operand = "dest.host";
-              data = "helium-cuda.local";
-            }
+          {
+            type = "simple";
+            operand = "dest.host";
+            data = "helium-cuda.local";
+          }
         ];
       };
     };
