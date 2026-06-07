@@ -179,64 +179,66 @@
             ];
           };
       };
-      darwinConfigurations."lithium" =
-        let
-          system = "aarch64-darwin";
-          name = "debian";
-          hostName = "lithium";
-          specialArgs = { inherit name system; };
-        in
-        nix-darwin.lib.darwinSystem {
-          inherit system;
-          inherit specialArgs;
-          modules = [
-            { _module.args = inputs; }
-            { networking = { inherit hostName; }; }
-            {
-              # TODO remove overlay?
-              nixpkgs.overlays = [
-                (final: previous: {
-                  pomoglorbo = pomoglorbo.outputs.packages.${system}.pomoglorbo.overrideAttrs { doCheck = false; };
-                })
-              ];
-            }
-            ./nix-darwin/lithium/configuration.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = specialArgs;
-              home-manager.sharedModules = [
-                { _module.args = inputs; }
-              ];
-              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-            }
-          ];
-        };
-      darwinConfigurations."hydrogen" =
-        let
-          system = "aarch64-darwin";
-          name = "debian";
-          hostName = "hydrogen";
-        in
-        nix-darwin.lib.darwinSystem {
-          inherit system;
-          specialArgs = { inherit name system; };
-          modules = [
-            { _module.args = inputs; }
-            { networking = { inherit hostName; }; }
-            ./nix-darwin/hydrogen/configuration.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.sharedModules = [
-                { _module.args = inputs; }
-              ];
-              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-            }
-          ];
-        };
+      darwinConfigurations = {
+        "lithium" =
+          let
+            system = "aarch64-darwin";
+            name = "debian";
+            hostName = "lithium";
+            specialArgs = { inherit name system; };
+          in
+          nix-darwin.lib.darwinSystem {
+            inherit system;
+            inherit specialArgs;
+            modules = [
+              { _module.args = inputs; }
+              { networking = { inherit hostName; }; }
+              {
+                # TODO remove overlay?
+                nixpkgs.overlays = [
+                  (final: previous: {
+                    pomoglorbo = pomoglorbo.outputs.packages.${system}.pomoglorbo.overrideAttrs { doCheck = false; };
+                  })
+                ];
+              }
+              ./nix-darwin/lithium/configuration.nix
+              home-manager.darwinModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.extraSpecialArgs = specialArgs;
+                home-manager.sharedModules = [
+                  { _module.args = inputs; }
+                ];
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+              }
+            ];
+          };
+        "hydrogen" =
+          let
+            system = "aarch64-darwin";
+            name = "debian";
+            hostName = "hydrogen";
+          in
+          nix-darwin.lib.darwinSystem {
+            inherit system;
+            specialArgs = { inherit name system; };
+            modules = [
+              { _module.args = inputs; }
+              { networking = { inherit hostName; }; }
+              ./nix-darwin/hydrogen/configuration.nix
+              home-manager.darwinModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.sharedModules = [
+                  { _module.args = inputs; }
+                ];
+                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+              }
+            ];
+          };
+      };
     }
     // utils.lib.eachDefaultSystem (
       system:
