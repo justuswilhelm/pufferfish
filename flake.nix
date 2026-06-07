@@ -39,9 +39,7 @@
       name = "debian";
       mkHomeManagerCfg =
         {
-          name,
           hostName,
-          system,
         }:
         {
           home-manager.useGlobalPkgs = true;
@@ -52,103 +50,61 @@
             homeDirectory = "/home/${name}";
           }
           // {
-            inherit system name;
+            inherit name;
           };
+        };
+      mkNixosConfig =
+        {
+          # hostname for this machine
+          hostName,
+          # Use home-manager to configure `name` user?
+          addHome,
+          # What other NixOS configuration modules should this NixOS machine use?
+          extraModules ? [ ],
+        }:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit name; };
+          modules = [
+            ./nixos/${hostName}/configuration.nix
+            { networking = { inherit hostName; }; }
+          ]
+          ++ (nixpkgs.lib.optionals addHome [
+            home-manager.nixosModules.home-manager
+            (mkHomeManagerCfg { inherit hostName; })
+          ])
+          ++ extraModules;
         };
     in
     {
       nixosConfigurations = {
-        helium =
-          let
-            hostName = "helium";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              (mkHomeManagerCfg { inherit name hostName system; })
-            ];
-          };
-        helium-cuda =
-          let
-            hostName = "helium-cuda";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-            ];
-          };
-        lithium-nixos =
-          let
-            hostName = "lithium-nixos";
-            system = "aarch64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              (mkHomeManagerCfg { inherit name hostName system; })
-            ];
-          };
-        nitrogen =
-          let
-            hostName = "nitrogen";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              (mkHomeManagerCfg { inherit name hostName system; })
-            ];
-          };
-        carbon =
-          let
-            hostName = "carbon";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              disko.nixosModules.disko
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              (mkHomeManagerCfg { inherit name hostName system; })
-            ];
-          };
-        throwaway =
-          let
-            hostName = "throwaway";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              disko.nixosModules.disko
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              (mkHomeManagerCfg { inherit name hostName system; })
-            ];
-          };
+        helium = mkNixosConfig {
+          hostName = "helium";
+          addHome = true;
+        };
+        helium-cuda = mkNixosConfig {
+          hostName = "helium";
+          addHome = false;
+        };
+        lithium-nixos = mkNixosConfig {
+          hostName = "lithium-nixos";
+          addHome = true;
+        };
+        nitrogen = mkNixosConfig {
+          hostName = "nitrogen";
+          addHome = true;
+        };
+        carbon = mkNixosConfig {
+          hostName = "carbon";
+          addHome = true;
+          extraModules = [ disko.nixosModules.disko ];
+        };
+        throwaway = mkNixosConfig {
+          hostName = "carbon";
+          addHome = true;
+          extraModules = [ disko.nixosModules.disko ];
+        };
       };
+      # TODO refactor
       darwinConfigurations = {
         "lithium" =
           let
@@ -157,7 +113,6 @@
             specialArgs = { inherit name system; };
           in
           nix-darwin.lib.darwinSystem {
-            inherit system;
             inherit specialArgs;
             modules = [
               { _module.args = inputs; }
@@ -170,9 +125,9 @@
                   })
                 ];
               }
-              ./nix-darwin/lithium/configuration.nix
+              ./nix-darwin/${hostName}/configuration.nix
               home-manager.darwinModules.home-manager
-              (mkHomeManagerCfg { inherit name hostName system; })
+              (mkHomeManagerCfg { inherit hostName; })
               {
                 # XXX only lithium's home manager config misses "homeDirectory"
                 # from extraSpecialArgs
@@ -186,18 +141,16 @@
           };
         "hydrogen" =
           let
-            system = "aarch64-darwin";
             hostName = "hydrogen";
           in
           nix-darwin.lib.darwinSystem {
-            inherit system;
-            specialArgs = { inherit name system; };
+            specialArgs = { inherit name; };
             modules = [
               { _module.args = inputs; }
               { networking = { inherit hostName; }; }
-              ./nix-darwin/hydrogen/configuration.nix
+              ./nix-darwin/${hostName}/configuration.nix
               home-manager.darwinModules.home-manager
-              (mkHomeManagerCfg { inherit name hostName system; })
+              (mkHomeManagerCfg { inherit hostName; })
               {
                 home-manager.sharedModules = [
                   { _module.args = inputs; }
