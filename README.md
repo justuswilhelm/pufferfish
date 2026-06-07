@@ -54,7 +54,44 @@ sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles
 
 ### How to add your machine to the flake file
 
-TODO
+To add a macOS (darwin) machine, create a new entry under `darwinConfigurations`
+in the `flake.nix` file in this repository:
+
+```nix
+"YOUR_MACHINE_NAME" =
+  let
+    system = "aarch64-darwin";
+    hostName = "YOUR_MACHINE_NAME";
+    specialArgs = { inherit name system; };
+  in
+  nix-darwin.lib.darwinSystem {
+    inherit system;
+    inherit specialArgs;
+    modules = [
+      { _module.args = inputs; }
+      { networking = { inherit hostName; }; }
+      ./nix-darwin/${hostName}/configuration.nix
+      home-manager.darwinModules.home-manager
+      # Create home-manager/YOUR_MACHINE_NAME/default.nix
+      (mkHomeManagerCfg { inherit name hostName system; })
+      {
+        home-manager.sharedModules = [
+          { _module.args = inputs; }
+        ];
+      }
+    ];
+  };
+```
+
+To add a NixOS machine, add a new entry under `nixosConfigurations` in
+the `flake.nix` in this repository:
+
+```nix
+YOUR_MACHINE_NAME = mkNixosConfig {
+  hostName = "YOUR_MACHINE_NAME";
+  addHome = true;
+};
+```
 
 ### How to rebuild Pufferfish
 
