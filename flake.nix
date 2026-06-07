@@ -35,11 +35,13 @@
       disko,
       agenix,
     }@inputs:
+    let
+      name = "debian";
+    in
     {
       nixosConfigurations = {
         helium =
           let
-            name = "debian";
             hostName = "helium";
             system = "x86_64-linux";
             specialArgs = { inherit system name; };
@@ -64,7 +66,6 @@
           };
         helium-cuda =
           let
-            name = "debian";
             hostName = "helium-cuda";
             system = "x86_64-linux";
             specialArgs = { inherit system name; };
@@ -78,7 +79,6 @@
           };
         lithium-nixos =
           let
-            name = "debian";
             hostName = "lithium-nixos";
             system = "aarch64-linux";
             specialArgs = { inherit system name; };
@@ -103,7 +103,6 @@
           };
         nitrogen =
           let
-            name = "debian";
             hostName = "nitrogen";
             system = "x86_64-linux";
             specialArgs = { inherit system name; };
@@ -128,7 +127,6 @@
           };
         carbon =
           let
-            name = "debian";
             hostName = "carbon";
             system = "x86_64-linux";
             specialArgs = { inherit system name; };
@@ -154,7 +152,6 @@
           };
         throwaway =
           let
-            name = "debian";
             hostName = "throwaway";
             system = "x86_64-linux";
             specialArgs = { inherit system name; };
@@ -183,7 +180,6 @@
         "lithium" =
           let
             system = "aarch64-darwin";
-            name = "debian";
             hostName = "lithium";
             specialArgs = { inherit name system; };
           in
@@ -217,7 +213,6 @@
         "hydrogen" =
           let
             system = "aarch64-darwin";
-            name = "debian";
             hostName = "hydrogen";
           in
           nix-darwin.lib.darwinSystem {
