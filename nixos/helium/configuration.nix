@@ -12,6 +12,7 @@
 {
   imports = [
     ../modules/borgmatic.nix
+    ../modules/cdrip
     ../modules/compat.nix
     ../modules/ime.nix
     ../modules/infosec.nix
