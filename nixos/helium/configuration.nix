@@ -118,10 +118,6 @@
   programs.tmux.enable = true;
   programs.iotop.enable = true;
 
-  environment.systemPackages = [
-    pkgs.tree
-  ];
-
   services.postgresql = {
     enable = true;
     ensureDatabases = [ specialArgs.name ];
