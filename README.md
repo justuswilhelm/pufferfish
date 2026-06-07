@@ -103,7 +103,19 @@ rebuild
 
 ## Use Pufferfish on NixOS
 
-TODO
+Make sure that you've installed git on your NixOS machine.
+
+Clone the repository:
+
+```fish
+git clone git@github.com:justuswilhelm/pufferfish.git "$HOME/.dotfiles"
+```
+
+Configure your NixOS machine with Pufferfish:
+
+```bash
+sudo nixos-rebuild --flake $HOME/.dotfiles switch
+```
 
 ## Use Pufferfish on Debian
 
