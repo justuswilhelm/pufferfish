@@ -37,6 +37,24 @@
     }@inputs:
     let
       name = "debian";
+      mkHomeManagerCfg =
+        {
+          name,
+          hostName,
+          system,
+        }:
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+          home-manager.extraSpecialArgs = {
+            # TODO check if homeDirectory still needed
+            homeDirectory = "/home/${name}";
+          }
+          // {
+            inherit system name;
+          };
+        };
     in
     {
       nixosConfigurations = {
@@ -52,16 +70,7 @@
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
+              (mkHomeManagerCfg { inherit name hostName system; })
             ];
           };
         helium-cuda =
@@ -89,16 +98,7 @@
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
+              (mkHomeManagerCfg { inherit name hostName system; })
             ];
           };
         nitrogen =
@@ -113,16 +113,7 @@
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
+              (mkHomeManagerCfg { inherit name hostName system; })
             ];
           };
         carbon =
@@ -138,16 +129,7 @@
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
+              (mkHomeManagerCfg { inherit name hostName system; })
             ];
           };
         throwaway =
@@ -163,16 +145,7 @@
               ./nixos/${hostName}/configuration.nix
               { networking = { inherit hostName; }; }
               home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
+              (mkHomeManagerCfg { inherit name hostName system; })
             ];
           };
       };
@@ -199,14 +172,15 @@
               }
               ./nix-darwin/lithium/configuration.nix
               home-manager.darwinModules.home-manager
+              (mkHomeManagerCfg { inherit name hostName system; })
               {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
+                # XXX only lithium's home manager config misses "homeDirectory"
+                # from extraSpecialArgs
                 home-manager.extraSpecialArgs = specialArgs;
                 home-manager.sharedModules = [
+                  # TODO check if NixOS home manager needs this:
                   { _module.args = inputs; }
                 ];
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
               }
             ];
           };
@@ -223,13 +197,11 @@
               { networking = { inherit hostName; }; }
               ./nix-darwin/hydrogen/configuration.nix
               home-manager.darwinModules.home-manager
+              (mkHomeManagerCfg { inherit name hostName system; })
               {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
                 home-manager.sharedModules = [
                   { _module.args = inputs; }
                 ];
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
               }
             ];
           };
