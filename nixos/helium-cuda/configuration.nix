@@ -43,8 +43,10 @@
   boot.kernelParams = [ "console=ttyS0" ];
   boot.loader.grub.device = lib.mkDefault "/dev/vda";
 
+  # Directories for downloading models with huggingface
   programs.fish.shellInit = ''
     set -x MODEL_DIR $HOME/models
+    set -x HF_HOME $HOME/models
   '';
 
   users.users = {
@@ -72,13 +74,14 @@
     # For growpart
     pkgs.cloud-utils
 
-    # club-3090 needs huggingface and pyyaml
+    # For dowloading models
     (pkgs.python3.withPackages (p: [
       p.pyyaml
       p.huggingface-hub
     ]))
   ];
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   nixpkgs.config = {
     cudaSupport = true;
     allowUnfree = true;
@@ -118,31 +121,57 @@
     8020
   ];
 
+  environment.etc."llm-server/docker-compose.yaml".source =
+    let
+      yamlFormat = pkgs.formats.yaml { };
+    in
+    yamlFormat.generate "docker-compose.yaml" {
+      # https://github.com/itd24/docker-vllm-openai-example/blob/main/docker-compose.yml
+      services = {
+        gemma4 = {
+          image = "vllm/vllm-openai:latest";
+          container_name = "gemma4";
+          ipc = "host";
+          network_mode = "host";
+          shm_size = "16g";
+          deploy.resources.reservations.devices = [
+            {
+              driver = "nvidia";
+              capabilities = [ "gpu" ];
+              count = "all";
+            }
+          ];
+          volumes = [ "/home/${specialArgs.name}/models:/root/.cache/huggingface" ];
+          command = [
+            "--model"
+            "google/gemma-4-E4B-it"
+            "--tensor-parallel-size"
+            "1"
+            "--max-model-len"
+            "32768"
+            "--gpu-memory-utilization"
+            "0.90"
+            "--host"
+            "0.0.0.0"
+            "--port"
+            "8020"
+          ];
+        };
+      };
+    };
+
   systemd.services.llm-server = {
     description = "LLM Server";
     serviceConfig = {
-      Type = "simple";
+      Type = "oneshot";
       User = specialArgs.name;
-      WorkingDirectory = "/home/${specialArgs.name}/TurboQuant";
+      RemainAfterExit = "yes";
     };
-    environment.MODEL_DIR = "/home/${specialArgs.name}/models";
     path = [
-      config.nix.package
+      config.virtualisation.docker.package
     ];
     script = ''
-      nix develop --command ./build/bin/llama-server \
-        -m $MODEL_DIR/gguf/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf \
-        --host 0.0.0.0 --port 8020 \
-        --gpu-layers 30 \
-        --flash-attn on \
-        --jinja \
-        -np 1 \
-        -c 262144 \
-        --cache-type-k tbqp3 \
-        --cache-type-v tbq3 \
-        --mmproj $MODEL_DIR/gguf/mmproj-F16.gguf \
-        --no-mmproj-offload \
-        --ubatch-size 288
+      docker compose -f /etc/llm-server/docker-compose.yaml up -d
     '';
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];

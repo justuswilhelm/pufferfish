@@ -812,6 +812,334 @@ ssh lithium.local '
 {"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"The capital of France is **Paris**.","reasoning_content":"The user is asking for the capital of France.\nThe capital of France is Paris.\nState the answer clearly."}}],"created":1779348242,"model":"gemma-4-26B-A4B-it-UD-Q5_K_M.gguf","system_fingerprint":"b9037-cb3c258c6","object":"chat.completion","usage":{"completion_tokens":37,"prompt_tokens":20,"total_tokens":57,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-mnSEazloxGWoxNTNIkdwcbKT3cJ8jdHT","timings":{"cache_n":0,"prompt_n":20,"prompt_ms":59.676,"prompt_per_token_ms":2.9838,"prompt_per_second":335.14310610630736,"predicted_n":37,"predicted_ms":435.782,"predicted_per_token_ms":11.777891891891892,"predicted_per_second":84.9048377399709}}⏎
 ```
 
+# Try gemma-4 on vllm
+
+Source: <https://docs.vllm.ai/projects/recipes/en/latest/Google/Gemma4.html#dense-models>
+
+On guest, download gemma-4:
+
+```bash
+hf download google/gemma-4-E4B-it
+```
+
+```bash
+docker run -itd --name gemma4 \
+    --ipc=host \
+    --network host \
+    --shm-size 16G \
+    --gpus all \
+    -v $HF_HOME:/root/.cache/huggingface \
+    vllm/vllm-openai:latest \
+        --model google/gemma-4-E4B-it \
+        --tensor-parallel-size 1 \
+        --max-model-len 32768 \
+        --gpu-memory-utilization 0.90 \
+        --host 0.0.0.0 \
+        --port 8020
+```
+
+`docker logs` output:
+
+```
+WARNING 06-07 08:54:54 [argparse_utils.py:257] With `vllm serve`, you should provide the model as a positional argument or in a config file instead of via the `--model` option. The `--model` option will be removed in a future version.
+(APIServer pid=1) INFO 06-07 08:54:54 [utils.py:344]
+(APIServer pid=1) INFO 06-07 08:54:54 [utils.py:344]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 06-07 08:54:54 [utils.py:344]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.22.1
+(APIServer pid=1) INFO 06-07 08:54:54 [utils.py:344]   █▄█▀ █     █     █     █  model   google/gemma-4-E4B-it
+(APIServer pid=1) INFO 06-07 08:54:54 [utils.py:344]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 06-07 08:54:54 [utils.py:344]
+(APIServer pid=1) INFO 06-07 08:54:54 [utils.py:278] non-default args: {'model_tag': 'google/gemma-4-E4B-it', 'host': '0.0.0.0', 'port': 8020, 'model': 'google/gemma-4-E4B-it', 'max_model_len': 32768, 'gpu_memory_utilization': 0.9}
+(APIServer pid=1) WARNING 06-07 08:54:54 [envs.py:2057] Unknown vLLM environment variable detected: VLLM_BUILD_COMMIT
+(APIServer pid=1) WARNING 06-07 08:54:54 [envs.py:2057] Unknown vLLM environment variable detected: VLLM_BUILD_PIPELINE
+(APIServer pid=1) WARNING 06-07 08:54:54 [envs.py:2057] Unknown vLLM environment variable detected: VLLM_BUILD_URL
+(APIServer pid=1) WARNING 06-07 08:54:54 [envs.py:2057] Unknown vLLM environment variable detected: VLLM_IMAGE_TAG
+(APIServer pid=1) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=1) INFO 06-07 08:55:04 [model.py:617] Resolved architecture: Gemma4ForConditionalGeneration
+(APIServer pid=1) INFO 06-07 08:55:04 [model.py:1752] Using max model len 32768
+(APIServer pid=1) INFO 06-07 08:55:04 [config.py:100] Gemma4 model has heterogeneous head dimensions (head_dim=256, global_head_dim=512). Forcing TRITON_ATTN backend to prevent mixed-backend numerical divergence.
+(APIServer pid=1) INFO 06-07 08:55:04 [vllm.py:977] Asynchronous scheduling is enabled.
+(APIServer pid=1) INFO 06-07 08:55:04 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=111) INFO 06-07 08:55:37 [core.py:112] Initializing a V1 LLM engine (v0.22.1) with config: model='google/gemma-4-E4B-it', speculative_config=None, tokenizer='google/gemma-4-E4B-it', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=32768, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=google/gemma-4-E4B-it, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::qwen_gdn_attention_core', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=111) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(EngineCore pid=111) INFO 06-07 08:55:41 [parallel_state.py:1422] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.122.17:52727 backend=nccl
+(EngineCore pid=111) INFO 06-07 08:55:41 [parallel_state.py:1735] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=111) INFO 06-07 08:55:42 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=111) INFO 06-07 08:55:57 [gpu_model_runner.py:5037] Starting to load model google/gemma-4-E4B-it...
+(EngineCore pid=111) INFO 06-07 08:55:57 [vllm.py:977] Asynchronous scheduling is enabled.
+(EngineCore pid=111) INFO 06-07 08:55:57 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=111) INFO 06-07 08:55:57 [cuda.py:318] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=111) INFO 06-07 08:55:57 [cuda.py:318] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=111) INFO 06-07 08:55:58 [weight_utils.py:647] No model.safetensors.index.json found in remote.
+(EngineCore pid=111) INFO 06-07 08:55:58 [weight_utils.py:922] Filesystem type for checkpoints: EXT4. Checkpoint size: 14.89 GiB. Available RAM: 49.77 GiB.
+(EngineCore pid=111) INFO 06-07 08:55:58 [weight_utils.py:945] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.52s/it]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.52s/it]
+(EngineCore pid=111)
+(EngineCore pid=111) INFO 06-07 08:55:59 [default_loader.py:397] Loading weights took 1.65 seconds
+(EngineCore pid=111) INFO 06-07 08:56:00 [gpu_model_runner.py:5132] Model loading took 15.18 GiB memory and 2.640207 seconds
+(EngineCore pid=111) INFO 06-07 08:56:00 [gpu_model_runner.py:6136] Encoder cache will be initialized with a budget of 2496 tokens, and profiled with 1 video items of the maximum feature size.
+(EngineCore pid=111) INFO 06-07 08:56:15 [backends.py:1089] Using cache directory: /root/.cache/vllm/torch_compile_cache/b172ae6487/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=111) INFO 06-07 08:56:15 [backends.py:1148] Dynamo bytecode transform time: 5.91 s
+(EngineCore pid=111) INFO 06-07 08:56:20 [backends.py:378] Cache the graph of compile range (1, 2048) for later use
+(EngineCore pid=111) INFO 06-07 08:56:33 [backends.py:393] Compiling a graph for compile range (1, 2048) takes 16.97 s
+(EngineCore pid=111) INFO 06-07 08:56:35 [decorators.py:708] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/3a968c50823b25dc9bdd49cf9d6984457c5ac5b1322ac91bd190b426a51ea497/rank_0_0/model
+(EngineCore pid=111) INFO 06-07 08:56:35 [monitor.py:53] torch.compile took 25.93 s in total
+(EngineCore pid=111) INFO 06-07 08:56:36 [monitor.py:81] Initial profiling/warmup run took 0.40 s
+(EngineCore pid=111) INFO 06-07 08:56:40 [gpu_model_runner.py:6279] Profiling CUDA graph memory: PIECEWISE=51 (largest=512), FULL=35 (largest=256)
+(EngineCore pid=111) INFO 06-07 08:56:43 [gpu_model_runner.py:6365] Estimated CUDA graph memory: 0.79 GiB total
+(EngineCore pid=111) INFO 06-07 08:56:43 [gpu_worker.py:466] Available KV cache memory: 4.1 GiB
+(EngineCore pid=111) INFO 06-07 08:56:43 [gpu_worker.py:481] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.9000 is equivalent to --gpu-memory-utilization=0.8667 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.9333. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(EngineCore pid=111) INFO 06-07 08:56:43 [kv_cache_utils.py:1733] GPU KV cache size: 224,353 tokens
+(EngineCore pid=111) INFO 06-07 08:56:43 [kv_cache_utils.py:1734] Maximum concurrency for 32,768 tokens per request: 6.85x
+Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████| 51/51 [00:02<00:00, 20.01it/s]
+Capturing CUDA graphs (decode, FULL): 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:03<00:00,  9.34it/s]
+(EngineCore pid=111) INFO 06-07 08:56:50 [gpu_model_runner.py:6456] Graph capturing finished in 7 secs, took 0.71 GiB
+(EngineCore pid=111) INFO 06-07 08:56:50 [gpu_worker.py:619] CUDA graph pool memory: 0.71 GiB (actual), 0.79 GiB (estimated), difference: 0.07 GiB (10.1%).
+(EngineCore pid=111) INFO 06-07 08:56:50 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=111) INFO 06-07 08:56:50 [core.py:302] init engine (profile, create kv cache, warmup model) took 50.64 s (compilation: 25.93 s)
+(EngineCore pid=111) INFO 06-07 08:56:51 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(APIServer pid=1) INFO 06-07 08:56:51 [api_server.py:592] Supported tasks: ['generate']
+(APIServer pid=1) WARNING 06-07 08:56:51 [model.py:1509] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 64, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=1) INFO 06-07 08:56:58 [hf.py:488] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=1) WARNING 06-07 08:56:58 [base.py:256] Multi-modal warmup failed
+(APIServer pid=1) WARNING 06-07 08:56:58 [base.py:268] Readonly multi-modal warmup failed
+(APIServer pid=1) INFO 06-07 08:56:59 [api_server.py:596] Starting vLLM server on http://0.0.0.0:8020
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:37] Available routes are:
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /docs, Methods: HEAD, GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /tokenize, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /detokenize, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /load, Methods: GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /version, Methods: GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /health, Methods: GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /metrics, Methods: GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/models, Methods: GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /ping, Methods: GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /ping, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /invocations, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/responses, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/completions, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/messages, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /generative_scoring, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=1) INFO 06-07 08:56:59 [launcher.py:46] Route: /v1/completions/render, Methods: POST
+(APIServer pid=1) INFO:     Started server process [1]
+(APIServer pid=1) INFO:     Waiting for application startup.
+(APIServer pid=1) INFO:     Application startup complete.
+```
+
+Models:
+
+```bash
+curl http://helium-cuda.local:8020/v1/models | jq
+```
+
+Output:
+
+```
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "google/gemma-4-E4B-it",
+      "object": "model",
+      "created": 1780822790,
+      "owned_by": "vllm",
+      "root": "google/gemma-4-E4B-it",
+      "parent": null,
+      "max_model_len": 32768,
+      "permission": [
+        {
+          "id": "modelperm-8dbc8c791621888f",
+          "object": "model_permission",
+          "created": 1780822790,
+          "allow_create_engine": false,
+          "allow_sampling": true,
+          "allow_logprobs": true,
+          "allow_search_indices": false,
+          "allow_view": true,
+          "allow_fine_tuning": false,
+          "organization": "*",
+          "group": null,
+          "is_blocking": false
+        }
+      ]
+    }
+  ]
+}
+```
+
+Test:
+
+```
+curl http://helium.local:8020/v1/chat/completions \
+  --json '{"model":"google/gemma-4-E4B-it","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
+```
+
+Response:
+
+```
+{
+  "id": "chatcmpl-8320fcfbaf325ff3",
+  "object": "chat.completion",
+  "created": 1780822832,
+  "model": "google/gemma-4-E4B-it",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The capital of France is **Paris**.",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": [],
+        "reasoning": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": 106,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.22.1-130c345b",
+  "usage": {
+    "prompt_tokens": 13,
+    "total_tokens": 22,
+    "completion_tokens": 9,
+    "prompt_tokens_details": null
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null
+}
+```
+
+Tets with datasette LLM:
+
+```bash
+echo $LLM_MODEL
+# gemma
+llm "hello world"
+# Hello! How can I help you today? 😊
+```
+
+Attachments work in datasette LLM:
+
+```bash
+llm -a docs/helium-cuda-web-ui.png "Describe this picture in 2 paragraphs."
+```
+
+> This image displays a screenshot of a digital interface, likely a programming
+> or documentation environment, with a file named "llama.cpp" visible in the
+> navigation sidebar. The main area of the screen is occupied by a technical
+> document detailing a specific integrated circuit, the 74HC164D. The document
+> uses a clean, academic layout with section headers such as "Product
+> Overview," "Key Features," and "Technical Specifications." Key technical
+> details are highlighted, including the component's function as an 8-bit
+> serial-in, parallel-out shift register, its manufacturing origin by Toshiba
+> Corporation, and specifications regarding operating temperature and voltage
+> ranges.
+
+> The content provided focuses heavily on the electrical and functional
+> properties of the 74HC164D. The "Key Features" section elaborates on the
+> device's functionality, high speed, and power efficiency, noting its low
+> power consumption. Furthermore, the technical specifications list critical
+> parameters such as operating temperature (-40°C to +125°C) and detailed
+> requirements for input/output levels. The interface itself suggests this
+> document is being viewed or processed within an AI or code completion tool,
+> as indicated by the chat-like input box at the bottom and the presence of
+> tokens and time metrics associated with the process.
+
+### Space invaders
+
+```bash
+cd $(mktemp -d)
+touch index.html
+aider index.html --message "make a space invaders game in this index.html. restrict your edits to this one file."
+```
+
+Output:
+
+
+```
+Creating empty file /tmp/tmp.2LEsbzC4BU/index.html
+Aider v0.86.1
+Model: hosted_vllm/google/gemma-4-E4B-it with udiff edit format
+Git repo: .git with 0 files
+Repo-map: using 4096.0 tokens, auto refresh
+Added index.html to the chat.
+
+Since index.html is currently empty, I will replace its entire content with the HTML, CSS, and JavaScript required to create a basic Space Invaders game.
+
+
+--- index.html
++++ index.html
+@@ -0,0 +1,300 @@
++<!DOCTYPE html>
++<html lang="en">
+...
+
+Tokens: 1.2k sent, 2.5k received.
+The LLM did not conform to the edit format.
+https://aider.chat/docs/troubleshooting/edit-errors.html
+
+UnifiedDiffNoMatch: hunk failed to apply!
+
+index.html does not contain lines that match the diff you provided!
+Try again.
+DO NOT skip blank lines, comments, docstrings, etc!
+The diff needs to apply cleanly to the lines in index.html!
+
+index.html does not contain these 4 exact lines in a row:
+```
+           background-color: #111;
+       }
+           background-color: #000;
+       }
+```
+
+It seems the previous attempt failed because the provided content for index.html was empty (\n). I will re-apply the complete Space Invaders game code to the empty index.html file, ensuring the diff is correct
+for an empty starting file.
+
+
+--- index.html
++++ index.html
+@@ -0,0 +1,300 @@
+...
+
+
+
+Tokens: 3.8k sent, 2.5k received.
+Applied edit to index.html
+Summarization failed for model hosted_vllm/google/gemma-4-E4B-it: cannot schedule new futures after shutdown
+Summarization failed for model hosted_vllm/google/gemma-4-E4B-it: cannot schedule new futures after shutdown
+summarizer unexpectedly failed for all models
+```
+
+I received a working Space Invaders clone despite the errors:
+
+![LLM generated Space Invaders](./helium-cuda-space-invaders.png)
+
+### Pelican
+
+![Gemma4's pelican](./helium-cuda-pelican-gemma4.svg)
+
 # Appendix
 
 ## Remove VM

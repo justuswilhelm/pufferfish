@@ -82,7 +82,7 @@
           addHome = true;
         };
         helium-cuda = mkNixosConfig {
-          hostName = "helium";
+          hostName = "helium-cuda";
           addHome = false;
         };
         lithium-nixos = mkNixosConfig {
