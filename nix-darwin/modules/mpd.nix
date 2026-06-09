@@ -58,6 +58,8 @@ let
 in
 {
   options.services.mpd = {
+    enable = lib.mkEnableOption "MPD music player daemon";
+
     musicDirectory = lib.mkOption {
       type = lib.types.str;
       default = "~/annex/Music/Music_Files/";
@@ -71,7 +73,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     environment.etc."mpd.conf".source = mpdConfigFile;
     environment.systemPackages = [
       pkgs.mpc

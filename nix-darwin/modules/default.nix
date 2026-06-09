@@ -10,6 +10,7 @@
 {
   imports = [
     ../modules/borgmatic.nix
+    ../modules/mpd.nix
     ../modules/nagios.nix
     ../modules/newsyslog.nix
     ../modules/sync-git-annex.nix

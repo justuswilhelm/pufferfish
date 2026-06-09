@@ -20,7 +20,6 @@ in
     ../modules/disable-rcd.nix
     ../modules/gpg-agent.nix
     ../modules/man.nix
-    ../modules/mpd.nix
     ../modules/nix.nix
     ../modules/offlineimap.nix
     ../modules/openssh.nix

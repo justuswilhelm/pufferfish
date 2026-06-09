@@ -38,6 +38,8 @@ in
     copyCommand = "pbcopy";
   };
 
+  programs.cmus.enable = true;
+
   programs.fish.loginShellInit =
     let
       # Courtesy of
