@@ -16,7 +16,13 @@ in
   options.programs.cmus = {
     output_plugin = mkOption {
       type = types.str;
-      default = "pulse";
+      default =
+        if pkgs.stdenv.isLinux then
+          "pulse"
+        else if pkgs.stdenv.isDarwin then
+          "coreaudio"
+        else
+          null;
       example = "coreaudio";
       description = "Which output plugin to use, see cmus --plugins";
     };
