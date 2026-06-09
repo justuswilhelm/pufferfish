@@ -34,7 +34,6 @@
       html5-vim
       # hynek/vim-python-pep8-indent
       # If this isn't enabled, indentation on the next line is wrong.
-      vim-python-pep8-indent
       # evanleck/vim-svelte
       vim-svelte
       # nvim-orgmode/orgmode
