@@ -158,6 +158,7 @@ let
       "Users/${config.system.primaryUser}/Library/Application Support/Signal"
 
       # Too big
+      ".git/annex"
       "Users/${config.system.primaryUser}/annex/Movies"
       # Too many files
       "Users/${config.system.primaryUser}/annex/Music"
