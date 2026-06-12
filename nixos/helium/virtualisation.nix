@@ -80,4 +80,71 @@ in
       67
     ];
   };
+  services.opensnitch.rules = {
+    httpd-allow-8020 = {
+      name = "httpd-allow-8020";
+      description = "Let httpd connect to helium-cuda.local";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          {
+            type = "simple";
+            operand = "dest.port";
+            data = "8020";
+          }
+          {
+            type = "simple";
+            operand = "user.name";
+            data = "wwwrun";
+          }
+          {
+            type = "simple";
+            operand = "protocol";
+            data = "tcp";
+          }
+          {
+            type = "simple";
+            operand = "process.path";
+            data = "${lib.getBin config.services.httpd.package}/bin/httpd";
+          }
+          {
+            type = "simple";
+            operand = "dest.host";
+            data = "helium-cuda.local";
+          }
+        ];
+      };
+    };
+    local-allow-8020 = {
+      name = "local-allow-8020";
+      description = "Allow access to helium.local:8020";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          {
+            type = "simple";
+            operand = "dest.port";
+            data = "8020";
+          }
+          {
+            type = "simple";
+            operand = "dest.host";
+            data = "helium.local";
+          }
+        ];
+      };
+    };
+  };
 }

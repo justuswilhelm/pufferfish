@@ -9,6 +9,10 @@
   pkgs,
   ...
 }:
+let
+  llmServerPort = 8020;
+  webUiPort = 8080;
+in
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -43,8 +47,10 @@
   boot.kernelParams = [ "console=ttyS0" ];
   boot.loader.grub.device = lib.mkDefault "/dev/vda";
 
+  # Directories for downloading models with huggingface
   programs.fish.shellInit = ''
     set -x MODEL_DIR $HOME/models
+    set -x HF_HOME $HOME/models
   '';
 
   users.users = {
@@ -64,15 +70,6 @@
   };
   services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
 
-  nix.settings = {
-    substituters = [
-      "https://cache.nixos-cuda.org"
-    ];
-    trusted-public-keys = [
-      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-    ];
-  };
-
   programs.git.enable = true;
   programs.neovim.enable = true;
   environment.systemPackages = [
@@ -81,13 +78,14 @@
     # For growpart
     pkgs.cloud-utils
 
-    # club-3090 needs huggingface and pyyaml
+    # For dowloading models
     (pkgs.python3.withPackages (p: [
       p.pyyaml
       p.huggingface-hub
     ]))
   ];
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   nixpkgs.config = {
     cudaSupport = true;
     allowUnfree = true;
@@ -118,40 +116,103 @@
     # This gets a deprecated warning, but it still appears to do things
     # https://github.com/NixOS/nixpkgs/blob/d7a713c0b7e47c908258e71cba7a2d77cc8d71d5/nixos/modules/services/hardware/nvidia-container-toolkit/default.nix#L145
     enableNvidia = true;
+    daemon.settings = {
+      log-driver = "journald";
+    };
   };
 
   services.qemuGuest.enable = true;
 
   networking.firewall.allowedTCPPorts = [
-    # llm server
-    8020
+    llmServerPort
+    webUiPort
   ];
 
+  environment.etc."llm-server/docker-compose.yaml".source =
+    let
+      yamlFormat = pkgs.formats.yaml { };
+    in
+    yamlFormat.generate "docker-compose.yaml" {
+      # https://github.com/itd24/docker-vllm-openai-example/blob/main/docker-compose.yml
+      services = {
+        llm-server = {
+          image = "vllm/vllm-openai:latest";
+          container_name = "llm-server";
+          ipc = "host";
+          shm_size = "16g";
+          networks = [ "webui" ];
+          deploy.resources.reservations.devices = [
+            {
+              driver = "nvidia";
+              capabilities = [ "gpu" ];
+              count = "all";
+            }
+          ];
+          volumes = [ "/home/${specialArgs.name}/models:/root/.cache/huggingface" ];
+          command = [
+            # "/root/.cache/huggingface/models/hub/models--unsloth--Qwen3.6-27B-GGUF/snapshots/82d411acf4a06cfb8d9b073a5211bf410bfc29bf/Qwen3.6-27B-UD-Q4_K_XL.gguf"
+            "unsloth/Qwen3-0.6B-GGUF:Q4_K_M"
+            "--tokenizer"
+            # "Qwen/Qwen3.6-27B"
+            "Qwen/Qwen3-0.6B"
+            "--tensor-parallel-size"
+            "1"
+            "--max-model-len"
+            # "262144"
+            "40960"
+            "--reasoning-parser"
+            "qwen3"
+            "--enable-prefix-caching"
+            "--gpu-memory-utilization"
+            "0.90"
+            "--host"
+            "0.0.0.0"
+            "--port"
+            (builtins.toString llmServerPort)
+          ];
+          ports = [
+            "${builtins.toString llmServerPort}:${builtins.toString llmServerPort}"
+          ];
+        };
+        open-webui = {
+          image = "ghcr.io/open-webui/open-webui:main";
+          container_name = "open-webui";
+          networks = [ "webui" ];
+          environment = {
+            "OPENAI_API_BASE_URL" = "http://llm-server:8020/v1";
+            # https://docs.openwebui.com/reference/env-configuration#webui_auth
+            "WEBUI_AUTH" = false;
+          };
+          volumes = [
+            "open-webui:/app/backend/data"
+          ];
+          ports = [
+            "${builtins.toString webUiPort}:${builtins.toString webUiPort}"
+          ];
+        };
+      };
+      volumes = {
+        open-webui = { };
+      };
+      networks = {
+        webui = { };
+      };
+    };
+
+  # See this page for how to run Docker compose as a systemd service
+  # https://gist.github.com/mosquito/b23e1c1e5723a7fd9e6568e5cf91180f
   systemd.services.llm-server = {
     description = "LLM Server";
     serviceConfig = {
-      Type = "simple";
+      Type = "oneshot";
       User = specialArgs.name;
-      WorkingDirectory = "/home/${specialArgs.name}/TurboQuant";
+      RemainAfterExit = "yes";
     };
-    environment.MODEL_DIR = "/home/${specialArgs.name}/models";
     path = [
-      config.nix.package
+      config.virtualisation.docker.package
     ];
     script = ''
-      nix develop --command ./build/bin/llama-server \
-        -m $MODEL_DIR/gguf/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf \
-        --host 0.0.0.0 --port 8020 \
-        --gpu-layers 30 \
-        --flash-attn on \
-        --jinja \
-        -np 1 \
-        -c 262144 \
-        --cache-type-k tbqp3 \
-        --cache-type-v tbq3 \
-        --mmproj $MODEL_DIR/gguf/mmproj-F16.gguf \
-        --no-mmproj-offload \
-        --ubatch-size 288
+      docker compose -f /etc/llm-server/docker-compose.yaml up --detach --remove-orphans
     '';
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];

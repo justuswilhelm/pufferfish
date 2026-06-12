@@ -264,9 +264,9 @@
       };
       # Home configuration installs aider, not possible to configure OpenSnitch
       # from home configuration.
-      aider-github-config = {
-        name = "aider-allow-github-config";
-        description = "Allow Aider to access raw.githubusercontent.com";
+      aider-allow-hosts = {
+        name = "aider-allow-hosts";
+        description = "Allow Aider to some hosts";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -292,9 +292,9 @@
               data = "tcp";
             }
             {
-              type = "simple";
+              type = "regexp";
               operand = "dest.host";
-              data = "raw.githubusercontent.com";
+              data = "^(raw.githubusercontent.com|openrouter.ai)$";
             }
           ];
         };

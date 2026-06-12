@@ -35,208 +35,130 @@
       disko,
       agenix,
     }@inputs:
+    let
+      name = "debian";
+      mkHomeManagerCfg =
+        {
+          hostName,
+        }:
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
+          home-manager.extraSpecialArgs = {
+            # TODO check if homeDirectory still needed
+            homeDirectory = "/home/${name}";
+          }
+          // {
+            inherit name;
+          };
+        };
+      mkNixosConfig =
+        {
+          # hostname for this machine
+          hostName,
+          # Use home-manager to configure `name` user?
+          addHome,
+          # What other NixOS configuration modules should this NixOS machine use?
+          extraModules ? [ ],
+        }:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit name; };
+          modules = [
+            ./nixos/${hostName}/configuration.nix
+            { networking = { inherit hostName; }; }
+          ]
+          ++ (nixpkgs.lib.optionals addHome [
+            home-manager.nixosModules.home-manager
+            (mkHomeManagerCfg { inherit hostName; })
+          ])
+          ++ extraModules;
+        };
+    in
     {
       nixosConfigurations = {
-        helium =
+        helium = mkNixosConfig {
+          hostName = "helium";
+          addHome = true;
+        };
+        helium-cuda = mkNixosConfig {
+          hostName = "helium-cuda";
+          addHome = false;
+        };
+        lithium-nixos = mkNixosConfig {
+          hostName = "lithium-nixos";
+          addHome = true;
+        };
+        nitrogen = mkNixosConfig {
+          hostName = "nitrogen";
+          addHome = true;
+        };
+        carbon = mkNixosConfig {
+          hostName = "carbon";
+          addHome = true;
+          extraModules = [ disko.nixosModules.disko ];
+        };
+        throwaway = mkNixosConfig {
+          hostName = "carbon";
+          addHome = true;
+          extraModules = [ disko.nixosModules.disko ];
+        };
+      };
+      # TODO refactor
+      darwinConfigurations = {
+        "lithium" =
           let
-            name = "debian";
-            hostName = "helium";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
+            system = "aarch64-darwin";
+            hostName = "lithium";
+            specialArgs = { inherit name system; };
           in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
+          nix-darwin.lib.darwinSystem {
+            inherit specialArgs;
             modules = [
-              ./nixos/${hostName}/configuration.nix
+              { _module.args = inputs; }
               { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
               {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
+                # TODO remove overlay?
+                nixpkgs.overlays = [
+                  (final: previous: {
+                    pomoglorbo = pomoglorbo.outputs.packages.${system}.pomoglorbo.overrideAttrs { doCheck = false; };
+                  })
+                ];
+              }
+              ./nix-darwin/${hostName}/configuration.nix
+              home-manager.darwinModules.home-manager
+              (mkHomeManagerCfg { inherit hostName; })
+              {
+                # XXX only lithium's home manager config misses "homeDirectory"
+                # from extraSpecialArgs
+                home-manager.extraSpecialArgs = specialArgs;
+                home-manager.sharedModules = [
+                  # TODO check if NixOS home manager needs this:
+                  { _module.args = inputs; }
+                ];
               }
             ];
           };
-        helium-cuda =
+        "hydrogen" =
           let
-            name = "debian";
-            hostName = "helium-cuda";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
+            hostName = "hydrogen";
           in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
+          nix-darwin.lib.darwinSystem {
+            specialArgs = { inherit name; };
             modules = [
-              ./nixos/${hostName}/configuration.nix
+              { _module.args = inputs; }
               { networking = { inherit hostName; }; }
-            ];
-          };
-        lithium-nixos =
-          let
-            name = "debian";
-            hostName = "lithium-nixos";
-            system = "aarch64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
+              ./nix-darwin/${hostName}/configuration.nix
+              home-manager.darwinModules.home-manager
+              (mkHomeManagerCfg { inherit hostName; })
               {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
-            ];
-          };
-        nitrogen =
-          let
-            name = "debian";
-            hostName = "nitrogen";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
-            ];
-          };
-        carbon =
-          let
-            name = "debian";
-            hostName = "carbon";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              disko.nixosModules.disko
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
-              }
-            ];
-          };
-        throwaway =
-          let
-            name = "debian";
-            hostName = "throwaway";
-            system = "x86_64-linux";
-            specialArgs = { inherit system name; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = [
-              disko.nixosModules.disko
-              ./nixos/${hostName}/configuration.nix
-              { networking = { inherit hostName; }; }
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-                # TODO check if homeDirectory still needed
-                home-manager.extraSpecialArgs = {
-                  homeDirectory = "/home/${name}";
-                }
-                // specialArgs;
+                home-manager.sharedModules = [
+                  { _module.args = inputs; }
+                ];
               }
             ];
           };
       };
-      darwinConfigurations."lithium" =
-        let
-          system = "aarch64-darwin";
-          name = "debian";
-          hostName = "lithium";
-          specialArgs = { inherit name system; };
-        in
-        nix-darwin.lib.darwinSystem {
-          inherit system;
-          inherit specialArgs;
-          modules = [
-            { _module.args = inputs; }
-            { networking = { inherit hostName; }; }
-            {
-              # TODO remove overlay?
-              nixpkgs.overlays = [
-                (final: previous: {
-                  pomoglorbo = pomoglorbo.outputs.packages.${system}.pomoglorbo.overrideAttrs { doCheck = false; };
-                })
-              ];
-            }
-            ./nix-darwin/lithium/configuration.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = specialArgs;
-              home-manager.sharedModules = [
-                { _module.args = inputs; }
-              ];
-              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-            }
-          ];
-        };
-      darwinConfigurations."hydrogen" =
-        let
-          system = "aarch64-darwin";
-          name = "debian";
-          hostName = "hydrogen";
-        in
-        nix-darwin.lib.darwinSystem {
-          inherit system;
-          specialArgs = { inherit name system; };
-          modules = [
-            { _module.args = inputs; }
-            { networking = { inherit hostName; }; }
-            ./nix-darwin/hydrogen/configuration.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.sharedModules = [
-                { _module.args = inputs; }
-              ];
-              home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
-            }
-          ];
-        };
     }
     // utils.lib.eachDefaultSystem (
       system:

@@ -12,6 +12,7 @@
 {
   imports = [
     ../modules/borgmatic.nix
+    ../modules/cdrip
     ../modules/compat.nix
     ../modules/ime.nix
     ../modules/infosec.nix
@@ -110,15 +111,12 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
   };
   programs.mosh.enable = true;
   programs.tmux.enable = true;
   programs.iotop.enable = true;
-
-  environment.systemPackages = [
-    pkgs.tree
-    pkgs.vim
-  ];
 
   services.postgresql = {
     enable = true;

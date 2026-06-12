@@ -24,9 +24,9 @@
   environment.systemPackages = [ pkgs.nix-tree ];
 
   services.opensnitch.rules = lib.mkIf config.services.opensnitch.enable {
-    nix = {
-      name = "nix-allow-dns-https";
-      description = "Allow nix proess DNS, https";
+    nix-allow-dns = {
+      name = "nix-allow-dns";
+      description = "Allow nix DNS";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";
       enabled = true;
@@ -40,17 +40,52 @@
           {
             type = "simple";
             operand = "process.path";
-            data = "${lib.getBin config.nix.package}/bin/nix";
+            data = "${lib.getBin config.nix.package.nix-cli}/bin/nix";
           }
           {
             type = "regexp";
             operand = "dest.port";
-            data = "^(53|443)$";
+            data = "^(53|5353)$";
+          }
+          {
+            type = "simple";
+            operand = "protocol";
+            data = "udp";
           }
         ];
       };
     };
-    curl-tarballs = {
+    nix-allow-https = {
+      name = "nix-allow-https";
+      description = "Allow the nix process HTTPS";
+      created = "1970-01-01T00:00:00Z";
+      updated = "1970-01-01T00:00:00Z";
+      enabled = true;
+      action = "allow";
+      duration = "always";
+      operator = {
+        type = "list";
+        operand = "list";
+        list = [
+          {
+            type = "simple";
+            operand = "process.path";
+            data = "${lib.getBin config.nix.package.nix-cli}/bin/nix";
+          }
+          {
+            type = "simple";
+            operand = "protocol";
+            data = "tcp";
+          }
+          {
+            type = "simple";
+            operand = "dest.port";
+            data = "443";
+          }
+        ];
+      };
+    };
+    nix-allow-curl-domains = {
       name = "nix-allow-curl-domains";
       description = "Allow Nix's curl to access allowed domains";
       created = "1970-01-01T00:00:00Z";
@@ -65,7 +100,7 @@
           {
             type = "regexp";
             operand = "dest.host";
-            data = "^((cache|tarballs)\\.nixos\\.org|github\\.com)$";
+            data = "^((cache|tarballs)\\.nixos\\.org|raw.githubusercontent\\.com)$";
           }
           {
             type = "simple";

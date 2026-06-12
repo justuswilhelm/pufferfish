@@ -14,8 +14,11 @@ let
   # Aider config
   yamlFormat = pkgs.formats.yaml { };
   jsonFormat = pkgs.formats.json { };
-  self-hosted-model = "openai/gemma-4-26B-A4B-it-UD-Q5_K_M.gguf";
+  self-hosted-model = "google/gemma-4-E4B-it";
   self-hosted-model-url = "http://helium.local:8020/v1";
+  # Source for hosted_vllm:
+  # https://docs.litellm.ai/docs/providers/vllm
+  self-hosted-model-aider = "hosted_vllm/${self-hosted-model}";
   # https://aider.chat/docs/config/aider_conf.html
   config = {
     # https://aider.chat/docs/leaderboards/
@@ -23,7 +26,7 @@ let
     # openai/qwen3.6-27b-autoround
     # model = "openrouter/anthropic/claude-sonnet-4.6";
     # Local model
-    model = self-hosted-model;
+    model = self-hosted-model-aider;
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
@@ -45,16 +48,17 @@ let
   # See the following JSON document, too:
   # https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
   modelMetadata = {
-    ${self-hosted-model} = rec {
+    ${self-hosted-model-aider} = rec {
       # https://github.com/stephan271/Gemma4OnRTX3090#expected-performance
       # > Max Context Limit one slot 262144
       # No idea what "one slot" means, but here we go:
-      max_tokens = 262144;
+      max_tokens = 32768;
       max_input_tokens = max_tokens;
       max_output_tokens = max_tokens;
       input_cost_per_token = 0;
       output_cost_per_token = 0;
       mode = "chat";
+      litellm_provider = "local";
       # supports_tool_choice = true;
       # > Gemma 4 supports function calling with a dedicated tool-call protocol using custom special tokens (<|tool_call>, <tool_call|>, etc.).
       supports_function_calling = true;
@@ -65,10 +69,10 @@ let
   # https://aider.chat/docs/config/adv-model-settings.html#default-model-settings
   modelConfig = [
     {
-      name = self-hosted-model;
-      edit_format = "diff";
+      name = self-hosted-model-aider;
+      edit_format = "udiff";
       use_repo_map = true;
-      editor_edit_format = "editor-diff";
+      editor_edit_format = "editor-udiff";
     }
     {
       name = "openrouter/anthropic/claude-sonnet-4.6";

@@ -22,7 +22,7 @@ in
         };
       in
       {
-        reject-mozilla-services = {
+        firefox-000-reject-mozilla-subdomains = {
           name = "firefox-000-reject-mozilla-subdomains";
           description = "Forbid *.mozilla.{com,org} domains that provide no user benefit";
           created = "1970-01-01T00:00:00Z";
@@ -37,7 +37,7 @@ in
             data = "[^.]+\.(services|telemetry)\.mozilla\.(com|org)$";
           };
         };
-        allow-firefox-443 = {
+        firefox-001-allow-https = {
           name = "firefox-001-allow-https";
           description = "Allow Firefox connections to port 443";
           created = "1970-01-01T00:00:00Z";
@@ -61,7 +61,7 @@ in
         };
         # TODO refactor this
         # Right now, the OpenSnitch UI rejects the LAN dest.network
-        allow-firefox-lan-192-80 = {
+        firefox-002-allow-local-http = {
           name = "firefox-002-allow-local-http";
           description = "Allow local Firefox connections to 192.0.0.0/8 :80";
           created = "1970-01-01T00:00:00Z";
@@ -88,7 +88,7 @@ in
             ];
           };
         };
-        allow-firefox-lan-10-80 = {
+        firefox-003-allow-local-http = {
           name = "firefox-003-allow-local-http";
           description = "Allow local Firefox connections to 10.0.0.0/24 :80";
           created = "1970-01-01T00:00:00Z";
@@ -115,7 +115,7 @@ in
             ];
           };
         };
-        reject-firefox-80 = {
+        firefox-004-reject-other-http = {
           name = "firefox-004-reject-other-http";
           description = "Reject Firefox connections to :80";
           created = "1970-01-01T00:00:00Z";

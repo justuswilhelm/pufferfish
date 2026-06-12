@@ -37,6 +37,7 @@
     pkgs.go
     # pkgs.j
     pkgs.ngn-k
+    pkgs.jq
 
     # TUIs
     pkgs.htop
