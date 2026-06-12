@@ -75,7 +75,7 @@ in
       enable = true;
     };
     services.opensnitch.rules.borgmatic-ssh = {
-      name = "Allow borgmatic SSH to borgbase.com";
+      name = "borgmatic-allow-ssh-borgbase-com";
       created = "1970-01-01T00:00:00Z";
       updated = "1970-01-01T00:00:00Z";
       enabled = true;

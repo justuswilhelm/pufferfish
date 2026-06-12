@@ -22,9 +22,9 @@ in
         };
       in
       {
-        forbid-mozilla = {
-          name = "000-reject-firefox-mozilla-services";
-          description = "Forbid *.mozilla.* domains that provide no user benefit";
+        reject-mozilla-services = {
+          name = "firefox-000-reject-mozilla-subdomains";
+          description = "Forbid *.mozilla.{com,org} domains that provide no user benefit";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
           enabled = true;
@@ -34,11 +34,11 @@ in
             type = "regexp";
             sensitive = false;
             operand = "dest.host";
-            data = "[^.]+\.services\.mozilla\.com";
+            data = "[^.]+\.(services|telemetry)\.mozilla\.(com|org)$";
           };
         };
-        firefox-allow-443 = {
-          name = "001-allow-firefox-https";
+        allow-firefox-443 = {
+          name = "firefox-001-allow-https";
           description = "Allow Firefox connections to port 443";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
@@ -61,8 +61,8 @@ in
         };
         # TODO refactor this
         # Right now, the OpenSnitch UI rejects the LAN dest.network
-        firefox-allow-lan-192-80 = {
-          name = "002-allow-firefox-local-http";
+        allow-firefox-lan-192-80 = {
+          name = "firefox-002-allow-local-http";
           description = "Allow local Firefox connections to 192.0.0.0/8 :80";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
@@ -88,8 +88,8 @@ in
             ];
           };
         };
-        firefox-allow-lan-10-80 = {
-          name = "002-allow-firefox-local-http";
+        allow-firefox-lan-10-80 = {
+          name = "firefox-003-allow-local-http";
           description = "Allow local Firefox connections to 10.0.0.0/24 :80";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
@@ -115,9 +115,9 @@ in
             ];
           };
         };
-        firefox-deny-80 = {
-          name = "003-reject-firefox-http";
-          description = "Deny Firefox connections to :80";
+        reject-firefox-80 = {
+          name = "firefox-004-reject-other-http";
+          description = "Reject Firefox connections to :80";
           created = "1970-01-01T00:00:00Z";
           updated = "1970-01-01T00:00:00Z";
           enabled = true;

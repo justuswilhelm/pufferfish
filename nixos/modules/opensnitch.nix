@@ -18,7 +18,7 @@
     };
     rules = {
       systemd-timesyncd = {
-        name = "allow-systemd-timesyncd";
+        name = "systemd-allow-timesyncd";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
         enabled = true;
@@ -46,38 +46,8 @@
           ];
         };
       };
-      systemd-resolved = {
-        name = "allow-systemd-resolved";
-        created = "1970-01-01T00:00:00Z";
-        updated = "1970-01-01T00:00:00Z";
-        enabled = true;
-        action = "allow";
-        duration = "always";
-        precedence = true;
-        operator = {
-          type = "list";
-          operand = "list";
-          list = [
-            {
-              type = "simple";
-              operand = "process.path";
-              data = "${lib.getBin pkgs.systemd}/lib/systemd/systemd-resolved";
-            }
-            {
-              type = "simple";
-              operand = "protocol";
-              data = "udp";
-            }
-            {
-              type = "regexp";
-              operand = "dest.port";
-              data = "^(53|5353)$";
-            }
-          ];
-        };
-      };
       allow-local-dns = {
-        name = "allow-local-dns";
+        name = "!-all-allow-local-dns";
         description = "Allow processes to access 127.0.0.0/24 53/udp";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -108,7 +78,7 @@
         };
       };
       forbid-other-dns = {
-        name = "deny-other-dns";
+        name = "~-all-reject-other-dns";
         description = "Forbid other processes from sending on 53/udp";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -133,7 +103,7 @@
         };
       };
       git-remote-http = {
-        name = "allow-git-remote-http";
+        name = "git-allow-git-remote-http";
         description = "Allow git-remote-http TCP to port 443";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -163,7 +133,7 @@
         };
       };
       mosh-client = {
-        name = "allow-mosh-client";
+        name = "mosh-allow-local-udp";
         description = "Allow mosh-client to local network on UDP ports 60000-60100";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -198,7 +168,7 @@
         };
       };
       git-ssh = {
-        name = "allow-git-ssh";
+        name = "git-allow-ssh-local-user";
         description = "Allow git SSH to local network on TCP port 22";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -238,7 +208,7 @@
         };
       };
       perl-ssh = {
-        name = "allow-perl-ssh";
+        name = "mosh-allow-perl-ssh";
         description = "Allow perl SSH to local network on TCP port 22";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -278,7 +248,7 @@
         };
       };
       nmap = {
-        name = "allow-nmap";
+        name = "nmap-allow-all";
         description = "Allow nmap to connect everywhere";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -295,7 +265,7 @@
       # Home configuration installs aider, not possible to configure OpenSnitch
       # from home configuration.
       aider-github-config = {
-        name = "allow-aider-github-config";
+        name = "aider-allow-github-config";
         description = "Allow Aider to access raw.githubusercontent.com";
         created = "1970-01-01T00:00:00Z";
         updated = "1970-01-01T00:00:00Z";
@@ -325,6 +295,42 @@
               type = "simple";
               operand = "dest.host";
               data = "raw.githubusercontent.com";
+            }
+          ];
+        };
+      };
+      signal = {
+        name = "signal-allow-signal-org";
+        description = "Allow Signal to access *.signal.org";
+        created = "1970-01-01T00:00:00Z";
+        updated = "1970-01-01T00:00:00Z";
+        enabled = true;
+        action = "allow";
+        duration = "always";
+        operator = {
+          type = "list";
+          operand = "list";
+          list = [
+            {
+              type = "regexp";
+              operand = "process.path";
+              # "data": "/nix/store/9j99q6zbwhb57w85qg0bra65x7778pmy-electron-unwrapped-39.5.2/libexec/electron/electron"
+              data = "${lib.getBin pkgs.electron.passthru.unwrapped}/libexec/electron/electron";
+            }
+            {
+              type = "simple";
+              operand = "dest.port";
+              data = "443";
+            }
+            {
+              type = "simple";
+              operand = "protocol";
+              data = "tcp";
+            }
+            {
+              type = "regexp";
+              operand = "dest.host";
+              data = "^(grpc\.chat|cnd3|storage)\.signal\.org$";
             }
           ];
         };
