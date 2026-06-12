@@ -6,12 +6,9 @@
   specialArgs,
   config,
   pkgs,
+  lib,
   ...
 }:
-let
-  uid = 501;
-  name = specialArgs.name;
-in
 {
   imports = [
     ../modules/aerospace.nix

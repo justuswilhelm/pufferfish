@@ -7,11 +7,10 @@
   lib,
   config,
   pkgs,
-  specialArgs,
   ...
 }:
 let
-  applicationsDirectory = "/Users/${specialArgs.name}/Applications";
+  applicationsDirectory = "/Users/${config.system.primaryUser}/Applications";
   # We need to convince macOS to open this as a proper app, not as a child of
   # aerospace
   alacrittyApp = "${applicationsDirectory}/Home Manager Apps/Alacritty.app";

@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # TODO make this a Nix module
-{ specialArgs, ... }:
+{ config, ... }:
 let
-  uid = 501;
-  name = specialArgs.name;
+  name = config.system.primaryUser;
+  uid = config.users.users.${name}.uid;
 in
 {
   # Rid ourselves of Apple Music automatically launching

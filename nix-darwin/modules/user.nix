@@ -10,7 +10,7 @@ let
   name = specialArgs.name;
 in
 {
-  users.users."${name}" = {
+  users.users.${name} = {
     description = name;
     shell = pkgs.fish;
     home = "/Users/${name}";

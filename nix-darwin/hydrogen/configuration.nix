@@ -8,10 +8,6 @@
   pkgs,
   ...
 }:
-let
-  uid = 501;
-  name = specialArgs.name;
-in
 {
   imports = [
     ../modules/aerospace.nix
