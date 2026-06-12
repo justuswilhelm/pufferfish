@@ -46,10 +46,6 @@
           home-manager.useUserPackages = true;
           home-manager.users."${name}" = import ./home-manager/${hostName}.nix;
           home-manager.extraSpecialArgs = {
-            # TODO check if homeDirectory still needed
-            homeDirectory = "/home/${name}";
-          }
-          // {
             inherit name;
           };
         };
@@ -72,6 +68,24 @@
             home-manager.nixosModules.home-manager
             (mkHomeManagerCfg { inherit hostName; })
           ])
+          ++ extraModules;
+        };
+      mkDarwinConfig =
+        {
+          hostName,
+          extraModules ? [ ],
+        }:
+        let
+          system = "aarch64-darwin";
+        in
+        nix-darwin.lib.darwinSystem {
+          modules = [
+            { networking = { inherit hostName; }; }
+            { system.primaryUser = name; }
+            ./nix-darwin/${hostName}/configuration.nix
+            home-manager.darwinModules.home-manager
+            (mkHomeManagerCfg { inherit hostName; })
+          ]
           ++ extraModules;
         };
     in
@@ -104,60 +118,23 @@
           extraModules = [ disko.nixosModules.disko ];
         };
       };
-      # TODO refactor
       darwinConfigurations = {
-        "lithium" =
-          let
-            system = "aarch64-darwin";
-            hostName = "lithium";
-            specialArgs = { inherit name system; };
-          in
-          nix-darwin.lib.darwinSystem {
-            inherit specialArgs;
-            modules = [
-              { _module.args = inputs; }
-              { networking = { inherit hostName; }; }
-              {
-                # TODO remove overlay?
-                nixpkgs.overlays = [
-                  (final: previous: {
-                    pomoglorbo = pomoglorbo.outputs.packages.${system}.pomoglorbo.overrideAttrs { doCheck = false; };
-                  })
-                ];
-              }
-              ./nix-darwin/${hostName}/configuration.nix
-              home-manager.darwinModules.home-manager
-              (mkHomeManagerCfg { inherit hostName; })
-              {
-                # XXX only lithium's home manager config misses "homeDirectory"
-                # from extraSpecialArgs
-                home-manager.extraSpecialArgs = specialArgs;
-                home-manager.sharedModules = [
-                  # TODO check if NixOS home manager needs this:
-                  { _module.args = inputs; }
-                ];
-              }
-            ];
-          };
-        "hydrogen" =
-          let
-            hostName = "hydrogen";
-          in
-          nix-darwin.lib.darwinSystem {
-            specialArgs = { inherit name; };
-            modules = [
-              { _module.args = inputs; }
-              { networking = { inherit hostName; }; }
-              ./nix-darwin/${hostName}/configuration.nix
-              home-manager.darwinModules.home-manager
-              (mkHomeManagerCfg { inherit hostName; })
-              {
-                home-manager.sharedModules = [
-                  { _module.args = inputs; }
-                ];
-              }
-            ];
-          };
+        "lithium" = mkDarwinConfig {
+          hostName = "lithium";
+          extraModules = [
+            {
+              # TODO remove overlay?
+              nixpkgs.overlays = [
+                (final: previous: {
+                  pomoglorbo =
+                    pomoglorbo.outputs.packages.${previous.pkgs.stdenv.hostPlatform.system}.pomoglorbo.overrideAttrs
+                      { doCheck = false; };
+                })
+              ];
+            }
+          ];
+        };
+        "hydrogen" = mkDarwinConfig { hostName = "hydrogen"; };
       };
     }
     // utils.lib.eachDefaultSystem (
