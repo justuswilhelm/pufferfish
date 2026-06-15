@@ -159,17 +159,15 @@ require('nvim-treesitter.configs').setup {
         -- Required for spellcheck, some LaTex highlights and
         -- code block highlights that do not have ts grammar
         additional_vim_regex_highlighting = {
-            "diff", "gitcommit", "svelte", "org"
+            "diff", "gitcommit", "org", "python"
         }
         -- See `home-manager/modules/nvim.nix`:
         -- (nvim-treesitter.withPlugins (p: [
         -- Instead of:
         -- ensure_installed = {"lua", "rust", "toml"}
         -- disable = { "sh" },
-    }
-    -- indent = {
-    --     enable = true,
-    -- },
+    },
+    indent = {disable = {"python"}}
 }
 -- Folding
 -- -------
