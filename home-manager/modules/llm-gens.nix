@@ -14,11 +14,11 @@ let
   # Aider config
   yamlFormat = pkgs.formats.yaml { };
   jsonFormat = pkgs.formats.json { };
-  self-hosted-model = "google/gemma-4-E4B-it";
+  self-hosted-model = "Qwen3.6-35B-A3B-UD-Q4_K_M";
   self-hosted-model-url = "http://helium.local:8020/v1";
   # Source for hosted_vllm:
   # https://docs.litellm.ai/docs/providers/vllm
-  self-hosted-model-aider = "hosted_vllm/${self-hosted-model}";
+  self-hosted-model-aider = "openai/${self-hosted-model}";
   # https://aider.chat/docs/config/aider_conf.html
   config = {
     # https://aider.chat/docs/leaderboards/
@@ -63,7 +63,7 @@ let
       # > Gemma 4 supports function calling with a dedicated tool-call protocol using custom special tokens (<|tool_call>, <tool_call|>, etc.).
       supports_function_calling = true;
       supports_vision = true;
-      # supports_reasoning = true;
+      supports_reasoning = true;
     };
   };
   # https://aider.chat/docs/config/adv-model-settings.html#default-model-settings

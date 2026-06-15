@@ -125,98 +125,57 @@ in
 
   networking.firewall.allowedTCPPorts = [
     llmServerPort
-    webUiPort
   ];
-
-  environment.etc."llm-server/docker-compose.yaml".source =
-    let
-      yamlFormat = pkgs.formats.yaml { };
-    in
-    yamlFormat.generate "docker-compose.yaml" {
-      # https://github.com/itd24/docker-vllm-openai-example/blob/main/docker-compose.yml
-      services = {
-        llm-server = {
-          image = "vllm/vllm-openai:latest";
-          container_name = "llm-server";
-          ipc = "host";
-          shm_size = "16g";
-          networks = [ "webui" ];
-          deploy.resources.reservations.devices = [
-            {
-              driver = "nvidia";
-              capabilities = [ "gpu" ];
-              count = "all";
-            }
-          ];
-          volumes = [ "/home/${specialArgs.name}/models:/root/.cache/huggingface" ];
-          command = [
-            # "/root/.cache/huggingface/models/hub/models--unsloth--Qwen3.6-27B-GGUF/snapshots/82d411acf4a06cfb8d9b073a5211bf410bfc29bf/Qwen3.6-27B-UD-Q4_K_XL.gguf"
-            "unsloth/Qwen3-0.6B-GGUF:Q4_K_M"
-            "--tokenizer"
-            # "Qwen/Qwen3.6-27B"
-            "Qwen/Qwen3-0.6B"
-            "--tensor-parallel-size"
-            "1"
-            "--max-model-len"
-            # "262144"
-            "40960"
-            "--reasoning-parser"
-            "qwen3"
-            "--enable-prefix-caching"
-            "--gpu-memory-utilization"
-            "0.90"
-            "--host"
-            "0.0.0.0"
-            "--port"
-            (builtins.toString llmServerPort)
-          ];
-          ports = [
-            "${builtins.toString llmServerPort}:${builtins.toString llmServerPort}"
-          ];
-        };
-        open-webui = {
-          image = "ghcr.io/open-webui/open-webui:main";
-          container_name = "open-webui";
-          networks = [ "webui" ];
-          environment = {
-            "OPENAI_API_BASE_URL" = "http://llm-server:8020/v1";
-            # https://docs.openwebui.com/reference/env-configuration#webui_auth
-            "WEBUI_AUTH" = false;
-          };
-          volumes = [
-            "open-webui:/app/backend/data"
-          ];
-          ports = [
-            "${builtins.toString webUiPort}:${builtins.toString webUiPort}"
-          ];
-        };
-      };
-      volumes = {
-        open-webui = { };
-      };
-      networks = {
-        webui = { };
-      };
-    };
 
   # See this page for how to run Docker compose as a systemd service
   # https://gist.github.com/mosquito/b23e1c1e5723a7fd9e6568e5cf91180f
-  systemd.services.llm-server = {
-    description = "LLM Server";
-    serviceConfig = {
-      Type = "oneshot";
-      User = specialArgs.name;
-      RemainAfterExit = "yes";
+  systemd.services.llm-server =
+    let
+      model = "Qwen3.6-35B-A3B";
+      basePath = "hub/models--unsloth--${model}-GGUF/snapshots/a483e9e6cbd595906af30beda3187c2663a1118c";
+      modelPath = "${basePath}/${model}-UD-Q4_K_M.gguf";
+    in
+    {
+      description = "LLM Server";
+      serviceConfig = {
+        Type = "simple";
+        Restart = "always";
+        User = specialArgs.name;
+        WorkingDirectory = "/home/${specialArgs.name}/TurboQuant";
+        # See this page for command line flags:
+        # https://huggingface.co/Qwen/Qwen3.6-35B-A3B/discussions/37
+        # Also see
+        # https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md
+        # --jinja enabled by default
+        ExecStart = ''
+          ${config.nix.package}/bin/nix develop --command build/bin/llama-server \
+            --model ''${HF_HOME}/${modelPath} \
+            --host 0.0.0.0 --port ${builtins.toString llmServerPort} \
+            --flash-attn on \
+            --no-mmap \
+            --parallel 1 \
+            --ctx-size 262144 \
+            --n-predict 32768 \
+            --no-context-shift \
+            --reasoning-format deepseek \
+            --reasoning-budget 4096 \
+            --temp 0.6 \
+            --top-p 0.95 \
+            --top-k 20 \
+            --presence-penalty 0.0 \
+            --min-p 0.00 \
+            --cache-type-k bf16 \
+            --cache-type-v bf16 \
+            --no-mmproj-offload \
+            --ubatch-size 288
+        '';
+      };
+      environment = {
+        HF_HOME = "/home/${specialArgs.name}/models";
+      };
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network.target" ];
     };
-    path = [
-      config.virtualisation.docker.package
-    ];
-    script = ''
-      docker compose -f /etc/llm-server/docker-compose.yaml up --detach --remove-orphans
-    '';
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-  };
 
   system.stateVersion = "25.11";
 }
