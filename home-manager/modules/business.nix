@@ -6,6 +6,8 @@
 {
   home.packages = [
     pkgs.hledger
+    pkgs.hledger-web
+    pkgs.hledger-iadd
     pkgs.khal
     pkgs.khard
   ];
