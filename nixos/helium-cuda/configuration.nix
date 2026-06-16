@@ -132,8 +132,9 @@ in
   systemd.services.llm-server =
     let
       model = "Qwen3.6-35B-A3B";
-      basePath = "hub/models--unsloth--${model}-GGUF/snapshots/a483e9e6cbd595906af30beda3187c2663a1118c";
-      modelPath = "${basePath}/${model}-UD-Q4_K_M.gguf";
+      basePath = "/home/${specialArgs.name}/models/unsloth/${model}-GGUF";
+      modelPath = "${basePath}/${model}-UD-Q3_K_M.gguf";
+      mmprojPath = "${basePath}/mmproj-F16.gguf";
     in
     {
       description = "LLM Server";
@@ -147,18 +148,18 @@ in
         # Also see
         # https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md
         # --jinja enabled by default
+        # commented out --no-mmproj-offload \
         ExecStart = ''
           ${config.nix.package}/bin/nix develop --command build/bin/llama-server \
-            --model ''${HF_HOME}/${modelPath} \
+            --model ${modelPath} \
+            --mmproj ${mmprojPath} \
+            --alias "unsloth/${model}" \
             --host 0.0.0.0 --port ${builtins.toString llmServerPort} \
             --flash-attn on \
             --no-mmap \
             --parallel 1 \
             --ctx-size 262144 \
             --n-predict 32768 \
-            --no-context-shift \
-            --reasoning-format deepseek \
-            --reasoning-budget 4096 \
             --temp 0.6 \
             --top-p 0.95 \
             --top-k 20 \
@@ -166,12 +167,8 @@ in
             --min-p 0.00 \
             --cache-type-k bf16 \
             --cache-type-v bf16 \
-            --no-mmproj-offload \
             --ubatch-size 288
         '';
-      };
-      environment = {
-        HF_HOME = "/home/${specialArgs.name}/models";
       };
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
