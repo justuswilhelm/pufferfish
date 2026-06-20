@@ -137,6 +137,10 @@
       pkgs.pyright
       pkgs.vale-ls
     ];
+    # Neovim plugins here don't need Ruby
+    withRuby = false;
+    # Pastify needs Python, see also extraPython3Packages
+    withPython3 = true;
     extraPython3Packages = python3Packages: [
       # Pillow needed for pastify
       python3Packages.pillow
