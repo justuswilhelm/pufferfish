@@ -23,7 +23,8 @@
 
   programs.neovim = {
     enable = true;
-    extraLuaConfig = builtins.readFile ../../nvim/init.lua;
+    # Renamed from extraLuaConfig
+    initLua = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
     plugins = with pkgs.vimPlugins; [
       # Language specific
