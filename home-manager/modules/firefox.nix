@@ -154,12 +154,16 @@ in
       BROWSER = "${config.programs.firefox.package}/bin/firefox-esr";
     };
     # https://discourse.nixos.org/t/hm-24-11-firefox-with-passff-host/57108
-    home.file.".mozilla/native-messaging-hosts/passff.json" = {
+    # Changed to accomodate Mozilla Firefox home moving to
+    # ~/.config/mozilla/firefox
+    xdg.configFile."mozilla/native-messaging-hosts/passff.json" = {
       source = "${passff-host}/share/passff-host/passff.json";
     };
     programs.firefox = {
       enable = true;
       package = osConfig.programs.firefox.package;
+      # New home manager 26.05 behavior
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
       profiles.default = {
         isDefault = true;
         name = "Default profile";
