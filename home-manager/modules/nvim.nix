@@ -126,8 +126,8 @@
       # ----------
       pkgs.deno
       pkgs.typescript
-      pkgs.nodePackages.typescript-language-server
-      pkgs.nodePackages.svelte-language-server
+      pkgs.typescript-language-server
+      pkgs.svelte-language-server
       # Python
       # ------
       pkgs.ruff
