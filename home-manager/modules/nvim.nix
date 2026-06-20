@@ -39,8 +39,6 @@
       vim-svelte
       # nvim-orgmode/orgmode
       orgmode
-      # leafgarland/typescript-vim
-      typescript-vim
       # pangloss/vim-javascript
       vim-javascript
 
