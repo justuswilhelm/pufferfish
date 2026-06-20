@@ -14,7 +14,8 @@
     pkgs.imagemagick
 
     # Networking
-    pkgs.httperf
+    # Unmaintained and broken
+    # pkgs.httperf
     pkgs.netcat-gnu
     pkgs.whois
     pkgs.mtr
