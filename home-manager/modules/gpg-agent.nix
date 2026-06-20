@@ -11,6 +11,11 @@
   };
 
   programs.ssh = {
+    # TODO migrate from
+    # programs.ssh.matchBlocks
+    # to
+    # programs.ssh.settings
+    # settings
     matchBlocks."*.local" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
