@@ -145,7 +145,7 @@
       {
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
-            nodePackages.prettier
+            prettier
             shellcheck
             nixos-anywhere
             nixos-rebuild
