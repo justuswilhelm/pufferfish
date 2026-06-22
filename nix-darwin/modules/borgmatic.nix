@@ -199,6 +199,7 @@ let
         frequency = "2 weeks";
         count_tolerance_percentage = 5;
         data_sample_percentage = 0.00001;
+        # data_tolerance_percentage <= data_sample_percentage
         data_tolerance_percentage = 0.000005;
         # pkgs.xxHash only exposes xxhsum, not xxh64sum. xxh64 is the default option, htough
         # xxHash -> xxhash in nixpkgs 26.05
