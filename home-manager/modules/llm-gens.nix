@@ -134,6 +134,30 @@ let
   };
   goosePermission = {
   };
+  # https://pi.dev/docs/latest/settings
+  piConfig = {
+    theme = "light";
+    defaultProvider = "local";
+    defaultModel = selfHostedModel.name;
+  };
+  piModels = {
+    providers = {
+      local = {
+        baseUrl = selfHostedModel.url;
+        api = "openai-completions";
+        apiKey = "none";
+        models = [
+          {
+            id = selfHostedModel.name;
+            contextWindow = selfHostedModel.contextWindow;
+            maxTokens = 32000;
+            input = ["text" "image"];
+            reasoning = true;
+          }
+        ];
+      };
+    };
+  };
 in
 {
   # Aider configuration files
@@ -160,6 +184,10 @@ in
   xdg.configFile."goose/config.yaml".source = yamlFormat.generate "config.yaml" gooseConfig;
   xdg.configFile."goose/permission.yaml".source = yamlFormat.generate "permission.yaml" goosePermission;
 
+  # Pi
+  home.file.".pi/agent/settings.json".source = jsonFormat.generate "settings.json" piConfig;
+  home.file.".pi/agent/models.json".source = jsonFormat.generate "models.json" piModels;
+
   programs.git.ignores = [ ".aider*" ];
 
   home.packages = [
@@ -168,5 +196,6 @@ in
     pkgs.goose-cli
 
     pkgs.aider-chat
+    pkgs.pi-coding-agent
   ];
 }

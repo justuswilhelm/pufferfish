@@ -22,6 +22,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     utils.url = "github:numtide/flake-utils";
+    pi.url = "github:lukasl-dev/pi.nix";
+    pi.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -34,6 +36,7 @@
       utils,
       disko,
       agenix,
+      pi,
     }@inputs:
     let
       name = "debian";
@@ -125,6 +128,7 @@
             {
               # TODO remove overlay?
               nixpkgs.overlays = [
+                pi.overlays.default
                 (final: previous: {
                   pomoglorbo =
                     pomoglorbo.outputs.packages.${previous.pkgs.stdenv.hostPlatform.system}.pomoglorbo.overrideAttrs
