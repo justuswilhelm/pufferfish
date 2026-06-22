@@ -152,23 +152,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Treesitter configuration
 -- ========================
--- Load in orgmode grammar
-require('nvim-treesitter.configs').setup {
-    highlight = {
-        enable = true,
-        -- Required for spellcheck, some LaTex highlights and
-        -- code block highlights that do not have ts grammar
-        additional_vim_regex_highlighting = {
-            "diff", "gitcommit", "org", "python"
-        }
-        -- See `home-manager/modules/nvim.nix`:
-        -- (nvim-treesitter.withPlugins (p: [
-        -- Instead of:
-        -- ensure_installed = {"lua", "rust", "toml"}
-        -- disable = { "sh" },
-    },
-    indent = {disable = {"python"}}
-}
+-- The nvim-tresitter repo maintainers archived their repository.
+-- > For languages not bundled, install tree-sitter-cli and run :TSInstall <lang>
+-- https://samuellawrentz.com/blog/nvim-treesitter-archived-neovim-0-12-migration/
+
 -- Folding
 -- -------
 -- Use treesitter to do our folding

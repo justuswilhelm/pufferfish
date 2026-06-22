@@ -76,23 +76,6 @@
       # ----------------
       # christoomey/vim-tmux-navigator
       vim-tmux-navigator
-      # treesitter
-      # ----------
-      # nvim-treesitter/nvim-treesitter
-      (nvim-treesitter.withPlugins (p: [
-        p.c
-        p.rust
-        p.lua
-        p.toml
-        p.svelte
-        p.typescript
-        p.java
-        p.nix
-        p.python
-        p.html
-        p.javascript
-        p.elixir
-      ]))
       # kylechui/nvim-surround
       # works with treesitter
       nvim-surround
@@ -149,7 +132,9 @@
 
   home.activation.performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     run ${config.programs.neovim.finalPackage}/bin/nvim --headless \
-      +"PlugUpdate --sync" +qa
+      +"PlugUpdate --sync" \
+      +"TSInstall all" \
+      +qa
   '';
 
   programs.fish.shellAbbrs = {
