@@ -82,11 +82,11 @@
     };
   };
 
-  programs.ssh = {
-    matchBlocks."github.com" = {
+  programs.ssh.settings = {
+    "github.com" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
-    matchBlocks."localhost" = {
+    "localhost" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };

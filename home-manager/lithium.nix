@@ -120,24 +120,29 @@ in
       /Users/${username}/Library/com.apple.aiml.instrumentation
     '';
 
-  programs.ssh = {
-    # TODO refactor all of these, since I'm using the same path among all devices
-    matchBlocks."*.local" = {
+  # Attribute names are interpreted as Host patterns unless they start with Host or Match , in which case they are written literally as block headers
+  programs.ssh.settings =
+    let
       identityFile = "~/.ssh/id_rsa_yubikey.pub";
+    in
+    {
+      # TODO refactor all of these, since I'm using the same path among all devices
+      "*.local" = {
+        inherit identityFile;
+      };
+      "github.com" = {
+        inherit identityFile;
+        user = "git";
+      };
+      "codeberg.org" = {
+        inherit identityFile;
+        user = "git";
+      };
+      "gitlab.com" = {
+        inherit identityFile;
+        user = "git";
+      };
     };
-    matchBlocks."github.com" = {
-      identityFile = "~/.ssh/id_rsa_yubikey.pub";
-      user = "git";
-    };
-    matchBlocks."codeberg.org" = {
-      identityFile = "~/.ssh/id_rsa_yubikey.pub";
-      user = "git";
-    };
-    matchBlocks."gitlab.com" = {
-      identityFile = "~/.ssh/id_rsa_yubikey.pub";
-      user = "git";
-    };
-  };
 
   home.stateVersion = "24.05";
 }

@@ -10,13 +10,8 @@
     enableSshSupport = true;
   };
 
-  programs.ssh = {
-    # TODO migrate from
-    # programs.ssh.matchBlocks
-    # to
-    # programs.ssh.settings
-    # settings
-    matchBlocks."*.local" = {
+  programs.ssh.settings = {
+    "*.local" = {
       identityFile = "~/.ssh/id_rsa_yubikey";
     };
   };
