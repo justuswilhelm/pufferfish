@@ -14,19 +14,24 @@ let
   # Aider config
   yamlFormat = pkgs.formats.yaml { };
   jsonFormat = pkgs.formats.json { };
-  self-hosted-model = "Qwen3.6-35B-A3B-UD-Q4_K_M";
-  self-hosted-model-url = "http://helium.local:8020/v1";
+  selfHostedModel = rec {
+    host = "http://helium.local:8020";
+    url = "${host}/v1";
+    name = "qwen/Qwen3.6-35B-A3B";
+    apiKey = "none";
+    aiderName = "openai/${name}";
+    contextWindow = 262144;
+  };
   # Source for hosted_vllm:
   # https://docs.litellm.ai/docs/providers/vllm
-  self-hosted-model-aider = "openai/${self-hosted-model}";
   # https://aider.chat/docs/config/aider_conf.html
-  config = {
+  aiderConfig = {
     # https://aider.chat/docs/leaderboards/
     # openai/gpt-5 has high latency. Switched back to claude-sonnet-4
     # openai/qwen3.6-27b-autoround
     # model = "openrouter/anthropic/claude-sonnet-4.6";
     # Local model
-    model = self-hosted-model-aider;
+    model = selfHostedModel.aiderName;
     auto-commits = false;
     light-mode = true;
     # Yay, we can enable git again
@@ -41,24 +46,24 @@ let
     show-release-notes = false;
     # local cuda model, see
     # docs/helium-cuda.md
-    openai-api-base = self-hosted-model-url;
-    openai-api-key = "none";
+    openai-api-base = selfHostedModel.url;
+    openai-api-key = selfHostedModel.apiKey;
   };
   # https://aider.chat/docs/config/adv-model-settings.html#context-window-size-and-token-costs
   # See the following JSON document, too:
   # https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
-  modelMetadata = {
-    ${self-hosted-model-aider} = rec {
+  aiderModelMetaData = {
+    ${selfHostedModel.aiderName} = {
       # https://github.com/stephan271/Gemma4OnRTX3090#expected-performance
       # > Max Context Limit one slot 262144
       # No idea what "one slot" means, but here we go:
-      max_tokens = 32768;
-      max_input_tokens = max_tokens;
-      max_output_tokens = max_tokens;
+      max_tokens = selfHostedModel.contextWindow;
+      max_input_tokens = selfHostedModel.contextWindow;
+      max_output_tokens = selfHostedModel.contextWindow;
       input_cost_per_token = 0;
       output_cost_per_token = 0;
       mode = "chat";
-      litellm_provider = "local";
+      litellm_provider = "openai";
       # supports_tool_choice = true;
       # > Gemma 4 supports function calling with a dedicated tool-call protocol using custom special tokens (<|tool_call>, <tool_call|>, etc.).
       supports_function_calling = true;
@@ -67,12 +72,12 @@ let
     };
   };
   # https://aider.chat/docs/config/adv-model-settings.html#default-model-settings
-  modelConfig = [
+  aiderModelConfig = [
     {
-      name = self-hosted-model-aider;
-      edit_format = "udiff";
+      name = selfHostedModel.aiderName;
+      edit_format = "diff";
       use_repo_map = true;
-      editor_edit_format = "editor-udiff";
+      editor_edit_format = "editor-diff";
     }
     {
       name = "openrouter/anthropic/claude-sonnet-4.6";
@@ -90,33 +95,70 @@ let
       accepts_settings = [ "thinking_tokens" ];
     }
   ];
+  # https://llm.datasette.io/en/stable/other-models.html#openai-compatible-models
   llmExtraModels = [
     {
-      model_id = "gemma";
-      model_name = self-hosted-model;
-      api_base = self-hosted-model-url;
+      # set -Ux LLM_MODEL local
+      model_id = "local";
+      model_name = selfHostedModel.name;
+      api_base = selfHostedModel.url;
       vision = true;
       supports_schema = true;
     }
   ];
+  # https://goose-docs.ai/docs/guides/config-files
+  gooseConfig = {
+    GOOSE_PROVIDER = "ollama";
+    GOOSE_MODEL = selfHostedModel.name;
+    OLLAMA_HOST = selfHostedModel.host;
+    GOOSE_MODE = "approve";
+    GOOSE_CLI_THEME = "light";
+    SECURITY_PROMPT_ENABLED = true;
+    # OPENAI_BASE_PATH = "v1/chat/completions";
+    extensions = {
+      developer = {
+        bundled = true;
+        enabled = true;
+        name = "developer";
+        timeout = 300;
+        type = "builtin";
+      };
+      memory = {
+        bundled = true;
+        enabled = true;
+        name = "memory";
+        timeout = 300;
+        type = "builtin";
+      };
+    };
+  };
+  goosePermission = {
+  };
 in
 {
   # Aider configuration files
-  home.file.".aider.conf.yml".source = yamlFormat.generate ".aider.conf.yml" config;
+  # aider prefers .yml and will silently error out
+  # Feel the bitrot
+  home.file.".aider.conf.yml".source = yamlFormat.generate ".aider.conf.yml" aiderConfig;
   home.file.".aider.model.metadata.json".source =
-    jsonFormat.generate ".aider.model.metadata.json" modelMetadata;
+    jsonFormat.generate ".aider.model.metadata.json" aiderModelMetaData;
   home.file.".aider.model.settings.yml".source =
-    yamlFormat.generate ".aider.model.settings.yml" modelConfig;
+    yamlFormat.generate ".aider.model.settings.yml" aiderModelConfig;
 
   # llm configuration files
   xdg.configFile."io.datasette.llm/extra-openai-models.yaml" = {
     source = yamlFormat.generate "extra-openai-models.yaml" llmExtraModels;
-    enable = pkgs.stdenv.hostPlatform != "aarch64-darwin";
+    enable = pkgs.stdenv.isLinux;
   };
   home.file."Library/Application Support/io.datasette.llm/extra-openai-models.yaml" = {
     source = yamlFormat.generate "extra-openai-models.yaml" llmExtraModels;
-    enable = pkgs.stdenv.hostPlatform == "aarch64-darwin";
+    enable = pkgs.stdenv.isDarwin;
+
   };
+
+  # Goose
+  xdg.configFile."goose/config.yaml".source = yamlFormat.generate "config.yaml" gooseConfig;
+  xdg.configFile."goose/permission.yaml".source = yamlFormat.generate "permission.yaml" goosePermission;
 
   programs.git.ignores = [ ".aider*" ];
 
