@@ -1204,6 +1204,53 @@ llm-bench gave me this error:
 main: error: failed to load model '/home/debian/models/hub/models--unsloth--Qwen3.6-35B-A3B-GGUF/snapshots/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q5_K_M.gguf'
 ```
 
+Capital of france:
+
+```
+curl http://helium.local:8020/v1/chat/completions \
+  --json '{"model":"asd/gemma-4-E4B-it","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}' | jq
+```
+
+```
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The capital of France is **Paris**.",
+        "reasoning_content": "Here's a thinking process:\n\n1.  **Identify the User's Question**: The user is asking \"Capital of France?\"\n2.  **Extract Key Information**: \n   - Country: France\n   - Question: What is its capital?\n3.  **Retrieve Knowledge**: \n   - I know that the capital of France is Paris.\n4.  **Formulate Response**: \n   - Keep it direct and accurate.\n   - \"The capital of France is Paris.\"\n5.  **Self-Correction/Verification**: \n   - Is Paris indeed the capital? Yes.\n   - Is there any ambiguity? No.\n   - Response matches standard factual knowledge.\n6.  **Output Generation**: Provide the concise answer.✅"
+      }
+    }
+  ],
+  "created": 1781497779,
+  "model": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+  "system_fingerprint": "b9037-cb3c258c6",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 170,
+    "prompt_tokens": 14,
+    "total_tokens": 184,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-GoLFdlUHZgOlUxvIMAiqMj9nlqG1zZwZ",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 14,
+    "prompt_ms": 94.795,
+    "prompt_per_token_ms": 6.771071428571429,
+    "prompt_per_second": 147.6871142992774,
+    "predicted_n": 170,
+    "predicted_ms": 1842.087,
+    "predicted_per_token_ms": 10.835805882352942,
+    "predicted_per_second": 92.2866292417242
+  }
+}
+```
+
 # Appendix
 
 ## Remove VM
