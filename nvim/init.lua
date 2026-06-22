@@ -61,6 +61,10 @@ require("fzf-lua").setup({
 vim.keymap.set("n", "<c-P>", require('fzf-lua').files, {silent = true})
 vim.keymap.set("n", "<c-T>", require('fzf-lua').buffers, {silent = true})
 
+-- TODO, replace with vim.o.autocomplete = true
+-- See
+-- https://www.baeldung.com/linux/vim-autocomplete
+-- https://neovim.io/doc/user/insert/#ins-autocompletion
 -- Nvim-Cmp
 -- ========
 local cmp = require 'cmp'
