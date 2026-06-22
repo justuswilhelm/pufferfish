@@ -59,7 +59,7 @@ in
         # Lock after 2 minutes, suspend after six hours
         # Turn display off after 2 minutes and 5 seconds
         swayidle -w \
-            timeout 120 '${config.home.homeDirectory}/.dotfiles/bin/lock-screen swayidle' \
+            timeout 120 '${config.home.sessionVariables.DOTFILES}/bin/lock-screen swayidle' \
             timeout 125 'swaymsg "output * power off"' \
             resume 'swaymsg "output * power on"' \
             timeout 21600 'systemctl poweroff'
