@@ -414,7 +414,7 @@ in
       e cfg.fortunes = true
       e scr.color = 3
       # selenized colors
-      ${radare2}
+      ${config.programs.radare2.package}
     '';
   };
 

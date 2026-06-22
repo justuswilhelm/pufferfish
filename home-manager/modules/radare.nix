@@ -22,8 +22,12 @@ in
 {
   options = {
     programs.radare2.enable = lib.mkEnableOption "Install radare2";
+    programs.radare2.package = lib.mkOption {
+      description = "Radare2 package to install";
+      default = radare;
+    };
   };
   config = {
-    home.packages = [ radare ];
+    home.packages = [ cfg.package ];
   };
 }
