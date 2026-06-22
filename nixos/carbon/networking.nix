@@ -5,13 +5,15 @@
 { ... }:
 {
   # Pick only one of the below networking options.
-  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.secretsFile = "/etc/wireless-credentials/wireless.env";
-  networking.wireless.networks = {
-    "home sweet home".pskRaw = "ext:HOME_PSK";
-    "boron".pskRaw = "ext:BORON_PSK";
+  networking.wireless = {
+    enable = true; # Enables wireless support via wpa_supplicant.
+    secretsFile = "/etc/wireless-credentials/wireless.env";
+    networks = {
+      "home sweet home".pskRaw = "ext:HOME_PSK";
+      "boron".pskRaw = "ext:BORON_PSK";
+    };
+    userControlled = true;
   };
-  networking.wireless.userControlled.enable = true;
 
   systemd.network.wait-online.enable = false;
 }

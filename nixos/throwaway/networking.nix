@@ -4,7 +4,7 @@
 
 { ... }:
 {
-  networking.wireless.userControlled.enable = true;
+  networking.wireless.userControlled = true;
 
   systemd.network.wait-online.enable = false;
 }
