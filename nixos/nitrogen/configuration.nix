@@ -93,7 +93,12 @@
     viAlias = true;
     vimAlias = true;
   };
-  programs.light.enable = true;
+
+  # Replacement for programs.light
+  hardware.acpilight.enable = true;
+  programs.sway.extraPackages = [
+    pkgs.brightnessctl
+  ];
 
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
