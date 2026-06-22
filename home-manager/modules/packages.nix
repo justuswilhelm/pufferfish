@@ -14,7 +14,8 @@
     pkgs.imagemagick
 
     # Networking
-    pkgs.httperf
+    # Unmaintained and broken
+    # pkgs.httperf
     pkgs.netcat-gnu
     pkgs.whois
     pkgs.mtr
@@ -24,8 +25,9 @@
 
     # Linters, Formatters
     # Removed en-science because it was marked unfree in nixpkgs 24.11
-    pkgs.nixfmt-rfc-style
-    pkgs.nodePackages.prettier
+    # Renamed from nixfmt-rfc-style in nixpkgs 26.05
+    pkgs.nixfmt
+    pkgs.prettier
 
     # Build tools
     pkgs.cmake

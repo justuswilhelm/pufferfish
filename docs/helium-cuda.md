@@ -1140,6 +1140,117 @@ I received a working Space Invaders clone despite the errors:
 
 ![Gemma4's pelican](./helium-cuda-pelican-gemma4.svg)
 
+# Qwen3.6 on vllm
+
+I'm not satisfied with Gemma 4's pelican. I'm trying Qwen on llamacpp again.
+
+Resize guest volume one more time:
+
+```bash
+# On host
+virsh -c qemu:///system blockresize helium-cuda $PWD/helium-cuda.qcow2 --size 150G
+ssh root@helium-cuda.local "growpart /dev/vda 3; resize2fs /dev/vda3; lsblk"
+```
+
+Output:
+
+```
+CHANGED: partition=3 start=526336 old: size=209188831 end=209715166 new: size=314046431 end=314572766
+resize2fs 1.47.3 (8-Jul-2025)
+Filesystem at /dev/vda3 is mounted on /; on-line resizing required
+old_desc_blocks = 13, new_desc_blocks = 19
+The filesystem on /dev/vda3 is now 39255803 (4k) blocks long.
+
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+vda    253:0    0   150G  0 disk
+├─vda1 253:1    0   249M  0 part
+├─vda2 253:2    0  1007K  0 part
+└─vda3 253:3    0 149.7G  0 part /nix/store
+                                 /
+```
+
+Use [unsloth](https://huggingface.co/unsloth/Qwen3.6-27B-GGUF). From the [unsloth docs](https://unsloth.ai/docs/models/qwen3.6):
+
+
+> For best performance, make sure your total available memory (VRAM + system
+> RAM) exceeds the size of the quantized model file you’re downloading. If it
+> doesn’t, llama.cpp can still run via SSD/HDD offloading, but inference will
+> be slower.
+
+Download:
+
+```bash
+ssh helium-cuda.local hf download unsloth/Qwen3.6-35B-A3B-GGUF \
+  --local-dir $MODEL_DIR/unsloth/Qwen3.6-35B-A3B-GGUF \
+  --include "'mmproj-F16*'" --include "'*-Q3_K_M*'" --include "'*-Q4_K_M*'"
+# TODO try with MTP
+ssh helium-cuda.local hf download unsloth/Qwen3.6-35B-A3B-MTP-GGUF \
+  --local-dir '~/unsloth/Qwen3.6-35B-A3B-MTP-GGUF' \
+  --include "'mmproj-F16*'" --include "'*-Q3_K_M*'" --include "'*-Q4_K_M*'"
+```
+
+I've adjusted the startup flags in `systemd.services.llm-server` to run
+llama-cpp again.
+
+Note: I couldn't load the following model
+
+```
+ssh helium-cuda.local hf download unsloth/Qwen3.6-35B-A3B-GGUF Qwen3.6-35B-A3B-UD-Q5_K_M.gguf
+```
+
+llm-bench gave me this error:
+
+```
+main: error: failed to load model '/home/debian/models/hub/models--unsloth--Qwen3.6-35B-A3B-GGUF/snapshots/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q5_K_M.gguf'
+```
+
+Capital of france:
+
+```
+curl http://helium.local:8020/v1/chat/completions \
+  --json '{"model":"asd/gemma-4-E4B-it","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}' | jq
+```
+
+```
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The capital of France is **Paris**.",
+        "reasoning_content": "Here's a thinking process:\n\n1.  **Identify the User's Question**: The user is asking \"Capital of France?\"\n2.  **Extract Key Information**: \n   - Country: France\n   - Question: What is its capital?\n3.  **Retrieve Knowledge**: \n   - I know that the capital of France is Paris.\n4.  **Formulate Response**: \n   - Keep it direct and accurate.\n   - \"The capital of France is Paris.\"\n5.  **Self-Correction/Verification**: \n   - Is Paris indeed the capital? Yes.\n   - Is there any ambiguity? No.\n   - Response matches standard factual knowledge.\n6.  **Output Generation**: Provide the concise answer.✅"
+      }
+    }
+  ],
+  "created": 1781497779,
+  "model": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+  "system_fingerprint": "b9037-cb3c258c6",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 170,
+    "prompt_tokens": 14,
+    "total_tokens": 184,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-GoLFdlUHZgOlUxvIMAiqMj9nlqG1zZwZ",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 14,
+    "prompt_ms": 94.795,
+    "prompt_per_token_ms": 6.771071428571429,
+    "prompt_per_second": 147.6871142992774,
+    "predicted_n": 170,
+    "predicted_ms": 1842.087,
+    "predicted_per_token_ms": 10.835805882352942,
+    "predicted_per_second": 92.2866292417242
+  }
+}
+```
+
 # Appendix
 
 ## Remove VM

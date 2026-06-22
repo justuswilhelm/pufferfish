@@ -52,7 +52,8 @@ in
     };
     home.packages = [
       pkgs.ruff
-      pkgs.pipx
+      # pipx broken in 26.05 with package `black` build error
+      # pkgs.pipx
     ];
 
     home.file.".pdbrc" = lib.mkIf cfg.enable {

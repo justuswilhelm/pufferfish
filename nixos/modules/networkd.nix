@@ -41,11 +41,11 @@
   networking.useNetworkd = true;
   services.resolved = {
     enable = true;
-    # domains = [ "~." ];
-    extraConfig = ''
-      DNSStubListener = udp
-    '';
-    llmnr = "false";
+    settings.Resolve = {
+      DNSStubListener = "udp";
+      # LLMNR is something for Windows folks and pufferfish doesn't need it
+      LLMNR = "false";
+    };
   };
   networking.firewall.enable = true;
   networking.firewall.allowedUDPPorts = [

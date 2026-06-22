@@ -43,11 +43,13 @@ let
       {
         name = "spot";
         frequency = "2 weeks";
-        count_tolerance_percentage = 10;
-        data_sample_percentage = 0.001;
-        data_tolerance_percentage = 0.5;
+        count_tolerance_percentage = 5;
+        data_sample_percentage = 0.00001;
+        # data_tolerance_percentage <= data_sample_percentage
+        data_tolerance_percentage = 0.000005;
         # pkgs.xxHash only exposes xxhsum, not xxh64sum. xxh64 is the default option, htough
-        xxh64sum_command = "${pkgs.xxHash}/bin/xxhsum";
+        # xxHash -> xxhash in nixpkgs 26.05
+        xxh64sum_command = "${pkgs.xxhash}/bin/xxhsum";
       }
     ];
     check_last = 10;

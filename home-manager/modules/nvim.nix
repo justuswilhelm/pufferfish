@@ -23,7 +23,8 @@
 
   programs.neovim = {
     enable = true;
-    extraLuaConfig = builtins.readFile ../../nvim/init.lua;
+    # Renamed from extraLuaConfig
+    initLua = builtins.readFile ../../nvim/init.lua;
     defaultEditor = true;
     plugins = with pkgs.vimPlugins; [
       # Language specific
@@ -38,8 +39,6 @@
       vim-svelte
       # nvim-orgmode/orgmode
       orgmode
-      # leafgarland/typescript-vim
-      typescript-vim
       # pangloss/vim-javascript
       vim-javascript
 
@@ -77,23 +76,6 @@
       # ----------------
       # christoomey/vim-tmux-navigator
       vim-tmux-navigator
-      # treesitter
-      # ----------
-      # nvim-treesitter/nvim-treesitter
-      (nvim-treesitter.withPlugins (p: [
-        p.c
-        p.rust
-        p.lua
-        p.toml
-        p.svelte
-        p.typescript
-        p.java
-        p.nix
-        p.python
-        p.html
-        p.javascript
-        p.elixir
-      ]))
       # kylechui/nvim-surround
       # works with treesitter
       nvim-surround
@@ -127,8 +109,8 @@
       # ----------
       pkgs.deno
       pkgs.typescript
-      pkgs.nodePackages.typescript-language-server
-      pkgs.nodePackages.svelte-language-server
+      pkgs.typescript-language-server
+      pkgs.svelte-language-server
       # Python
       # ------
       pkgs.ruff
@@ -138,6 +120,10 @@
       pkgs.pyright
       pkgs.vale-ls
     ];
+    # Neovim plugins here don't need Ruby
+    withRuby = false;
+    # Pastify needs Python, see also extraPython3Packages
+    withPython3 = true;
     extraPython3Packages = python3Packages: [
       # Pillow needed for pastify
       python3Packages.pillow
@@ -146,7 +132,9 @@
 
   home.activation.performNvimUpdate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     run ${config.programs.neovim.finalPackage}/bin/nvim --headless \
-      +"PlugUpdate --sync" +qa
+      +"PlugUpdate --sync" \
+      +"TSInstall all" \
+      +qa
   '';
 
   programs.fish.shellAbbrs = {

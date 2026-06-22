@@ -160,6 +160,8 @@ in
     programs.firefox = {
       enable = true;
       package = osConfig.programs.firefox.package;
+      # New home manager 26.05 behavior, explicitly state configPath
+      configPath = "${config.home.homeDirectory}/mozilla/firefox";
       profiles.default = {
         isDefault = true;
         name = "Default profile";
