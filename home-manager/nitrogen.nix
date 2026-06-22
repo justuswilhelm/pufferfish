@@ -67,10 +67,6 @@ in
     # Configure the HDMI-2 output like so:
     # output HDMI-A-2 pos 1920 0 res 1920x1080
 
-    # Screen brightness
-    bindsym XF86MonBrightnessUp exec brightnessctl set +10
-    bindsym XF86MonBrightnessDown exec brightnessctl set -10
-
     # Audio
     bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
     bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-

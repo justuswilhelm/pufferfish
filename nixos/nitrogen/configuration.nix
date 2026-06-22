@@ -19,6 +19,7 @@
     ../modules/compat.nix
     ../modules/infosec.nix
     ../modules/firefox.nix
+    ../modules/light.nix
     ../modules/man.nix
     ../modules/network-debug.nix
     ../modules/networkd.nix
@@ -93,12 +94,6 @@
     viAlias = true;
     vimAlias = true;
   };
-
-  # Replacement for programs.light
-  hardware.acpilight.enable = true;
-  programs.sway.extraPackages = [
-    pkgs.brightnessctl
-  ];
 
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
