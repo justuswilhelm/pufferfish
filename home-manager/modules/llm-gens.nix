@@ -151,7 +151,10 @@ let
             id = selfHostedModel.name;
             contextWindow = selfHostedModel.contextWindow;
             maxTokens = 32000;
-            input = ["text" "image"];
+            input = [
+              "text"
+              "image"
+            ];
             reasoning = true;
           }
         ];
@@ -182,7 +185,8 @@ in
 
   # Goose
   xdg.configFile."goose/config.yaml".source = yamlFormat.generate "config.yaml" gooseConfig;
-  xdg.configFile."goose/permission.yaml".source = yamlFormat.generate "permission.yaml" goosePermission;
+  xdg.configFile."goose/permission.yaml".source =
+    yamlFormat.generate "permission.yaml" goosePermission;
 
   # Pi
   home.file.".pi/agent/settings.json".source = jsonFormat.generate "settings.json" piConfig;
