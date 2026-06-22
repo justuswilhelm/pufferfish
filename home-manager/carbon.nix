@@ -35,7 +35,7 @@ in
     ./modules/selenized.nix
 
     # TODO
-    # ./home.nix
+    ./home.nix
   ];
 
   programs.fish.shellAliases.rebuild = "sudo nixos-rebuild switch --flake $DOTFILES";
