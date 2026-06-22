@@ -4,7 +4,7 @@
 vim.keymap.set("n", "<localleader>f", ":silent ! bin/format.sh<cr>",
                {buffer = true})
 -- SPDX-SnippetBegin
--- SPDX-License-Identifier: CC BY-SA 4.0
+-- SPDX-License-Identifier: CC-BY-SA-4.0
 -- SPDX-SnippetCopyrightText: 2023 pseudoc
 -- https://stackoverflow.com/a/75015253
 vim.g.python_indent = {
@@ -15,3 +15,4 @@ vim.g.python_indent = {
     open_paren = "shiftwidth()",
     nested_paren = "shiftwidth()"
 }
+-- SPDX-SnippetEnd
