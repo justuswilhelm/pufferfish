@@ -53,7 +53,21 @@ in
     home.packages = [
       pkgs.ruff
       # pipx broken in 26.05 with package `black` build error
-      # pkgs.pipx
+      # Source:
+      # https://github.com/aftix/cfg/blob/d36664aa1c3936746a1f9c0a710f4c6e590a2718/homemanagerModules/python.nix
+      # SPDX-SnippetBegin
+      # SPDX-License-Identifier: EUPL-1.2
+      # SPDX-SnippetCopyrightText: (C) 2025 aftix
+      # See https://github.com/NixOS/nixpkgs/issues/522307
+      (pkgs.pipx.overridePythonAttrs (old: {
+        disabledTests =
+          (old.disabledTests or [])
+          ++ [
+            "test_fix_package_name"
+            "test_parse_specifier_for_metadata"
+          ];
+      }))
+      # SPDX-SnippetEnd
     ];
 
     home.file.".pdbrc" = lib.mkIf cfg.enable {
