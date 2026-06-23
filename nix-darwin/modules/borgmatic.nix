@@ -93,8 +93,9 @@ let
       "private/var/lib"
       "private/var/log"
     ];
-    # Prevent borgmatic from silently not updating one of the above directories
-    # source_directories_must_exist = true;
+    # Prevent borgmatic from silently discarding one of the above directories
+    # See https://projects.torsion.org/borgmatic-collective/borgmatic/issues/1300
+    source_directories_must_exist = false;
     exclude_patterns = [
       # Library
       "Library/Developer"
