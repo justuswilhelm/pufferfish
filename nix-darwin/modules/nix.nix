@@ -4,17 +4,27 @@
 
 { config, pkgs, ... }:
 {
-  nix.nixPath = [ "/nix/var/nix/profiles/per-user/root/channels" ];
-  nix.extraOptions = ''
-    experimental-features = flakes nix-command
-  '';
-  nix.settings = {
-    sandbox = true;
-    extra-sandbox-paths = [ "/nix/store" ];
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+    gc = {
+      automatic = true;
+      # Run every 6 hours
+      interval = builtins.genList (i: { Hour = i * 6; }) 4;
+      options = "--delete-older-than 30d";
+    };
+    # TODO investigate if you still need this
+    nixPath = [ "/nix/var/nix/profiles/per-user/root/channels" ];
+    settings = {
+      sandbox = true;
+      extra-sandbox-paths = [ "/nix/store" ];
+    };
+    # TODO remove completely
+    # optimise.automatic = false;
   };
   # Don't optimise storage. This creates a /nix/store/.links directory
   # with an enormous amount of files
-  nix.optimise.automatic = false;
   environment.systemPackages = [
     pkgs.nix-tree
     # Profile nix-darwin evaluation for the current system:
