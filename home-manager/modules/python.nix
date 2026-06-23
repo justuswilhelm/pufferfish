@@ -60,12 +60,10 @@ in
       # SPDX-SnippetCopyrightText: (C) 2025 aftix
       # See https://github.com/NixOS/nixpkgs/issues/522307
       (pkgs.pipx.overridePythonAttrs (old: {
-        disabledTests =
-          (old.disabledTests or [])
-          ++ [
-            "test_fix_package_name"
-            "test_parse_specifier_for_metadata"
-          ];
+        disabledTests = (old.disabledTests or [ ]) ++ [
+          "test_fix_package_name"
+          "test_parse_specifier_for_metadata"
+        ];
       }))
       # SPDX-SnippetEnd
     ];
