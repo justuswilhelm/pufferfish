@@ -1,6 +1,11 @@
 ---
 title: Helium-cuda set up
 ---
+<!--
+SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
 
 ![qwen3.6-27b on llamacpp drawing a pelican](helium-cuda-pelican.svg)
 
