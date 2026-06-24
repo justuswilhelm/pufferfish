@@ -16,11 +16,6 @@ vim.call("plug#begin", "~/.config/nvim/plugged")
 -- Language specific
 -- -----------------
 Plug("guersam/vim-j", {['for'] = "j"})
--- Commenting these out -- add back if needed Justus 2023-11-15
--- TODO Still needed? Justus 2023-03-10
--- Plug("elzr/vim-json", {['for'] = "json"})
--- Plug("dag/vim-fish", {['for'] = "fish"})
--- Plug("tpope/vim-markdown", {['for'] = "markdown"})
 Plug("supercollider/scvim")
 Plug("ledger/vim-ledger",
      {["commit"] = "4f2d93dd914f625e2d3db47d97bd9f428fedd68f"})
