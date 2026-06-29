@@ -84,13 +84,19 @@ let
       edit_format = "diff";
       use_repo_map = true;
       extra_params = {
-        extra_headers = {
-          anthropic-beta = "prompt-caching-2024-07-31,pdfs-2024-09-25,output-128k-2025-02-19";
-        };
         max_tokens = 640000;
       };
       cache_control = true;
       editor_model_name = "openrouter/anthropic/claude-haiku-4.5";
+      editor_edit_format = "editor-diff";
+      accepts_settings = [ "thinking_tokens" ];
+    }
+    {
+      name = "openrouter/deepseek/deepseek-v4-pro";
+      edit_format = "diff";
+      use_repo_map = true;
+      cache_control = true;
+      editor_model_name = "openrouter/deepseek/deepseek-v4-flash";
       editor_edit_format = "editor-diff";
       accepts_settings = [ "thinking_tokens" ];
     }
@@ -114,6 +120,7 @@ let
     GOOSE_MODE = "approve";
     GOOSE_CLI_THEME = "light";
     SECURITY_PROMPT_ENABLED = true;
+    GOOSE_TELEMETRY_ENABLED = false;
     # OPENAI_BASE_PATH = "v1/chat/completions";
     extensions = {
       developer = {
