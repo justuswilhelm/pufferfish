@@ -148,6 +148,9 @@ let
       "Users/${user}/Library/Daemon Containers/*/Data/com.apple.milod"
       # Won't back up xcode
       "Applications/Xcode.app"
+      # Consistent issue with
+      # open: [Errno 1] Operation not permitted: 'recentSearches.plist'
+      "Users/${user}/Library/Mail/V10/MailData/recentSearches.plist"
 
       # Apple stuff with high mod frequencies
       "private/var/db"
