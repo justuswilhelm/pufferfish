@@ -14,6 +14,7 @@ let
   snapshotPath = "${statePath}/snapshot";
   logPath = "/private/var/log/borgmatic/borgmatic.log";
   maintainLogPath = "/private/var/log/borgmatic/maintain.log";
+  user = config.system.primaryUser;
 
   makeSnapshot = pkgs.writeShellApplication {
     name = "make-snapshot";
@@ -104,11 +105,11 @@ let
       ".Trash"
 
       # Caches
-      "Users/${config.system.primaryUser}/Library/Caches"
-      "Users/${config.system.primaryUser}/Library/Containers/*/Data/Library/Caches"
-      "Users/${config.system.primaryUser}/Library/Application Support/Firefox/*/cache"
-      "Users/${config.system.primaryUser}/Library/Application Support/Firefox/*/cache2"
-      "Users/${config.system.primaryUser}/.cache"
+      "Users/${user}/Library/Caches"
+      "Users/${user}/Library/Containers/*/Data/Library/Caches"
+      "Users/${user}/Library/Application Support/Firefox/*/cache"
+      "Users/${user}/Library/Application Support/Firefox/*/cache2"
+      "Users/${user}/.cache"
 
       # TODO think about excluding these:
       # "Users/*/Librrary/Group Containers/group.com.apple*"
@@ -122,29 +123,29 @@ let
 
       # These programs should have been using a XDG cache
       # directory:
-      "Users/${config.system.primaryUser}/.npm"
-      "Users/${config.system.primaryUser}/.cargo"
-      "Users/${config.system.primaryUser}/.rustup"
-      "Users/${config.system.primaryUser}/.rzup"
+      "Users/${user}/.npm"
+      "Users/${user}/.cargo"
+      "Users/${user}/.rustup"
+      "Users/${user}/.rzup"
       "node_modules"
 
       # No need to commit these
-      "Users/${config.system.primaryUser}/.config/nvim/plugged"
-      "Users/${config.system.primaryUser}/.local/pipx/shared"
+      "Users/${user}/.config/nvim/plugged"
+      "Users/${user}/.local/pipx/shared"
 
       # Something for handoff? Don't need this
-      "Users/${config.system.primaryUser}/Library/DuetExpertCenter"
+      "Users/${user}/Library/DuetExpertCenter"
 
       # Other Apple stuff
-      "Users/${config.system.primaryUser}/Library/Developer/CoreSimulator"
-      "Users/${config.system.primaryUser}/Library/Biome"
-      "Users/${config.system.primaryUser}/Library/Metadata/CoreSpotlight"
+      "Users/${user}/Library/Developer/CoreSimulator"
+      "Users/${user}/Library/Biome"
+      "Users/${user}/Library/Metadata/CoreSpotlight"
       "Library/Logs/CrashReporter/CoreCapture"
       "Library/Logs/DiagnosticReports"
-      "Users/${config.system.primaryUser}/Library/Weather"
+      "Users/${user}/Library/Weather"
       # Files in these directories get "operation not permitted":
-      "Users/${config.system.primaryUser}/Library/Containers/com.apple.Maps/"
-      "Users/${config.system.primaryUser}/Library/Daemon Containers/*/Data/com.apple.milod"
+      "Users/${user}/Library/Containers/com.apple.Maps/"
+      "Users/${user}/Library/Daemon Containers/*/Data/com.apple.milod"
       # Won't back up xcode
       "Applications/Xcode.app"
 
@@ -156,14 +157,14 @@ let
       # Little snitch
       "Library/Application Support/Objective Development/Little Snitch/TrafficLog"
       # don't back up signal
-      "Users/${config.system.primaryUser}/Library/Application Support/Signal"
+      "Users/${user}/Library/Application Support/Signal"
 
       # Too big
       ".git/annex"
-      "Users/${config.system.primaryUser}/annex/Movies"
+      "Users/${user}/annex/Movies"
       # Too many files
-      "Users/${config.system.primaryUser}/annex/Music"
-      "Users/${config.system.primaryUser}/annex/kiwix"
+      "Users/${user}/annex/Music"
+      "Users/${user}/annex/kiwix"
     ];
     exclude_caches = true;
     exclude_nodump = true;
