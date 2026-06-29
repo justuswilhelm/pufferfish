@@ -14,6 +14,8 @@
       dotfiles = "cd $DOTFILES";
       # _C_d into a _T_emporary directory
       ct = "cd (mktemp -d)";
+      # _C_reate a _Tm_ux session in a temporary directory
+      ctm = "cd (mktemp -d) && t";
     };
   };
 
