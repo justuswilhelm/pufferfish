@@ -7,8 +7,11 @@ exec landrun \
     --rox /nix/store \
     --ro /etc \
     --ro "$HOME/.config" \
+    --rw "$HOME/.cache/nix" \
     --rw "$HOME/.pi" \
     --rw "$PWD" \
     --rw /tmp \
+    --ro /proc \
     --env PATH \
+    --env OPENROUTER_API_KEY \
     pi $*
