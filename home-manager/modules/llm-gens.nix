@@ -208,5 +208,8 @@ in
 
     pkgs.aider-chat
     pkgs.pi-coding-agent
+
+    # Sandbox for agents
+    pkgs.landrun
   ];
 }

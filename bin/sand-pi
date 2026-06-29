@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+exec landrun \
+    --connect-tcp 443,8020 \
+    --rw /dev/null \
+    --rox "/etc/profiles/per-user/$USER" \
+    --rox /run/current-system \
+    --rox /nix/store \
+    --ro /etc \
+    --ro "$HOME/.config" \
+    --rw "$HOME/.pi" \
+    --rw "$PWD" \
+    --rw /tmp \
+    --env PATH \
+    pi $*
