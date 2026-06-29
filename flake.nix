@@ -91,6 +91,11 @@
           ]
           ++ extraModules;
         };
+      systems = with utils.lib.system; [
+        x86_64-linux
+        aarch64-linux
+        aarch64-darwin
+      ];
     in
     {
       nixosConfigurations = {
@@ -141,7 +146,7 @@
         "hydrogen" = mkDarwinConfig { hostName = "hydrogen"; };
       };
     }
-    // utils.lib.eachDefaultSystem (
+    // utils.lib.eachSystem systems (
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
