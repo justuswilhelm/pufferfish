@@ -208,7 +208,8 @@ in
 
     pkgs.aider-chat
     pkgs.pi-coding-agent
-
+  ]
+  ++ lib.lists.optional pkgs.stdenv.isLinux [
     # Sandbox for agents
     pkgs.landrun
   ];
