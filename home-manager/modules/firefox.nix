@@ -161,7 +161,7 @@ in
       enable = true;
       package = osConfig.programs.firefox.package;
       # New home manager 26.05 behavior, explicitly state configPath
-      configPath = "${config.home.homeDirectory}/mozilla/firefox";
+      configPath = "${config.home.homeDirectory}/.mozilla/firefox";
       profiles.default = {
         isDefault = true;
         name = "Default profile";
@@ -204,18 +204,6 @@ in
           "network.proxy.ssl_port" = "8080";
           "network.proxy.type" = "1";
           "signon.rememberSignons" = true;
-        };
-      };
-      profiles.claude = {
-        id = 2;
-        name = "claude";
-        search.default = "ddg";
-        search.force = true;
-        search.engines = {
-          "bing".metaData.hidden = true;
-          "google".metaData.hidden = true;
-          "amazon-jp".metaData.hidden = true;
-          "wikipedia".metaData.hidden = true;
         };
       };
     };
