@@ -19,6 +19,10 @@
                 "path": "./lua.json"
             },
             {
+                "language": "htmldjango",
+                "path": "./htmldjango.json"
+            },
+            {
                 "language": "markdown",
                 "path": "./markdown.json"
             },

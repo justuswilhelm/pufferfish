@@ -1,0 +1,22 @@
+{
+    "AGPL SPDX header": {
+        "prefix": ["agpl"],
+        "body": [
+            "{# SPDX-License-Identifier: AGPL-3.0-or-later #}",
+            "{# SPDX-FileCopyrightText: ${1:year} ${2:author} #}"
+        ]
+    },
+    "Translation": {
+        "prefix": ["trans"],
+        "body": [
+            "{% translate '' %}"
+        ]
+    },
+    "Block translation": {
+        "prefix": ["blocktrans"],
+        "body": [
+            "{% blocktranslate %}",
+            "{% endblocktranslate %}"
+        ]
+    }
+}
