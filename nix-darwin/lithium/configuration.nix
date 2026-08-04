@@ -30,6 +30,7 @@
 
     # ./attic.nix
     ../modules/wiki.nix
+    ./scanner.nix
   ];
 
   # List packages installed in system profile. To search by name, run:
