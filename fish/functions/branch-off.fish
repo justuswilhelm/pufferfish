@@ -13,6 +13,10 @@ function branch-off -d "Branch off in git"
         echo "Assuming parent is a local branch"
     else
         set remote origin
+        if ! git remote get-url $remote
+            echo "No remote called 'origin'"
+            return 1
+        end
         echo "Assuming remote is $remote"
     end
 
