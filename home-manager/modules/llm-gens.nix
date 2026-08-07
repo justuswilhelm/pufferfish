@@ -147,6 +147,8 @@ let
     defaultProvider = "local";
     defaultModel = selfHostedModel.name;
   };
+  # See
+  # https://pi.dev/docs/latest/models
   piModels = {
     providers = {
       local = {
@@ -167,6 +169,20 @@ let
         ];
       };
     };
+  };
+  # See
+  # https://pi.dev/docs/latest/keybindings
+  piKeybindings = {
+    # cursor up isn't exactly the same as recall
+    # previous command in bash/zsh/etc.
+    "tui.editor.cursorUp" = "ctrl+p";
+    "tui.editor.cursorDown" = "ctrl+n";
+    # ctrl+c is better for interrupting
+    "app.interrupt" = "ctrl+c";
+    # "app.clear" = null;
+    # ctrl-p triggers model cycling. not useful.
+    # I want it to behave like normal shells
+    "app.model.cycleForward" = null;
   };
 in
 {
@@ -198,6 +214,9 @@ in
   # Pi
   home.file.".pi/agent/settings.json".source = jsonFormat.generate "settings.json" piConfig;
   home.file.".pi/agent/models.json".source = jsonFormat.generate "models.json" piModels;
+  home.file.".pi/agent/keybindings.json".source =
+    jsonFormat.generate "keybindings.json" piKeybindings;
+  home.file.".pi/agent/extensions".source = ../../pi/extensions;
 
   programs.git.ignores = [ ".aider*" ];
 
@@ -209,7 +228,7 @@ in
     pkgs.aider-chat
     pkgs.pi-coding-agent
   ]
-  ++ lib.lists.optional pkgs.stdenv.isLinux [
+  ++ lib.lists.optionals pkgs.stdenv.isLinux [
     # Sandbox for agents
     pkgs.landrun
   ];

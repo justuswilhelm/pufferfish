@@ -21,6 +21,11 @@ in
       # Try fixing tpm issue
       swtpm.enable = true;
     };
+    allowedBridges = [
+      "virbr0"
+      # For qemu
+      "br0"
+    ];
   };
   programs.virt-manager.enable = true;
 
