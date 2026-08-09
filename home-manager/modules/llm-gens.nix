@@ -182,7 +182,7 @@ let
     # "app.clear" = null;
     # ctrl-p triggers model cycling. not useful.
     # I want it to behave like normal shells
-    "app.model.cycleForward" = null;
+    "app.model.cycleForward" = "";
   };
 in
 {
