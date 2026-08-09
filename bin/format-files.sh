@@ -7,3 +7,7 @@
 set -e
 
 find "$DOTFILES/nvim" -name '*.lua' -print0 | xargs -0 lua-format --verbose --in-place
+
+find "$DOTFILES/fish" -name '*.fish' -print0 | xargs -0 -I % fish -c "fish_indent -w %"
+
+prettier -w **/*.ts
