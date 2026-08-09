@@ -9,13 +9,14 @@
     "Translation": {
         "prefix": ["trans"],
         "body": [
-            "{% translate '' %}"
+            "{% translate '${1:string}' %}"
         ]
     },
     "Block translation": {
         "prefix": ["blocktrans"],
         "body": [
             "{% blocktranslate %}",
+            "${1:string}",
             "{% endblocktranslate %}"
         ]
     }
