@@ -17,7 +17,7 @@
       # enabled fish
       terminal.shell = lib.mkIf config.programs.fish.enable {
         program = "${config.programs.fish.package}/bin/fish";
-        args = [ "-l" ];
+        args = [ "--login" ];
       };
       window = {
         option_as_alt = "OnlyRight";
