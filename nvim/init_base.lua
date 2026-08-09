@@ -175,7 +175,17 @@ vim.keymap.set("v", "<leader>d", function()
     number = tonumber(word, 16)
     integer_result = tostring(number)
     cmd = string.format("normal! c%s", integer_result)
-    vim.cmd(cmd)
+    vim.fn.cmd(cmd)
+end)
+
+-- Launch terminal in directory containing the current buffer
+-- ----------------------------------------------------------
+vim.keymap.set("n", "<leader>term", function()
+    dirname = vim.fn.expand('%:h')
+    vim.cmd.split()
+    vim.cmd.terminal("fish")
+    cmd = string.format("icd %s\npwd\n", dirname)
+    vim.fn.feedkeys(cmd)
 end)
 
 -- Mouse
