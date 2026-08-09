@@ -154,6 +154,21 @@
         "type": "github"
       }
     },
+    "jail-nix": {
+      "locked": {
+        "lastModified": 1776230864,
+        "narHash": "sha256-YsEjjdOsGEzTeD+iT7ONh071BqWAOQWpzYVei3okAXE=",
+        "owner": "~alexdavid",
+        "repo": "jail.nix",
+        "rev": "404e7da9da5ab9aa643666682b2ba1312fa5fbe8",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~alexdavid",
+        "repo": "jail.nix",
+        "type": "sourcehut"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -194,17 +209,18 @@
     "pi": {
       "inputs": {
         "bun2nix": "bun2nix",
+        "jail-nix": "jail-nix",
         "nixpkgs": [
           "nixpkgs"
         ],
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1781803074,
-        "narHash": "sha256-evA6Q8cGuqIaoYtV0KPwyN/qipU3ulKcf9nr6Fp064Y=",
+        "lastModified": 1786017402,
+        "narHash": "sha256-7x/wIB0coM4Kxu4k34uQ56Ag8eFpPh6TUrrVh35eW3M=",
         "owner": "lukasl-dev",
         "repo": "pi.nix",
-        "rev": "826bd3586bd7b9a3b7189c5e4a2678d892e2d50b",
+        "rev": "d612f8a3cf8d36f28d5d1126444f77e1c855d577",
         "type": "github"
       },
       "original": {
