@@ -22,7 +22,9 @@ let
   # XXX
   # If telling alacritty to create-window it will not be focused when not
   # focused on another alacritty instance window
-  openInAlacritty = cmd: "exec-and-forget '${alacritty}' msg create-window --command ${cmd}";
+  # I am temporarily changing openAlacritty to just always a new instance instead.
+  # openAlacritty = cmd: ''exec-and-forget if pgrep -U $USER -f Alacritty.app; then '${alacritty}' msg create-window -e ${cmd}; else open '${alacrittyApp}' --args -e ${cmd}; fi'';
+  openAlacritty = cmd: "exec-and-forget open -n -a '${alacrittyApp}' --args --command ${cmd}";
   newFirefoxWindow = "exec-and-forget if pgrep -U $USER -f '${firefoxApp}'; then '${firefox}' --new-window; else open -a '${firefoxApp}'; fi";
   # Try copying this to your clipboard: https://www.example.com
   openClipboardInFirefox = ''exec-and-forget open -a '${firefoxApp}' "$(pbpaste)"'';
@@ -103,24 +105,24 @@ let
       "${prefix}-shift-r" = "reload-config";
 
       # resize window (you can also use the mouse for that)
-      "${prefix}-enter" = "exec-and-forget '${alacritty}'";
+      "${prefix}-enter" = openAlacritty "${fish} --login";
       "${prefix}-shift-enter" = newFirefoxWindow;
-      "${prefix}-shift-n" = openInAlacritty "${fish} -i -c open-in-finder";
+      "${prefix}-shift-n" = openAlacritty "${fish} --interactive --command open-in-finder";
       # SPDX-SnippetEnd
       # Dotfiles
       "${prefix}-shift-m" = [
         "workspace 4"
-        (openInAlacritty "${fish} -l -c manage-dotfiles")
+        (openAlacritty "${fish} --interactive --command manage-dotfiles")
       ];
       # Time tracking
       "${prefix}-shift-f" = [
         "workspace 3"
-        (openInAlacritty "${fish} -l -c tomato")
+        (openAlacritty "${fish} --login --command tomato")
       ];
       # Cmus
       "${prefix}-shift-t" = [
         "workspace 3"
-        (openInAlacritty "${fish} -l -c t-cmus")
+        (openAlacritty "${fish} --login --command t-cmus")
       ];
       # Anki
       "${prefix}-shift-a" = [
@@ -130,7 +132,7 @@ let
       # Blog
       "${prefix}-shift-b" = [
         "workspace 1"
-        (openInAlacritty "${fish} -l -c blog")
+        (openAlacritty "${fish} -l -c blog")
       ];
       # Open URL
       "${prefix}-shift-p" = [
