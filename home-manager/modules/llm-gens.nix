@@ -155,6 +155,11 @@ let
     # I want it to behave like normal shells
     "app.model.cycleForward" = "";
   };
+  piWrapped = pkgs.writeShellApplication {
+    name = "sand-pi";
+    runtimeInputs = [ pkgs.pi-coding-agent ];
+    text = ''exec "$DOTFILES/bin/sand-pi"'';
+  };
 in
 {
   # Aider configuration files
@@ -189,7 +194,7 @@ in
     (pkgs.llm.withPlugins { llm-openrouter = true; })
 
     pkgs.aider-chat
-    pkgs.pi-coding-agent
+    piWrapped
   ]
   ++ lib.lists.optionals pkgs.stdenv.isLinux [
     # Sandbox for agents
