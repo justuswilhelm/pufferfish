@@ -17,7 +17,7 @@
     ./modules/infosec.nix
     ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
-    ./modules/llm-gens.nix
+    ./modules/llm-gens
     # TODO Investigate if this fix is needed on NixOS
     ./modules/locale-fix.nix
     ./modules/mitmproxy.nix

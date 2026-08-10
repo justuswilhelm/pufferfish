@@ -20,7 +20,7 @@ in
     ./modules/fd.nix
     ./modules/http.nix
     ./modules/karabiner.nix
-    ./modules/llm-gens.nix
+    ./modules/llm-gens
     ./modules/neomutt.nix
     ./modules/infosec.nix
     ./modules/packages.nix

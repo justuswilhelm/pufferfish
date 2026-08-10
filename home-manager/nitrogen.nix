@@ -21,7 +21,7 @@ in
     # ./modules/infosec.nix
     # ./modules/infosec-linux.nix
     ./modules/linux-packages.nix
-    ./modules/llm-gens.nix
+    ./modules/llm-gens
     ./modules/packages.nix
     ./modules/ssh.nix
     ./modules/sway.nix

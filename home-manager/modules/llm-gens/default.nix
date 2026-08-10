@@ -158,7 +158,7 @@ let
   piWrapped = pkgs.writeShellApplication {
     name = "sand-pi";
     runtimeInputs = [ pkgs.pi-coding-agent ];
-    text = ''exec "$DOTFILES/bin/sand-pi"'';
+    text = ''exec "$DOTFILES/home-manager/modules/llm-gens/sand-pi"'';
   };
 in
 {
