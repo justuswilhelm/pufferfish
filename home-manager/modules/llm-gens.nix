@@ -112,35 +112,6 @@ let
       supports_schema = true;
     }
   ];
-  # https://goose-docs.ai/docs/guides/config-files
-  gooseConfig = {
-    GOOSE_PROVIDER = "ollama";
-    GOOSE_MODEL = selfHostedModel.name;
-    OLLAMA_HOST = selfHostedModel.host;
-    GOOSE_MODE = "approve";
-    GOOSE_CLI_THEME = "light";
-    SECURITY_PROMPT_ENABLED = true;
-    GOOSE_TELEMETRY_ENABLED = false;
-    # OPENAI_BASE_PATH = "v1/chat/completions";
-    extensions = {
-      developer = {
-        bundled = true;
-        enabled = true;
-        name = "developer";
-        timeout = 300;
-        type = "builtin";
-      };
-      memory = {
-        bundled = true;
-        enabled = true;
-        name = "memory";
-        timeout = 300;
-        type = "builtin";
-      };
-    };
-  };
-  goosePermission = {
-  };
   # https://pi.dev/docs/latest/settings
   piConfig = {
     theme = "light";
@@ -206,11 +177,6 @@ in
 
   };
 
-  # Goose
-  xdg.configFile."goose/config.yaml".source = yamlFormat.generate "config.yaml" gooseConfig;
-  xdg.configFile."goose/permission.yaml".source =
-    yamlFormat.generate "permission.yaml" goosePermission;
-
   # Pi
   home.file.".pi/agent/settings.json".source = jsonFormat.generate "settings.json" piConfig;
   home.file.".pi/agent/models.json".source = jsonFormat.generate "models.json" piModels;
@@ -221,8 +187,6 @@ in
 
   home.packages = [
     (pkgs.llm.withPlugins { llm-openrouter = true; })
-
-    pkgs.goose-cli
 
     pkgs.aider-chat
     pkgs.pi-coding-agent
