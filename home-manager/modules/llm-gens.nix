@@ -216,7 +216,6 @@ in
   home.file.".pi/agent/models.json".source = jsonFormat.generate "models.json" piModels;
   home.file.".pi/agent/keybindings.json".source =
     jsonFormat.generate "keybindings.json" piKeybindings;
-  home.file.".pi/agent/extensions".source = ../../pi/extensions;
 
   programs.git.ignores = [ ".aider*" ];
 
