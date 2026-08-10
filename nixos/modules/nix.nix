@@ -11,9 +11,11 @@
 }:
 {
   nix = {
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    settings = {
+      experimental-features = "nix-command flakes";
+      keep-outputs = true;
+      keep-derivations = true;
+    };
     gc = {
       automatic = true;
       randomizedDelaySec = "14m";
