@@ -1,0 +1,153 @@
+; sandbox configuration for pi agent (pi.dev)
+; run:
+; $ sandbox-exec -D PROJECT_DIR=$PWD -f $DOTFILES/pi/macos_sandbox_profile.sb -- CMD
+; example:
+; $ sandbox-exec -D PROJECT_DIR=$PWD -f $DOTFILES/pi/macos_sandbox_profile.sb -- pi --resume
+; see
+; log violations with:
+; $ log stream --style compact --predicate 'sender=="Sandbox" && eventMessage contains "deny(1)"'
+; https://github.com/gastownhall/gastown/blob/main/docs/research/macos-sandbox-exec.md
+(version 1)
+; (debug all)
+; can't get trace command to work?
+; (trace "trace.sb")
+(deny default)
+
+; execute
+(allow process-exec
+    (subpath "/nix/store")
+)
+; > node(52296) deny(1) process-exec* /bin/bash
+(allow file-read*
+    (subpath "/bin")
+)
+(allow process-exec
+    (subpath "/bin")
+)
+
+; read/write files
+; ================
+; etc
+; ---
+(allow file-read*
+    (subpath "/private/etc/static")
+    (subpath "/etc")
+    ; > node(59748) deny(1) file-read-metadata /private/etc/localtime
+    (literal "/private/etc/localtime")
+    ; > node(59748) deny(1) file-read-metadata /System/Library/PrivateFrameworks/UIFoundation.framework
+    (subpath "/System/Library/PrivateFrameworks")
+)
+
+; system
+; ------
+(allow file-read*
+    (literal "/")
+    ; > node(59748) deny(1) file-read-metadata /System/Library/PrivateFrameworks/UIFoundation.framework
+    (subpath "/System/Library/PrivateFrameworks")
+    ; > git(60915) deny(1) file-read-data /System/Library/Preferences/Logging/Subsystems/com.apple.defaults.plist
+    (literal "/System/Library/Preferences/Logging/Subsystems/com.apple.defaults.plist")
+)
+
+; var
+; ---
+(allow file-read*
+    (subpath "/var/folders")
+    (subpath "/private/var/folders")
+)
+; > tmux(60553) deny(1) file-read-metadata /var
+(allow file-read-metadata (subpath "/var"))
+
+; user
+; ----
+; > node(57060) deny(1) file-read-metadata /Users
+(allow file-read-metadata (subpath "/Users"))
+
+; dev
+; ---
+(allow file-read* (literal "/dev/null"))
+(allow file-write* (literal "/dev/null"))
+(allow file-read* (literal "/dev/urandom"))
+; > bash(57410) deny(1) file-read-data /dev/tty
+(allow file-read* (literal "/dev/tty"))
+
+; git
+(allow file-read*
+    (subpath "/Users/debian/.config/git")
+)
+
+; nix
+; ---
+(allow file-read*
+    (subpath "/nix")
+    (subpath "/private/etc/profiles/per-user/debian")
+)
+
+; pi files
+; --------
+(allow file-read*
+    (subpath "/Users/debian/.pi/agent")
+)
+(allow file-write*
+    (subpath "/Users/debian/.pi/agent/sessions")
+    (subpath "/Users/debian/.pi/agent/models-store.json")
+    (subpath "/Users/debian/.pi/agent/models-store.json.lock")
+    (literal "/Users/debian/.pi/agent/settings.json.lock")
+    ; Error: models.json error: Availability refresh: EPERM: operation not permitted, mkdir
+    (literal "/Users/debian/.pi/agent/auth.json.lock")
+)
+
+; temp
+; ----
+( allow file-read*
+    (subpath "/private/var/folders")
+)
+(allow file-write*
+    (subpath "/private/var/folders")
+)
+
+; sysctl and file ioctl
+; ============
+; message:
+; >  node(39788) deny(1) sysctl-read hw.pagesize_compat
+; >  node(40006) deny(1) sysctl-read security.mac.lockdown_mode_state
+; >  node(40006) deny(1) sysctl-read kern.bootargs
+; >  node(40006) deny(1) file-read-metadata /System/Cryptexes/OS
+; >  node(40006) deny(1) file-read-data /dev/dtracehelper
+; >  node(40006) deny(1) sysctl-read kern.osvariant_status
+; >  node(40006) deny(1) sysctl-read hw.ephemeral_storage
+; >  node(40006) deny(1) sysctl-read hw.optional.armv8_2_sha512
+; >  node(40006) deny(1) sysctl-read hw.optional.armv8_2_sha3
+; >  node(40006) deny(1) sysctl-read kern.osproductversion
+; >  node(40006) deny(1) sysctl-read hw.pagesize_compat
+; >  node(40006) deny(1) sysctl-read hw.pagesize_compat
+(allow sysctl-read)
+; >  bash(35322) deny(1) file-ioctl path:/dev/ttys011 ioctl-command:(_IO "t" 119)
+(allow file-ioctl)
+; > node(36346) deny(1) process-fork
+(allow process-fork)
+; > node(38580) deny(1) file-read-data /dev/null
+; > node(38944) deny(1) file-read-data /private/etc/hosts
+(allow file-read* (literal "/private/etc/hosts"))
+
+; networking
+; ==========
+; dns
+; ---
+; > node(40891) deny(1) network-outbound /private/var/run/mDNSResponder
+(allow network-outbound (literal "/private/var/run/mDNSResponder"))
+
+; host
+; ----
+; rely on desktop firewall to narrow down which IP address pi can access
+; and set the host to *
+; > node(39508) deny(1) network-outbound remote:*:8020
+(allow network-outbound (remote ip "*:8020"))
+
+; current working directory
+; =========================
+(allow file-read*
+    (subpath (param "PROJECT_DIR"))
+)
+(allow file-write*
+    (subpath (param "PROJECT_DIR"))
+)

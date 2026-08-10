@@ -1,17 +1,21 @@
-#!/usr/bin/env sh
-exec landrun \
-    --connect-tcp 443,8020 \
-    --rw /dev/null \
-    --rox "/etc/profiles/per-user/$USER" \
-    --rox /run/current-system \
-    --rox /nix/store \
-    --ro /etc \
-    --ro "$HOME/.config" \
-    --rw "$HOME/.cache/nix" \
-    --rw "$HOME/.pi" \
-    --rw "$PWD" \
-    --rw /tmp \
-    --ro /proc \
-    --env PATH \
-    --env OPENROUTER_API_KEY \
-    pi $*
+#!/usr/bin/env bash
+if uname | grep -e Darwin >/dev/null; then
+    sandbox-exec -D "PROJECT_DIR=$PWD" -f "$DOTFILES/pi/macos_sandbox_profile.sb" -- pi "$@"
+else
+    exec landrun \
+        --connect-tcp 443,8020 \
+        --rw /dev/null \
+        --rox "/etc/profiles/per-user/$USER" \
+        --rox /run/current-system \
+        --rox /nix/store \
+        --ro /etc \
+        --ro "$HOME/.config" \
+        --rw "$HOME/.cache/nix" \
+        --rw "$HOME/.pi" \
+        --rw "$PWD" \
+        --rw /tmp \
+        --ro /proc \
+        --env PATH \
+        --env OPENROUTER_API_KEY \
+        pi "$@"
+fi
