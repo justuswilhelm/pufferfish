@@ -133,6 +133,20 @@
   programs.tmux.enable = true;
   programs.iotop.enable = true;
 
+  # rfkill enabled by something:
+  # $ systemctl status dev-rfkill.device
+  # ● dev-rfkill.device - /dev/rfkill
+  #     Follows: unit currently follows state of sys-devices-virtual-misc-rfkill.device
+  #      Loaded: loaded
+  #      Active: active (plugged) since Tue 2026-08-11 07:56:18 JST; 47min ago
+  #  Invocation: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  #      Device: /sys/devices/virtual/misc/rfkill
+  # We don't need it, so disable it:
+  systemd = {
+    sockets.systemd-rfkill.enable = false;
+    services.systemd-rfkill.enable = false;
+  };
+
   services.postgresql = {
     enable = true;
     ensureDatabases = [ specialArgs.name ];
