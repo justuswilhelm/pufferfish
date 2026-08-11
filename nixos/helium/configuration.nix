@@ -45,6 +45,11 @@
     ./virtualisation.nix
   ];
 
+  fileSystems."/" = {
+    # > If you have a more complex setup, e.g. with LVM on top of LUKS, you may need to add "x-systemd.device-timeout=infinity"
+    # See https://discourse.nixos.org/t/breaking-changes-announcement-for-unstable/17574/128
+    options = [ "x-systemd.device-timeout=infinit" ];
+  };
   boot = {
     kernelModules = [
       "dm-raid"
@@ -62,6 +67,9 @@
       # Accomodate Debian's choice of putting EFI in /boot/efi/EFI
       efi.efiSysMountPoint = "/boot/efi";
     };
+    # Devices needed for helium-nixos-vg, see `pvs`
+    # /dev/mapper/nvme0n1p3_crypt helium-nixos-vg     lvm2 a--  <512.00g <191.00g
+    # /dev/mapper/nvme0n1p4_crypt helium-nixos-vg     lvm2 a--  <418.71g  <68.71g
     initrd.luks.devices = {
       nvme0n1p4_crypt.device = "/dev/disk/by-uuid/04d9dabf-c8b0-4589-879b-fdfd1e212a75";
       nvme0n1p3_crypt.device = "/dev/disk/by-uuid/cb8faf69-d547-4511-9916-fff36f9eb475";
@@ -71,8 +79,15 @@
   # XXX sda1_crypt and sdb1_crypt keyfiles / uuids have been swapped
   # accidentally during creation
   # XXX order of nvme's is wrong too
+  # devices needed for helium-post-boot-vg:
+  # /dev/mapper/nvme1n1p1_crypt helium-post-boot-vg lvm2 a--    <1.82t       0
+  # /dev/mapper/nvme2n1p1_crypt helium-post-boot-vg lvm2 a--    <1.82t       0
+  # /dev/mapper/nvme3n1p1_crypt helium-post-boot-vg lvm2 a--    <1.82t   <1.82t
+  # /dev/mapper/nvme4n1p1_crypt helium-post-boot-vg lvm2 a--    <1.82t <468.99g
+  # /dev/mapper/sda1_crypt      helium-post-boot-vg lvm2 a--    14.55t  <53.98g
+  # /dev/mapper/sdb1_crypt      helium-post-boot-vg lvm2 a--    14.55t  <53.98g
+  # /dev/mapper/sdc1_crypt      helium-post-boot-vg lvm2 a--    14.55t  <53.98g
   environment.etc.crypttab.text = ''
-    nvme0n1p3_crypt UUID=cb8faf69-d547-4511-9916-fff36f9eb475 - luks,discard
     nvme1n1p1_crypt UUID=d9f7c8d9-f07a-415f-a657-e0270794fab2 /etc/keyfiles/nvme1 luks,discard
     nvme2n1p1_crypt UUID=5dbe9083-6787-4e7c-b880-feee7097ad36 /etc/keyfiles/nvme2 luks,discard
     nvme3n1p1_crypt UUID=ac36df35-0c8f-4310-b724-e420c3672d5b /etc/keyfiles/nvme3 luks,discard
