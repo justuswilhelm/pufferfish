@@ -30,12 +30,7 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/17d39f71-7f41-45c4-87cb-fda27e54111d";
-    fsType = "ext4";
-  };
-
-  fileSystems."/etc" = {
-    device = "/dev/disk/by-uuid/495321d4-6167-430b-8a8f-77e4295867e5";
+    device = "/dev/mapper/helium--nixos--vg-nixos--root";
     fsType = "ext4";
   };
 
@@ -45,9 +40,20 @@
     options = [ "bind" ];
   };
 
-  fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/104adddb-63aa-4f5a-8a3a-473391b077b3";
+  fileSystems."/etc" = {
+    device = "/dev/mapper/helium--nixos--vg-etc";
     fsType = "ext4";
+  };
+
+  fileSystems."/var" = {
+    device = "/dev/mapper/helium--nixos--vg-var";
+    fsType = "ext4";
+  };
+
+  fileSystems."/nix/store" = {
+    device = "/nix/store";
+    fsType = "none";
+    options = [ "bind" ];
   };
 
   fileSystems."/boot" = {
@@ -64,25 +70,24 @@
     ];
   };
 
+  fileSystems."/var/lib/bitcoind-default" = {
+    device = "/dev/mapper/helium--post--boot--vg-bitcoind";
+    fsType = "ext4";
+  };
+
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/331513f1-1be3-45b1-b3c9-b11e4772e36a";
+    device = "/dev/mapper/helium--post--boot--vg-home";
     fsType = "ext4";
   };
 
   fileSystems."/srv/borgbackup" = {
-    device = "/dev/disk/by-uuid/e96f462e-bd88-44e2-a3af-d8c542e80dab";
+    device = "/dev/mapper/helium--post--boot--vg-borgbackup";
     fsType = "ext4";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/bf078544-06c2-4690-845e-526c0df6aede"; } ];
-
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.virbr0.useDHCP = lib.mkDefault true;
+  swapDevices = [
+    { device = "/dev/mapper/helium--nixos--vg-swap"; }
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

@@ -10,7 +10,7 @@
   };
 
   fileSystems."/var/lib/bitcoind-default" = {
-    device = "/dev/disk/by-uuid/37aab34d-9b1b-49d2-b77f-de9cf217f929";
+    device = "/dev/mapper/helium--post--boot--vg-bitcoind";
     fsType = "ext4";
   };
   services.borgmatic.extra_exclude_patterns = [ "/var/lib/bitcoind-default" ];
