@@ -17,6 +17,7 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
 ### Changed
 
 - Format markdown files
+- Neovim: Format lua and json files
 
 ## [2024-01-27]
 

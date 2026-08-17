@@ -8,9 +8,7 @@
     },
     "Translation": {
         "prefix": ["trans"],
-        "body": [
-            "{% translate '${1:string}' %}"
-        ]
+        "body": ["{% translate '${1:string}' %}"]
     },
     "Block translation": {
         "prefix": ["blocktrans"],
