@@ -7,6 +7,12 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 Written according to [http://keepachangelog.com](Keep a Changelog).
 
+## [2026-08-17]
+
+### Added
+
+- Neovim: `title` snippet for markdown
+
 ## [2024-01-27]
 
 ### Added
