@@ -23,7 +23,6 @@ How to fix:
 
 This is where thunderbird can find libgpgme:
 
-
 ```typescript
 // https://github.com/mozilla/releases-comm-central/blob/1945adea3f98cdbe3e19d438ae30ea11058acfe8/mail/extensions/openpgp/content/modules/GPGMELib.sys.mjs#L16
 const ADDITIONAL_LIB_PATHS = [

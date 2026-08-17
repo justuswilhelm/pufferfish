@@ -1,12 +1,12 @@
+---
+title: How to set up wireguard
+---
+
 <!--
 SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
-
----
-title: How to set up wireguard
----
 
 Create `wg0.conf`:
 
@@ -21,7 +21,6 @@ PublicKey = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 Endpoint = XX.XX.XXX.XXX:51820
 AllowedIPs = 0.0.0.0/0
 ```
-
 
 ```bash
 sudo wg-quick up $PWD/wg0.conf

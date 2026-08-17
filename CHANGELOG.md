@@ -3,6 +3,7 @@ SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
+
 # Change Log
 
 Written according to [http://keepachangelog.com](Keep a Changelog).
@@ -12,6 +13,10 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
 ### Added
 
 - Neovim: `title` snippet for markdown
+
+### Changed
+
+- Format markdown files
 
 ## [2024-01-27]
 

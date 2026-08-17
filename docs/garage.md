@@ -1,12 +1,12 @@
+---
+title: Using garage for storing things
+---
+
 <!--
 SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
-
----
-title: Using garage for storing things
----
 
 <https://garagehq.deuxfleurs.fr/documentation/quick-start/>
 <https://docs.fluentd.org/output/s3>

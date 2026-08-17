@@ -1,12 +1,12 @@
+---
+title: Throwaway NixOS install notes
+---
+
 <!--
 SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
-
----
-title: Throwaway NixOS install notes
----
 
 Copied from `docs/carbon.md`. Meant to be installed and then thrown away.
 No LUKS.

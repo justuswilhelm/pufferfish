@@ -37,7 +37,7 @@ Here's how you can install nix-darwin and Pufferfish from scratch.
 2. Clone this repository into your home directory at `$HOME/.dotfiles".
 3. Add your machine to the `flake.nix` file in the repository root.
 4. Run `darwin-rebuild` on the Nix flake contained in this repository.
-Read more about `darwin-rebuild` [here](https://github.com/nix-darwin/nix-darwin?tab=readme-ov-file#getting-started).
+   Read more about `darwin-rebuild` [here](https://github.com/nix-darwin/nix-darwin?tab=readme-ov-file#getting-started).
 
 Here's how you can clone this repository into the right directory:
 
