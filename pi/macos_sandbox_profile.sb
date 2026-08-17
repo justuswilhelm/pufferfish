@@ -1,29 +1,61 @@
 ; sandbox configuration for pi agent (pi.dev)
+; ===========================================
+;
+; Usage
+; -----
+;
 ; run:
 ; $ sandbox-exec -D PROJECT_DIR=$PWD -f $DOTFILES/pi/macos_sandbox_profile.sb -- CMD
 ; example:
 ; $ sandbox-exec -D PROJECT_DIR=$PWD -f $DOTFILES/pi/macos_sandbox_profile.sb -- pi --resume
 ; see
 ; log violations with:
-; $ log stream --style compact --predicate 'sender=="Sandbox" && eventMessage contains "deny(1)"'
+; $ log stream --style compact \
+;     --predicate 'sender=="Sandbox" && eventMessage contains "deny(1)"'
 ; https://github.com/gastownhall/gastown/blob/main/docs/research/macos-sandbox-exec.md
 (version 1)
+;
+; Sandbox syntax:
+; ---------------
+;
+; ==> /System/Library/Sandbox/Profiles/weatherd.sb <==
+; > ;;; Homedir-relative path filters
+; > (define (home-regex home-relative-regex)
+; >     (regex (string-append "^" (regex-quote (param "HOME")) home-relative-regex)))
+; >
+; > (define (home-subpath home-relative-subpath)
+; >     (subpath (string-append (param "HOME") home-relative-subpath)))
+; > […]
+; > (allow file-read* file-write*
+; >     (home-subpath "/Library/Group Containers/group.com.apple.weather")
+; >     (home-subpath "/Library/Weather")
+; >     (home-subpath "/Library/HTTPStorages/com.apple.weatherd")
+; >     (home-subpath "/Library/Caches/com.apple.AppleMediaServices")
+; >     (subpath (param "TMPDIR"))
+; >     (subpath (param "DARWIN_CACHE_DIR")))
+;
 ; (debug all)
 ; can't get trace command to work?
 ; (trace "trace.sb")
+
+
+; helpers
+; =======
+(define (home-subpath home-relative-subpath)
+    (subpath (string-append (param "HOME") home-relative-subpath)))
+
+; default policy
+; ==============
+
 (deny default)
 
 ; execute
+; =======
 (allow process-exec
     (subpath "/nix/store")
-)
-; > node(52296) deny(1) process-exec* /bin/bash
-(allow file-read*
+    ; > node(52296) deny(1) process-exec* /bin/bash
     (subpath "/bin")
-)
-(allow process-exec
-    (subpath "/bin")
-)
+    (subpath "/usr/bin"))
 
 ; read/write files
 ; ================
@@ -42,18 +74,20 @@
 ; ------
 (allow file-read*
     (literal "/")
+    (subpath "/bin")
+    (subpath "/usr/bin")
     ; > node(59748) deny(1) file-read-metadata /System/Library/PrivateFrameworks/UIFoundation.framework
     (subpath "/System/Library/PrivateFrameworks")
     ; > git(60915) deny(1) file-read-data /System/Library/Preferences/Logging/Subsystems/com.apple.defaults.plist
     (literal "/System/Library/Preferences/Logging/Subsystems/com.apple.defaults.plist")
-)
+    ; > node(38944) deny(1) file-read-data /private/etc/hosts
+    (literal "/private/etc/hosts"))
 
 ; var
 ; ---
 (allow file-read*
     (subpath "/var/folders")
-    (subpath "/private/var/folders")
-)
+    (subpath "/private/var/folders"))
 ; > tmux(60553) deny(1) file-read-metadata /var
 (allow file-read-metadata (subpath "/var"))
 
@@ -64,55 +98,62 @@
 
 ; dev
 ; ---
-(allow file-read* (literal "/dev/null"))
+(allow file-read*
+    ; > node(38580) deny(1) file-read-data /dev/null
+    (literal "/dev/null")
+    (literal "/dev/urandom")
+    ; > bash(57410) deny(1) file-read-data /dev/tty
+    (literal "/dev/tty"))
 (allow file-write* (literal "/dev/null"))
-(allow file-read* (literal "/dev/urandom"))
-; > bash(57410) deny(1) file-read-data /dev/tty
-(allow file-read* (literal "/dev/tty"))
 
 ; git
-(allow file-read*
-    (subpath "/Users/debian/.config/git")
-)
+; ---
+(allow file-read* (home-subpath "/.config/git"))
 
 ; nix
 ; ---
 (allow file-read*
     (subpath "/nix")
-    (subpath "/private/etc/profiles/per-user/debian")
-)
+    (subpath (string-append "/private/etc/profiles/per-user/" (param "USER"))))
 
 ; pi files
 ; --------
+; helpers:
+(define (pi-subpath pi-relative-subpath)
+    (subpath (string-append (param "HOME") "/.pi" pi-relative-subpath)))
+(define (pi-literal pi-relative-literal)
+    (literal (string-append (param "HOME") "/.pi" pi-relative-literal)))
 (allow file-read*
-    (subpath "/Users/debian/.pi/agent")
-)
+    (pi-subpath "/agent"))
 (allow file-write*
-    (subpath "/Users/debian/.pi/agent/sessions")
-    (subpath "/Users/debian/.pi/agent/models-store.json")
-    (subpath "/Users/debian/.pi/agent/models-store.json.lock")
-    (literal "/Users/debian/.pi/agent/settings.json.lock")
+    (pi-subpath "/agent/sessions")
+    (pi-literal "/agent/models-store.json")
+    (pi-literal "/agent/models-store.json.lock")
+    (pi-literal "/agent/settings.json.lock")
     ; Error: models.json error: Availability refresh: EPERM: operation not permitted, mkdir
-    (literal "/Users/debian/.pi/agent/auth.json.lock")
-)
+    ; why mkdir?
+    (pi-literal "/agent/auth.json.lock"))
 
 ; temp
 ; ----
-( allow file-read*
-    (subpath "/private/var/folders")
-)
+(allow file-read*
+    (subpath "/private/var/folders"))
 (allow file-write*
-    (subpath "/private/var/folders")
-)
+    (subpath "/private/var/folders"))
+
+; current working directory
+; -------------------------
+(allow file-read*
+    (subpath (param "PWD")))
+(allow file-write*
+    (subpath (param "PWD")))
 
 ; sysctl and file ioctl
-; ============
+; =====================
 ; message:
 ; >  node(39788) deny(1) sysctl-read hw.pagesize_compat
 ; >  node(40006) deny(1) sysctl-read security.mac.lockdown_mode_state
 ; >  node(40006) deny(1) sysctl-read kern.bootargs
-; >  node(40006) deny(1) file-read-metadata /System/Cryptexes/OS
-; >  node(40006) deny(1) file-read-data /dev/dtracehelper
 ; >  node(40006) deny(1) sysctl-read kern.osvariant_status
 ; >  node(40006) deny(1) sysctl-read hw.ephemeral_storage
 ; >  node(40006) deny(1) sysctl-read hw.optional.armv8_2_sha512
@@ -125,9 +166,6 @@
 (allow file-ioctl)
 ; > node(36346) deny(1) process-fork
 (allow process-fork)
-; > node(38580) deny(1) file-read-data /dev/null
-; > node(38944) deny(1) file-read-data /private/etc/hosts
-(allow file-read* (literal "/private/etc/hosts"))
 
 ; networking
 ; ==========
@@ -142,12 +180,3 @@
 ; and set the host to *
 ; > node(39508) deny(1) network-outbound remote:*:8020
 (allow network-outbound (remote ip "*:8020"))
-
-; current working directory
-; =========================
-(allow file-read*
-    (subpath (param "PROJECT_DIR"))
-)
-(allow file-write*
-    (subpath (param "PROJECT_DIR"))
-)

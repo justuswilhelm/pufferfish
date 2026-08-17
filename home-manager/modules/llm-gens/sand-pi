@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 if uname | grep -e Darwin >/dev/null; then
-    sandbox-exec -D "PROJECT_DIR=$PWD" -f "$DOTFILES/pi/macos_sandbox_profile.sb" -- pi "$@"
+    sandbox-exec \
+        -D "USER=$USER" \
+        -D "HOME=$HOME" \
+        -D "PWD=$PWD" \
+        -f "$DOTFILES/pi/macos_sandbox_profile.sb" \
+        -- \
+        pi "$@"
 else
     exec landrun \
         --connect-tcp 443,8020 \
