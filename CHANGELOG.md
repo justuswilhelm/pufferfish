@@ -18,6 +18,7 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
 
 - Format markdown files
 - Neovim: Format lua and json files
+- Rename `bin/format-files.sh` to `bin/format.sh`
 
 ## [2024-01-27]
 
