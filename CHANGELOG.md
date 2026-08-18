@@ -3,6 +3,7 @@ SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
+
 # Change Log
 
 Written according to [http://keepachangelog.com](Keep a Changelog).
@@ -21,6 +22,18 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
   - Add "Open current directory in Netrw" `,t` shortcut
   - Add two `{% block %}`-related snippets to the Django HTML snippets.
 - Python: Add convenient `ret` -> `return` shortcut to the `pdb` configuration
+
+## [2026-08-17]
+
+### Added
+
+- Neovim: `title` snippet for markdown
+
+### Changed
+
+- Format markdown files
+- Neovim: Format lua and json files
+- Rename `bin/format-files.sh` to `bin/format.sh`
 
 ## [2024-01-27]
 

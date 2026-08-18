@@ -8,9 +8,7 @@
     },
     "Translation": {
         "prefix": ["trans"],
-        "body": [
-            "{% translate '${1:string}' %}"
-        ]
+        "body": ["{% translate '${1:string}' %}"]
     },
     "Block translation": {
         "prefix": ["blocktrans"],
@@ -22,10 +20,7 @@
     },
     "Block": {
         "prefix": ["block"],
-        "body": [
-            "{% block ${1:blockname} %}",
-            "{% endblock ${1:blockname} %}"
-        ]
+        "body": ["{% block ${1:blockname} %}", "{% endblock ${1:blockname} %}"]
     },
     "Block with super": {
         "prefix": ["blocksuper"],

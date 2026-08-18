@@ -17,6 +17,7 @@ Snippet syntax documentation: https://code.visualstudio.com/docs/editor/userdefi
 From the documentation:
 
 > The following variables can be used:
+>
 > - TM_SELECTED_TEXT The currently selected text or the empty string
 > - TM_CURRENT_LINE The contents of the current line
 > - TM_CURRENT_WORD The contents of the word under cursor or the empty string
@@ -57,6 +58,6 @@ From the documentation:
 >
 > For inserting line or block comments, honoring the current language:
 >
-> - BLOCK_COMMENT_START Example output: in PHP /* or in HTML <!--
-> - BLOCK_COMMENT_END Example output: in PHP */ or in HTML -->
-> - LINE_COMMENT Example output: in PHP //
+> - BLOCK_COMMENT_START Example output: in PHP `/*` or in HTML `<!--`
+> - BLOCK_COMMENT_END Example output: in PHP `*\` or in HTML `-->`
+> - LINE_COMMENT Example output: in PHP `//`

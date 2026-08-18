@@ -51,7 +51,7 @@ ChromeUtils.defineESModuleGetters(lazy, {
 var GPGMELib;
 
 export var GPGME = {
-// […]
+  // […]
   getPublicKeysForEmail(email) {
     function keyFilterFunction(key) {
       if (
@@ -80,7 +80,7 @@ export var GPGME = {
     // ERROR HERE:
     return GPGMELib.exportKeys(email, false, keyFilterFunction);
   },
-// […]
+  // […]
 };
 ```
 
@@ -99,14 +99,12 @@ const ADDITIONAL_LIB_PATHS = [
 You can manually link files from GPGME like this, but it will fail once
 Nix collects its garbage:
 
-
 ```bash
 ln -s (nix path-info nixpkgs#gpgme)/lib/* /usr/local/lib/
 ```
 
 I found out that my user can write files in /usr/local/lib without
 root privileges. Here's why:
-
 
 ```bash
 ~/.dotfiles!*+(1)main$l /usr/local/lib/

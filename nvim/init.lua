@@ -248,6 +248,8 @@ vim.keymap.set({"i", "s"}, "<C-E>", function()
 end, {silent = true})
 
 local snippet_loader = require("luasnip.loaders.from_vscode")
+-- Snippet syntax
+-- https://code.visualstudio.com/docs/editing/userdefinedsnippets#_snippet-syntax
 local snippet_dir = vim.fn.expand("~/.config/nvim/snippets/")
 snippet_loader.lazy_load({paths = {snippet_dir}})
 

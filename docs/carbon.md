@@ -1,13 +1,13 @@
+---
+title: Carbon NixOS install notes
+date: 2025-03-22
+---
+
 <!--
 SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
-
----
-title: Carbon NixOS install notes
-date: 2025-03-22
----
 
 # QEMU VM
 
@@ -70,4 +70,3 @@ address it not retrieved correctly:
 ```bash
 ip address change dev enps0s25 $ip/24
 ```
-

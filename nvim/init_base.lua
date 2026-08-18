@@ -190,9 +190,7 @@ end)
 
 -- Open current buffer's directory in netrw
 -- ----------------------------------------
-vim.keymap.set("n", "<leader>d", function()
-    vim.cmd.Explore()
-end)
+vim.keymap.set("n", "<leader>d", function() vim.cmd.Explore() end)
 
 -- Mouse
 -- =====

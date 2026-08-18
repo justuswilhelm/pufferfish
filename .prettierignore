@@ -11,3 +11,4 @@ fonts/LICENSE.md
 macos-terminal-selenized
 selenized
 flake.lock
+*.qcow2

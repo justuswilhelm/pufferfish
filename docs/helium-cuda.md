@@ -1,6 +1,7 @@
 ---
 title: Helium-cuda set up
 ---
+
 <!--
 SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
@@ -47,13 +48,13 @@ sudo lspci -vnn -s 01:00
 Note the following values from the `lspci` output:
 
 1. VGA compatible controller
-  1. `slot_info`: 0000:01:00.0
-  2. `vendor_id`: 10de
-  3. `device_code`: 2203
+   1. `slot_info`: 0000:01:00.0
+   2. `vendor_id`: 10de
+   3. `device_code`: 2203
 2. Audio device
-  1. `slot_info`: 0000:01:00.1
-  2. `vendor_id`: 10de
-  3. `device_code`: 1aef
+   1. `slot_info`: 0000:01:00.1
+   2. `vendor_id`: 10de
+   3. `device_code`: 1aef
 
 I've found that forwarding both devices works better for PCI forwarding.
 
@@ -88,13 +89,13 @@ Here's what the virt-install `--help` help says about PCI forwarding:
 > --host-device=HOSTDEV
 > Attach a physical host device to the guest. Some example values for HOSTDEV:
 > --host-device pci_0000_00_1b_0
->     A node device name via libvirt, as shown by 'virsh nodedev-list'
+> A node device name via libvirt, as shown by 'virsh nodedev-list'
 > --host-device 001.003
->     USB by bus, device (via lsusb).
+> USB by bus, device (via lsusb).
 > --host-device 0x1234:0x5678
->     USB by vendor, product (via lsusb).
+> USB by vendor, product (via lsusb).
 > --host-device 1f.01.02
->     PCI device (via lspci).
+> PCI device (via lspci).
 > --soundhw MODEL
 > Attach a virtual audio device to the guest. MODEL specifies the emulated sound card model. Possible values are ich6, ac97, es1370, sb16, pcspk, or default. 'default' will be AC97 if the hypervisor supports it, otherwise it will be ES1370 .
 
@@ -336,7 +337,6 @@ This should print the following
 Ask the `Qwen/Qwen3-0.6B` model what the capital of Crance is with this
 curl command:
 
-
 ```bash
 curl http://helium-cuda.local:8000/v1/chat/completions \
   --json '{"model":"Qwen/Qwen3-0.6B","messages":[{"role":"user","content":"Capital of France?"}],"max_tokens":200}'
@@ -357,6 +357,7 @@ ssh helium-cuda.local
 ```
 
 Run these commands:
+
 ```
 git clone https://github.com/noonghunna/club-3090.git
 cd club-3090
@@ -555,7 +556,7 @@ curl http://helium-cuda.local:8020/v1/chat/completions \
 # VM autostart
 
 Here's how to configure libvirt to start the VM automatically. Check
-if libvirt hasn't already marked it as *autostart*:
+if libvirt hasn't already marked it as _autostart_:
 
 ```bash
 virsh -c qemu:///system list --autostart
@@ -568,7 +569,7 @@ It's not listed here, so the answer is no:
 --------------------
 ```
 
-Enable *autostart* with the following command:
+Enable _autostart_ with the following command:
 
 ```
 ~/.dotfiles!+(1)main$virsh -c qemu:///system autostart helium-cuda
@@ -767,7 +768,41 @@ curl --silent http://helium.local:8020/v1/chat/completions --json '{"messages":[
 Output:
 
 ```json
-{"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"The capital of France is **Paris**.","reasoning_content":"The user is asking for the capital of France.\n\"Capital of France?\"\nThe capital of France is Paris.\nProvide the direct answer."}}],"created":1779348181,"model":"gemma-4-26B-A4B-it-UD-Q5_K_M.gguf","system_fingerprint":"b9037-cb3c258c6","object":"chat.completion","usage":{"completion_tokens":43,"prompt_tokens":20,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-nHB6kcRKeXem6zZCCGvmJXrdel0fjJcH","timings":{"cache_n":0,"prompt_n":20,"prompt_ms":58.87,"prompt_per_token_ms":2.9435,"prompt_per_second":339.7316120264991,"predicted_n":43,"predicted_ms":505.089,"predicted_per_token_ms":11.74625581395349,"predicted_per_second":85.13351112378214}}
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The capital of France is **Paris**.",
+        "reasoning_content": "The user is asking for the capital of France.\n\"Capital of France?\"\nThe capital of France is Paris.\nProvide the direct answer."
+      }
+    }
+  ],
+  "created": 1779348181,
+  "model": "gemma-4-26B-A4B-it-UD-Q5_K_M.gguf",
+  "system_fingerprint": "b9037-cb3c258c6",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 43,
+    "prompt_tokens": 20,
+    "total_tokens": 63,
+    "prompt_tokens_details": { "cached_tokens": 0 }
+  },
+  "id": "chatcmpl-nHB6kcRKeXem6zZCCGvmJXrdel0fjJcH",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 20,
+    "prompt_ms": 58.87,
+    "prompt_per_token_ms": 2.9435,
+    "prompt_per_second": 339.7316120264991,
+    "predicted_n": 43,
+    "predicted_ms": 505.089,
+    "predicted_per_token_ms": 11.74625581395349,
+    "predicted_per_second": 85.13351112378214
+  }
+}
 ```
 
 Observe log output with `journalctl -f -u llm-server.service`:
@@ -1081,8 +1116,7 @@ aider index.html --message "make a space invaders game in this index.html. restr
 
 Output:
 
-
-```
+````
 Creating empty file /tmp/tmp.2LEsbzC4BU/index.html
 Aider v0.86.1
 Model: hosted_vllm/google/gemma-4-E4B-it with udiff edit format
@@ -1135,7 +1169,7 @@ Applied edit to index.html
 Summarization failed for model hosted_vllm/google/gemma-4-E4B-it: cannot schedule new futures after shutdown
 Summarization failed for model hosted_vllm/google/gemma-4-E4B-it: cannot schedule new futures after shutdown
 summarizer unexpectedly failed for all models
-```
+````
 
 I received a working Space Invaders clone despite the errors:
 
@@ -1175,7 +1209,6 @@ vda    253:0    0   150G  0 disk
 ```
 
 Use [unsloth](https://huggingface.co/unsloth/Qwen3.6-27B-GGUF). From the [unsloth docs](https://unsloth.ai/docs/models/qwen3.6):
-
 
 > For best performance, make sure your total available memory (VRAM + system
 > RAM) exceeds the size of the quantized model file you’re downloading. If it

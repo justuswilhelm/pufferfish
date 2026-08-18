@@ -1,13 +1,13 @@
+---
+title: Certificate management with OpenSSL and Caddy
+author: Justus Perlwitz
+---
+
 <!--
 SPDX-FileCopyrightText: 2014-2025 Justus Perlwitz
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
-
----
-title: Certificate management with OpenSSL and Caddy
-author: Justus Perlwitz
----
 
 Tested with LibreSSL 3.3.6
 
@@ -36,7 +36,7 @@ First, create the following three directories:
 
 - `/var/lib/lithium-ca`: Directory where `lithium-ca`
 - `/var/lib/lithium-ca/secrets`: Contain signing data that only `lithium-ca` is allowed to
-access
+  access
 - `/var/lib/lithium-ca/signed`: Contain signed certificates, open to public
 
 Run the following commands:
@@ -98,9 +98,9 @@ Next, create the following three directories:
 
 - `/var/lib/caddy`: Contains `caddy` user data
 - `/var/lib/caddy/certs`: Contains `caddy` user certificates. This
-directory is world readable
+  directory is world readable
 - `/var/lib/caddy/secrets`: Contains `caddy` user secrets. The keys in this
-directory are used to sign `caddy`'s certificates. The directory is not world-readable.
+  directory are used to sign `caddy`'s certificates. The directory is not world-readable.
 
 ```bash
 sudo mkdir -p /var/lib/caddy
@@ -220,7 +220,7 @@ Then, open the certificate using the following command run in your terminal:
 open /var/lib/lithium-ca/lithium-ca.crt
 ```
 
-Open certificate in *Default Keychains* > *login*. Under *Trust*, choose "Always Trust" for **Secure Sockets Layer (SSL)**. Close and confirm by entering administration password.
+Open certificate in _Default Keychains_ > _login_. Under _Trust_, choose "Always Trust" for **Secure Sockets Layer (SSL)**. Close and confirm by entering administration password.
 
 ![Settings screen showing the required certificate settings in Apple Keychain Access](./lithium-root-cert-trust-settings.png)
 
