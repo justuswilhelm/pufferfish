@@ -20,6 +20,7 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
   - Add `bin/format.sh` script runner command `,f` to Django HTML buffers, too
   - Add "Open current directory in Netrw" `,t` shortcut
   - Add two `{% block %}`-related snippets to the Django HTML snippets.
+- Python: Add convenient `ret` -> `return` shortcut to the `pdb` configuration
 
 ## [2024-01-27]
 

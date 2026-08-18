@@ -74,6 +74,7 @@ in
         with open(os.path.expanduser("${pdbrcpy}")) as _f: _f = _f.read()
         exec(_f)
         del _f
+        alias ret return
       ''
       + cfg.extraConfig;
     };
