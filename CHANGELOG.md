@@ -14,6 +14,7 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
 - Nix-darwin: Fix GPGME and Thunderbird library issue with activation script that
   links GPGME library files to `/usr/local/lib`.
 - Lithium: Enable Python debugger `pdbrc`
+- Sand-pi: Block 443/tcp, leaving only 8020/tcp
 
 ## [2024-01-27]
 

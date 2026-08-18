@@ -9,7 +9,7 @@ if uname | grep -e Darwin >/dev/null; then
         pi "$@"
 else
     exec landrun \
-        --connect-tcp 443,8020 \
+        --connect-tcp 8020 \
         --rw /dev/null \
         --rox "/etc/profiles/per-user/$USER" \
         --rox /run/current-system \
