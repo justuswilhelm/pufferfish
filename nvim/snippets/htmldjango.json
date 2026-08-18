@@ -19,5 +19,20 @@
             "${1:string}",
             "{% endblocktranslate %}"
         ]
+    },
+    "Block": {
+        "prefix": ["block"],
+        "body": [
+            "{% block ${1:blockname} %}",
+            "{% endblock ${1:blockname} %}"
+        ]
+    },
+    "Block with super": {
+        "prefix": ["blocksuper"],
+        "body": [
+            "{% block ${1:blockname} %}",
+            "    {{ block.super }}",
+            "{% endblock ${1:blockname} %}"
+        ]
     }
 }

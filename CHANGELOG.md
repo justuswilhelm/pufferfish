@@ -15,6 +15,11 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
   links GPGME library files to `/usr/local/lib`.
 - Lithium: Enable Python debugger `pdbrc`
 - Sand-pi: Block 443/tcp, leaving only 8020/tcp
+- Neovim:
+  - Add `{% trans '' %}` Django HTML text wrapper macro
+  - Add `bin/format.sh` script runner command `,f` to Django HTML buffers, too
+  - Add "Open current directory in Netrw" `,t` shortcut
+  - Add two `{% block %}`-related snippets to the Django HTML snippets.
 
 ## [2024-01-27]
 

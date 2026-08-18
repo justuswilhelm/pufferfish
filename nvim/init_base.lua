@@ -188,6 +188,12 @@ vim.keymap.set("n", "<leader>term", function()
     vim.fn.feedkeys(cmd)
 end)
 
+-- Open current buffer's directory in netrw
+-- ----------------------------------------
+vim.keymap.set("n", "<leader>d", function()
+    vim.cmd.Explore()
+end)
+
 -- Mouse
 -- =====
 vim.opt.mouse = "a"
