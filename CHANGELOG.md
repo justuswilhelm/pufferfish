@@ -13,6 +13,7 @@ Written according to [http://keepachangelog.com](Keep a Changelog).
 
 - Nix-darwin: Fix GPGME and Thunderbird library issue with activation script that
   links GPGME library files to `/usr/local/lib`.
+- Lithium: Enable Python debugger `pdbrc`
 
 ## [2024-01-27]
 

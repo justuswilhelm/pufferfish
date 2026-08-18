@@ -33,6 +33,8 @@ in
     ./home.nix
   ];
 
+  programs.pdbrc.config.enable = true;
+
   programs.tmux = {
     pasteCommand = "pbpaste";
     copyCommand = "pbcopy";
