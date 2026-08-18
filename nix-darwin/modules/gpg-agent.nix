@@ -21,4 +21,32 @@
       RunAtLoad = true;
     };
   };
+
+  # Make gpgme libraries available to Thunderbird, see
+  # docs/thunderbird.md
+  system.activationScripts.preActivation = {
+    text =
+      let
+        gpgme-lib = "${pkgs.gpgme}/lib";
+      in
+      ''
+        echo "Making GPGME libraries available to Thunderbird"
+        for lib in ${gpgme-lib}/*; do
+          dest="/usr/local/lib/$(basename "$lib")"
+          if test -L "$dest" -a -s "$dest"; then
+            continue
+          elif test -L "$dest" -a ! -s "$dest"; then
+            echo "$dest is an empty symlink. Creating new symlink."
+            ln -sfv "$lib" "$dest"
+          elif test ! -f "$dest"; then
+            echo "$dest doesn't exist. Creating new symlink."
+            ln -sv "$lib" "$dest"
+          else
+            echo "$dest is something else and I don't know how to continue"
+            stat "$dest"
+            exit 1
+          fi
+        done
+      '';
+  };
 }

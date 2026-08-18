@@ -7,6 +7,13 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 Written according to [http://keepachangelog.com](Keep a Changelog).
 
+## [2026-08-18]
+
+### Added
+
+- Nix-darwin: Fix GPGME and Thunderbird library issue with activation script that
+  links GPGME library files to `/usr/local/lib`.
+
 ## [2024-01-27]
 
 ### Added
