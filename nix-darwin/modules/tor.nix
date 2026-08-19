@@ -1308,6 +1308,8 @@ in
       ))
     ];
 
+    environment.etc."tor/torrc".source = torrc;
+
     # Note: nix-darwin doesn't have built-in firewall management like NixOS
     # Users should configure firewall rules manually if needed
 
@@ -1336,7 +1338,7 @@ in
               lib.flatten (
                 [
                   "set -eu"
-                  "${cfg.package}/bin/tor -f ${torrc} --verify-config"
+                  "${cfg.package}/bin/tor -f /etc/tor/torrc --verify-config"
                 ]
                 ++ lib.mapAttrsToList (
                   name: onion:
@@ -1377,16 +1379,18 @@ in
           );
         in
         ''
-          ${preStartScript}
-          exec ${cfg.package}/bin/tor -f ${torrc} 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
+          (
+            ${preStartScript}
+            exec ${cfg.package}/bin/tor -f /etc/tor/torrc
+          ) 2>&1 | ts '[%Y-%m-%d %H:%M:%S]'
         '';
     };
 
     services.newsyslog.modules.tor = {
       "${torLogDir}/tor.log" = {
         owner = "tor";
-        group = "tor";
-        mode = "600";
+        group = "staff";
+        mode = "640";
         count = 10;
         size = "*";
         when = "$D0";
@@ -1397,10 +1401,9 @@ in
     system.activationScripts.postActivation = {
       text = ''
         echo "Ensuring tor directories exist"
-        mkdir -p ${stateDir} ${runDir} ${torLogDir}
-        chown tor:tor ${stateDir} ${runDir} ${torLogDir}
-        chmod 0700 ${stateDir}
-        chmod 0710 ${runDir}
+        install --owner tor --group tor --mode 0700 --directory ${stateDir}
+        install --owner tor --group tor --mode 0710 --directory ${runDir}
+        install --owner tor --group staff --mode 0710 --directory ${torLogDir}
 
         # Create onion service directories
         ${lib.concatStringsSep "\n" (
