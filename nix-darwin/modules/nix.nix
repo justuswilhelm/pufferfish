@@ -5,23 +5,21 @@
 { config, pkgs, ... }:
 {
   nix = {
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    settings = {
+      experimental-features = "nix-command flakes";
+      keep-outputs = true;
+      keep-derivations = true;
+    };
     gc = {
       automatic = true;
       # Run every 6 hours
       interval = builtins.genList (i: { Hour = i * 6; }) 4;
       options = "--delete-older-than 30d";
     };
-    # TODO investigate if you still need this
-    nixPath = [ "/nix/var/nix/profiles/per-user/root/channels" ];
     settings = {
       sandbox = true;
       extra-sandbox-paths = [ "/nix/store" ];
     };
-    # TODO remove completely
-    # optimise.automatic = false;
   };
   # Don't optimise storage. This creates a /nix/store/.links directory
   # with an enormous amount of files
